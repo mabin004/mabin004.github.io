@@ -272,264 +272,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/01/31/Drozer积累/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/31/Drozer积累/" itemprop="url">Drozer积累</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-31T12:46:41+08:00">
-                2018-01-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="安装（Mac）"><a href="#安装（Mac）" class="headerlink" title="安装（Mac）"></a>安装（Mac）</h2><ol>
-<li>源码编译有坑（openssl） <a href="https://github.com/mwrlabs/drozer" target="_blank" rel="noopener">https://github.com/mwrlabs/drozer</a></li>
-<li>下载whl文件 <a href="https://labs.mwrinfosecurity.com/tools/drozer/" target="_blank" rel="noopener">https://labs.mwrinfosecurity.com/tools/drozer/</a><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install drozer-2.4.4-py2-none-any.whl</span><br><span class="line">(根据提示所需依赖进行安装即可)</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/01/31/Drozer积累/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/01/25/应用克隆浅谈/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/25/应用克隆浅谈/" itemprop="url">应用克隆浅谈(dai)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-25T17:25:18+08:00">
-                2018-01-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><h2 id="克隆技术"><a href="#克隆技术" class="headerlink" title="克隆技术"></a>克隆技术</h2><p>克隆猴子</p>
-<h2 id="读取本地文件"><a href="#读取本地文件" class="headerlink" title="读取本地文件"></a>读取本地文件</h2><h3 id="Android"><a href="#Android" class="headerlink" title="Android"></a>Android</h3><ol>
-<li>自己不能读自己</li>
-<li>8.0以后沙箱和两个API的关系</li>
-<li>AccountManager <ul>
-<li>7.0之后 /data/system_ce/0/accounts_ce.db <a href="http://blog.csdn.net/dzkdxyx/article/details/78242105" target="_blank" rel="noopener">http://blog.csdn.net/dzkdxyx/article/details/78242105</a></li>
-<li>android 7.0之前版本的存储位置： /data/system/users/0/accounts.db
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/01/25/应用克隆浅谈/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/01/24/xmlHttpRequest读取本地文件/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1574,6 +1316,288 @@ PDU举例
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/10/test/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/10/test/" itemprop="url">Markdown语法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-10T15:30:09+08:00">
+                2017-12-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          有序列表
+aaa
+vvv
+ccc
+
+
+aaa
+
+无序列表
+ads
+dsadf
+
+链接
+链接点击
+图片
+
+引用
+应用他的文字
+
+斜体和粗体两个*号是粗体一个是斜体
+代码引用1public int a = 1;
+
+          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/12/10/test/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/09/cve-2014-7911/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/09/cve-2014-7911/" itemprop="url">cve-2014-7911</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-09T17:13:00+08:00">
+                2017-12-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          0x00 简介CVE-2014-7911是安卓上序列化的提权漏洞，该漏洞允许恶意应用从普通应用权限提权到system用户执行命令。漏洞的成因源于在安卓系统（&lt;5.0）中，java.io.ObjectInputStream并未校验输入的java对象是否是实际可序列化的。攻击者因此可以构建一个不可序列化的java对象实例，恶意构建其成员变量，当该对象实例被ObjectInputStream反序列化时，将发生类型混淆，对象的Field被视为由本地代码处理的指针，使攻击者获得控制权
+0x01 漏洞分析向system_server传入的不可序列化的android.os.BinderProxy对象实例，其成员变量在反序列化时发生类型混淆，由于BinderProxy的finalize方法包含native代码，于是在本地代码执行时将成员变量强制转换为指针，注意到成员变量是攻击者可控的，也就意味着攻击者可以控制该指针，使其指向攻击者可控的地址空间，最终获得在system_server（uid=1000）中执行代码的权限。
+下面主要结合POC对漏洞进行详细分析。
+
+构建可序列化对象
+ 12345public class BinderProxy implements Serializable &#123;	private static final long serialVersionUID = 0;	private int mObject = 0x1337beef;	private int mOrgue = 0x1337beef;	&#125;
+ mOrgue和mObject的类型参照源码（frameworks/base/core/java/android/os/Binder.java）
+
+
+123Bundle bundle = new Bundle();AAdroid.os.Binder
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/12/09/cve-2014-7911/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
@@ -1624,7 +1648,7 @@ PDU举例
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-count">48</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
