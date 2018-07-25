@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="[TOC] 1. 蓝牙介绍1.1 蓝牙协议栈种类 Linux Bluez、The FreeBSD bluetooth stack  Windows Microsoft Windows stack 、Broadcom WIDCOMM (BTW)、Toshiba stack、CSR Harmony、IVT BlueSoleil (1000Moons)、AVM BlueFRITZ!、Digianswer">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android蓝牙漏洞介绍（from zxq）">
+<meta property="og:url" content="https://mabin004.github.io/2018/06/15/Android蓝牙漏洞介绍（from-zxq）/index.html">
+<meta property="og:site_name" content="m4bln">
+<meta property="og:description" content="[TOC] 1. 蓝牙介绍1.1 蓝牙协议栈种类 Linux Bluez、The FreeBSD bluetooth stack  Windows Microsoft Windows stack 、Broadcom WIDCOMM (BTW)、Toshiba stack、CSR Harmony、IVT BlueSoleil (1000Moons)、AVM BlueFRITZ!、Digianswer">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://www.bluetooth.com/~/media/images/page-content/bluetooth%20stack.ashx?h=501&w=388&la=zh-cn&hash=9756388D40595EB444E4B110F3587A323604714A">
+<meta property="og:image" content="http://ygtat.oss-cn-beijing.aliyuncs.com/18-6-6/14167061.jpg">
+<meta property="og:image" content="https://img-blog.csdn.net/20141022163320673?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveHViaW4zNDE3MTk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="https://source.android.com/devices/bluetooth/images/ape_fwk_bluetooth.png">
+<meta property="og:image" content="https://source.android.com/devices/bluetooth/images/fluoride_architecture.png">
+<meta property="og:image" content="https://source.android.com/devices/bluetooth/images/ape_fwk_bluetooth.png">
+<meta property="og:image" content="http://ygtat.oss-cn-beijing.aliyuncs.com/18-6-7/91574264.jpg">
+<meta property="og:image" content="http://ygtat.oss-cn-beijing.aliyuncs.com/18-6-7/42631481.jpg">
+<meta property="og:image" content="http://ygtat.oss-cn-beijing.aliyuncs.com/18-6-7/79396280.jpg">
+<meta property="og:updated_time" content="2018-06-15T02:36:54.042Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android蓝牙漏洞介绍（from zxq）">
+<meta name="twitter:description" content="[TOC] 1. 蓝牙介绍1.1 蓝牙协议栈种类 Linux Bluez、The FreeBSD bluetooth stack  Windows Microsoft Windows stack 、Broadcom WIDCOMM (BTW)、Toshiba stack、CSR Harmony、IVT BlueSoleil (1000Moons)、AVM BlueFRITZ!、Digianswer">
+<meta name="twitter:image" content="https://www.bluetooth.com/~/media/images/page-content/bluetooth%20stack.ashx?h=501&w=388&la=zh-cn&hash=9756388D40595EB444E4B110F3587A323604714A">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://mabin004.github.io/2018/06/15/Android蓝牙漏洞介绍（from-zxq）/"/>
+
+
+
+
+
+  <title>Android蓝牙漏洞介绍（from zxq） | m4bln</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">m4bln</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-hint">
+          <a href="/hint/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            hint
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-todo">
+          <a href="/todo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            ToDo
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/06/15/Android蓝牙漏洞介绍（from-zxq）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android蓝牙漏洞介绍（from zxq）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-15T10:36:00+08:00">
+                2018-06-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>[TOC]</p>
+<h1 id="1-蓝牙介绍"><a href="#1-蓝牙介绍" class="headerlink" title="1. 蓝牙介绍"></a>1. 蓝牙介绍</h1><h2 id="1-1-蓝牙协议栈种类"><a href="#1-1-蓝牙协议栈种类" class="headerlink" title="1.1 蓝牙协议栈种类"></a>1.1 蓝牙协议栈种类</h2><ul>
+<li><p><strong>Linux</strong></p>
+<p>Bluez、The FreeBSD bluetooth stack</p>
+</li>
+<li><p><strong>Windows</strong></p>
+<p>Microsoft Windows stack 、Broadcom WIDCOMM (BTW)、Toshiba stack、CSR Harmony、IVT BlueSoleil (1000Moons)、AVM BlueFRITZ!、Digianswer BTSWS</p>
+</li>
+<li><p><strong>Android</strong></p>
+<p>Bluez、<strong>Bluedroid/Fluoride</strong></p>
+</li>
+<li><p><strong>Embedded implementations</strong></p>
+<p>Apache Mynewt NimBLE、    BlueCode+、    BlueLet…..</p>
+</li>
+<li><p><strong>OS X/IOS</strong></p>
+</li>
+</ul>
+<h2 id="1-2-蓝牙规范"><a href="#1-2-蓝牙规范" class="headerlink" title="1.2 蓝牙规范"></a>1.2 蓝牙规范</h2><h3 id="1-2-1-蓝牙的两种类型"><a href="#1-2-1-蓝牙的两种类型" class="headerlink" title="1.2.1 蓝牙的两种类型"></a>1.2.1 蓝牙的两种类型</h3><p>最为普遍的两种规格为<a href="https://www.bluetooth.com/zh-cn/bluetooth-technology/topology-options" target="_blank" rel="noopener">蓝牙基础率/增强数据率 (BR/EDR)</a>（采用版本为 2.0/2.1）和<a href="https://www.bluetooth.com/zh-cn/bluetooth-technology/le-p2p" target="_blank" rel="noopener">低耗能 (LE) 蓝牙</a>（采用版本为 4.0/4.1/4.2/5）。</p>
+<ul>
+<li><p>蓝牙 BR/EDR—可建立相对较短距离的持续无线连接，因此非常适用于流式音频等应用</p>
+</li>
+<li><p>蓝牙 LE—可建立短时间的长距离无线电连接，非常适用于无需持续连接但依赖电池具有较长寿命的的物联网 (IoT) 应用</p>
+</li>
+<li><p>双模—双模芯片可支持需要连接 BR/EDR 设备（例如音频耳机）以及 LE 设备（例如穿戴设备或零售信标）的单一设备（例如智能手机或平板电脑）</p>
+</li>
+</ul>
+<h3 id="1-2-2-核心系统架构"><a href="#1-2-2-核心系统架构" class="headerlink" title="1.2.2 核心系统架构"></a>1.2.2 核心系统架构</h3><p>  <img src="https://www.bluetooth.com/~/media/images/page-content/bluetooth%20stack.ashx?h=501&amp;w=388&amp;la=zh-cn&amp;hash=9756388D40595EB444E4B110F3587A323604714A" alt="蓝牙栈"> </p>
+<details><br>  <summary>详细</summary><br><br><br><em> <strong>物理 (PHY) 层</strong><br><br>通过蓝牙通信信道控制 2.4Ghz 射频的传输/接收。BR/EDR 提供的信道较多但带宽较窄，而 LE 使用的信道较少但带宽较宽。
+
+
+
+</em> <strong>链路层</strong><br><br>定义数据包结构/信道、发现/连接程序以及发送/接收数据。<br><br><br><br><em> <strong>直接测试模式</strong><br><br>允许测试人员向 PHY 层发出指令以传输或接收给定数据包序列，通过 HCI 或 2 线 UART 接口提交命令。
+
+
+
+</em> <strong>主机控制器接口 (HCI)</strong><br><br>蓝牙控制器子系统（底部三层）和蓝牙主机之间的可选标准接口。<br><br><br><br><em> <strong>逻辑链路控制和适配协议 (L2CAP) 层</strong><br><br>基于数据包的协议，可将数据包传输至 HCI 或直接传输到无主机系统中的链路管理器。支持更高级别的协议多路复用、数据包分割和重组，以及将服务质量信息传输到更高层。
+
+
+
+</em> <strong>属性协议 (ATT)</strong><br><br>在建立连接之后定义数据交换客户端/服务器协议。使用通用属性配置文件 (GATT) 将属性分类为有意义的服务。ATT 主要用于 LE 部署，偶尔也会用于 BR/EDR 部署。<br><br><br><br><em> <strong>通用属性配置文件 (GATT)</strong><br><br>使用属性协议，GATT 对封装设备组件性能的服务进行分组，并描述基于 GATT 功能的用例、角色和一般性能。其服务框架定义服务规程和格式及其特性，其中包括发现、读取、写入、通知以及指示特性以及配置特性广播。GATT 仅用于蓝牙 LE 部署。
+
+
+
+</em> <strong>通用访问配置文件(GAP)</strong><br><br>可与蓝牙 LE 部署中的 GATT 配合使用，以定义与发现蓝牙设备和共享信息相关的规程和角色，以及连接蓝牙设备的链路管理内容。<br><br><br></details>
+
+<p>目前研究的主要是中间的一层（host）</p>
+<h3 id="1-2-3-蓝牙规范（待补充…）"><a href="#1-2-3-蓝牙规范（待补充…）" class="headerlink" title="1.2.3 蓝牙规范（待补充…）"></a>1.2.3 蓝牙规范（待补充…）</h3><h2 id="1-3-蓝牙版本变动"><a href="#1-3-蓝牙版本变动" class="headerlink" title="1.3 蓝牙版本变动"></a>1.3 蓝牙版本变动</h2><ul>
+<li><p>Android 4.2  从BlueZ 更改为BlueDroid</p>
+</li>
+<li><p>Android 4.3  以上支持蓝牙低功耗 (BLE)</p>
+</li>
+<li><p>Android 7.0 Fluoride   </p>
+</li>
+<li><p>Android 8.0 支持蓝牙 5  </p>
+</li>
+</ul>
+<h3 id="1-3-1-BlueDroid-VS-BlueZ"><a href="#1-3-1-BlueDroid-VS-BlueZ" class="headerlink" title="1.3.1 BlueDroid VS BlueZ"></a>1.3.1 BlueDroid VS BlueZ</h3><h4 id="BlueZ"><a href="#BlueZ" class="headerlink" title="BlueZ"></a>BlueZ</h4><p><img src="http://ygtat.oss-cn-beijing.aliyuncs.com/18-6-6/14167061.jpg" alt=""></p>
+<h4 id="BlueDroid"><a href="#BlueDroid" class="headerlink" title="BlueDroid"></a>BlueDroid</h4><p><img src="https://img-blog.csdn.net/20141022163320673?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveHViaW4zNDE3MTk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="img"> </p>
+<p><strong>Bluedroid和Bluez相比，有如下优点：</strong> </p>
+<ol>
+<li>层次结构清晰。各个profile对上层接口统一，便于增加新的profile；增加了HAL层，便于移植。</li>
+<li>去掉了DBus，Framework的Java代码直接调用到Bluedroid的Native代码。</li>
+</ol>
+<h3 id="1-3-2-Android-8-0-VS-Android-7-x"><a href="#1-3-2-Android-8-0-VS-Android-7-x" class="headerlink" title="1.3.2 Android 8.0 VS Android 7.x"></a>1.3.2 Android 8.0 VS Android 7.x</h3><p>Android 提供了一个默认蓝牙堆栈，该堆栈具有以下两个层级：实现核心蓝牙功能的蓝牙嵌入式系统 (BTE) 以及与 Android 框架应用通信的蓝牙应用层 (BTA)。 </p>
+<h4 id="Android-7-x-及更早版本的架构"><a href="#Android-7-x-及更早版本的架构" class="headerlink" title="Android 7.x 及更早版本的架构"></a>Android 7.x 及更早版本的架构</h4><p><img src="https://source.android.com/devices/bluetooth/images/ape_fwk_bluetooth.png" alt="Android 蓝牙架构"> </p>
+<details><br>  <summary>详细</summary><br><br>- <strong>应用框架</strong><br>处于应用框架级别的是应用代码，它利用 <a href="http://developer.android.google.cn/reference/android/bluetooth/package-summary.html" target="_blank" rel="noopener">android.bluetooth</a> API 与蓝牙硬件进行交互。此代码在内部通过 Binder IPC 机制调用蓝牙进程。<br><br>- <strong>蓝牙系统服务</strong><br>蓝牙系统服务（位于 <code>packages/apps/Bluetooth</code> 中）被打包为 Android 应用，并在 Android 框架层实现蓝牙服务和配置文件。 该应用通过 JNI 调用 HAL 层。<br><br>- <strong>JNI</strong><br>与 <a href="http://developer.android.google.cn/reference/android/bluetooth/package-summary.html" target="_blank" rel="noopener">android.bluetooth</a> 相关联的 JNI 代码位于 <code>packages/apps/Bluetooth/jni</code> 中。当发生特定蓝牙操作时（例如发现设备时），JNI 代码会调用 HAL 层并从 HAL 接收回调。<br><br>- <strong>HAL</strong><br>硬件抽象层定义了 <a href="http://developer.android.google.cn/reference/android/bluetooth/package-summary.html" target="_blank" rel="noopener">android.bluetooth</a> API 和蓝牙进程会调用的标准接口，并且必须实现该接口才能使蓝牙硬件正常工作。蓝牙 HAL 的头文件是 <code>hardware/libhardware/include/hardware/bluetooth.h</code>。 另外，可以查看所有 <code>hardware/libhardware/include/hardware/bt_*.h</code> 文件。<br><br>- <strong>蓝牙堆栈</strong><br>系统为您提供了默认蓝牙堆栈（位于 <code>system/bt</code> 中）。该堆栈会实现常规蓝牙 HAL，并通过扩展程序和更改配置对其进行自定义。<br><br>- <strong>供应商扩展程序</strong><br><br>要添加自定义扩展程序和用于跟踪的 HCI 层，可以创建一个 libbt-vendor 模块并指定这些组件。<br><br></details>
+
+<h4 id="Android-8-0-架构"><a href="#Android-8-0-架构" class="headerlink" title="Android 8.0 架构"></a>Android 8.0 架构</h4><p><img src="https://source.android.com/devices/bluetooth/images/fluoride_architecture.png" alt="Android 8.0 蓝牙架构"> </p>
+<details><br>  <summary>详细</summary><br><br>- <strong>应用框架</strong><br>  处于应用框架级别的是应用代码，它使用 <a href="http://developer.android.google.cn/reference/android/bluetooth/package-summary.html" target="_blank" rel="noopener">android.bluetooth</a> API 与蓝牙硬件进行交互。此代码在内部通过 Binder IPC 机制调用蓝牙进程。<br><br>- <strong>蓝牙系统服务</strong><br>  蓝牙系统服务（位于 <code>packages/apps/Bluetooth</code> 中）被打包为 Android 应用，并在 Android 框架层实现蓝牙服务和配置文件。此应用通过 JNI 调用原生蓝牙堆栈。<br><br>- <strong>JNI</strong><br>  与 android.bluetooth 相关联的 JNI 代码位于 <code>packages/apps/Bluetooth/jni</code> 中。当发生特定蓝牙操作时（例如发现设备时），JNI 代码会调用蓝牙堆栈。<br>- <strong>蓝牙堆栈</strong><br>  系统在 AOSP 中提供了默认蓝牙堆栈，它位于 <code>system/bt</code> 中。该堆栈会实现常规蓝牙 HAL，并通过扩展程序和更改配置对其进行自定义。<br>- <strong>供应商实现</strong><br>  供应商设备使用硬件接口设计语言 (HIDL) 与蓝牙堆栈交互。<br>- <strong>HIDL</strong><br><br>  <a href="https://source.android.google.cn/devices/architecture/hidl.html" target="_blank" rel="noopener">HIDL</a> 定义了蓝牙堆栈和供应商实现之间的接口。要生成蓝牙 HIDL 文件，需要将蓝牙接口文件传递到 HIDL 生成工具中。接口文件位于 <code>hardware/interfaces/bluetooth</code> 下。<br><br></details>
+
+
+
+<p>Android O引入了HIDL的结构，Bluedroid只负责Host部分代码，基本上与芯片无关 。</p>
+<p><strong>参考资料：</strong></p>
+<p><a href="https://source.android.com/devices/bluetooth/" target="_blank" rel="noopener">https://source.android.com/devices/bluetooth/</a></p>
+<p><a href="https://en.wikipedia.org/wiki/Bluetooth" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Bluetooth</a></p>
+<p><a href="https://www.bluetooth.com/zh-cn/specifications/bluetooth-core-specification" target="_blank" rel="noopener">https://www.bluetooth.com/zh-cn/specifications/bluetooth-core-specification</a></p>
+<p><a href="https://www.jianshu.com/p/d31a35702deb" target="_blank" rel="noopener">https://www.jianshu.com/p/d31a35702deb</a></p>
+<p><a href="https://crifan.com/files/doc/docbook/bluetooth_intro/release/html/bluetooth_intro.html" target="_blank" rel="noopener">https://crifan.com/files/doc/docbook/bluetooth_intro/release/html/bluetooth_intro.html</a></p>
+<p><a href="https://blog.csdn.net/luowenhui_cn/article/details/78132195" target="_blank" rel="noopener">https://blog.csdn.net/luowenhui_cn/article/details/78132195</a></p>
+<p><a href="https://source.android.google.cn/devices/bluetooth/" target="_blank" rel="noopener">https://source.android.google.cn/devices/bluetooth/</a></p>
+<h1 id="2-攻击面介绍"><a href="#2-攻击面介绍" class="headerlink" title="2. 攻击面介绍"></a>2. 攻击面介绍</h1><h2 id="2-1-常见的一些攻击方式"><a href="#2-1-常见的一些攻击方式" class="headerlink" title="2.1 常见的一些攻击方式"></a>2.1 常见的一些攻击方式</h2><ul>
+<li><p>蓝牙配对（爆破pin、linkkey）</p>
+</li>
+<li><p>重放攻击（没有时间戳，蓝牙键盘）（网状网络有防重放攻击）</p>
+</li>
+<li><p>中间人攻击（<a href="https://github.com/securing/gattacker）" target="_blank" rel="noopener">https://github.com/securing/gattacker）</a></p>
+</li>
+<li><p>嗅探（地址，明文内容）（redfang爆破不可见地址、根据WiFi mac预测蓝牙地址）</p>
+</li>
+</ul>
+<blockquote>
+<p><strong>配对方式：</strong></p>
+<p>传统的密码配对(PIN Code Pairing) 需要双方输入同一个pin。<strong>（穷举PIN码）</strong> </p>
+<p>蓝牙2.1后支持简单安全配对（Secure Simple Pairing ，SSP）。</p>
+<ul>
+<li><strong>Numeric Comparison：</strong>配对双方都显示一个6位的数字，由用户来核对数字是否一致，一致即可配对。例如手机之间的配对。</li>
+<li><strong>Just Works：</strong>用于配对没有显示没有输入的设备，主动发起连接即可配对，用户看不到配对过程。例如连接蓝牙耳机。</li>
+<li><strong>Passkey Entry：</strong>要求配对目标输入一个在本地设备上显示的6位数字，输入正确即可配对。例如连接蓝牙键盘。</li>
+<li><strong>Out of Band：</strong>两设备的通过别的途径交换配对信息，例如NFC等。例如一些NFC蓝牙音箱。</li>
+</ul>
+<p><strong>除了Just Works都可以防止MITM。</strong></p>
+</blockquote>
+<p>目前主要在做Android上蓝牙漏洞挖掘，应用、框架、内核、蓝牙协议栈…</p>
+<h2 id="2-2-Android-Bluetooth-Stack"><a href="#2-2-Android-Bluetooth-Stack" class="headerlink" title="2.2 Android Bluetooth Stack"></a>2.2 Android Bluetooth Stack</h2><h3 id="2-2-1-从Android蓝牙架构看"><a href="#2-2-1-从Android蓝牙架构看" class="headerlink" title="2.2.1 从Android蓝牙架构看"></a>2.2.1 从Android蓝牙架构看</h3><p><img src="https://source.android.com/devices/bluetooth/images/ape_fwk_bluetooth.png" alt="Android 蓝牙架构"> </p>
+<ul>
+<li><p>/system/vendor/lib/libbt-vendor.so - 即厂商提供的模块<br>实现了bt_vendor_interface_t类型接口BLUETOOTH_VENDOR_LIB_INTERFACE<br>目前开源的实现有<a href="http://androidxref.com/4.4.4_r1/xref/hardware/broadcom/libbt/" target="_blank" rel="noopener">brcm</a>和<a href="http://androidxref.com/4.4.4_r1/xref/hardware/qcom/bt/libbt-vendor/" target="_blank" rel="noopener">qcom</a></p>
+</li>
+<li><p>/system/lib/libbt-hci.so – BlueDroid协议栈<a href="http://androidxref.com/4.4.4_r1/xref/external/bluetooth/bluedroid/hci/" target="_blank" rel="noopener">HCI模块</a><br>实现了bt_hc_interface_t类型接口bluetoothHCLibInterface</p>
+</li>
+<li><p>/system/lib/hw/bluetooth.default.so - BlueDroid协议栈核心模块<br>实现了bt_interface_t类型接口bluetoothInterface<br>通过该接口又可获取各Profile对应接口</p>
+</li>
+<li><p>/system/lib/libbluetooth_jni.so – bluetooth JNI模块<br>供JAVA层使用</p>
+</li>
+</ul>
+<h3 id="2-2-2-从代码看"><a href="#2-2-2-从代码看" class="headerlink" title="2.2.2 从代码看"></a>2.2.2 从代码看</h3><p>framework、jni等略…</p>
+<ul>
+<li><strong>/system/bt/</strong></li>
+</ul>
+<p>​                                                                          <img src="http://ygtat.oss-cn-beijing.aliyuncs.com/18-6-7/91574264.jpg" alt=""></p>
+<ul>
+<li><strong>/system/bt/stack</strong></li>
+</ul>
+<p><img src="http://ygtat.oss-cn-beijing.aliyuncs.com/18-6-7/42631481.jpg" alt=""></p>
+<p><strong>BTIF(Bluetooth Interface）：</strong> 提供所有Bluetooth.apk需要的API（使用HAL） </p>
+<p><strong>BTA(Bluetooth Application)：</strong> 蓝牙应用，一般是指蓝牙的Profile的Bluedroid实现。 </p>
+<p><strong>Stack：</strong>实现的所有蓝牙底层的操作，其中还要分为btm(Bluetooth manager),btu(Bluetooth Upper Layer)等。</p>
+<p><strong>main：</strong>配置文件读取和bte的初始化  </p>
+<p><strong>config：</strong>配置文件操作</p>
+<p>…</p>
+<p><strong>bluedroid详细代码介绍</strong>：<a href="http://note.youdao.com/noteshare?id=3787fc8f8a00ee08a5e8be84e0fac85f&amp;sub=WEB932c773f9143f64718c86d0492aad8d5" target="_blank" rel="noopener">http://note.youdao.com/noteshare?id=3787fc8f8a00ee08a5e8be84e0fac85f&amp;sub=WEB932c773f9143f64718c86d0492aad8d5</a></p>
+<h3 id="2-2-3-从蓝牙协议栈看"><a href="#2-2-3-从蓝牙协议栈看" class="headerlink" title="2.2.3 从蓝牙协议栈看"></a>2.2.3 从蓝牙协议栈看</h3><p><img src="http://ygtat.oss-cn-beijing.aliyuncs.com/18-6-7/79396280.jpg" alt=""></p>
+<p>​    </p>
+<p><strong>HCI：</strong> Host Control Interface ，它连接主机（Host）和控制器（Controller），将主机的操作转化成HCI指令传给控制器。 </p>
+<p><strong>L2CAP：</strong>逻辑链路控制和适配协议(Logical Link Control and Adaptation Protocol)，是蓝牙系统中的核心协议 ，支持高层协议多路复用、数据分段和重组，并且支持传送服务质量信息。 </p>
+<p><strong>SDP：</strong>SDP协议让客户机的应用程序发现存在的服务器应用程序提供的服务以及这些服务的属性。SDP只提供发现服务的机制，不提供使用这些服务的方法。 </p>
+<p><strong>PAN：</strong>Bluetooth Personal Area Networking，蓝牙个人区域网，是Bluetooth技术的一种重要应用，其核心思想就是用Bluetooth无线技术取代传统的有线电缆，组建个人化信息网络，实现个人范围的资源和信息共享（也就是网络共享）。 </p>
+<p><strong>BNEP：</strong>BNEP（Bluetooth Network Encapsulation Protocol）为蓝牙网络封装协议。BNEP将多种通过蓝牙L2CAP（逻辑链路控制与适配协议）传输的网络协议数据包进行封装处理。L2CAP为蓝牙提供数据链路层。BNEP被用于通过蓝牙来传输控制和数据包以此为蓝牙设备提供联网功能。BNEP提供的功能类似于以太网（EthernetII/DIX/Framing /IEEE 802.3）提供的。 </p>
+<p><strong>SMP：</strong>Security Manager Protocol，其内容主要是配对和Key的分发，然后用Key对链路或数据进行加密。 </p>
+<p><strong>AVRCP：</strong>Audio / Video Remote Control Profile 音/视频远程控制协议 。命令和信息通过AVCTP(Audio/Video Control Transport Protocol)协议进行传输。 （浏览功能browser channel）</p>
+<p>….</p>
+<h2 id="2-3-特点"><a href="#2-3-特点" class="headerlink" title="2.3 特点"></a>2.3 特点</h2><ul>
+<li>代码庞大，核心规范共2822页（Core Specifications），还不包括Protocol Specifications、Traditional Profile Specifications、Generic Attributes (GATT)   Specifications共数十种规范，每一种规范有几十页几百页。但同时也意味着存在更多的问题。</li>
+<li>代码质量不高，目前蓝牙协议栈的漏洞挖掘逐渐被重视。</li>
+<li>测试复杂，会遇到一些奇怪的问题。</li>
+</ul>
+<p><strong>参考资料：</strong></p>
+<p><a href="https://www.armis.com/blueborne/" target="_blank" rel="noopener">https://www.armis.com/blueborne/</a></p>
+<p><a href="https://www.bluetooth.com/specifications/bluetooth-core-specification" target="_blank" rel="noopener">https://www.bluetooth.com/specifications/bluetooth-core-specification</a></p>
+<p><a href="https://en.wikipedia.org/wiki/List_of_Bluetooth_profiles" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/List_of_Bluetooth_profiles</a></p>
+<p><a href="https://5alt.me/2016/11/%E8%93%9D%E7%89%99%E5%AE%89%E5%85%A8%E5%88%9D%E6%8E%A2/" target="_blank" rel="noopener">https://5alt.me/2016/11/%E8%93%9D%E7%89%99%E5%AE%89%E5%85%A8%E5%88%9D%E6%8E%A2/</a></p>
+<p><a href="http://www.codedata.cn/hacknews/149950328597517114" target="_blank" rel="noopener">http://www.codedata.cn/hacknews/149950328597517114</a></p>
+<p><a href="https://blog.csdn.net/wendell_gong/article/details/50208215" target="_blank" rel="noopener">https://blog.csdn.net/wendell_gong/article/details/50208215</a></p>
+<h1 id="3-历史漏洞"><a href="#3-历史漏洞" class="headerlink" title="3. 历史漏洞"></a>3. 历史漏洞</h1><h3 id="3-1-漏洞分析归类（待整理…）"><a href="#3-1-漏洞分析归类（待整理…）" class="headerlink" title="3.1 漏洞分析归类（待整理…）"></a>3.1 漏洞分析归类（待整理…）</h3><p><strong>新披露：</strong></p>
+<p>CVE-2018-9381, CVE-2018-9358, CVE-2018-9359, CVE-2018-9360, CVE-2018-9361, CVE-2018-9357, CVE-2018-9356 、CVE-2017-13291, CVE-2017-13283, CVE-2017-13282, CVE-2017-13281, CVE-2017-13267 </p>
+<p>之前搜集的近两年蓝牙漏洞：</p>
+<p><a href="https://docs.google.com/document/d/11BgdFSlOHo2HJAXMxMqzgvIqrws3S4XhIvFkHiwMlW0/edit" target="_blank" rel="noopener">https://docs.google.com/document/d/11BgdFSlOHo2HJAXMxMqzgvIqrws3S4XhIvFkHiwMlW0/edit</a></p>
+<h3 id="3-2-触发原因总结"><a href="#3-2-触发原因总结" class="headerlink" title="3.2 触发原因总结"></a>3.2 触发原因总结</h3><ul>
+<li><p>length边界未检查</p>
+<p>CVE-2018-9357 、CVE-2018-9358 、CVE-2018-9359 、CVE-2018-9360、 CVE-2018-9361 、CVE-2017-13281 、CVE-2017-13282 、CVE-2017-13283 、CVE-2017-13267 、CVE-2017-13290 、CVE-2017-13291 、CVE-2017-13255 、CVE-2017-13256 、CVE-2017-13266 、CVE-2017-13258 、CVE-2017-13259 、CVE-2017-13260 、CVE-2017-13261 、CVE-2017-13262 </p>
+</li>
+<li><p>常见的危险函数（尤其是memcpy）附近出现了大量的漏洞</p>
+<p>CVE-2018-9355 、CVE-2018-9356 、 CVE-2017-1000250、CVE-2017-0781 、 CVE-2017-14315 </p>
+</li>
+<li><p>配置文件注入</p>
+<p>CVE-2017-13284 </p>
+</li>
+<li><p>内存问题</p>
+<p>CVE-2017-13272 、CVE-2017-13257 </p>
+</li>
+</ul>
+<h1 id="4-挖掘方法"><a href="#4-挖掘方法" class="headerlink" title="4. 挖掘方法"></a>4. 挖掘方法</h1><h3 id="4-1-代码审计"><a href="#4-1-代码审计" class="headerlink" title="4.1 代码审计"></a>4.1 代码审计</h3><ul>
+<li>对边界的检查</li>
+<li>危险函数，重点是memcpy部分</li>
+<li>按照协议和功能审计</li>
+</ul>
+<h3 id="4-2-Fuzz"><a href="#4-2-Fuzz" class="headerlink" title="4.2 Fuzz"></a>4.2 Fuzz</h3><ul>
+<li>基于Scapy实现</li>
+<li>从上层协议入手，逐渐完善</li>
+</ul>
+<h3 id="4-3-困难"><a href="#4-3-困难" class="headerlink" title="4.3 困难"></a>4.3 困难</h3><ul>
+<li>代码审计</li>
+</ul>
+<p>代码太复杂，想要验证一个地方是否存在漏洞，需要花费比较大的精力。</p>
+<ul>
+<li>Fuzz</li>
+</ul>
+<p>不太稳定，莫名其妙就断掉，拒绝数据包，需要取消配对再重新配对等问题。</p>
+<p><strong>其他思路：</strong></p>
+<ul>
+<li>linux单独编译fluoride，然后linux下挖掘？未编译成功，未尝试。</li>
+<li>直接发包去Fuzz，效率比较低，是否有其他办法Fuzz思路？能否在Android上直接形成一个闭环的测试过程。</li>
+<li>试一下静态代码分析工具？暂没有尝试。</li>
+</ul>
+<h1 id="6-一些想法"><a href="#6-一些想法" class="headerlink" title="6. 一些想法"></a>6. 一些想法</h1><p>根据目前报出来的洞来看，蓝牙的代码还很脆弱。以后蓝牙的应用也会越来越广泛，而且蓝牙适用于各个平台，现在关注的仅仅是Android上，蓝牙这块应该是一个需要长期投入的地方。</p>
+<p>目前爆出来的一些漏洞大部分都是一些边界条件的问题，感觉很多像是肉眼看出来的。针对蓝牙的Fuzz还比较少，如果Fuzz跑一遍的话，或者把代码逻辑都看明白，应该会有很多收获。</p>
+<p>低功耗蓝牙，蓝牙5.0的mesh实现了网状拓扑结构 ，IOT 可以搞搞？</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/11/Android-JsBridge/" rel="next" title="Android JsBridge">
+                <i class="fa fa-chevron-left"></i> Android JsBridge
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/18/iOS应用安全-——-非越狱下使用Frida/" rel="prev" title="iOS应用安全 —— 非越狱下使用Frida">
+                iOS应用安全 —— 非越狱下使用Frida <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">m4bln</p>
+              <p class="site-description motion-element" itemprop="description">影后入林到驿前</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-蓝牙介绍"><span class="nav-number">1.</span> <span class="nav-text"><a href="#1-&#x84DD;&#x7259;&#x4ECB;&#x7ECD;" class="headerlink" title="1. &#x84DD;&#x7259;&#x4ECB;&#x7ECD;"></a>1. &#x84DD;&#x7259;&#x4ECB;&#x7ECD;</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-蓝牙协议栈种类"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#1-1-&#x84DD;&#x7259;&#x534F;&#x8BAE;&#x6808;&#x79CD;&#x7C7B;" class="headerlink" title="1.1 &#x84DD;&#x7259;&#x534F;&#x8BAE;&#x6808;&#x79CD;&#x7C7B;"></a>1.1 &#x84DD;&#x7259;&#x534F;&#x8BAE;&#x6808;&#x79CD;&#x7C7B;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-蓝牙规范"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#1-2-&#x84DD;&#x7259;&#x89C4;&#x8303;" class="headerlink" title="1.2 &#x84DD;&#x7259;&#x89C4;&#x8303;"></a>1.2 &#x84DD;&#x7259;&#x89C4;&#x8303;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-1-蓝牙的两种类型"><span class="nav-number">1.2.1.</span> <span class="nav-text"><a href="#1-2-1-&#x84DD;&#x7259;&#x7684;&#x4E24;&#x79CD;&#x7C7B;&#x578B;" class="headerlink" title="1.2.1 &#x84DD;&#x7259;&#x7684;&#x4E24;&#x79CD;&#x7C7B;&#x578B;"></a>1.2.1 &#x84DD;&#x7259;&#x7684;&#x4E24;&#x79CD;&#x7C7B;&#x578B;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-2-核心系统架构"><span class="nav-number">1.2.2.</span> <span class="nav-text"><a href="#1-2-2-&#x6838;&#x5FC3;&#x7CFB;&#x7EDF;&#x67B6;&#x6784;" class="headerlink" title="1.2.2 &#x6838;&#x5FC3;&#x7CFB;&#x7EDF;&#x67B6;&#x6784;"></a>1.2.2 &#x6838;&#x5FC3;&#x7CFB;&#x7EDF;&#x67B6;&#x6784;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-3-蓝牙规范（待补充…）"><span class="nav-number">1.2.3.</span> <span class="nav-text"><a href="#1-2-3-&#x84DD;&#x7259;&#x89C4;&#x8303;&#xFF08;&#x5F85;&#x8865;&#x5145;&#x2026;&#xFF09;" class="headerlink" title="1.2.3 &#x84DD;&#x7259;&#x89C4;&#x8303;&#xFF08;&#x5F85;&#x8865;&#x5145;&#x2026;&#xFF09;"></a>1.2.3 &#x84DD;&#x7259;&#x89C4;&#x8303;&#xFF08;&#x5F85;&#x8865;&#x5145;&#x2026;&#xFF09;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-蓝牙版本变动"><span class="nav-number">1.3.</span> <span class="nav-text"><a href="#1-3-&#x84DD;&#x7259;&#x7248;&#x672C;&#x53D8;&#x52A8;" class="headerlink" title="1.3 &#x84DD;&#x7259;&#x7248;&#x672C;&#x53D8;&#x52A8;"></a>1.3 &#x84DD;&#x7259;&#x7248;&#x672C;&#x53D8;&#x52A8;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-1-BlueDroid-VS-BlueZ"><span class="nav-number">1.3.1.</span> <span class="nav-text"><a href="#1-3-1-BlueDroid-VS-BlueZ" class="headerlink" title="1.3.1 BlueDroid VS BlueZ"></a>1.3.1 BlueDroid VS BlueZ</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#BlueZ"><span class="nav-number">1.3.1.1.</span> <span class="nav-text"><a href="#BlueZ" class="headerlink" title="BlueZ"></a>BlueZ</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BlueDroid"><span class="nav-number">1.3.1.2.</span> <span class="nav-text"><a href="#BlueDroid" class="headerlink" title="BlueDroid"></a>BlueDroid</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-2-Android-8-0-VS-Android-7-x"><span class="nav-number">1.3.2.</span> <span class="nav-text"><a href="#1-3-2-Android-8-0-VS-Android-7-x" class="headerlink" title="1.3.2 Android 8.0 VS Android 7.x"></a>1.3.2 Android 8.0 VS Android 7.x</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Android-7-x-及更早版本的架构"><span class="nav-number">1.3.2.1.</span> <span class="nav-text"><a href="#Android-7-x-&#x53CA;&#x66F4;&#x65E9;&#x7248;&#x672C;&#x7684;&#x67B6;&#x6784;" class="headerlink" title="Android 7.x &#x53CA;&#x66F4;&#x65E9;&#x7248;&#x672C;&#x7684;&#x67B6;&#x6784;"></a>Android 7.x &#x53CA;&#x66F4;&#x65E9;&#x7248;&#x672C;&#x7684;&#x67B6;&#x6784;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Android-8-0-架构"><span class="nav-number">1.3.2.2.</span> <span class="nav-text"><a href="#Android-8-0-&#x67B6;&#x6784;" class="headerlink" title="Android 8.0 &#x67B6;&#x6784;"></a>Android 8.0 &#x67B6;&#x6784;</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-攻击面介绍"><span class="nav-number">2.</span> <span class="nav-text"><a href="#2-&#x653B;&#x51FB;&#x9762;&#x4ECB;&#x7ECD;" class="headerlink" title="2. &#x653B;&#x51FB;&#x9762;&#x4ECB;&#x7ECD;"></a>2. &#x653B;&#x51FB;&#x9762;&#x4ECB;&#x7ECD;</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-常见的一些攻击方式"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#2-1-&#x5E38;&#x89C1;&#x7684;&#x4E00;&#x4E9B;&#x653B;&#x51FB;&#x65B9;&#x5F0F;" class="headerlink" title="2.1 &#x5E38;&#x89C1;&#x7684;&#x4E00;&#x4E9B;&#x653B;&#x51FB;&#x65B9;&#x5F0F;"></a>2.1 &#x5E38;&#x89C1;&#x7684;&#x4E00;&#x4E9B;&#x653B;&#x51FB;&#x65B9;&#x5F0F;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-Android-Bluetooth-Stack"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#2-2-Android-Bluetooth-Stack" class="headerlink" title="2.2 Android Bluetooth Stack"></a>2.2 Android Bluetooth Stack</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-从Android蓝牙架构看"><span class="nav-number">2.2.1.</span> <span class="nav-text"><a href="#2-2-1-&#x4ECE;Android&#x84DD;&#x7259;&#x67B6;&#x6784;&#x770B;" class="headerlink" title="2.2.1 &#x4ECE;Android&#x84DD;&#x7259;&#x67B6;&#x6784;&#x770B;"></a>2.2.1 &#x4ECE;Android&#x84DD;&#x7259;&#x67B6;&#x6784;&#x770B;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-从代码看"><span class="nav-number">2.2.2.</span> <span class="nav-text"><a href="#2-2-2-&#x4ECE;&#x4EE3;&#x7801;&#x770B;" class="headerlink" title="2.2.2 &#x4ECE;&#x4EE3;&#x7801;&#x770B;"></a>2.2.2 &#x4ECE;&#x4EE3;&#x7801;&#x770B;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-3-从蓝牙协议栈看"><span class="nav-number">2.2.3.</span> <span class="nav-text"><a href="#2-2-3-&#x4ECE;&#x84DD;&#x7259;&#x534F;&#x8BAE;&#x6808;&#x770B;" class="headerlink" title="2.2.3 &#x4ECE;&#x84DD;&#x7259;&#x534F;&#x8BAE;&#x6808;&#x770B;"></a>2.2.3 &#x4ECE;&#x84DD;&#x7259;&#x534F;&#x8BAE;&#x6808;&#x770B;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-特点"><span class="nav-number">2.3.</span> <span class="nav-text"><a href="#2-3-&#x7279;&#x70B9;" class="headerlink" title="2.3 &#x7279;&#x70B9;"></a>2.3 &#x7279;&#x70B9;</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-历史漏洞"><span class="nav-number">3.</span> <span class="nav-text"><a href="#3-&#x5386;&#x53F2;&#x6F0F;&#x6D1E;" class="headerlink" title="3. &#x5386;&#x53F2;&#x6F0F;&#x6D1E;"></a>3. &#x5386;&#x53F2;&#x6F0F;&#x6D1E;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-漏洞分析归类（待整理…）"><span class="nav-number">3.0.1.</span> <span class="nav-text"><a href="#3-1-&#x6F0F;&#x6D1E;&#x5206;&#x6790;&#x5F52;&#x7C7B;&#xFF08;&#x5F85;&#x6574;&#x7406;&#x2026;&#xFF09;" class="headerlink" title="3.1 &#x6F0F;&#x6D1E;&#x5206;&#x6790;&#x5F52;&#x7C7B;&#xFF08;&#x5F85;&#x6574;&#x7406;&#x2026;&#xFF09;"></a>3.1 &#x6F0F;&#x6D1E;&#x5206;&#x6790;&#x5F52;&#x7C7B;&#xFF08;&#x5F85;&#x6574;&#x7406;&#x2026;&#xFF09;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-触发原因总结"><span class="nav-number">3.0.2.</span> <span class="nav-text"><a href="#3-2-&#x89E6;&#x53D1;&#x539F;&#x56E0;&#x603B;&#x7ED3;" class="headerlink" title="3.2 &#x89E6;&#x53D1;&#x539F;&#x56E0;&#x603B;&#x7ED3;"></a>3.2 &#x89E6;&#x53D1;&#x539F;&#x56E0;&#x603B;&#x7ED3;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-挖掘方法"><span class="nav-number">4.</span> <span class="nav-text"><a href="#4-&#x6316;&#x6398;&#x65B9;&#x6CD5;" class="headerlink" title="4. &#x6316;&#x6398;&#x65B9;&#x6CD5;"></a>4. &#x6316;&#x6398;&#x65B9;&#x6CD5;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-代码审计"><span class="nav-number">4.0.1.</span> <span class="nav-text"><a href="#4-1-&#x4EE3;&#x7801;&#x5BA1;&#x8BA1;" class="headerlink" title="4.1 &#x4EE3;&#x7801;&#x5BA1;&#x8BA1;"></a>4.1 &#x4EE3;&#x7801;&#x5BA1;&#x8BA1;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-Fuzz"><span class="nav-number">4.0.2.</span> <span class="nav-text"><a href="#4-2-Fuzz" class="headerlink" title="4.2 Fuzz"></a>4.2 Fuzz</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-困难"><span class="nav-number">4.0.3.</span> <span class="nav-text"><a href="#4-3-&#x56F0;&#x96BE;" class="headerlink" title="4.3 &#x56F0;&#x96BE;"></a>4.3 &#x56F0;&#x96BE;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-一些想法"><span class="nav-number">5.</span> <span class="nav-text"><a href="#6-&#x4E00;&#x4E9B;&#x60F3;&#x6CD5;" class="headerlink" title="6. &#x4E00;&#x4E9B;&#x60F3;&#x6CD5;"></a>6. &#x4E00;&#x4E9B;&#x60F3;&#x6CD5;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">m4bln</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

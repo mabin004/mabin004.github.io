@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="文档 ARM调用约定http://infocenter.arm.com/help/topic/com.arm.doc.ihi0042f/IHI0042F_aapcs.pdf IDA操作知识记录 https://juejin.im/entry/5a37674d6fb9a04514642358  mitre维护的wiki，很多攻击技术的英文表达https://attack.mitre.org/wiki">
+<meta property="og:type" content="website">
+<meta property="og:title" content="hint">
+<meta property="og:url" content="https://mabin004.github.io/hint/index.html">
+<meta property="og:site_name" content="m4bln">
+<meta property="og:description" content="文档 ARM调用约定http://infocenter.arm.com/help/topic/com.arm.doc.ihi0042f/IHI0042F_aapcs.pdf IDA操作知识记录 https://juejin.im/entry/5a37674d6fb9a04514642358  mitre维护的wiki，很多攻击技术的英文表达https://attack.mitre.org/wiki">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-07-12T01:56:50.523Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="hint">
+<meta name="twitter:description" content="文档 ARM调用约定http://infocenter.arm.com/help/topic/com.arm.doc.ihi0042f/IHI0042F_aapcs.pdf IDA操作知识记录 https://juejin.im/entry/5a37674d6fb9a04514642358  mitre维护的wiki，很多攻击技术的英文表达https://attack.mitre.org/wiki">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://mabin004.github.io/hint/"/>
+
+
+
+
+
+  <title>hint | m4bln</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">m4bln</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-hint">
+          <a href="/hint/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            hint
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-todo">
+          <a href="/todo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            ToDo
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+    
+    
+    <div class="post-block page">
+      <header class="post-header">
+
+	<h1 class="post-title" itemprop="name headline">hint</h1>
+
+
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+        
+        
+          <h1 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h1><ul>
+<li>ARM调用约定<br><a href="http://infocenter.arm.com/help/topic/com.arm.doc.ihi0042f/IHI0042F_aapcs.pdf" target="_blank" rel="noopener">http://infocenter.arm.com/help/topic/com.arm.doc.ihi0042f/IHI0042F_aapcs.pdf</a></li>
+<li><p>IDA操作知识记录 <a href="https://juejin.im/entry/5a37674d6fb9a04514642358" target="_blank" rel="noopener">https://juejin.im/entry/5a37674d6fb9a04514642358</a></p>
+</li>
+<li><p>mitre维护的wiki，很多攻击技术的英文表达<br><a href="https://attack.mitre.org/wiki/Main_Page" target="_blank" rel="noopener">https://attack.mitre.org/wiki/Main_Page</a></p>
+</li>
+<li><p>各平台下的shellcode收集 <a href="http://shell-storm.org/shellcode/" target="_blank" rel="noopener">http://shell-storm.org/shellcode/</a></p>
+<h2 id="Frida相关"><a href="#Frida相关" class="headerlink" title="Frida相关"></a>Frida相关</h2></li>
+</ul>
+<ol>
+<li>用frida写反弹shell的shellcode  <a href="https://versprite.com/blog/application-security/frida-engage-part-two-shellcoding-an-arm64-in-memory-reverse-tcp-shell-with-frida/" target="_blank" rel="noopener">https://versprite.com/blog/application-security/frida-engage-part-two-shellcoding-an-arm64-in-memory-reverse-tcp-shell-with-frida/</a></li>
+<li></li>
+</ol>
+<h2 id="iOS相关"><a href="#iOS相关" class="headerlink" title="iOS相关"></a>iOS相关</h2><ul>
+<li>iOSRE相关文档，包括macos、iOS等 <a href="https://github.com/writeups/iOS" target="_blank" rel="noopener">https://github.com/writeups/iOS</a></li>
+<li>iOS固件ROM下载 <a href="https://ipsw.me/#!/download" target="_blank" rel="noopener">https://ipsw.me/#!/download</a></li>
+</ul>
+<h1 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h1><ul>
+<li><p>spy-debugger 微信调试，各种WebView样式调试、手机浏览器的页面真机调试。便捷的远程调试手机页面、抓包工具，支持：HTTP/HTTPS，无需USB连接设备<br><a href="https://github.com/wuchangming/spy-debugger" target="_blank" rel="noopener">https://github.com/wuchangming/spy-debugger</a></p>
+</li>
+<li><p>Rundll32.exe 打开url</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">rundll32 url.dll, OpenURL file://c:\windows\system32\calc.exe</span><br><span class="line"></span><br><span class="line">rundll32 url.dll, OpenURLA file://c:\windows\system32\calc.exe</span><br><span class="line"></span><br><span class="line">rundll32 url.dll, FileProtocolHandler calc.exe</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>webshell查杀</p>
+<ul>
+<li>windows D盾 <a href="http://www.d99net.net/" target="_blank" rel="noopener">http://www.d99net.net/</a> </li>
+<li>linux rkhunter <a href="http://rkhunter.sourceforge.net/" target="_blank" rel="noopener">http://rkhunter.sourceforge.net/</a></li>
+</ul>
+</li>
+<li><p>elasticsearch 搭建社工库  搜云数据、暗网数据、</p>
+</li>
+<li><p>carbon 一个在线将代码生成高逼格的图片工具 <a href="https://carbon.now.sh/" target="_blank" rel="noopener">https://carbon.now.sh/</a></p>
+</li>
+<li><p>ssl流量抓取</p>
+<ul>
+<li>(hook libssl)<a href="https://github.com/5alt/ssl_logger/" target="_blank" rel="noopener">https://github.com/5alt/ssl_logger/</a></li>
+<li><a href="https://github.com/WooyunDota/DroidSSLUnpinning" target="_blank" rel="noopener">https://github.com/WooyunDota/DroidSSLUnpinning</a></li>
+<li><a href="https://codeshare.frida.re/@pcipolloni/universal-android-ssl-pinning-bypass-with-frida/?nsukey=4fT%2FAtjmJazfCxyGry2zgdvNT1KBR9lg3CZvm3hfcaUBAhWLG5IXa2uGB8%2FDq7LQOqWGA1liZde7f1mRpZSirpoBWLc64%2FKCeIrb9U4xEJZ%2B334PXBgWRRl%2F%2BWdhuKFsGLRXdK8xbmmAu5P9QBZroQCt6SAs2K0XUVNQxR5HPqJyPkX%2Bw8MvwbvUvxq0hc1LTdUC%2BFAD2wKC1p3QBTXjKw%3D%3D" target="_blank" rel="noopener">https://codeshare.frida.re/@pcipolloni/universal-android-ssl-pinning-bypass-with-frida/?nsukey=4fT%2FAtjmJazfCxyGry2zgdvNT1KBR9lg3CZvm3hfcaUBAhWLG5IXa2uGB8%2FDq7LQOqWGA1liZde7f1mRpZSirpoBWLc64%2FKCeIrb9U4xEJZ%2B334PXBgWRRl%2F%2BWdhuKFsGLRXdK8xbmmAu5P9QBZroQCt6SAs2K0XUVNQxR5HPqJyPkX%2Bw8MvwbvUvxq0hc1LTdUC%2BFAD2wKC1p3QBTXjKw%3D%3D</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>lief 解析elf、pe、MathO等可执行文件的python库，可修改到处函数等，跨平台 （<a href="https://lief.quarkslab.com/、https://github.com/lief-project/LIEF）" target="_blank" rel="noopener">https://lief.quarkslab.com/、https://github.com/lief-project/LIEF）</a></p>
+</li>
+<li><p><a href="http://lmgtfy.com/" target="_blank" rel="noopener">http://lmgtfy.com/</a>  记录搜索一个关键字的过程，适用于那些懒得搜索就提问的人，打脸专用</p>
+</li>
+<li><p>DNS Rebinding工具  <a href="https://lock.cmpxchg8b.com/rebinder.html" target="_blank" rel="noopener">https://lock.cmpxchg8b.com/rebinder.html</a></p>
+</li>
+<li><p>打造智能家居  <a href="https://github.com/home-assistant/home-assistant" target="_blank" rel="noopener">https://github.com/home-assistant/home-assistant</a></p>
+</li>
+<li><p>Hashcat 各种hash破解工具  <a href="http://www.freebuf.com/sectool/164507.html" target="_blank" rel="noopener">http://www.freebuf.com/sectool/164507.html</a></p>
+</li>
+<li><p>Android uiautomator的python wrapper(自动化测试或Fuzz)<br><a href="https://github.com/xiaocong/uiautomator" target="_blank" rel="noopener">https://github.com/xiaocong/uiautomator</a></p>
+</li>
+</ul>
+
+        
+      </div>
+      
+      
+      
+    </div>
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">m4bln</p>
+              <p class="site-description motion-element" itemprop="description">影后入林到驿前</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#文档"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x6587;&#x6863;" class="headerlink" title="&#x6587;&#x6863;"></a>&#x6587;&#x6863;</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Frida相关"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#Frida&#x76F8;&#x5173;" class="headerlink" title="Frida&#x76F8;&#x5173;"></a>Frida&#x76F8;&#x5173;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iOS相关"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#iOS&#x76F8;&#x5173;" class="headerlink" title="iOS&#x76F8;&#x5173;"></a>iOS&#x76F8;&#x5173;</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#工具"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x5DE5;&#x5177;" class="headerlink" title="&#x5DE5;&#x5177;"></a>&#x5DE5;&#x5177;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">m4bln</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

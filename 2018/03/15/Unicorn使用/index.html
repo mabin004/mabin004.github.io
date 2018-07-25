@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Unicore简介 Unocorn引擎是什么?  简单的来讲，一款模拟器。尽管不太常见，你不能用来模拟整个程序或者系统，同时它也不支持syscall。你只能通过手动的方式来映射内存以及数据写入，然后就可以从某个指定的地址开始执行模拟了。  用途  执行一些恶意软件中你感兴趣的函数而不必创建整个进程CTF比赛中也很常用Fuzzing[https://hackernoon.com/afl-unicor">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unicorn使用">
+<meta property="og:url" content="https://mabin004.github.io/2018/03/15/Unicorn使用/index.html">
+<meta property="og:site_name" content="m4bln">
+<meta property="og:description" content="Unicore简介 Unocorn引擎是什么?  简单的来讲，一款模拟器。尽管不太常见，你不能用来模拟整个程序或者系统，同时它也不支持syscall。你只能通过手动的方式来映射内存以及数据写入，然后就可以从某个指定的地址开始执行模拟了。  用途  执行一些恶意软件中你感兴趣的函数而不必创建整个进程CTF比赛中也很常用Fuzzing[https://hackernoon.com/afl-unicor">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-15T08:32:31.705Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Unicorn使用">
+<meta name="twitter:description" content="Unicore简介 Unocorn引擎是什么?  简单的来讲，一款模拟器。尽管不太常见，你不能用来模拟整个程序或者系统，同时它也不支持syscall。你只能通过手动的方式来映射内存以及数据写入，然后就可以从某个指定的地址开始执行模拟了。  用途  执行一些恶意软件中你感兴趣的函数而不必创建整个进程CTF比赛中也很常用Fuzzing[https://hackernoon.com/afl-unicor">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://mabin004.github.io/2018/03/15/Unicorn使用/"/>
+
+
+
+
+
+  <title>Unicorn使用 | m4bln</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">m4bln</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-hint">
+          <a href="/hint/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            hint
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-todo">
+          <a href="/todo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            ToDo
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/15/Unicorn使用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Unicorn使用</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-15T16:03:22+08:00">
+                2018-03-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Unicore简介"><a href="#Unicore简介" class="headerlink" title="Unicore简介"></a>Unicore简介</h2><ol>
+<li>Unocorn引擎是什么?</li>
+</ol>
+<p>简单的来讲，一款模拟器。尽管不太常见，你不能用来模拟整个程序或者系统，同时它也不支持syscall。你只能通过手动的方式来映射内存以及数据写入，然后就可以从某个指定的地址开始执行模拟了。</p>
+<ol>
+<li>用途</li>
+</ol>
+<p>执行一些恶意软件中你感兴趣的函数而不必创建整个进程<br>CTF比赛中也很常用<br>Fuzzing[<a href="https://hackernoon.com/afl-unicorn-fuzzing-arbitrary-binary-code-563ca28936bf" target="_blank" rel="noopener">https://hackernoon.com/afl-unicorn-fuzzing-arbitrary-binary-code-563ca28936bf</a>]<br>GDB插件扩充，例如支持长跳转<br>模拟混淆后的代码</p>
+<h2 id="框架代码"><a href="#框架代码" class="headerlink" title="框架代码"></a>框架代码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">from unicorn import *</span><br><span class="line">from unicorn.arm_const import *</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">import struct</span><br><span class="line"> </span><br><span class="line">def read(name):</span><br><span class="line">    with open(name) as f:</span><br><span class="line">        return f.read()</span><br><span class="line"> </span><br><span class="line">def u32(data):</span><br><span class="line">    return struct.unpack(&quot;I&quot;, data)[0]</span><br><span class="line"> </span><br><span class="line">def p32(num):</span><br><span class="line">    return struct.pack(&quot;I&quot;, num)</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">mu = Uc (UC_ARCH_ARM, UC_MODE_LITTLE_ENDIAN)</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">BASE = 0x10000</span><br><span class="line">STACK_ADDR = 0x300000</span><br><span class="line">STACK_SIZE = 1024*1024</span><br><span class="line"> </span><br><span class="line">mu.mem_map(BASE, 1024*1024)</span><br><span class="line">mu.mem_map(STACK_ADDR, STACK_SIZE)</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">mu.mem_write(BASE, read(&quot;./task4&quot;))</span><br><span class="line">mu.reg_write(UC_ARM_REG_SP, STACK_ADDR + STACK_SIZE/2)</span><br><span class="line"> </span><br><span class="line">instructions_skip_list = []</span><br><span class="line"> </span><br><span class="line">CCC_ENTRY = 0x000104D0</span><br><span class="line">CCC_END = 0x00010580</span><br><span class="line"> </span><br><span class="line">stack = []                                          # Stack for storing the arguments</span><br><span class="line">d = &#123;&#125;                                              # Dictionary that holds return values for given function arguments</span><br><span class="line"> </span><br><span class="line">def hook_code(mu, address, size, user_data): </span><br><span class="line">    #print(&apos;&gt;&gt;&gt; Tracing instruction at 0x%x, instruction size = 0x%x&apos; %(address, size))</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">mu.hook_add(UC_HOOK_CODE, hook_code)</span><br><span class="line"> </span><br><span class="line">mu.emu_start(0x00010584, 0x000105A8)</span><br><span class="line"> </span><br><span class="line">return_value = mu.reg_read(UC_ARM_REG_R1)           # We end the emulation at printf(&quot;%d\n&quot;, ccc(x)).</span><br><span class="line">print &quot;The return value is %d&quot; % return_value</span><br></pre></td></tr></table></figure>
+<p>from unicorn import <em> —— 加载主Unicorn库，它包含函数和基本Constant。<br>from unicorn.x86_const import </em> —— 加载特定于x86和x86-64架构的Constant。<br>Unicorn模块中的所有Const如下：</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>UC_API_MAJOR                UC_ERR_VERSION              UC_MEM_READ                 UC_PROT_ALL<br>UC_API_MINOR                UC_ERR_WRITE_PROT           UC_MEM_READ_AFTER           UC_PROT_EXEC<br>UC_ARCH_ARM                 UC_ERR_WRITE_UNALIGNED      UC_MEM_READ_PROT            UC_PROT_NONE<br>UC_ARCH_ARM64               UC_ERR_WRITE_UNMAPPED       UC_MEM_READ_UNMAPPED        UC_PROT_READ<br>UC_ARCH_M68K                UC_HOOK_BLOCK               UC_MEM_WRITE                UC_PROT_WRITE<br>UC_ARCH_MAX                 UC_HOOK_CODE                UC_MEM_WRITE_PROT           UC_QUERY_MODE<br>UC_ARCH_MIPS                UC_HOOK_INSN                UC_MEM_WRITE_UNMAPPED       UC_QUERY_PAGE_SIZE<br>UC_ARCH_PPC                 UC_HOOK_INTR                UC_MILISECOND_SCALE         UC_SECOND_SCALE<br>UC_ARCH_SPARC               UC_HOOK_MEM_FETCH           UC_MODE_16                  UC_VERSION_EXTRA<br>UC_ARCH_X86                 UC_HOOK_MEM_FETCH_INVALID   UC_MODE_32                  UC_VERSION_MAJOR<br>UC_ERR_ARCH                 UC_HOOK_MEM_FETCH_PROT      UC_MODE_64                  UC_VERSION_MINOR<br>UC_ERR_ARG                  UC_HOOK_MEM_FETCH_UNMAPPED  UC_MODE_ARM                 Uc<br>UC_ERR_EXCEPTION            UC_HOOK_MEM_INVALID         UC_MODE_BIG_ENDIAN          UcError<br>UC_ERR_FETCH_PROT           UC_HOOK_MEM_PROT            UC_MODE_LITTLE_ENDIAN       arm64_const<br>UC_ERR_FETCH_UNALIGNED      UC_HOOK_MEM_READ            UC_MODE_MCLASS              arm_const<br>UC_ERR_FETCH_UNMAPPED       UC_HOOK_MEM_READ_AFTER      UC_MODE_MICRO               debug<br>UC_ERR_HANDLE               UC_HOOK_MEM_READ_INVALID    UC_MODE_MIPS3               m68k_const<br>UC_ERR_HOOK                 UC_HOOK_MEM_READ_PROT       UC_MODE_MIPS32              mips_const<br>UC_ERR_HOOK_EXIST           UC_HOOK_MEM_READ_UNMAPPED   UC_MODE_MIPS32R6            sparc_const<br>UC_ERR_INSN_INVALID         UC_HOOK_MEM_UNMAPPED        UC_MODE_MIPS64              uc_arch_supported<br>UC_ERR_MAP                  UC_HOOK_MEM_VALID           UC_MODE_PPC32               uc_version<br>UC_ERR_MODE                 UC_HOOK_MEM_WRITE           UC_MODE_PPC64               unicorn<br>UC_ERR_NOMEM                UC_HOOK_MEM_WRITE_INVALID   UC_MODE_QPX                 unicorn_const<br>UC_ERR_OK                   UC_HOOK_MEM_WRITE_PROT      UC_MODE_SPARC32             version_bind<br>UC_ERR_READ_PROT            UC_HOOK_MEM_WRITE_UNMAPPED  UC_MODE_SPARC64             x86_const<br>UC_ERR_READ_UNALIGNED       UC_MEM_FETCH                UC_MODE_THUMB<br>UC_ERR_READ_UNMAPPED        UC_MEM_FETCH_PROT           UC_MODE_V8<br>UC_ERR_RESOURCE             UC_MEM_FETCH_UNMAPPED       UC_MODE_V9</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>一些示例：</p>
+<ul>
+<li>mu = Uc(arch, mode) —— 获得一个Uc类的实例，在这里可以指定架构。<br>举例来说：<ul>
+<li>mu = Uc(UC_ARCH_X86, UC_MODE_64) 获得一个x86-64架构的Uc实例。</li>
+<li>mu = Uc(UC_ARCH_X86, UC_MODE_32) 获得一个x86-32架构的Uc实例。</li>
+</ul>
+</li>
+<li>mu.mem_map(ADDRESS, 4096) 映射一个内存区域。</li>
+<li>mu.mem_write(ADDRESS, DATA) 将数据写入内存。</li>
+<li>tmp = mu.mem_read(ADDRESS, SIZE) 从内存中读取数据。</li>
+<li>mu.reg_write(UC_X86_REG_ECX, 0x0) 将寄存器重新赋值。</li>
+<li>r_esp = mu.reg_read(UC_X86_REG_ESP) 读取寄存器的值。</li>
+<li><p>mu.emu_start(ADDRESS_START, ADDRESS_END) 开始模拟。</p>
+</li>
+<li><p>指令跟踪：<br>这段代码添加了一个钩子。我们定义了函数hook_code，在模拟每个指令之前调用，该函数需要以下参数：<br>1、Uc实例<br>2、指令的地址<br>3、指令的大小<br>4、用户数据（我们可以在hook_add()的可选参数中传递这个值）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def hook_code(mu, address, size, user_data):  </span><br><span class="line">    print(&apos;&gt;&gt;&gt; Tracing instruction at 0x%x, instruction size = 0x%x&apos; %(address, size))  </span><br><span class="line"></span><br><span class="line">mu.hook_add(UC_HOOK_CODE, hook_code)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>参考资料：</p>
+<ol>
+<li><a href="https://github.com/unicorn-engine/unicorn/tree/master/bindings/python" target="_blank" rel="noopener">https://github.com/unicorn-engine/unicorn/tree/master/bindings/python</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/13/使用lief对ELF文件Patch/" rel="next" title="使用lief对ELF文件Patch">
+                <i class="fa fa-chevron-left"></i> 使用lief对ELF文件Patch
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/15/文件后缀名枚举/" rel="prev" title="文件后缀名枚举">
+                文件后缀名枚举 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">m4bln</p>
+              <p class="site-description motion-element" itemprop="description">影后入林到驿前</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Unicore简介"><span class="nav-number">1.</span> <span class="nav-text"><a href="#Unicore&#x7B80;&#x4ECB;" class="headerlink" title="Unicore&#x7B80;&#x4ECB;"></a>Unicore&#x7B80;&#x4ECB;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#框架代码"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x6846;&#x67B6;&#x4EE3;&#x7801;" class="headerlink" title="&#x6846;&#x67B6;&#x4EE3;&#x7801;"></a>&#x6846;&#x67B6;&#x4EE3;&#x7801;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">m4bln</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="平时的安全研究经常会有抓包的需求，http协议的包使用普通的抓包工具就可以获取，随着厂商安全意识和版权意识的不断提高，多数APP采用了https协议和服务端进行通信，增加了抓包的难度。 此外，在使用burpsuilt、Fiddler等工具抓https数据包时，通常需要在手机上安装一个证书，即便这样仍然还会出现抓不到包等各种各样的错误和问题，为了解决这些问题，有必要了解下https的原理和实现，方可">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android https中间人攻击">
+<meta property="og:url" content="https://mabin004.github.io/2018/03/05/https中间人攻击原理/index.html">
+<meta property="og:site_name" content="m4bln">
+<meta property="og:description" content="平时的安全研究经常会有抓包的需求，http协议的包使用普通的抓包工具就可以获取，随着厂商安全意识和版权意识的不断提高，多数APP采用了https协议和服务端进行通信，增加了抓包的难度。 此外，在使用burpsuilt、Fiddler等工具抓https数据包时，通常需要在手机上安装一个证书，即便这样仍然还会出现抓不到包等各种各样的错误和问题，为了解决这些问题，有必要了解下https的原理和实现，方可">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-11.png">
+<meta property="og:updated_time" content="2018-03-06T15:26:27.668Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android https中间人攻击">
+<meta name="twitter:description" content="平时的安全研究经常会有抓包的需求，http协议的包使用普通的抓包工具就可以获取，随着厂商安全意识和版权意识的不断提高，多数APP采用了https协议和服务端进行通信，增加了抓包的难度。 此外，在使用burpsuilt、Fiddler等工具抓https数据包时，通常需要在手机上安装一个证书，即便这样仍然还会出现抓不到包等各种各样的错误和问题，为了解决这些问题，有必要了解下https的原理和实现，方可">
+<meta name="twitter:image" content="https://mabin004.github.io/images/pasted-11.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://mabin004.github.io/2018/03/05/https中间人攻击原理/"/>
+
+
+
+
+
+  <title>Android https中间人攻击 | m4bln</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">m4bln</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-hint">
+          <a href="/hint/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            hint
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-todo">
+          <a href="/todo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            ToDo
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/05/https中间人攻击原理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android https中间人攻击</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-05T16:29:49+08:00">
+                2018-03-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>平时的安全研究经常会有抓包的需求，http协议的包使用普通的抓包工具就可以获取，随着厂商安全意识和版权意识的不断提高，多数APP采用了https协议和服务端进行通信，增加了抓包的难度。</p>
+<p>此外，在使用burpsuilt、Fiddler等工具抓https数据包时，通常需要在手机上安装一个证书，即便这样仍然还会出现抓不到包等各种各样的错误和问题，为了解决这些问题，有必要了解下https的原理和实现，方可在遇到问题时根据不同的情况来解决。<br><a id="more"></a></p>
+<h1 id="0x0-https实现原理"><a href="#0x0-https实现原理" class="headerlink" title="0x0 https实现原理"></a>0x0 https实现原理</h1><p><img src="/images/pasted-11.png" alt="upload successful"></p>
+<p>这里基于openssl来实现一个简单的https协议Demo：</p>
+<h3 id="服务端"><a href="#服务端" class="headerlink" title="服务端"></a>服务端</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt; </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt; </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;errno.h&gt; </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt; </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt; </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;netinet/in.h&gt; </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt; </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/wait.h&gt; </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt; </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;arpa/inet.h&gt; </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;openssl/ssl.h&gt; </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;openssl/err.h&gt; </span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MAXBUF 1024 </span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> * *argv)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> sockfd, new_fd;</span><br><span class="line">    <span class="keyword">socklen_t</span> len;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">my_addr</span>, <span class="title">their_addr</span>;</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> myport, lisnum;</span><br><span class="line">    <span class="keyword">char</span> buf[MAXBUF + <span class="number">1</span>];</span><br><span class="line">    SSL_CTX * ctx;</span><br><span class="line">    <span class="comment">//指定监听端口</span></span><br><span class="line">    <span class="keyword">if</span> (argv[<span class="number">1</span>]) </span><br><span class="line">    &#123;</span><br><span class="line">        myport = atoi(argv[<span class="number">1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//最大客户端连接数</span></span><br><span class="line">    <span class="keyword">if</span> (argv[<span class="number">2</span>]) </span><br><span class="line">    &#123;</span><br><span class="line">        lisnum = atoi(argv[<span class="number">2</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">    &#123;</span><br><span class="line">        lisnum = <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* SSL 库初始化*/</span></span><br><span class="line">    SSL_library_init();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 载入所有SSL 算法*/</span></span><br><span class="line">    OpenSSL_add_all_algorithms();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 载入所有SSL 错误消息*/</span></span><br><span class="line">    SSL_load_error_strings();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 以SSL V2 和V3 标准兼容方式产生一个SSL_CTX ，即SSL Content Text, 也可以用SSLv2_server_method() 或SSLv3_server_method() 单独表示V2 或V3标准*/</span></span><br><span class="line">    ctx = SSL_CTX_new(SSLv23_server_method());</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 载入服务端的数字证书， 此证书用来发送给客户端。证书里包含有公钥*/</span></span><br><span class="line">    <span class="keyword">if</span> (SSL_CTX_use_certificate_file(ctx, argv[<span class="number">4</span>], SSL_FILETYPE_PEM) &lt;= <span class="number">0</span>) </span><br><span class="line">    &#123;</span><br><span class="line">        ERR_print_errors_fp(<span class="built_in">stdout</span>);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 载入服务端私钥*/</span></span><br><span class="line">    <span class="keyword">if</span> (SSL_CTX_use_PrivateKey_file(ctx, argv[<span class="number">5</span>], SSL_FILETYPE_PEM) &lt;= <span class="number">0</span>) </span><br><span class="line">    &#123;</span><br><span class="line">        ERR_print_errors_fp(<span class="built_in">stdout</span>);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 检查用户私钥是否正确*/</span></span><br><span class="line">    <span class="keyword">if</span> (!SSL_CTX_check_private_key(ctx)) </span><br><span class="line">    &#123;</span><br><span class="line">        ERR_print_errors_fp(<span class="built_in">stdout</span>);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 开启一个socket 监听*/</span></span><br><span class="line">    <span class="keyword">if</span> ((sockfd = socket(PF_INET, SOCK_STREAM, <span class="number">0</span>)) == <span class="number">-1</span>) </span><br><span class="line">    &#123;</span><br><span class="line">        perror(<span class="string">"socket"</span>);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"socket created\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    bzero( &amp;my_addr, <span class="keyword">sizeof</span>(my_addr));</span><br><span class="line">    my_addr.sin_family = PF_INET;</span><br><span class="line">    my_addr.sin_port = htons(myport);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//设置监听的IP</span></span><br><span class="line">    <span class="keyword">if</span> (argv[<span class="number">3</span>]) </span><br><span class="line">    &#123;</span><br><span class="line">        my_addr.sin_addr.s_addr = inet_addr(argv[<span class="number">3</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//如果用户没有指定监听端口，则默认监听0.0.0.0(任意IP)</span></span><br><span class="line">        my_addr.sin_addr.s_addr = INADDR_ANY;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//bind监听的ip和端口</span></span><br><span class="line">    <span class="keyword">if</span> (bind(sockfd, (struct sockaddr * ) &amp;my_addr, <span class="keyword">sizeof</span>(struct sockaddr)) == <span class="number">-1</span>) </span><br><span class="line">    &#123;</span><br><span class="line">        perror(<span class="string">"bind"</span>);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"binded\n"</span>);</span><br><span class="line">    &#125; </span><br><span class="line"></span><br><span class="line">    <span class="comment">//开始监听</span></span><br><span class="line">    <span class="keyword">if</span> (listen(sockfd, lisnum) == <span class="number">-1</span>) </span><br><span class="line">    &#123;</span><br><span class="line">        perror(<span class="string">"listen"</span>);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"begin listen\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>) </span><br><span class="line">    &#123;</span><br><span class="line">        SSL * ssl;</span><br><span class="line">        len = <span class="keyword">sizeof</span>(struct sockaddr);</span><br><span class="line">        <span class="comment">/* 等待客户端连上来*/</span></span><br><span class="line">        <span class="keyword">if</span> ((new_fd = accept(sockfd, (struct sockaddr * ) &amp; their_addr, &amp;len)) == <span class="number">-1</span>) </span><br><span class="line">        &#123;</span><br><span class="line">            perror(<span class="string">"accept"</span>);</span><br><span class="line">            <span class="built_in">exit</span>(errno);</span><br><span class="line">        &#125; </span><br><span class="line">        <span class="keyword">else</span> </span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"server: got connection from %s, port %d, socket %d\n"</span>, inet_ntoa(their_addr.sin_addr), ntohs(their_addr.sin_port), new_fd);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">/* 基于ctx 产生一个新的SSL */</span></span><br><span class="line">        ssl = SSL_new(ctx);</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* 将连接用户的socket 加入到SSL */</span></span><br><span class="line">        SSL_set_fd(ssl, new_fd);</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* 建立SSL 连接*/</span></span><br><span class="line">        <span class="keyword">if</span> (SSL_accept(ssl) == <span class="number">-1</span>) </span><br><span class="line">        &#123;</span><br><span class="line">            perror(<span class="string">"accept"</span>);</span><br><span class="line">            close(new_fd);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* 开始处理每个新连接上的数据收发*/</span></span><br><span class="line">        bzero(buf, MAXBUF + <span class="number">1</span>);</span><br><span class="line">        <span class="built_in">strcpy</span>(buf, <span class="string">"server-&gt;client"</span>);</span><br><span class="line">        <span class="comment">/* 发消息给客户端*/</span></span><br><span class="line">        len = SSL_write(ssl, buf, <span class="built_in">strlen</span>(buf));</span><br><span class="line">        <span class="keyword">if</span> (len &lt;= <span class="number">0</span>) </span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"消息'%s'发送失败！错误代码是%d，错误信息是'%s'\n"</span>, buf, errno, strerror(errno));</span><br><span class="line">            <span class="keyword">goto</span> finish;</span><br><span class="line">        &#125; </span><br><span class="line">        <span class="keyword">else</span> </span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"消息'%s'发送成功，共发送了%d 个字节！\n"</span>, buf, len);</span><br><span class="line">        &#125;</span><br><span class="line">        bzero(buf, MAXBUF + <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* 接收客户端的消息*/</span></span><br><span class="line">        len = SSL_read(ssl, buf, MAXBUF);</span><br><span class="line">        <span class="keyword">if</span> (len &gt; <span class="number">0</span>) </span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"接收消息成功:'%s'，共%d 个字节的数据\n"</span>, buf, len);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> </span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"消息接收失败！错误代码是%d，错误信息是'%s'\n"</span>, errno, strerror(errno));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">/* 处理每个新连接上的数据收发结束*/</span></span><br><span class="line">        finish:</span><br><span class="line">        <span class="comment">/* 关闭SSL 连接*/</span></span><br><span class="line">        SSL_shutdown(ssl);</span><br><span class="line">        <span class="comment">/* 释放SSL */</span></span><br><span class="line">        SSL_free(ssl);</span><br><span class="line">        <span class="comment">/* 关闭socket */</span></span><br><span class="line">        close(new_fd);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/* 关闭监听的socket */</span></span><br><span class="line">    close(sockfd);</span><br><span class="line">    <span class="comment">/* 释放CTX */</span></span><br><span class="line">    SSL_CTX_free(ctx);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt; </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt; </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;errno.h&gt; </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt; </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;resolv.h&gt; </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt; </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;netinet/in.h&gt; </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;arpa/inet.h&gt; </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt; </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;openssl/ssl.h&gt; </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;openssl/err.h&gt; </span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MAXBUF 1024 </span></span><br><span class="line"></span><br><span class="line"><span class="comment">//显示证书信息，检测和验证证书也可以在这进行</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ShowCerts</span><span class="params">(SSL * ssl)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    X509 * cert;</span><br><span class="line">    <span class="keyword">char</span> * line;</span><br><span class="line">    cert = SSL_get_peer_certificate(ssl);</span><br><span class="line">    <span class="keyword">if</span> (cert != <span class="literal">NULL</span>) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"数字证书信息:\n"</span>);</span><br><span class="line">        line = X509_NAME_oneline(X509_get_subject_name(cert), <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"证书: %s\n"</span>, line);</span><br><span class="line">        <span class="built_in">free</span>(line);</span><br><span class="line">        line = X509_NAME_oneline(X509_get_issuer_name(cert), <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"颁发者: %s\n"</span>, line);</span><br><span class="line">        <span class="built_in">free</span>(line);</span><br><span class="line">        X509_free(cert);</span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"无证书信息！\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125; </span><br><span class="line"><span class="comment">//main函数</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> * *argv)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> sockfd, len;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">dest</span>;</span></span><br><span class="line">    <span class="keyword">char</span> buffer[MAXBUF + <span class="number">1</span>];</span><br><span class="line">    SSL_CTX * ctx;</span><br><span class="line">    SSL * ssl;</span><br><span class="line">    <span class="keyword">if</span> (argc != <span class="number">3</span>) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"参数格式错误！正确用法如下：\n\t\t%s IP 地址端口\n\t 比如:\t%s 127.0.0.1 80\n 此程序用来从某个IP 地址的服务器某个端口接收最多MAXBUF 个字节的消息"</span>,</span><br><span class="line"> argv[<span class="number">0</span>], argv[<span class="number">0</span>]);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* SSL 库初始化*/</span></span><br><span class="line">    SSL_library_init();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 载入所有SSL 算法*/</span></span><br><span class="line">    OpenSSL_add_all_algorithms();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 载入所有SSL 错误消息*/</span></span><br><span class="line">    SSL_load_error_strings();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 以SSL V2 和V3 标准兼容方式产生一个SSL_CTX ，即SSL Content Text */</span></span><br><span class="line">    ctx = SSL_CTX_new(SSLv23_client_method());</span><br><span class="line">    <span class="keyword">if</span> (ctx == <span class="literal">NULL</span>) </span><br><span class="line">    &#123;</span><br><span class="line">        ERR_print_errors_fp(<span class="built_in">stdout</span>);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 创建一个socket 用于tcp 通信*/</span></span><br><span class="line">    <span class="keyword">if</span> ((sockfd = socket(AF_INET, SOCK_STREAM, <span class="number">0</span>)) &lt; <span class="number">0</span>) </span><br><span class="line">    &#123;</span><br><span class="line">        perror(<span class="string">"Socket"</span>);</span><br><span class="line">        <span class="built_in">exit</span>(errno);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"socket created\n"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 初始化服务器端（对方）的地址和端口信息*/</span></span><br><span class="line">    bzero( &amp;dest, <span class="keyword">sizeof</span>(dest));</span><br><span class="line">    dest.sin_family = AF_INET;</span><br><span class="line">    <span class="comment">//设置连接的端口</span></span><br><span class="line">    dest.sin_port = htons(atoi(argv[<span class="number">2</span>]));</span><br><span class="line">    <span class="comment">//设置连接的IP地址</span></span><br><span class="line">    <span class="keyword">if</span> (inet_aton(argv[<span class="number">1</span>], (struct in_addr * ) &amp;dest.sin_addr.s_addr) == <span class="number">0</span>) </span><br><span class="line">    &#123;</span><br><span class="line">        perror(argv[<span class="number">1</span>]);</span><br><span class="line">        <span class="built_in">exit</span>(errno);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"address created\n"</span>);</span><br><span class="line">    <span class="comment">/* 连接服务器*/</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (connect(sockfd, (struct sockaddr * ) &amp;dest, <span class="keyword">sizeof</span>(dest)) != <span class="number">0</span>) </span><br><span class="line">    &#123;</span><br><span class="line">        perror(<span class="string">"Connect "</span>);</span><br><span class="line">        <span class="built_in">exit</span>(errno);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"server connected\n"</span>);</span><br><span class="line">    <span class="comment">/* 基于ctx 产生一个新的SSL */</span></span><br><span class="line">    ssl = SSL_new(ctx);</span><br><span class="line">    <span class="comment">/* 将新连接的socket 加入到SSL */</span></span><br><span class="line">    SSL_set_fd(ssl, sockfd);</span><br><span class="line">    <span class="comment">/* 建立SSL 连接*/</span></span><br><span class="line">    <span class="keyword">if</span> (SSL_connect(ssl) == <span class="number">-1</span>) </span><br><span class="line">    &#123;</span><br><span class="line">        ERR_print_errors_fp(<span class="built_in">stderr</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Connected with %s encryption\n"</span>, SSL_get_cipher(ssl));</span><br><span class="line">        <span class="comment">//显示证书内容，这里可以检查证书，如果不符合的话，拒绝和服务器连接，SSL Pinning也是在这一步进行</span></span><br><span class="line">        ShowCerts(ssl);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 接收对方发过来的消息，最多接收MAXBUF 个字节*/</span></span><br><span class="line">    bzero(buffer, MAXBUF + <span class="number">1</span>);</span><br><span class="line">    <span class="comment">/* 接收服务器来的消息*/</span></span><br><span class="line">    len = SSL_read(ssl, buffer, MAXBUF);</span><br><span class="line">    <span class="keyword">if</span> (len &gt; <span class="number">0</span>) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"接收消息成功:'%s'，共%d 个字节的数据\n"</span>, buffer, len);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"消息接收失败！错误代码是%d，错误信息是'%s'\n"</span>, errno, strerror(errno));</span><br><span class="line">        <span class="keyword">goto</span> finish;</span><br><span class="line">    &#125;</span><br><span class="line">    bzero(buffer, MAXBUF + <span class="number">1</span>);</span><br><span class="line">    <span class="built_in">strcpy</span>(buffer, <span class="string">"from client-&gt;server"</span>);</span><br><span class="line">    <span class="comment">/* 发消息给服务器*/</span></span><br><span class="line">    len = SSL_write(ssl, buffer, <span class="built_in">strlen</span>(buffer));</span><br><span class="line">    <span class="keyword">if</span> (len &lt; <span class="number">0</span>) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"消息'%s'发送失败！错误代码是%d，错误信息是'%s'\n"</span>, buffer, errno, strerror(errno));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"消息'%s'发送成功，共发送了%d 个字节！\n"</span>, buffer, len);</span><br><span class="line">    &#125;</span><br><span class="line">    finish:</span><br><span class="line">    <span class="comment">/* 关闭连接*/</span></span><br><span class="line">    SSL_shutdown(ssl);</span><br><span class="line">    SSL_free(ssl);</span><br><span class="line">    close(sockfd);</span><br><span class="line">    SSL_CTX_free(ctx);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="0x1-中间人攻击原理"><a href="#0x1-中间人攻击原理" class="headerlink" title="0x1 中间人攻击原理"></a>0x1 中间人攻击原理</h1><p>基于上述代码,不难发现Demo里是存在中间人攻击的，因为客户端只是输出了服务端的证书信息（ShowCerts），并未进行校验，因此中间人可以在二者之间进行欺骗。主要流程如下：</p>
+<ol>
+<li>客户端和中间人建立SSL连接（客户端以为中间人就是服务端）</li>
+<li>中间人和真正的服务端建立SSL连接</li>
+<li>中间人将2个socket之间的数据进行双向转发，并记录明文数据</li>
+</ol>
+<p>然而，现实中的https实现并非像Demo中的那样简单，服务器端的证书是需要校验的。</p>
+<p>通常，在浏览器中会内置一些根证书，如果web服务器的证书是这些信任根发的或者信任根的二级证书机构颁发的，那么浏览器才会同服务器发起ssl连接。如果验证失败，则拒绝连接。证书的校验包括证书是否过期、域名和服务器域名是否一致等等，由于用户只是作为浏览网页的角色，这些校验功能自然得由浏览器或操作系统的内置代码来完成。</p>
+<p>不同于浏览器，APP除了靠系统或浏览器，还可以自己实现代码来校验证书，因此在APP中证书校验通常存在三种情况：</p>
+<ol>
+<li>APP通过系统和浏览器校验证书；</li>
+<li>APP自己校验证书；</li>
+<li>APP除了校验服务端的证书，服务端还可以校验APP的证书，即https双向校验；</li>
+</ol>
+<p>由于校验了证书，中间人攻击就没那么容易了。</p>
+<p>对于中间人来说，能成功攻击的核心在于“如何让客户端认为我是服务端？”。在现有https协议不变的情况下，中间人既要当真实客户端的“服务者”，又要当真实服务端的“客户”，作为https协议下的“服务者”，自然是需要给客户端提供证书的，因此，在有证书校验的前提下，问题就变成了“如何让客户端信任中间人的证书？”</p>
+<p>我们将根据上述三种情况分别分析：</p>
+<h3 id="APP通过系统和浏览器校验证书"><a href="#APP通过系统和浏览器校验证书" class="headerlink" title="APP通过系统和浏览器校验证书"></a>APP通过系统和浏览器校验证书</h3><p>由于证书校验是由系统或浏览器完成，那么只需要系统或浏览器信任中间人的证书即可，现有的操作系统或浏览器都有导入可信证书的功能，因此通过这些功能直接导入中间人的证书即可，这也解释了为什么burpsuilt、Fiddler等工具在抓包时需要往手机里导入一个证书，信任了证书后的攻击过程就由这些工具来搞定了。</p>
+<h3 id="APP自己校验证书或证书绑定（SSL-Pinning）"><a href="#APP自己校验证书或证书绑定（SSL-Pinning）" class="headerlink" title="APP自己校验证书或证书绑定（SSL Pinning）"></a>APP自己校验证书或证书绑定（SSL Pinning）</h3><p>如果APP自己实现证书校验时，导入中间人证书解决不了问题，因此有几种解决办法：</p>
+<ol>
+<li>找到APP校验证书的代码，通过重打包或hook的方式，去掉或绕过对证书的校验逻辑；</li>
+<li>利用<a href="https://github.com/Fuzion24/JustTrustMe" target="_blank" rel="noopener">JustTrustMe</a>等插件，Hook了市面上大多数http库(如Apache、OKHttp、JSSE等)的证书绑定方法；</li>
+<li>使用<a href="https://github.com/google/ssl_logger" target="_blank" rel="noopener">SSL_Logger</a>对系统底层libssl.so进行hook;</li>
+</ol>
+<h3 id="https双向校验"><a href="#https双向校验" class="headerlink" title="https双向校验"></a>https双向校验</h3><p>https双向校验是指APP除了校验服务端的证书，服务端还会校验APP的证书。对于双向校验，上述三个方法中：<br>1中的重打包和2中的JustTrustMe无法绕过服务端的证书校验逻辑，因此只能抓到客户端发出去的包，服务端收到包后因证书校验不通过，停止通信，3中的方法通过hook底层库libssl.so中的SSL_read和SSL_write函数，即使没有中间人攻击，APP仍需要通过上述两个函数实现收发数据包，因此，方法3仍然能抓到https数据包。</p>
+<h1 id="0x3-Android上https抓包实践"><a href="#0x3-Android上https抓包实践" class="headerlink" title="0x3 Android上https抓包实践"></a>0x3 Android上https抓包实践</h1><h2 id="BurpSuite抓https包"><a href="#BurpSuite抓https包" class="headerlink" title="BurpSuite抓https包"></a>BurpSuite抓https包</h2><h2 id="使用JustTrustMe"><a href="#使用JustTrustMe" class="headerlink" title="使用JustTrustMe"></a>使用JustTrustMe</h2><p><a href="http://blog.csdn.net/qq_27446553/article/details/52525013" target="_blank" rel="noopener">http://blog.csdn.net/qq_27446553/article/details/52525013</a></p>
+<h2 id="使用SSL-Logger"><a href="#使用SSL-Logger" class="headerlink" title="使用SSL_Logger"></a>使用SSL_Logger</h2>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/28/Android加固厂商特征（转）/" rel="next" title="Android加固厂商特征（转）">
+                <i class="fa fa-chevron-left"></i> Android加固厂商特征（转）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/06/curl用法/" rel="prev" title="curl用法">
+                curl用法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">m4bln</p>
+              <p class="site-description motion-element" itemprop="description">影后入林到驿前</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0x0-https实现原理"><span class="nav-number">1.</span> <span class="nav-text"><a href="#0x0-https&#x5B9E;&#x73B0;&#x539F;&#x7406;" class="headerlink" title="0x0 https&#x5B9E;&#x73B0;&#x539F;&#x7406;"></a>0x0 https&#x5B9E;&#x73B0;&#x539F;&#x7406;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#服务端"><span class="nav-number">1.0.1.</span> <span class="nav-text"><a href="#&#x670D;&#x52A1;&#x7AEF;" class="headerlink" title="&#x670D;&#x52A1;&#x7AEF;"></a>&#x670D;&#x52A1;&#x7AEF;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#客户端"><span class="nav-number">1.0.2.</span> <span class="nav-text"><a href="#&#x5BA2;&#x6237;&#x7AEF;" class="headerlink" title="&#x5BA2;&#x6237;&#x7AEF;"></a>&#x5BA2;&#x6237;&#x7AEF;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x1-中间人攻击原理"><span class="nav-number">2.</span> <span class="nav-text"><a href="#0x1-&#x4E2D;&#x95F4;&#x4EBA;&#x653B;&#x51FB;&#x539F;&#x7406;" class="headerlink" title="0x1 &#x4E2D;&#x95F4;&#x4EBA;&#x653B;&#x51FB;&#x539F;&#x7406;"></a>0x1 &#x4E2D;&#x95F4;&#x4EBA;&#x653B;&#x51FB;&#x539F;&#x7406;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#APP通过系统和浏览器校验证书"><span class="nav-number">2.0.1.</span> <span class="nav-text"><a href="#APP&#x901A;&#x8FC7;&#x7CFB;&#x7EDF;&#x548C;&#x6D4F;&#x89C8;&#x5668;&#x6821;&#x9A8C;&#x8BC1;&#x4E66;" class="headerlink" title="APP&#x901A;&#x8FC7;&#x7CFB;&#x7EDF;&#x548C;&#x6D4F;&#x89C8;&#x5668;&#x6821;&#x9A8C;&#x8BC1;&#x4E66;"></a>APP&#x901A;&#x8FC7;&#x7CFB;&#x7EDF;&#x548C;&#x6D4F;&#x89C8;&#x5668;&#x6821;&#x9A8C;&#x8BC1;&#x4E66;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#APP自己校验证书或证书绑定（SSL-Pinning）"><span class="nav-number">2.0.2.</span> <span class="nav-text"><a href="#APP&#x81EA;&#x5DF1;&#x6821;&#x9A8C;&#x8BC1;&#x4E66;&#x6216;&#x8BC1;&#x4E66;&#x7ED1;&#x5B9A;&#xFF08;SSL-Pinning&#xFF09;" class="headerlink" title="APP&#x81EA;&#x5DF1;&#x6821;&#x9A8C;&#x8BC1;&#x4E66;&#x6216;&#x8BC1;&#x4E66;&#x7ED1;&#x5B9A;&#xFF08;SSL Pinning&#xFF09;"></a>APP&#x81EA;&#x5DF1;&#x6821;&#x9A8C;&#x8BC1;&#x4E66;&#x6216;&#x8BC1;&#x4E66;&#x7ED1;&#x5B9A;&#xFF08;SSL Pinning&#xFF09;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#https双向校验"><span class="nav-number">2.0.3.</span> <span class="nav-text"><a href="#https&#x53CC;&#x5411;&#x6821;&#x9A8C;" class="headerlink" title="https&#x53CC;&#x5411;&#x6821;&#x9A8C;"></a>https&#x53CC;&#x5411;&#x6821;&#x9A8C;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x3-Android上https抓包实践"><span class="nav-number">3.</span> <span class="nav-text"><a href="#0x3-Android&#x4E0A;https&#x6293;&#x5305;&#x5B9E;&#x8DF5;" class="headerlink" title="0x3 Android&#x4E0A;https&#x6293;&#x5305;&#x5B9E;&#x8DF5;"></a>0x3 Android&#x4E0A;https&#x6293;&#x5305;&#x5B9E;&#x8DF5;</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#BurpSuite抓https包"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#BurpSuite&#x6293;https&#x5305;" class="headerlink" title="BurpSuite&#x6293;https&#x5305;"></a>BurpSuite&#x6293;https&#x5305;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用JustTrustMe"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#&#x4F7F;&#x7528;JustTrustMe" class="headerlink" title="&#x4F7F;&#x7528;JustTrustMe"></a>&#x4F7F;&#x7528;JustTrustMe</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用SSL-Logger"><span class="nav-number">3.3.</span> <span class="nav-text"><a href="#&#x4F7F;&#x7528;SSL-Logger" class="headerlink" title="&#x4F7F;&#x7528;SSL_Logger"></a>&#x4F7F;&#x7528;SSL_Logger</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">m4bln</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="简介ZipperDown是盘古实验室公布的一个由目录穿越导致RCE的漏洞，根据盘古的检测，发现约10%的iOS应用可能受此漏洞的影响。经过手工分析，确认微博、陌陌、网易云音乐、QQ音乐、快手等流行应用受影响。 漏洞原理 iOS平台没有提供官方解压类库，所以开发中往往引用第三方库来实现解压功能； 由于现有的iOS App基本上采用SSZipArchive或Ziparchive来实现解压，因此漏洞是来">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS应用安全 —— ZipperDown漏洞">
+<meta property="og:url" content="https://mabin004.github.io/2018/07/01/iOS应用安全-——-ZipperDown/index.html">
+<meta property="og:site_name" content="m4bln">
+<meta property="og:description" content="简介ZipperDown是盘古实验室公布的一个由目录穿越导致RCE的漏洞，根据盘古的检测，发现约10%的iOS应用可能受此漏洞的影响。经过手工分析，确认微博、陌陌、网易云音乐、QQ音乐、快手等流行应用受影响。 漏洞原理 iOS平台没有提供官方解压类库，所以开发中往往引用第三方库来实现解压功能； 由于现有的iOS App基本上采用SSZipArchive或Ziparchive来实现解压，因此漏洞是来">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-07-01T08:45:38.366Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS应用安全 —— ZipperDown漏洞">
+<meta name="twitter:description" content="简介ZipperDown是盘古实验室公布的一个由目录穿越导致RCE的漏洞，根据盘古的检测，发现约10%的iOS应用可能受此漏洞的影响。经过手工分析，确认微博、陌陌、网易云音乐、QQ音乐、快手等流行应用受影响。 漏洞原理 iOS平台没有提供官方解压类库，所以开发中往往引用第三方库来实现解压功能； 由于现有的iOS App基本上采用SSZipArchive或Ziparchive来实现解压，因此漏洞是来">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://mabin004.github.io/2018/07/01/iOS应用安全-——-ZipperDown/"/>
+
+
+
+
+
+  <title>iOS应用安全 —— ZipperDown漏洞 | m4bln</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">m4bln</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-hint">
+          <a href="/hint/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            hint
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-todo">
+          <a href="/todo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            ToDo
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/07/01/iOS应用安全-——-ZipperDown/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">iOS应用安全 —— ZipperDown漏洞</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-01T16:27:00+08:00">
+                2018-07-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>ZipperDown是盘古实验室公布的一个由目录穿越导致RCE的漏洞，根据盘古的检测，发现约10%的iOS应用可能受此漏洞的影响。经过手工分析，确认微博、陌陌、网易云音乐、QQ音乐、快手等流行应用受影响。</p>
+<h1 id="漏洞原理"><a href="#漏洞原理" class="headerlink" title="漏洞原理"></a>漏洞原理</h1><ul>
+<li>iOS平台没有提供官方解压类库，所以开发中往往引用第三方库来实现解压功能；</li>
+<li>由于现有的iOS App基本上采用SSZipArchive或Ziparchive来实现解压，因此漏洞是来自使用第三方Zip库解压Zip文件的过程中没有对Zip内文件名做校验导致的；</li>
+<li>例如 SSZipArchive解压时会吧文件名直接拼接到目标路径后面，如果文件名中含有“../”则可以实现目录的上一级跳转，从而实现应用内任意目录的跳转，进一步可以实现文件覆盖；</li>
+<li>如果把App的热修复hotpatch文件覆盖替换了，可以达到执行黑客指定指令，从而按照黑客的意图实现任意应用内攻击。</li>
+</ul>
+<h1 id="攻击条件"><a href="#攻击条件" class="headerlink" title="攻击条件"></a>攻击条件</h1><ul>
+<li>使用了SSZipArchive或Ziparchive第三方解压库;</li>
+<li>Zip包在解压时没有做完整性校验;</li>
+<li>文件名中包含../等路径特殊符号，解压时没有对文件名过滤处理;</li>
+<li>使用了JSPatch或其他热修复库，且本地脚本没有加密等安全处理;</li>
+<li>连接不可靠的WIFI热点或者网络被人劫持。</li>
+</ul>
+<h1 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h1><p>iOS平台的两个解压缩库（SSZipArchive和ZipArchive）在解压缩过程中没有考虑到文件名中包含”../”的情况，造成了文件释放过程中路径穿越，导致恶意Zip文件可以在App沙盒范围内，覆盖任意可写文件。具体代码如下：</p>
+<p><strong>ZipArchive相关代码</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">-(BOOL) UnzipFileTo:(NSString*) path overWrite:(BOOL) overwrite</span><br><span class="line">&#123;</span><br><span class="line">    [...]</span><br><span class="line">    // check if it contains directory</span><br><span class="line">    NSString* strPath = [NSString stringWithCString:filename encoding:NSUTF8StringEncoding];</span><br><span class="line">    BOOL isDirectory = NO;</span><br><span class="line">    if( filename[fileInfo.size_filename-1]==&apos;/&apos; || filename[fileInfo.size_filename-1]==&apos;\\&apos;)</span><br><span class="line">        isDirectory = YES;</span><br><span class="line">    free( filename );</span><br><span class="line">    if( [strPath rangeOfCharacterFromSet:[NSCharacterSetcharacterSetWithCharactersInString:@&quot;/\\&quot;]].location!=NSNotFound )</span><br><span class="line">    &#123;</span><br><span class="line">        // contains a path</span><br><span class="line">        strPath = [strPath stringByReplacingOccurrencesOfString:@&quot;\\&quot; withString:@&quot;/&quot;];</span><br><span class="line">    &#125;</span><br><span class="line">    NSString* fullPath = [path stringByAppendingPathComponent:strPath];</span><br><span class="line">    [...]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>SSZipArchive相关代码</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">+ (BOOL)unzipFileAtPath:(NSString *)path</span><br><span class="line">          toDestination:(NSString *)destination</span><br><span class="line">     preserveAttributes:(BOOL)preserveAttributes</span><br><span class="line">              overwrite:(BOOL)overwrite</span><br><span class="line">         nestedZipLevel:(NSInteger)nestedZipLevel</span><br><span class="line">               password:(nullable NSString *)password</span><br><span class="line">                  error:(NSError **)error</span><br><span class="line">               delegate:(nullable id)delegate</span><br><span class="line">        progressHandler:(void (^_Nullable)(NSString *entry, unz_file_info zipInfo, long entryNumber, long total))progressHandler</span><br><span class="line">      completionHandler:(void (^_Nullable)(NSString *path, BOOL succeeded, NSError * _Nullable error))completionHandler&#123;</span><br><span class="line">    [...]</span><br><span class="line">    if ([strPath rangeOfCharacterFromSet:[NSCharacterSetcharacterSetWithCharactersInString:@&quot;/\\&quot;]].location != NSNotFound) &#123;</span><br><span class="line">    strPath = [strPath stringByReplacingOccurrencesOfString:@&quot;\\&quot; withString:@&quot;/&quot;];</span><br><span class="line">    &#125;          </span><br><span class="line">    NSString *fullPath = [destination stringByAppendingPathComponent:strPath];</span><br><span class="line">    [...]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>基于以上漏洞原理，漏洞利用条件的核心即如何使目标App解压不可信Zip文件，iOS应用的主要解压场景如下：</p>
+<ol>
+<li>App直接接收不可信Zip文件，并使用SSZipArchive/ZipArchive（或其它存在路径穿越问题的代码）解压。例如聊天应用、文件管理应用中可能存在这类业务场景。</li>
+<li>App通过HTTP下载Zip文件，使用SSZipArchive/ZipArchive（或其它存在路径穿越问题的代码）解压。在这种场景下，攻击者可以通过流量劫持等途径，将正常Zip文件替换为恶意Zip文件，在App中实现文件覆盖。</li>
+</ol>
+<p>完成文件覆盖后，一些特殊场景可以实现RCE,例如：</p>
+<ol>
+<li>覆盖了热补丁文件，APP加载恶意热补丁实现RCE</li>
+<li>覆盖了APP的核心文件，实现钓鱼、拒绝服务等</li>
+</ol>
+<p>先前的微信、企业微信等都是因为存在ZipperDown问题，导致最后账户被克隆。</p>
+<p>另外，由于iOS沙盒保护，ZipperDown的破坏范围仅限在App环境中。</p>
+<p>参考资料：</p>
+<ol>
+<li>ZipperDown  <a href="https://zipperdown.org/" target="_blank" rel="noopener">https://zipperdown.org/</a></li>
+<li><a href="https://github.com/muzipiao/ZipperDownDemo" target="_blank" rel="noopener">https://github.com/muzipiao/ZipperDownDemo</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/27/关于手机充电器/" rel="next" title="关于手机充电器">
+                <i class="fa fa-chevron-left"></i> 关于手机充电器
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/03/XXE漏洞攻击和防御/" rel="prev" title="XXE漏洞攻击和防御">
+                XXE漏洞攻击和防御 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">m4bln</p>
+              <p class="site-description motion-element" itemprop="description">影后入林到驿前</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x7B80;&#x4ECB;" class="headerlink" title="&#x7B80;&#x4ECB;"></a>&#x7B80;&#x4ECB;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#漏洞原理"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x6F0F;&#x6D1E;&#x539F;&#x7406;" class="headerlink" title="&#x6F0F;&#x6D1E;&#x539F;&#x7406;"></a>&#x6F0F;&#x6D1E;&#x539F;&#x7406;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#攻击条件"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x653B;&#x51FB;&#x6761;&#x4EF6;" class="headerlink" title="&#x653B;&#x51FB;&#x6761;&#x4EF6;"></a>&#x653B;&#x51FB;&#x6761;&#x4EF6;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#漏洞分析"><span class="nav-number">4.</span> <span class="nav-text"><a href="#&#x6F0F;&#x6D1E;&#x5206;&#x6790;" class="headerlink" title="&#x6F0F;&#x6D1E;&#x5206;&#x6790;"></a>&#x6F0F;&#x6D1E;&#x5206;&#x6790;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">m4bln</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

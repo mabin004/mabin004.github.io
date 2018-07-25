@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Android WebView经常会有一些奇奇怪怪的问题，为了避免日后重复采坑，统一在这里总结下： setWebContentsDebuggingEnabledsetWebContentsDebuggingEnabled()用来配置WebView是否支持远程调试，当被设置为true时，既可以用PC端的Chrome来调试手机端的WebView。具体操作如下：  WebView配置如下 1234//K">
+<meta name="keywords" content="Android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android WebView那些事儿">
+<meta property="og:url" content="https://mabin004.github.io/2018/01/17/WebView那些事儿/index.html">
+<meta property="og:site_name" content="m4bln">
+<meta property="og:description" content="Android WebView经常会有一些奇奇怪怪的问题，为了避免日后重复采坑，统一在这里总结下： setWebContentsDebuggingEnabledsetWebContentsDebuggingEnabled()用来配置WebView是否支持远程调试，当被设置为true时，既可以用PC端的Chrome来调试手机端的WebView。具体操作如下：  WebView配置如下 1234//K">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-9.png">
+<meta property="og:updated_time" content="2018-04-25T03:37:07.037Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android WebView那些事儿">
+<meta name="twitter:description" content="Android WebView经常会有一些奇奇怪怪的问题，为了避免日后重复采坑，统一在这里总结下： setWebContentsDebuggingEnabledsetWebContentsDebuggingEnabled()用来配置WebView是否支持远程调试，当被设置为true时，既可以用PC端的Chrome来调试手机端的WebView。具体操作如下：  WebView配置如下 1234//K">
+<meta name="twitter:image" content="https://mabin004.github.io/images/pasted-9.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://mabin004.github.io/2018/01/17/WebView那些事儿/"/>
+
+
+
+
+
+  <title>Android WebView那些事儿 | m4bln</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">m4bln</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-hint">
+          <a href="/hint/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            hint
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-todo">
+          <a href="/todo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            ToDo
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/01/17/WebView那些事儿/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android WebView那些事儿</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-17T15:13:00+08:00">
+                2018-01-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Android WebView经常会有一些奇奇怪怪的问题，为了避免日后重复采坑，统一在这里总结下：</p>
+<h2 id="setWebContentsDebuggingEnabled"><a href="#setWebContentsDebuggingEnabled" class="headerlink" title="setWebContentsDebuggingEnabled"></a>setWebContentsDebuggingEnabled</h2><p>setWebContentsDebuggingEnabled()用来配置WebView是否支持远程调试，当被设置为true时，既可以用PC端的Chrome来调试手机端的WebView。具体操作如下：</p>
+<ol>
+<li><p>WebView配置如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//KITKAT版本一下不支持这个API</span></span><br><span class="line"><span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.KITKAT) &#123;</span><br><span class="line">            WebView.setWebContentsDebuggingEnabled(<span class="keyword">true</span>);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>手机通过USB连接PC,在Chrome下输入”chrome://inspect”即可进入调试页，同时会显示出所有可调式的WebView页，审查元素、network等调试操作和PC上相同。</p>
+</li>
+</ol>
+<p><img src="/images/pasted-9.png" alt="upload successful"></p>
+<h2 id="setWebChromeClient和setWebViewClient"><a href="#setWebChromeClient和setWebViewClient" class="headerlink" title="setWebChromeClient和setWebViewClient"></a>setWebChromeClient和setWebViewClient</h2><ul>
+<li>WebViewClient主要帮助WebView处理各种通知、请求事件的，比如：<br>onLoadResource，onPageStart，onPageFinish，onReceiveError，onReceivedHttpAuthRequest 等。</li>
+<li>WebChromeClient主要辅助WebView处理Javascript的对话框、网站图标、网站title、加载进度等，比如:<br>onCloseWindow(关闭WebView)，onCreateWindow()，onJsAlert (WebView上alert无效，需要定制WebChromeClient处理弹出)，onJsPrompt，onJsConfirm，onProgressChanged，onReceivedIcon，onReceivedTitle 等等。</li>
+</ul>
+<h2 id="addjavascriptinterface"><a href="#addjavascriptinterface" class="headerlink" title="addjavascriptinterface"></a>addjavascriptinterface</h2><p>addjavascriptinterface可以把一个java对象导出，通过js来调用java对象。如果这个对象涉及到敏感操作，有可能产生安全问题。</p>
+<p>使用实例如下：</p>
+<p>定义一个AndroidToast，实现弹出一个toast功能，并将其导出<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AndroidToast</span> </span>&#123;</span><br><span class="line">        <span class="meta">@JavascriptInterface</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">(String str)</span> </span>&#123;</span><br><span class="line">            Toast.makeText(MainActivity.<span class="keyword">this</span>, str, Toast.LENGTH_SHORT).show();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>WebView进行设置，开启JavaScipt，注册JavascriptInterface的方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">private void initView() &#123;</span><br><span class="line">        webView = (WebView) findViewById(R.id.webView);</span><br><span class="line"></span><br><span class="line">        WebSettings webSettings = webView.getSettings();</span><br><span class="line">        webSettings.setJavaScriptEnabled(true);</span><br><span class="line">        webSettings.setDefaultTextEncodingName(&quot;UTF-8&quot;);</span><br><span class="line">        webView.addJavascriptInterface(new AndroidToast(), &quot;AndroidToast&quot;);</span><br><span class="line">        webView.loadUrl(&quot;file:///android_asset/index.html&quot;);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
+<p>在javascript中调用方法，通过window属性可以找到映射的对象AndroidToast,直接调用它的show方法即可。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function toastClick()&#123;</span><br><span class="line">        window.AndroidToast.show(&apos;from js&apos;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="setGeolocationEnabled"><a href="#setGeolocationEnabled" class="headerlink" title="setGeolocationEnabled"></a>setGeolocationEnabled</h2><p>setGeolocationEnabled用来配置是否允许H5定位，默认为true。通过一定的配置，可以使WebView中的H5定位时，用户不会受到任何定位提示。</p>
+<p>参照官方开发文档，实现h5定位需要满足三个条件：</p>
+<ul>
+<li>APP本身必须具有定位权限</li>
+<li>APP必须实现onGeolocationPermissionsShowPrompt(String, GeolocationPermissions.Callback) 这个回调函数，当js调用h5定位的API时，这个函数会被调用</li>
+<li>发起定位请求的站点必须为可信origin,如https,http的将不允许定位</li>
+</ul>
+<p>下边这行代码用来处理定位请求，第一个参数是发起定位请求的origin,第二个 boolean 类型的参数表示是否授予网页定位权限；而第三个 boolean 类型的参数则表示是否保留这个权限状态。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">callback.invoke(origin, <span class="keyword">true</span>, <span class="keyword">true</span>);</span><br></pre></td></tr></table></figure></p>
+<p>具体代码如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">前端实现</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;p id=<span class="string">"demo"</span>&gt;点击按钮获取您当前坐标（可能需要比较长的时间获取）：&lt;<span class="regexp">/p&gt;</span></span><br><span class="line"><span class="regexp">&lt;button onclick="getLocation()"&gt;点我&lt;/</span>button&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line"><span class="keyword">var</span> x=<span class="built_in">document</span>.getElementById(<span class="string">"demo"</span>);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getLocation</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (navigator.geolocation)</span><br><span class="line">	&#123;</span><br><span class="line">		navigator.geolocation.getCurrentPosition(showPosition);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		x.innerHTML=<span class="string">"该浏览器不支持获取地理位置。"</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">showPosition</span>(<span class="params">position</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	x.innerHTML=<span class="string">"纬度: "</span> + position.coords.latitude + </span><br><span class="line">	<span class="string">"&lt;br&gt;经度: "</span> + position.coords.longitude;	</span><br><span class="line">&#125;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br><span class="line"><span class="regexp">&lt;/</span>body&gt;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Manifest文件：</span><br><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.ACCESS_COARSE_LOCATION"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.ACCESS_FINE_LOCATION"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.INTERNET"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">WebView contentWv = (WebView) findViewById(R.id.wv_content);</span><br><span class="line">WebSettings settings = contentWv.getSettings();</span><br><span class="line">settings.setJavaScriptEnabled(<span class="keyword">true</span>);</span><br><span class="line"><span class="comment">//setGeolocationEnabled默认为true</span></span><br><span class="line">contentWv.setWebChromeClient(<span class="keyword">new</span> WebChromeClient()&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onGeolocationPermissionsShowPrompt</span><span class="params">(String origin, GeolocationPermissions.Callback callback)</span> </span>&#123;</span><br><span class="line">        callback.invoke(origin, <span class="keyword">true</span>, <span class="keyword">true</span>);</span><br><span class="line">        <span class="keyword">super</span>.onGeolocationPermissionsShowPrompt(origin, callback);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line">contentWv.loadUrl(<span class="string">"file:///android_asset/location.html"</span>);</span><br></pre></td></tr></table></figure>
+<p>一般比较合适的做法是，在该回调函数中设置一个对话框，告知用户是否授权定位操作。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">wv.setWebChromeClient(<span class="keyword">new</span> WebChromeClient()&#123;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onGeolocationPermissionsShowPrompt</span><span class="params">(<span class="keyword">final</span> String origin, <span class="keyword">final</span> GeolocationPermissions.Callback callback)</span> </span>&#123;</span><br><span class="line">    AlertDialog.Builder builder = <span class="keyword">new</span> AlertDialog.Builder(MainActivity.<span class="keyword">this</span>);</span><br><span class="line">    builder.setMessage(<span class="string">"Allow to access location information?"</span>);</span><br><span class="line">    DialogInterface.OnClickListener dialogButtonOnClickListener = <span class="keyword">new</span> DialogInterface.OnClickListener()  &#123;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(DialogInterface dialog, <span class="keyword">int</span> clickedButton)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (DialogInterface.BUTTON_POSITIVE == clickedButton) &#123;</span><br><span class="line">                callback.invoke(origin, <span class="keyword">true</span>, <span class="keyword">true</span>);<span class="comment">//允许</span></span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (DialogInterface.BUTTON_NEGATIVE == clickedButton) &#123;</span><br><span class="line">                callback.invoke(origin, <span class="keyword">false</span>, <span class="keyword">false</span>);<span class="comment">//拒绝</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    builder.setPositiveButton(<span class="string">"Allow"</span>, dialogButtonOnClickListener);</span><br><span class="line">    builder.setNegativeButton(<span class="string">"Deny"</span>, dialogButtonOnClickListener);</span><br><span class="line">    builder.show();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">);</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/12/移动端JavaScript写入剪贴板/" rel="next" title="移动端JavaScript写入剪贴板">
+                <i class="fa fa-chevron-left"></i> 移动端JavaScript写入剪贴板
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/17/apache搭建https站/" rel="prev" title="apache搭建https站">
+                apache搭建https站 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">m4bln</p>
+              <p class="site-description motion-element" itemprop="description">影后入林到驿前</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#setWebContentsDebuggingEnabled"><span class="nav-number">1.</span> <span class="nav-text"><a href="#setWebContentsDebuggingEnabled" class="headerlink" title="setWebContentsDebuggingEnabled"></a>setWebContentsDebuggingEnabled</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#setWebChromeClient和setWebViewClient"><span class="nav-number">2.</span> <span class="nav-text"><a href="#setWebChromeClient&#x548C;setWebViewClient" class="headerlink" title="setWebChromeClient&#x548C;setWebViewClient"></a>setWebChromeClient&#x548C;setWebViewClient</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#addjavascriptinterface"><span class="nav-number">3.</span> <span class="nav-text"><a href="#addjavascriptinterface" class="headerlink" title="addjavascriptinterface"></a>addjavascriptinterface</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#setGeolocationEnabled"><span class="nav-number">4.</span> <span class="nav-text"><a href="#setGeolocationEnabled" class="headerlink" title="setGeolocationEnabled"></a>setGeolocationEnabled</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">m4bln</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

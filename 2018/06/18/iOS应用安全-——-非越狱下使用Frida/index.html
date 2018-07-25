@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="概述frida-server在运行时需要root环境，但如果没有越狱的设备，依然可以使用frida,我们只需要重打包ipa文件，将frida运行库注入ipa文件中，app在启动时会自动加载frida运行库，即可实现在非越狱的设备上使用Frida. 由于苹果的混淆策略和代码签名，重打包app的难度很高，一些自动重打包的工具如Objection、IPAPatch等简化了重打包过程，但其本质大概相同，以">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS应用安全 —— 非越狱下使用Frida">
+<meta property="og:url" content="https://mabin004.github.io/2018/06/18/iOS应用安全-——-非越狱下使用Frida/index.html">
+<meta property="og:site_name" content="m4bln">
+<meta property="og:description" content="概述frida-server在运行时需要root环境，但如果没有越狱的设备，依然可以使用frida,我们只需要重打包ipa文件，将frida运行库注入ipa文件中，app在启动时会自动加载frida运行库，即可实现在非越狱的设备上使用Frida. 由于苹果的混淆策略和代码签名，重打包app的难度很高，一些自动重打包的工具如Objection、IPAPatch等简化了重打包过程，但其本质大概相同，以">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-46.png">
+<meta property="og:updated_time" content="2018-06-19T09:04:16.883Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS应用安全 —— 非越狱下使用Frida">
+<meta name="twitter:description" content="概述frida-server在运行时需要root环境，但如果没有越狱的设备，依然可以使用frida,我们只需要重打包ipa文件，将frida运行库注入ipa文件中，app在启动时会自动加载frida运行库，即可实现在非越狱的设备上使用Frida. 由于苹果的混淆策略和代码签名，重打包app的难度很高，一些自动重打包的工具如Objection、IPAPatch等简化了重打包过程，但其本质大概相同，以">
+<meta name="twitter:image" content="https://mabin004.github.io/images/pasted-46.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://mabin004.github.io/2018/06/18/iOS应用安全-——-非越狱下使用Frida/"/>
+
+
+
+
+
+  <title>iOS应用安全 —— 非越狱下使用Frida | m4bln</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">m4bln</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-hint">
+          <a href="/hint/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            hint
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-todo">
+          <a href="/todo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            ToDo
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/06/18/iOS应用安全-——-非越狱下使用Frida/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">iOS应用安全 —— 非越狱下使用Frida</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-18T09:59:00+08:00">
+                2018-06-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>frida-server在运行时需要root环境，但如果没有越狱的设备，依然可以使用frida,我们只需要重打包ipa文件，将frida运行库注入ipa文件中，app在启动时会自动加载frida运行库，即可实现在非越狱的设备上使用Frida.</p>
+<p>由于苹果的混淆策略和代码签名，重打包app的难度很高，一些自动重打包的工具如Objection、IPAPatch等简化了重打包过程，但其本质大概相同，以下分步介绍手动重打包frida运行库的过程。</p>
+<h2 id="1-配置optool和ios-deploy"><a href="#1-配置optool和ios-deploy" class="headerlink" title="1. 配置optool和ios-deploy"></a>1. 配置optool和ios-deploy</h2><p>optool可以将一个外部的lib插入到Mach-O文件头，使binary文件在启动时会自动加载该lib。如已经配置过，直接跳过。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ git clone https://github.com/alexzielenski/optool.git</span><br><span class="line">$ cd optool/</span><br><span class="line">$ git submodule update --init --recursive</span><br><span class="line">$ xcodebuild</span><br><span class="line">$ ln -s &lt;your-path-to-optool&gt;/build/Release/optool /usr/local/bin/optool</span><br></pre></td></tr></table></figure></p>
+<p>ios-deploy可以在不用Xcode的前提下调试和部署APP:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ git clone https://github.com/phonegap/ios-deploy.git</span><br><span class="line">$ cd ios-deploy/</span><br><span class="line">$ xcodebuild</span><br><span class="line">$ cd build/Release</span><br><span class="line">$ ./ios-deploy</span><br><span class="line">$ ln -s &lt;your-path-to-ios-deploy&gt;/build/Release/ios-deploy /usr/local/bin/ios-deploy</span><br></pre></td></tr></table></figure></p>
+<p>更新bashrc文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">zsh: # . ~/.zshrc</span><br><span class="line">bash: # . ~/.bashrc</span><br></pre></td></tr></table></figure></p>
+<h2 id="2-准备FridaGadget-dylib"><a href="#2-准备FridaGadget-dylib" class="headerlink" title="2.准备FridaGadget.dylib"></a>2.准备FridaGadget.dylib</h2><p>FridaGadget.dylib会不断更新，历史版本在<a href="https://github.com/frida/frida/releases中下载" target="_blank" rel="noopener">https://github.com/frida/frida/releases中下载</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -O https://build.frida.re/frida/ios/lib/FridaGadget.dylib</span><br></pre></td></tr></table></figure></p>
+<h2 id="3-重打包"><a href="#3-重打包" class="headerlink" title="3.重打包"></a>3.重打包</h2><h3 id="1-解压ipa文件-ipa必须为砸壳后的文件-，复制FridaGadget-dylib到app目录，使用optool添加到binary文件"><a href="#1-解压ipa文件-ipa必须为砸壳后的文件-，复制FridaGadget-dylib到app目录，使用optool添加到binary文件" class="headerlink" title="1.解压ipa文件(ipa必须为砸壳后的文件)，复制FridaGadget.dylib到app目录，使用optool添加到binary文件"></a>1.<strong>解压ipa文件(ipa必须为砸壳后的文件)，复制FridaGadget.dylib到app目录，使用optool添加到binary文件</strong></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">unzip wechat.ipa</span><br><span class="line">$ cp FridaGadget.dylib Payload/WeChat.app/</span><br><span class="line">$ optool install -c load -p &quot;@executable_path/FridaGadget.dylib&quot;  -t Payload/WeChat.app/WeChat</span><br><span class="line"></span><br><span class="line">Found FAT Header</span><br><span class="line">Found thin header...</span><br><span class="line">Found thin header...</span><br><span class="line">Inserting a LC_LOAD_DYLIB command for architecture: arm</span><br><span class="line">Successfully inserted a LC_LOAD_DYLIB command for arm</span><br><span class="line">Inserting a LC_LOAD_DYLIB command for architecture: arm64</span><br><span class="line">Successfully inserted a LC_LOAD_DYLIB command for arm64</span><br><span class="line">Writing executable to Payload/WeChat.app/WeChat...</span><br></pre></td></tr></table></figure>
+<h3 id="2-替换provisioning-profile文件"><a href="#2-替换provisioning-profile文件" class="headerlink" title="2.替换provisioning profile文件"></a>2.<strong>替换provisioning profile文件</strong></h3><p>由于在binary中注入了frida，破坏了原有的代码签名，无法在iOS设备上运行，因此需要重新签名。首先，添加自己的provisioning profile文件。</p>
+<p>自己的provisioning profile可以通过新建一个xcode工程，(provisioning profile有效期为7天，所以每次尽量新建一个空的工程，并在设备上运行)从.app文件中提取，路径为~/Library/Developer/Xcode/DerivedData/xxxxxxx/Build/Products/Debug-iphoneos/xxxxxxx.app/。或者通过xcode界面定位到.app文件:</p>
+<blockquote>
+<p>   打开Xcode，创建一个SimpleViewApp<br>    运行环境选中你的设备，运行一次<br>    选中左边导航栏Products中的app<br>    点击最右面板中，Full Path右下角的箭头，定位到app所在的目录<br>    右击app选择“显示包内容”，即可看到embedded.mobileprovision</p>
+</blockquote>
+<p>对于获取到的provisioning profile，可以用security命令验证是否正确。除了检查允许的证书、设备外，entitlements文件在代码签名中也会用到，所以需要把其提取为一个单独的plist文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">$ security cms -D -i AwesomeRepackaging.mobileprovision &gt; profile.plist</span><br><span class="line">$ /usr/libexec/PlistBuddy -x -c &apos;Print :Entitlements&apos; profile.plist &gt; entitlements.plist</span><br><span class="line">$ cat entitlements.plist</span><br><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;</span><br><span class="line">&lt;plist version=&quot;1.0&quot;&gt;</span><br><span class="line">&lt;dict&gt;</span><br><span class="line">	&lt;key&gt;application-identifier&lt;/key&gt;</span><br><span class="line">	&lt;string&gt;LRUD9L355Y.sg.vantagepoint.repackage&lt;/string&gt;</span><br><span class="line">	&lt;key&gt;com.apple.developer.team-identifier&lt;/key&gt;</span><br><span class="line">	&lt;string&gt;LRUD9L355Y&lt;/string&gt;</span><br><span class="line">	&lt;key&gt;get-task-allow&lt;/key&gt;</span><br><span class="line">	&lt;true/&gt;</span><br><span class="line">	&lt;key&gt;keychain-access-groups&lt;/key&gt;</span><br><span class="line">	&lt;array&gt;</span><br><span class="line">		&lt;string&gt;LRUD9L355Y.*&lt;/string&gt;</span><br><span class="line">	&lt;/array&gt;</span><br><span class="line">&lt;/dict&gt;</span><br><span class="line">&lt;/plist&gt;</span><br></pre></td></tr></table></figure></p>
+<p>需要注意的是：</p>
+<ol>
+<li>application identifier字段是由Team ID (LRUD9L355Y) 和Bundle ID (sg.vantagepoint.repackage)构成，Bundle ID必须和Info.plist的bundle id匹配</li>
+<li>“get-task-allow”必须为true，否则其他进程无法attach</li>
+</ol>
+<p>确定provisioning profile有效后，我们将其复制到工程目录下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cp my.mobileprovision Payload/WeChat.app/embedded.mobileprovision</span><br></pre></td></tr></table></figure></p>
+<p>更新Info.plist中的bundle ID：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ /usr/libexec/PlistBuddy -c &quot;Set :CFBundleIdentifier m4bln.myapp&quot; Payload/WeChat.app/Info.plist</span><br></pre></td></tr></table></figure></p>
+<h3 id="3-移除原有签名"><a href="#3-移除原有签名" class="headerlink" title="3.移除原有签名"></a>3.<strong>移除原有签名</strong></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rm -rf Payload/WeChat.app/_CodeSignature</span><br></pre></td></tr></table></figure>
+<h3 id="4-重新签名"><a href="#4-重新签名" class="headerlink" title="4.重新签名"></a>4.<strong>重新签名</strong></h3><p>对FridaGadget.dylib签名，其中的”8004380F331DCA22CC1B47FB1A805890AE41C938”需要替换为自己的哈希，可以通过“security find-identity -p codesigning -v”命令获取<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ /usr/bin/codesign --force --sign 8004380F331DCA22CC1B47FB1A805890AE41C938  Payload/WeChat.app/FridaGadget.dylib</span><br><span class="line"></span><br><span class="line">Payload/WeChat.app/FridaGadget.dylib: replacing existing signature</span><br></pre></td></tr></table></figure></p>
+<p>使用entitlements.plist对binary文件进行签名：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ /usr/bin/codesign --force --sign 8004380F331DCA22CC1B47FB1A805890AE41C938 --entitlements entitlements.plist Payload/WeChat.app/WeChat</span><br><span class="line"></span><br><span class="line">Payload/WeChat.app/WeChat: replacing existing signature</span><br></pre></td></tr></table></figure></p>
+<h2 id="安装和运行app"><a href="#安装和运行app" class="headerlink" title="安装和运行app"></a>安装和运行app</h2><p>使用ios-deploy安装和运行app<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ios-deploy --debug --bundle Payload/WeChat.app/</span><br></pre></td></tr></table></figure></p>
+<p>运行frida-ps -U验证是否可以attach：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ frida-ps -U</span><br><span class="line">PID  Name</span><br><span class="line">---  ------</span><br><span class="line">499  Gadget</span><br></pre></td></tr></table></figure></p>
+<h2 id="测试Frida"><a href="#测试Frida" class="headerlink" title="测试Frida"></a>测试Frida</h2><p>运行一段frida脚本，实现在界面上弹窗:<br>注： attach时需要根据frida-ps获得的进程pid设置attach参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">import sys</span><br><span class="line">import frida</span><br><span class="line">#</span><br><span class="line">#JavaScript to be injected</span><br><span class="line">frida_code = &quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">// Defining a Block that will be passed as handler parameter to +[UIAlertAction actionWithTitle:style:handler:]</span><br><span class="line">var handler = new ObjC.Block(&#123;</span><br><span class="line">  retType: &apos;void&apos;,</span><br><span class="line">  argTypes: [&apos;object&apos;],</span><br><span class="line">  implementation: function () &#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">// Import ObjC classes</span><br><span class="line">var UIAlertController = ObjC.classes.UIAlertController;</span><br><span class="line">var UIAlertAction = ObjC.classes.UIAlertAction;</span><br><span class="line">var UIApplication = ObjC.classes.UIApplication;</span><br><span class="line"></span><br><span class="line">// Using Grand Central Dispatch to pass messages (invoke methods) in application&apos;s main thread</span><br><span class="line">ObjC.schedule(ObjC.mainQueue, function () &#123;</span><br><span class="line">  // Using integer numerals for preferredStyle which is of type enum UIAlertControllerStyle</span><br><span class="line">  var alert = UIAlertController.alertControllerWithTitle_message_preferredStyle_(&apos;Frida&apos;, &apos;Hello from Frida&apos;, 1);</span><br><span class="line">  // Again using integer numeral for style parameter that is enum</span><br><span class="line">  var defaultAction = UIAlertAction.actionWithTitle_style_handler_(&apos;OK&apos;, 0, handler);</span><br><span class="line">  alert.addAction_(defaultAction);</span><br><span class="line">  // Instead of using `ObjC.choose()` and looking for UIViewController instances</span><br><span class="line">  // on the heap, we have direct access through UIApplication:</span><br><span class="line">  UIApplication.sharedApplication().keyWindow().rootViewController().presentViewController_animated_completion_(alert, true, NULL);</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">process = frida.get_usb_device().attach(499)</span><br><span class="line">script = process.create_script(frida_code)</span><br><span class="line">#script.on(&apos;message&apos;, message_callback)</span><br><span class="line">script.load()</span><br><span class="line"></span><br><span class="line">sys.stdin.read()</span><br></pre></td></tr></table></figure>
+<p>运行截图如下：</p>
+<p><img src="/images/pasted-46.png" alt="upload successful"></p>
+<p>参考文献：</p>
+<ol>
+<li>iOS App的Patching和Resigning <a href="https://www.jianshu.com/p/ce2770c42ead" target="_blank" rel="noopener">https://www.jianshu.com/p/ce2770c42ead</a></li>
+<li><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06b-Basic-Security-Testing.md" target="_blank" rel="noopener">https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06b-Basic-Security-Testing.md</a></li>
+<li><a href="https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/" target="_blank" rel="noopener">https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/15/Android蓝牙漏洞介绍（from-zxq）/" rel="next" title="Android蓝牙漏洞介绍（from zxq）">
+                <i class="fa fa-chevron-left"></i> Android蓝牙漏洞介绍（from zxq）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/19/iOS应用安全-——-MonkeyDev/" rel="prev" title="iOS应用安全 —— MonkeyDev的使用">
+                iOS应用安全 —— MonkeyDev的使用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">m4bln</p>
+              <p class="site-description motion-element" itemprop="description">影后入林到驿前</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x6982;&#x8FF0;" class="headerlink" title="&#x6982;&#x8FF0;"></a>&#x6982;&#x8FF0;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-配置optool和ios-deploy"><span class="nav-number">2.</span> <span class="nav-text"><a href="#1-&#x914D;&#x7F6E;optool&#x548C;ios-deploy" class="headerlink" title="1. &#x914D;&#x7F6E;optool&#x548C;ios-deploy"></a>1. &#x914D;&#x7F6E;optool&#x548C;ios-deploy</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-准备FridaGadget-dylib"><span class="nav-number">3.</span> <span class="nav-text"><a href="#2-&#x51C6;&#x5907;FridaGadget-dylib" class="headerlink" title="2.&#x51C6;&#x5907;FridaGadget.dylib"></a>2.&#x51C6;&#x5907;FridaGadget.dylib</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-重打包"><span class="nav-number">4.</span> <span class="nav-text"><a href="#3-&#x91CD;&#x6253;&#x5305;" class="headerlink" title="3.&#x91CD;&#x6253;&#x5305;"></a>3.&#x91CD;&#x6253;&#x5305;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-解压ipa文件-ipa必须为砸壳后的文件-，复制FridaGadget-dylib到app目录，使用optool添加到binary文件"><span class="nav-number">4.1.</span> <span class="nav-text"><a href="#1-&#x89E3;&#x538B;ipa&#x6587;&#x4EF6;-ipa&#x5FC5;&#x987B;&#x4E3A;&#x7838;&#x58F3;&#x540E;&#x7684;&#x6587;&#x4EF6;-&#xFF0C;&#x590D;&#x5236;FridaGadget-dylib&#x5230;app&#x76EE;&#x5F55;&#xFF0C;&#x4F7F;&#x7528;optool&#x6DFB;&#x52A0;&#x5230;binary&#x6587;&#x4EF6;" class="headerlink" title="1.&#x89E3;&#x538B;ipa&#x6587;&#x4EF6;(ipa&#x5FC5;&#x987B;&#x4E3A;&#x7838;&#x58F3;&#x540E;&#x7684;&#x6587;&#x4EF6;)&#xFF0C;&#x590D;&#x5236;FridaGadget.dylib&#x5230;app&#x76EE;&#x5F55;&#xFF0C;&#x4F7F;&#x7528;optool&#x6DFB;&#x52A0;&#x5230;binary&#x6587;&#x4EF6;"></a>1.<strong>&#x89E3;&#x538B;ipa&#x6587;&#x4EF6;(ipa&#x5FC5;&#x987B;&#x4E3A;&#x7838;&#x58F3;&#x540E;&#x7684;&#x6587;&#x4EF6;)&#xFF0C;&#x590D;&#x5236;FridaGadget.dylib&#x5230;app&#x76EE;&#x5F55;&#xFF0C;&#x4F7F;&#x7528;optool&#x6DFB;&#x52A0;&#x5230;binary&#x6587;&#x4EF6;</strong></span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-替换provisioning-profile文件"><span class="nav-number">4.2.</span> <span class="nav-text"><a href="#2-&#x66FF;&#x6362;provisioning-profile&#x6587;&#x4EF6;" class="headerlink" title="2.&#x66FF;&#x6362;provisioning profile&#x6587;&#x4EF6;"></a>2.<strong>&#x66FF;&#x6362;provisioning profile&#x6587;&#x4EF6;</strong></span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-移除原有签名"><span class="nav-number">4.3.</span> <span class="nav-text"><a href="#3-&#x79FB;&#x9664;&#x539F;&#x6709;&#x7B7E;&#x540D;" class="headerlink" title="3.&#x79FB;&#x9664;&#x539F;&#x6709;&#x7B7E;&#x540D;"></a>3.<strong>&#x79FB;&#x9664;&#x539F;&#x6709;&#x7B7E;&#x540D;</strong></span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-重新签名"><span class="nav-number">4.4.</span> <span class="nav-text"><a href="#4-&#x91CD;&#x65B0;&#x7B7E;&#x540D;" class="headerlink" title="4.&#x91CD;&#x65B0;&#x7B7E;&#x540D;"></a>4.<strong>&#x91CD;&#x65B0;&#x7B7E;&#x540D;</strong></span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装和运行app"><span class="nav-number">5.</span> <span class="nav-text"><a href="#&#x5B89;&#x88C5;&#x548C;&#x8FD0;&#x884C;app" class="headerlink" title="&#x5B89;&#x88C5;&#x548C;&#x8FD0;&#x884C;app"></a>&#x5B89;&#x88C5;&#x548C;&#x8FD0;&#x884C;app</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试Frida"><span class="nav-number">6.</span> <span class="nav-text"><a href="#&#x6D4B;&#x8BD5;Frida" class="headerlink" title="&#x6D4B;&#x8BD5;Frida"></a>&#x6D4B;&#x8BD5;Frida</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">m4bln</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

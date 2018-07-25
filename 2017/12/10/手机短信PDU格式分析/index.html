@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Text模式和PDU模式目前，发送短消息常用Text和PDU(Protocol Data Unit，协议数据单元)模式。使用Text模式收发短信代码简单，实现起来十分容易，但最大的缺点是不能收发中文短信；而PDU模式不仅支持中文短信，也能发送英文短信。 PDU模式收发短信可以使用3种编码：7-bit、8-bit和UCS2编码。7-bit编码用于发送普通的ASCII字符，8-bit编码通常用于发送数">
+<meta name="keywords" content="Android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="手机短信PDU格式分析">
+<meta property="og:url" content="https://mabin004.github.io/2017/12/10/手机短信PDU格式分析/index.html">
+<meta property="og:site_name" content="m4bln">
+<meta property="og:description" content="Text模式和PDU模式目前，发送短消息常用Text和PDU(Protocol Data Unit，协议数据单元)模式。使用Text模式收发短信代码简单，实现起来十分容易，但最大的缺点是不能收发中文短信；而PDU模式不仅支持中文短信，也能发送英文短信。 PDU模式收发短信可以使用3种编码：7-bit、8-bit和UCS2编码。7-bit编码用于发送普通的ASCII字符，8-bit编码通常用于发送数">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-10T08:12:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="手机短信PDU格式分析">
+<meta name="twitter:description" content="Text模式和PDU模式目前，发送短消息常用Text和PDU(Protocol Data Unit，协议数据单元)模式。使用Text模式收发短信代码简单，实现起来十分容易，但最大的缺点是不能收发中文短信；而PDU模式不仅支持中文短信，也能发送英文短信。 PDU模式收发短信可以使用3种编码：7-bit、8-bit和UCS2编码。7-bit编码用于发送普通的ASCII字符，8-bit编码通常用于发送数">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://mabin004.github.io/2017/12/10/手机短信PDU格式分析/"/>
+
+
+
+
+
+  <title>手机短信PDU格式分析 | m4bln</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">m4bln</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-hint">
+          <a href="/hint/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            hint
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-todo">
+          <a href="/todo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            ToDo
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/10/手机短信PDU格式分析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">手机短信PDU格式分析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-10T15:51:00+08:00">
+                2017-12-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Text模式和PDU模式"><a href="#Text模式和PDU模式" class="headerlink" title="Text模式和PDU模式"></a>Text模式和PDU模式</h1><p>目前，发送短消息常用Text和PDU(Protocol Data Unit，协议数据单元)模式。使用Text模式收发短信代码简单，实现起来十分容易，但最大的缺点是不能收发中文短信；而PDU模式不仅支持中文短信，也能发送英文短信。</p>
+<p>PDU模式收发短信可以使用3种编码：7-bit、8-bit和UCS2编码。7-bit编码用于发送普通的ASCII字符，8-bit编码通常用于发送数据消息，UCS2编码用于发送Unicode字符。一般的PDU编码由A B C D E F G H I J K L M十三项组成。</p>
+<blockquote>
+<p>A：短信息中心地址长度，2位十六进制数(1字节)。<br>B：短信息中心号码类型，2位十六进制数。<br>C：短信息中心号码，B+C的长度将由A中的数据决定。<br>D：文件头字节，2位十六进制数。<br>E：信息类型，2位十六进制数。<br>F：被叫号码长度，2位十六进制数。<br>G：被叫号码类型，2位十六进制数，取值同B。<br>H：被叫号码，长度由F中的数据决定。<br>I：协议标识，2位十六进制数。<br>J：数据编码方案，2位十六进制数。<br>K：有效期，2位十六进制数。<br>L：用户数据长度，2位十六进制数。<br>M：用户数据，其长度由L中的数据决定。J中设定采用UCS2编码，这里是中英文的Unicode字符。</p>
+</blockquote>
+<h1 id="PDU举例"><a href="#PDU举例" class="headerlink" title="PDU举例"></a>PDU举例</h1><ul>
+<li>例1<br>发送：SMSC号码是+8613800250500，对方号码是13693092030，消息内容是“Hello!”。从手机发出的PDU串可以是<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">08 91 68 31 08 20 05 05 F0 11 00 0D 91 68 31 96 03 29 30 F0 00 00 00 06 C8 32 9B FD 0E 01</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>对照规范，具体分析：<br>SMSC#+8613800250500<br>Sender:+8613693092030<br>TP_PID:00<br>TP_DCS:00<br>TP_DCS-popis:Uncompressed Text<br>class:0<br>Alphabet:Default</p>
+<p>Hello!<br>Length:6</p>
+<p>(<a href="http://www.multisilicon.com/_a/blog/a22201774~/pdu.htm" target="_blank" rel="noopener">在线解析和生成PDU</a>     <a href="http://www.multisilicon.com/_a/blog/a22201774~/pdu.htm" target="_blank" rel="noopener">http://www.multisilicon.com/_a/blog/a22201774~/pdu.htm</a>)</p>
+<table>
+<thead>
+<tr>
+<th>分段</th>
+<th style="text-align:center">含义</th>
+<th style="text-align:right">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>08</td>
+<td style="text-align:center">SMSC地址信息的长度</td>
+<td style="text-align:right">共8个八位字节(包括91)</td>
+</tr>
+<tr>
+<td>91</td>
+<td style="text-align:center">SMSC地址格式(TON/NPI)</td>
+<td style="text-align:right">用国际格式号码(在前面加‘+’)</td>
+</tr>
+<tr>
+<td>68 31 08 20 05 05 F0</td>
+<td style="text-align:center">SMSC地址</td>
+<td style="text-align:right">8613800250500，补‘F’凑成偶数个</td>
+</tr>
+<tr>
+<td>11</td>
+<td style="text-align:center">基本参数(TP-MTI/VFP)</td>
+<td style="text-align:right">发送，TP-VP用相对格式</td>
+</tr>
+<tr>
+<td>00</td>
+<td style="text-align:center">消息基准值(TP-MR)</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td>0D</td>
+<td style="text-align:center">目标地址数字个数</td>
+<td style="text-align:right">共13个十进制数(不包括91和‘F’)</td>
+</tr>
+<tr>
+<td>91</td>
+<td style="text-align:center">目标地址格式(TON/NPI)</td>
+<td style="text-align:right">用国际格式号码(在前面加‘+’)</td>
+</tr>
+<tr>
+<td>68 31 96 03 29 30 F0</td>
+<td style="text-align:center">目标地址(TP-DA) 8613693092030，补‘F’凑成偶数个</td>
+</tr>
+<tr>
+<td>00</td>
+<td style="text-align:center">协议标识(TP-PID)</td>
+<td style="text-align:right">是普通GSM类型，点到点方式</td>
+</tr>
+<tr>
+<td>00</td>
+<td style="text-align:center">用户信息编码方式(TP-DCS)</td>
+<td style="text-align:right">7-bit编码</td>
+</tr>
+<tr>
+<td>00</td>
+<td style="text-align:center">有效期(TP-VP)</td>
+<td style="text-align:right">5分钟</td>
+</tr>
+<tr>
+<td>06</td>
+<td style="text-align:center">用户信息长度(TP-UDL)</td>
+<td style="text-align:right">实际长度6个字节</td>
+</tr>
+<tr>
+<td>C8</td>
+<td style="text-align:center">32 9B FD 0E 01</td>
+<td style="text-align:right">用户信息(TP-UD) “Hello!”</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>例2<br>接收：SMSC号码是+8613800250500，对方号码是13693092030，消息内容是“你好!”。手机接收到的PDU串可以是<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">08 91 68 31 08 20 05 05 F0 84 0D 91 68 31 96 03 29 30 F0 00 08 30 30 21 80 63 54 80 06 4F 60 59 7D 00 21</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>对照规范，具体分析：<br>SMSC#+8613800250500<br>Sender:+8613693092030<br>TimeStamp:12/03/03 08:36:45<br>TP_PID:00<br>TP_DCS:08<br>TP_DCS-popis:Uncompressed Text<br>class:0<br>Alphabet:UCS2(16)bit</p>
+<p>你好!<br>Length:3<br>(在线解析和生成PDU     <a href="http://www.multisilicon.com/_a/blog/a22201774~/pdu.htm" target="_blank" rel="noopener">http://www.multisilicon.com/_a/blog/a22201774~/pdu.htm</a>)</p>
+<table>
+<thead>
+<tr>
+<th>分段</th>
+<th>含义</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>08</td>
+<td>地址信息的长度</td>
+<td>个八位字节(包括91)</td>
+</tr>
+<tr>
+<td>91</td>
+<td>SMSC地址格式(TON/NPI)</td>
+<td>用国际格式号码(在前面加‘+’)</td>
+</tr>
+<tr>
+<td>68 31 08 20 05 05 F0</td>
+<td>SMSC地址</td>
+<td>8613800250500，补‘F’凑成偶数个</td>
+</tr>
+<tr>
+<td>84</td>
+<td>基本参数(TP-MTI/MMS/RP)</td>
+<td>接收，无更多消息，有回复地址</td>
+</tr>
+<tr>
+<td>0D</td>
+<td>回复地址数字个数</td>
+<td>共13个十进制数(不包括91和‘F’)</td>
+</tr>
+<tr>
+<td>91</td>
+<td>回复地址格式(TON/NPI)</td>
+<td>用国际格式号码(在前面加‘+’)</td>
+</tr>
+<tr>
+<td>68 31 96 03 29 30 F0</td>
+<td>回复地址(TP-RA)</td>
+<td>8613693092030，补‘F’凑成偶数个</td>
+</tr>
+<tr>
+<td>00</td>
+<td>协议标识(TP-PID)</td>
+<td>是普通GSM类型，点到点方式</td>
+</tr>
+<tr>
+<td>08</td>
+<td>用户信息编码方式(TP-DCS)</td>
+<td>UCS2编码</td>
+</tr>
+<tr>
+<td>30 30 21 80 63 54 80</td>
+<td>时间戳(TP-SCTS)</td>
+<td>2003-3-12 08:36:45  +8时区</td>
+</tr>
+<tr>
+<td>06</td>
+<td>用户信息长度(TP-UDL)</td>
+<td>实际长度6个字节</td>
+</tr>
+<tr>
+<td>4F 60 59 7D 00 21</td>
+<td>用户信息(TP-UD)</td>
+<td>“你好!”</td>
+</tr>
+</tbody>
+</table>
+<h1 id="Note"><a href="#Note" class="headerlink" title="Note"></a>Note</h1><p><strong>PDU的文本可以采用三种编码方式来对发送的内容进行编码，它们是7-bit、8-bit和UCS2编码。</strong></p>
+<ul>
+<li>7-bit编码用于发送普通的ASCII字符，它将一串7-bit的字符(最高位为0)编码成8-bit的数据，每8个字符可“压缩”成7个；</li>
+<li>8-bit编码通常用于发送数据消息，比如图片和铃声等；</li>
+<li>UCS2编码用于发送Unicode字符。</li>
+</ul>
+<p>PDU串的用户信息(TP-UD)段最大容量是140字节，所以在这三种编码方式下，可以发送的短消息的最大字符数分别是160、140（字节）和70。这里，将一个英文字母、一个汉字和一个数据字节都视为一个字符。</p>
+<p>（短信160个字符按照7位ASCII编码来换算，即160×7=1120位；汉字按照8位UCS-2编码，也就是说8位即1个字节，1个汉字又占2个字节，那么换算为汉字数就是1120/8/2=70。所以，一条短信是可以发160个英文或70个汉字的。）</p>
+<p>参考链接：<br>微博为什么140字 <a href="http://www.woshipm.com/pd/306996.html" target="_blank" rel="noopener">http://www.woshipm.com/pd/306996.html</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/10/test/" rel="next" title="Markdown语法">
+                <i class="fa fa-chevron-left"></i> Markdown语法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/11/安卓“Janus”漏洞分析（cve-）/" rel="prev" title="（待补充）安卓“Janus”漏洞分析（CVE-2017-13156)">
+                （待补充）安卓“Janus”漏洞分析（CVE-2017-13156) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">m4bln</p>
+              <p class="site-description motion-element" itemprop="description">影后入林到驿前</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Text模式和PDU模式"><span class="nav-number">1.</span> <span class="nav-text"><a href="#Text&#x6A21;&#x5F0F;&#x548C;PDU&#x6A21;&#x5F0F;" class="headerlink" title="Text&#x6A21;&#x5F0F;&#x548C;PDU&#x6A21;&#x5F0F;"></a>Text&#x6A21;&#x5F0F;&#x548C;PDU&#x6A21;&#x5F0F;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PDU举例"><span class="nav-number">2.</span> <span class="nav-text"><a href="#PDU&#x4E3E;&#x4F8B;" class="headerlink" title="PDU&#x4E3E;&#x4F8B;"></a>PDU&#x4E3E;&#x4F8B;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Note"><span class="nav-number">3.</span> <span class="nav-text"><a href="#Note" class="headerlink" title="Note"></a>Note</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">m4bln</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

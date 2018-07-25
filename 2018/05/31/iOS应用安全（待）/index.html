@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="越狱几种类型的越狱：  Tethered jailbreaks 不完美越狱，重启后无法保留  Semi-tethered jailbreaks  半完美越狱，必须通过连接电脑越狱，设备启动后会自动进入非越狱模式 Semi-untethered jailbreaks 半完美越狱，设备启动能自己进入到越狱模式，但内核的代码签名校验不会被自动禁用，需要通过启动一个应用完成 Untethered jail">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS应用安全—— 基础篇">
+<meta property="og:url" content="https://mabin004.github.io/2018/05/31/iOS应用安全（待）/index.html">
+<meta property="og:site_name" content="m4bln">
+<meta property="og:description" content="越狱几种类型的越狱：  Tethered jailbreaks 不完美越狱，重启后无法保留  Semi-tethered jailbreaks  半完美越狱，必须通过连接电脑越狱，设备启动后会自动进入非越狱模式 Semi-untethered jailbreaks 半完美越狱，设备启动能自己进入到越狱模式，但内核的代码签名校验不会被自动禁用，需要通过启动一个应用完成 Untethered jail">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-37.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-40.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-42.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-41.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-43.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-44.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-39.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-38.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-45.png">
+<meta property="og:updated_time" content="2018-06-18T07:38:03.717Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS应用安全—— 基础篇">
+<meta name="twitter:description" content="越狱几种类型的越狱：  Tethered jailbreaks 不完美越狱，重启后无法保留  Semi-tethered jailbreaks  半完美越狱，必须通过连接电脑越狱，设备启动后会自动进入非越狱模式 Semi-untethered jailbreaks 半完美越狱，设备启动能自己进入到越狱模式，但内核的代码签名校验不会被自动禁用，需要通过启动一个应用完成 Untethered jail">
+<meta name="twitter:image" content="https://mabin004.github.io/images/pasted-37.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://mabin004.github.io/2018/05/31/iOS应用安全（待）/"/>
+
+
+
+
+
+  <title>iOS应用安全—— 基础篇 | m4bln</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">m4bln</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-hint">
+          <a href="/hint/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            hint
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-todo">
+          <a href="/todo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            ToDo
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/05/31/iOS应用安全（待）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">iOS应用安全—— 基础篇</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-31T22:10:00+08:00">
+                2018-05-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="越狱"><a href="#越狱" class="headerlink" title="越狱"></a>越狱</h2><p>几种类型的越狱：</p>
+<ul>
+<li>Tethered jailbreaks 不完美越狱，重启后无法保留 </li>
+<li>Semi-tethered jailbreaks  半完美越狱，必须通过连接电脑越狱，<strong>设备启动后会自动进入非越狱模式</strong></li>
+<li>Semi-untethered jailbreaks 半完美越狱，设备启动能自己进入到越狱模式，但<strong>内核的代码签名校验不会被自动禁用</strong>，需要通过启动一个应用完成</li>
+<li>Untethered jailbreaks 完美越狱，一次越狱后即可永久越狱</li>
+</ul>
+<p>注意：<br>如果设备已经越狱，切勿升级系统，否则会丢失越狱</p>
+<p>根据iOS版本判断设备是否可以越狱：<br><a href="https://canijailbreak.com/" target="_blank" rel="noopener">Can I Jailbreak? https://canijailbreak.com/</a></p>
+<p>几个iPhone越狱相关的资源：</p>
+<ul>
+<li><a href="https://www.theiphonewiki.com/" target="_blank" rel="noopener">The iPhone Wiki</a></li>
+<li><a href="https://www.reddit.com/r/jailbreak/" target="_blank" rel="noopener">Reddit Jailbreak</a></li>
+</ul>
+<h2 id="Cydia"><a href="#Cydia" class="headerlink" title="Cydia"></a>Cydia</h2><p>通常在越狱完成后会自动安装Cydia，下面介绍几个在Cydia下需要安装的工具：</p>
+<ol>
+<li>openssh<br>默认的ssh账号是root，默认密码为alpine</li>
+<li>Frida<br>在Cydia中添加源 <a href="https://build.frida.re后直接搜索安装" target="_blank" rel="noopener">https://build.frida.re后直接搜索安装</a></li>
+<li>BigBoss Recommended Tools<br>unix命令行工具，iOS系统不提供，如wget, unrar, less,sqlite3等</li>
+<li>Class Dump<br>提取Mach-O文件信息</li>
+<li>Substrate<br>Hook工具</li>
+<li>AppList<br>查询所有安装的app</li>
+</ol>
+<h2 id="Needle"><a href="#Needle" class="headerlink" title="Needle"></a>Needle</h2><p>Needle是iOS平台上的一套动态测试，由mwr开发，类似于Android平台上的Drozer,但因系统的不同而功能不一。</p>
+<p>以下为mac上配置Needle的过程：</p>
+<ol>
+<li><p>安装依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">#Core dependencies</span><br><span class="line">brew install python</span><br><span class="line">brew install libxml2</span><br><span class="line">xcode-select --install</span><br><span class="line"></span><br><span class="line">#Python packages</span><br><span class="line">sudo -H pip install --upgrade --user readline</span><br><span class="line">sudo -H pip install --upgrade --user paramiko</span><br><span class="line">sudo -H pip install --upgrade --user sshtunnel</span><br><span class="line">sudo -H pip install --upgrade --user frida</span><br><span class="line">sudo -H pip install --upgrade --user biplist</span><br><span class="line">#sshpass</span><br><span class="line">brew install https://raw.githubusercontent.com/kadwanev/bigboybrew/master/Library/Formula/sshpass.rb</span><br><span class="line"></span><br><span class="line">#mitmproxy</span><br><span class="line">wget https://github.com/mitmproxy/mitmproxy/releases/download/v0.17.1/mitmproxy-0.17.1-osx.tar.gz</span><br><span class="line">tar -xvzf mitmproxy-0.17.1-osx.tar.gz</span><br><span class="line">sudo cp mitmproxy-0.17.1-osx/mitm* /usr/local/bin/</span><br><span class="line"></span><br><span class="line">#Download source</span><br><span class="line">git clone https://github.com/mwrlabs/needle.git</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>手机上安装needle代理<br>Cydia添加源<a href="http://mobiletools.mwrinfosecurity.com/cydia/,搜索NeedleAgent安装即可" target="_blank" rel="noopener">http://mobiletools.mwrinfosecurity.com/cydia/,搜索NeedleAgent安装即可</a></p>
+</li>
+<li><p>使用needle</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">$ python needle.py</span><br><span class="line">      __  _ _______ _______ ______         ______</span><br><span class="line">      | \ | |______ |______ | \     |      |______</span><br><span class="line">      | \_| |______ |______ |_____/ |_____ |______</span><br><span class="line">                  Needle v1.0 [mwr.to/needle]</span><br><span class="line">    [MWR InfoSecurity (@MWRLabs) - Marco Lancini (@LanciniMarco)]</span><br><span class="line"></span><br><span class="line">[needle] &gt; help</span><br><span class="line">Commands (type [help|?] &lt;topic&gt;):</span><br><span class="line">---------------------------------</span><br><span class="line">back exit info kill pull reload search shell show use</span><br><span class="line">exec_command help jobs load push resource set shell_local unset</span><br><span class="line"></span><br><span class="line">[needle] &gt; show options</span><br><span class="line"></span><br><span class="line">  Name                      Current Value                Required  Description</span><br><span class="line">  ------------------------  -------------                --------  -----------</span><br><span class="line">  AGENT_PORT                4444                         yes       Port on which the Needle Agent is listening</span><br><span class="line">  APP                                                    no        Bundle ID of the target application (e.g., com.example.app). Leave empty to launch wizard</span><br><span class="line">  DEBUG                     False                        yes       Enable debugging output</span><br><span class="line">  HIDE_SYSTEM_APPS          False                        yes       If set to True, only 3rd party apps will be shown</span><br><span class="line">  IP                        127.0.0.1                    yes       IP address of the testing device (set to localhost to use USB)</span><br><span class="line">  OUTPUT_FOLDER             /root/.needle/output         yes       Full path of the output folder, where to store the output of the modules</span><br><span class="line">  PASSWORD                  ********                     yes       SSH Password of the testing device</span><br><span class="line">  PORT                      2222                         yes       Port of the SSH agent on the testing device (needs to be != 22 to use USB)</span><br><span class="line">  PUB_KEY_AUTH              True                         yes       Use public key auth to authenticate to the device. Key must be present in the ssh-agent if a passphrase is used</span><br><span class="line">  SAVE_HISTORY              True                         yes       Persists command history across sessions</span><br><span class="line">  SKIP_OUTPUT_FOLDER_CHECK  False                        no        Skip the check that ensures the output folder does not already contain other files. It will automatically overwrite any file</span><br><span class="line">  USERNAME                  root                         yes       SSH Username of the testing device</span><br><span class="line">  VERBOSE                   True                         yes       Enable verbose output</span><br><span class="line"></span><br><span class="line">[needle] &gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="iOS目录结构"><a href="#iOS目录结构" class="headerlink" title="iOS目录结构"></a>iOS目录结构</h2><h3 id="OS-X和iOS目录对比"><a href="#OS-X和iOS目录对比" class="headerlink" title="OS X和iOS目录对比"></a>OS X和iOS目录对比</h3><p><img src="/images/pasted-37.png" alt="upload successful"></p>
+<h3 id="系统目录"><a href="#系统目录" class="headerlink" title="系统目录"></a>系统目录</h3><ul>
+<li>/Applications：存放所有的系统App和来自于Cydia的App，不包括StoreApp</li>
+</ul>
+<p><img src="/images/pasted-40.png" alt="upload successful"></p>
+<ul>
+<li>/Developer：如果一台设备连接Xcode后被指定为调试机，Xcode就会在iOS中生成该目录<ul>
+<li>/Developer/Applications</li>
+<li>/Developer/Library</li>
+<li>/Developer/Tools</li>
+<li>/Developer/usr</li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/pasted-42.png" alt="upload successful"></p>
+<ul>
+<li>/Library：存放一些提供系统支持的数据<ul>
+<li>/Library/MobileSubstrate/DynamicLibraries：存放Cydia安装程序的.plist和.dylib文件</li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/pasted-41.png" alt="upload successful"></p>
+<ul>
+<li>/System/Library：iOS文件系统中最重要的目录之一，存放大量系统组件<ul>
+<li>/System/Library/Frameworks：存放iOS中各种日常使用的framework</li>
+<li>/System/Library/PrivateFrameworks：存放iOS中未公开的私有framework</li>
+<li>/System/Library/CoreServices/SpringBoard.app：iOS桌面管理器</li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/pasted-43.png" alt="upload successful"></p>
+<ul>
+<li>/User：用户目录（mobile用户的home目录），实际指向/var/mobile，存放大量用户数据</li>
+</ul>
+<p><img src="/images/pasted-44.png" alt="upload successful"></p>
+<pre><code>- /var/mobile/Media/DCIM：存放照片
+- /var/mobile/Media/Recording：存放录音文件
+- /var/mobile/Library/SMS：存放短信数据库
+- /var/mobile/Library/Mail：存放邮件数据
+- /var/mobile/Containers：存放Apple Store的App。
+</code></pre><p><img src="/images/pasted-39.png" alt="upload successful"></p>
+<pre><code>- /var/mobile/Containers/Bundle：存放所有StoreApp的可执行文件和相关资源
+- /var/mobile/Containers/Data：存放所有StoreApp的数据，沙盒目录的真实目录
+</code></pre><h3 id="应用沙盒"><a href="#应用沙盒" class="headerlink" title="应用沙盒"></a>应用沙盒</h3><p>iOS系统把每个应用（StoreApp）以及数据都放到一个沙盒（sandbox）里面，应用只能访问自己沙盒目录里面的文件、网络资源等（也有例外，比如系统通讯录、照相机、照片等能在用户授权的情况下被第三方应用访问）</p>
+<p>应用沙盒目录结构如下图：</p>
+<p><img src="/images/pasted-38.png" alt="upload successful"></p>
+<p>沙盒在逻辑上包含两个部分：<strong>Bundle Container</strong>和<strong>Data Container</strong>，两者在iOS文件系统中的位置是平行的，分别是/var/mobile/Containers/Bundle和/var/mobile/Containers/Data。</p>
+<p>实际开发中，通过NSHomeDirectory()方法获取到沙盒根目录对应的是Data Container的路径。在越狱设备中可以通过ipainstaller工具获得app路径：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">iPhone:~ root# ipainstaller -l</span><br><span class="line">...</span><br><span class="line">sg.vp.UnCrackable1</span><br><span class="line"></span><br><span class="line">iPhone:~ root# ipainstaller -i sg.vp.UnCrackable1</span><br><span class="line">...</span><br><span class="line">Bundle: /private/var/mobile/Containers/Bundle/Application/A8BD91A9-3C81-4674-A790-AF8CDCA8A2F1</span><br><span class="line">Application: /private/var/mobile/Containers/Bundle/Application/A8BD91A9-3C81-4674-A790-AF8CDCA8A2F1/UnCrackable Level 1.app</span><br><span class="line">Data: /private/var/mobile/Containers/Data/Application/A8AE15EE-DC8B-4F1C-91A5-1FED35258D87</span><br></pre></td></tr></table></figure></p>
+<h4 id="Bundle-Container"><a href="#Bundle-Container" class="headerlink" title="Bundle Container"></a>Bundle Container</h4><p>bundle的概念源自于NeXTSTEP，它是一个按某种标准结构来组织的目录，Bundle中包含了<strong>二进制文件及运行所需的资源</strong>。</p>
+<p>正向开发中常见的App和framework都是以bundle的形式存在。在越狱iOS中常见的PreferenceBundle是一种依附于Settings的App，结构与App类似，本质也是bundle。Framework也是bundle，但framework的bundle中存放的是一个dylib（动态库），而非可执行文件。</p>
+<p>在正向开发时，我们上传至App Store的ipa（iPhone Application）包，解压后会有一个Payload目录，其内部又包含一个.app目录，这个目录就是一个App的目录结构，也是一个bundle。</p>
+<p>Bundle Container位于/var/mobile/Containers/Bundle/Application/XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX/主要用于存放<strong>静态资源</strong>，主要包含以下目录和文件：</p>
+<ul>
+<li><p><strong>MyApp.app</strong><br>存放可执行文件和资源文件，包括：打包时的资源文件、本地文件、可执行文件、.plist文件。这个目录不会被iTunes同步。</p>
+</li>
+<li><p><strong>iTunesArtWork</strong></p>
+</li>
+<li><p><strong>iTunesMetadata.plist</strong></p>
+<h4 id="Data-Container"><a href="#Data-Container" class="headerlink" title="Data Container"></a>Data Container</h4><p>Data Container位于/var/mobile/Containers/Data/Application/YYYYYYYY-YYYY-YYYY-YYYYYYYYYYYY/，主要用于存放<strong>App运行时产生的动态数据</strong>，其主要包含以下目录和文件：</p>
+</li>
+<li><strong>Documents</strong><br>存放应用运行时生成的并且需要保存的不可再生数据。注：iTunes或iCloud同步设备时会备份该目录</li>
+<li><strong>Library</strong><ul>
+<li>Library/Caches 存放应用运行时生成且需要保存的可再生数据，比如网络请求，用户需要负责删除对应文件。iTunes或iCloud不同步。</li>
+<li>Library/Preferences 存放偏好设置。使用NSUserDefaults写的设置数据都会保存在该目录下的一个plist文件中。iTunes或iCloud同步设备时备份该目录。</li>
+</ul>
+</li>
+<li><strong>tmp</strong><br>存放应用下次启动不再需要的临时文件。当应用不再需要这些文件的时候，需要主动将其删除。（当应用不再运行的时候，系统可能会将此目录清空。）这个目录不会被iTunes同步。</li>
+</ul>
+<h4 id="沙盒路径获取"><a href="#沙盒路径获取" class="headerlink" title="沙盒路径获取"></a>沙盒路径获取</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">// 沙盒目录</span><br><span class="line">NSLog(@&quot;%@&quot;,NSHomeDirectory());</span><br><span class="line">  </span><br><span class="line">// MyApp.app</span><br><span class="line">NSLog(@&quot;%@&quot;,[[NSBundle mainBundle] bundlePath]);</span><br><span class="line">  </span><br><span class="line">// Documents</span><br><span class="line">NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);</span><br><span class="line">NSString *docPath = [paths objectAtIndex:0];</span><br><span class="line">NSLog(@&quot;%@&quot;,docPath);</span><br><span class="line">  </span><br><span class="line">// Library</span><br><span class="line">NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);</span><br><span class="line">NSString *libPath = [paths objectAtIndex:0];</span><br><span class="line">NSLog(@&quot;%@&quot;,libPath);</span><br><span class="line">  </span><br><span class="line">// tmp</span><br><span class="line">NSLog(@&quot;%@&quot;,NSTemporaryDirectory());</span><br></pre></td></tr></table></figure>
+<h2 id="iOS二进制文件"><a href="#iOS二进制文件" class="headerlink" title="iOS二进制文件"></a>iOS二进制文件</h2><p>iOS逆向的目标主要包含三类二进制文件：<strong>Application</strong>、<strong>Dynamic Library</strong>、<strong>Daemon</strong></p>
+<h3 id="Application"><a href="#Application" class="headerlink" title="Application"></a><strong>Application</strong></h3><p>Application，即我们最熟悉的App。App的Bundle目录有以下三个部分比较重要：</p>
+<ul>
+<li><p>Info.plist<br>Info.plist记录了App的基本信息，如：bundle identifier、可执行文件名、图标文件名等。</p>
+</li>
+<li><p>可执行文件<br>查看Info.plist，即可定位可执行文件</p>
+</li>
+<li><p>lproj目录<br>lproj目录下存放的是各种本地化的字符串</p>
+</li>
+</ul>
+<p><strong>系统App VS. StoreApp</strong><br>/Applications/目录下存放系统App（包括CydiaApp）；/var/mobile/Containers/目录下存放StoreApp。其区别在于：</p>
+<ul>
+<li><p>目录结构<br>两种App的Bundle目录区别不大，都含有Info.plist、可执行文件、lproj目录等。只是Data目录的位置不同：StoreApp的数据目录在/var/mobile/Containers/Data/下，以mobile权限运行的系统App的数据目录在/var/mobile/下，以root权限运行的系统App的数据目录在/var/root/下。</p>
+</li>
+<li><p>安装格式和权限<br>Cydia App的安装格式一般是deb，StoreApp的安装格式一般是ipa。前者的属主用户和属主组一般是root和admin，能够以root权限运行；后者的属主用户和属主组都是mobile，只能以mobile权限运行。</p>
+</li>
+</ul>
+<h3 id="Dynamic-Library"><a href="#Dynamic-Library" class="headerlink" title="Dynamic Library"></a><strong>Dynamic Library</strong></h3><p>Dynamic Library简称dylib，即动态链接库。在正向开发中，在Xcode工程中导入的各种framework，链接的各种lib，其本质都是dylib。</p>
+<p>在iOS中，lib分为static和dynamic两种，其中static lib在编译阶段成为App可执行文件的一部分，会增加可执行文件的大小。dylib则不会改变可执行文件的大小，只有当App运行时调用到dylib时，iOS才会把它加载进内存，成为App进程的一部分。</p>
+<p>dylib是逆向工程的重要目标类型，但其本身并不是可执行文件，不能独立运行，只能为别的进程服务，而且它们寄生在别的进程里，成为这个进程的一部分。因此，dylib的权限是由它寄生的那个App决定的，同一个dylib寄生在系统App和StoreApp里时的权限是不同的。</p>
+<p>越狱iOS中，Cydia里的各种tweak无一不是以dylib的形式工作的。</p>
+<h3 id="Daemon"><a href="#Daemon" class="headerlink" title="Daemon"></a><strong>Daemon</strong></h3><p>iOS的daemon主要由一个可执行文件和一个plist文件构成。iOS的根进程是launchd，其会在开机时检查/System/Library/LaunchDaemons和/Library/LaunchDaemons下所有格式符合规定的plist文件，然后启动对应的daemon。这里的plist文件与App中的Info.plist文件作用类似，即记录Daemon的基本信息。</p>
+<h2 id="配置文件（provisioning-profile）和开发者证书"><a href="#配置文件（provisioning-profile）和开发者证书" class="headerlink" title="配置文件（provisioning profile）和开发者证书"></a>配置文件（provisioning profile）和开发者证书</h2><p>iOS有严格的代码签名检测，只用通过签名检测的代码才可以运行，而代码签名需要provisioning profile。</p>
+<p>provisioning profile（供应配合文件）是由苹果签名的一个plist文件，Provisioning Profile文件包含了：证书，App ID，设备，后缀名为.mobileprovision。<br><img src="/images/pasted-45.png" alt="upload successful"><br>Provisioning Profile决定Xcode用哪个证书（公钥）/私钥组合（Key Pair/Signing Identity）来签署应用程序（Signing Product）,将在应用程序打包时嵌入到.ipa包里。安装应用程序时，Provisioning Profile文件被拷贝到iOS设备中，运行该iOS App的设备也通过它来认证安装的程序。</p>
+<p>如果要打包或者在真机上运行一个APP，一般要经历以下三步：</p>
+<ul>
+<li>首先，需要证书对应的私钥来进行签名，用于标识这个APP是合法、安全、完整的；</li>
+<li>其次，需要指明它的App ID，并且验证Bundle ID是否与其一致；</li>
+<li>最后，如果是真机调试，需要确认这台设备是否授权运行该APP。</li>
+</ul>
+<p>获得Provisioning Profile和证书有两个途径：</p>
+<ul>
+<li><p><strong>1. 注册iOS开发者账号</strong><br>在<a href="https://developer.apple.com/programs/enroll/" target="_blank" rel="noopener">https://developer.apple.com/programs/enroll/</a> 上注册开发者账号，个人开发者需要缴纳99$费用，这种途径开发的应用可以在apple store上发行。<br>使用如下命令可以列出所有的账号：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ security find-identity -p codesigning -v</span><br><span class="line">  1) 61FA3547E0AF42A11E233F6A2B255E6B6AF262CE &quot;iPhone Distribution: Vantage Point Security Pte. Ltd.&quot;</span><br><span class="line">  2) 8004380F331DCA22CC1B47FB1A805890AE41C938 &quot;iPhone Developer: Bernhard Müller (RV852WND79)&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>2. 使用iTunes账号</strong><br>apple允许配置一个免费的provisioning profile，允许在设备上对自己开发的应用进行调试，但不能上传到apple store上。</p>
+</li>
+</ul>
+<p>参考：</p>
+<ol>
+<li><a href="https://www.jianshu.com/p/351be39f959e" target="_blank" rel="noopener">https://www.jianshu.com/p/351be39f959e</a></li>
+<li><a href="https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/" target="_blank" rel="noopener">https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/</a></li>
+</ol>
+<p>参考资料：</p>
+<ol>
+<li>iOS逆向工程基础篇 <a href="http://chuquan.me/2018/02/06/ios-reverse-engineering-basis/" target="_blank" rel="noopener">http://chuquan.me/2018/02/06/ios-reverse-engineering-basis/</a></li>
+<li>owasp - Setting up a Testing Environment for iOS Apps <a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06b-Basic-Security-Testing.md" target="_blank" rel="noopener">https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06b-Basic-Security-Testing.md</a></li>
+<li>iOS底层基础知识-文件目录结构 <a href="http://www.cnblogs.com/wujy/archive/2016/02/13/5188302.html" target="_blank" rel="noopener">http://www.cnblogs.com/wujy/archive/2016/02/13/5188302.html</a></li>
+<li>mac os术语表 <a href="https://bbs.feng.com/read-htm-tid-249.html" target="_blank" rel="noopener">https://bbs.feng.com/read-htm-tid-249.html</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/14/零宽度空格-Zero-width-space/" rel="next" title="零宽度空格 Zero-width space">
+                <i class="fa fa-chevron-left"></i> 零宽度空格 Zero-width space
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/11/Android-JsBridge/" rel="prev" title="Android JsBridge">
+                Android JsBridge <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">m4bln</p>
+              <p class="site-description motion-element" itemprop="description">影后入林到驿前</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#越狱"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x8D8A;&#x72F1;" class="headerlink" title="&#x8D8A;&#x72F1;"></a>&#x8D8A;&#x72F1;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cydia"><span class="nav-number">2.</span> <span class="nav-text"><a href="#Cydia" class="headerlink" title="Cydia"></a>Cydia</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Needle"><span class="nav-number">3.</span> <span class="nav-text"><a href="#Needle" class="headerlink" title="Needle"></a>Needle</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iOS目录结构"><span class="nav-number">4.</span> <span class="nav-text"><a href="#iOS&#x76EE;&#x5F55;&#x7ED3;&#x6784;" class="headerlink" title="iOS&#x76EE;&#x5F55;&#x7ED3;&#x6784;"></a>iOS&#x76EE;&#x5F55;&#x7ED3;&#x6784;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#OS-X和iOS目录对比"><span class="nav-number">4.1.</span> <span class="nav-text"><a href="#OS-X&#x548C;iOS&#x76EE;&#x5F55;&#x5BF9;&#x6BD4;" class="headerlink" title="OS X&#x548C;iOS&#x76EE;&#x5F55;&#x5BF9;&#x6BD4;"></a>OS X&#x548C;iOS&#x76EE;&#x5F55;&#x5BF9;&#x6BD4;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#系统目录"><span class="nav-number">4.2.</span> <span class="nav-text"><a href="#&#x7CFB;&#x7EDF;&#x76EE;&#x5F55;" class="headerlink" title="&#x7CFB;&#x7EDF;&#x76EE;&#x5F55;"></a>&#x7CFB;&#x7EDF;&#x76EE;&#x5F55;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用沙盒"><span class="nav-number">4.3.</span> <span class="nav-text"><a href="#&#x5E94;&#x7528;&#x6C99;&#x76D2;" class="headerlink" title="&#x5E94;&#x7528;&#x6C99;&#x76D2;"></a>&#x5E94;&#x7528;&#x6C99;&#x76D2;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Bundle-Container"><span class="nav-number">4.3.1.</span> <span class="nav-text"><a href="#Bundle-Container" class="headerlink" title="Bundle Container"></a>Bundle Container</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Data-Container"><span class="nav-number">4.3.2.</span> <span class="nav-text"><a href="#Data-Container" class="headerlink" title="Data Container"></a>Data Container</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#沙盒路径获取"><span class="nav-number">4.3.3.</span> <span class="nav-text"><a href="#&#x6C99;&#x76D2;&#x8DEF;&#x5F84;&#x83B7;&#x53D6;" class="headerlink" title="&#x6C99;&#x76D2;&#x8DEF;&#x5F84;&#x83B7;&#x53D6;"></a>&#x6C99;&#x76D2;&#x8DEF;&#x5F84;&#x83B7;&#x53D6;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iOS二进制文件"><span class="nav-number">5.</span> <span class="nav-text"><a href="#iOS&#x4E8C;&#x8FDB;&#x5236;&#x6587;&#x4EF6;" class="headerlink" title="iOS&#x4E8C;&#x8FDB;&#x5236;&#x6587;&#x4EF6;"></a>iOS&#x4E8C;&#x8FDB;&#x5236;&#x6587;&#x4EF6;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Application"><span class="nav-number">5.1.</span> <span class="nav-text"><a href="#Application" class="headerlink" title="Application"></a><strong>Application</strong></span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dynamic-Library"><span class="nav-number">5.2.</span> <span class="nav-text"><a href="#Dynamic-Library" class="headerlink" title="Dynamic Library"></a><strong>Dynamic Library</strong></span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Daemon"><span class="nav-number">5.3.</span> <span class="nav-text"><a href="#Daemon" class="headerlink" title="Daemon"></a><strong>Daemon</strong></span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置文件（provisioning-profile）和开发者证书"><span class="nav-number">6.</span> <span class="nav-text"><a href="#&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#xFF08;provisioning-profile&#xFF09;&#x548C;&#x5F00;&#x53D1;&#x8005;&#x8BC1;&#x4E66;" class="headerlink" title="&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#xFF08;provisioning profile&#xFF09;&#x548C;&#x5F00;&#x53D1;&#x8005;&#x8BC1;&#x4E66;"></a>&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#xFF08;provisioning profile&#xFF09;&#x548C;&#x5F00;&#x53D1;&#x8005;&#x8BC1;&#x4E66;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">m4bln</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

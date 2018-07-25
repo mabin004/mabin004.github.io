@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="应用开发中经常会有从web端启动App的需求，这里总结了常见的几种方式。 Android0x0 自定义schemeAndroid上常用的是通过scheme协议的方式唤醒本地app客户端。即App在AndroidManifest.xml中为要打开的Activity注册一个intent-filter,添加scheme,并注明host和data等关键字段，前端保持一致后就可以实现在Web页中调起本地Ap">
+<meta name="keywords" content="Android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Web调起APP研究">
+<meta property="og:url" content="https://mabin004.github.io/2018/04/28/Web调起APP研究/index.html">
+<meta property="og:site_name" content="m4bln">
+<meta property="og:description" content="应用开发中经常会有从web端启动App的需求，这里总结了常见的几种方式。 Android0x0 自定义schemeAndroid上常用的是通过scheme协议的方式唤醒本地app客户端。即App在AndroidManifest.xml中为要打开的Activity注册一个intent-filter,添加scheme,并注明host和data等关键字段，前端保持一致后就可以实现在Web页中调起本地Ap">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-06-11T07:46:50.561Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Web调起APP研究">
+<meta name="twitter:description" content="应用开发中经常会有从web端启动App的需求，这里总结了常见的几种方式。 Android0x0 自定义schemeAndroid上常用的是通过scheme协议的方式唤醒本地app客户端。即App在AndroidManifest.xml中为要打开的Activity注册一个intent-filter,添加scheme,并注明host和data等关键字段，前端保持一致后就可以实现在Web页中调起本地Ap">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://mabin004.github.io/2018/04/28/Web调起APP研究/"/>
+
+
+
+
+
+  <title>Web调起APP研究 | m4bln</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">m4bln</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-hint">
+          <a href="/hint/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            hint
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-todo">
+          <a href="/todo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            ToDo
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/04/28/Web调起APP研究/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Web调起APP研究</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-28T10:49:00+08:00">
+                2018-04-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>应用开发中经常会有从web端启动App的需求，这里总结了常见的几种方式。</p>
+<h1 id="Android"><a href="#Android" class="headerlink" title="Android"></a>Android</h1><h2 id="0x0-自定义scheme"><a href="#0x0-自定义scheme" class="headerlink" title="0x0 自定义scheme"></a>0x0 自定义scheme</h2><p>Android上常用的是通过scheme协议的方式唤醒本地app客户端。即App在AndroidManifest.xml中为要打开的Activity注册一个intent-filter,添加scheme,并注明host和data等关键字段，前端保持一致后就可以实现在Web页中调起本地App了。</p>
+<p>注册scheme的代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;intent-filter&gt;</span><br><span class="line">  &lt;action android:name=&quot;android.intent.action.VIEW&quot;/&gt;</span><br><span class="line">  &lt;category android:name=&quot;android.intent.category.DEFAULT&quot;/&gt;</span><br><span class="line">  &lt;category android:name=&quot;android.intent.category.BROWSABLE&quot;/&gt;</span><br><span class="line">  &lt;!--BROWSABLE指定该Activity能被浏览器安全调用--&gt;</span><br><span class="line">  &lt;data android:host=&quot;xyz.com&quot; android:scheme=&quot;m4bln&quot;/&gt;</span><br><span class="line">&lt;/intent-filter&gt;</span><br></pre></td></tr></table></figure></p>
+<p>这里的action、category、data都必须完全匹配才能获得intent，android.intent.category.DEFAULT是默认的，有实际意义的是android.intent.category.BROWSABLE，表示允许通过浏览器启动该activity（调起App）。data限定了触发条件，当scheme为m4bln且host为xyz.com时才匹配，例如浏览器访问m4bln://xyz.com，能够匹配成功，App就起来了。</p>
+<h2 id="0x1-Web页打开App"><a href="#0x1-Web页打开App" class="headerlink" title="0x1 Web页打开App"></a>0x1 Web页打开App</h2><p>通过Web页打开App有多种方式，打开方式也因直接在浏览器打开和在webview中打开而异，这里分别进行尝试：</p>
+<h4 id="a标签"><a href="#a标签" class="headerlink" title="a标签"></a>a标签</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;m4bln://xyz.com&quot;&gt;打开App&lt;/a&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="location-href"><a href="#location-href" class="headerlink" title="location.href"></a>location.href</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">document.location.href=&quot;m4bln://xyz.com&quot;</span><br></pre></td></tr></table></figure>
+<h4 id="iframe"><a href="#iframe" class="headerlink" title="iframe"></a>iframe</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;iframe src=&quot;m4bln://xyz.com&quot;&gt;&lt;/iframe&gt;</span><br></pre></td></tr></table></figure>
+<p>注意：<br>安卓chrome 浏览器version 25之后版本发生了改变。不能在通过设置iframe标签的src属性来启动app了。取而代之的是<strong>通过自定义scheme实现用户手势启动app或者使用Chrome Intent语法（参考下文）</strong></p>
+<p>这里我们对比在浏览器中和webview中打开页面的情况：</p>
+<h3 id="浏览器中打开"><a href="#浏览器中打开" class="headerlink" title="浏览器中打开"></a>浏览器中打开</h3><p>根据<a href="https://developer.chrome.com/multidevice/android/intents" target="_blank" rel="noopener">官方文档</a>, Chrome浏览器在通过自定义Scheme唤起App的时候，需要绑定用户的点击事件触发，而在浏览器地址栏里直接输入是不可以的。</p>
+<p>因此，当我们想要用户打开网页就直接进入App时，在Chrome浏览器地址栏里直接输是无法实现的，但可以通过其他方式实现，例如绑定所有的事件，让用户碰一下屏幕还是可以轻松做到的，参考自动写入剪贴板的实现，而通过点击url的方式则可以自动唤起App。</p>
+<p>例如，用户点开短信中的url,此时无需用户点击便可以自动唤起App。（参考之前对于支付宝的克隆攻击Demo）</p>
+<p>WebView中自动唤起App实现代码可能如下：</p>
+<ol>
+<li><p>对于a标签</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;a id=&quot;a&quot; href=&quot;m4bln://xyz.com&quot;&gt;打开App&lt;/a&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">window.onload=function()&#123;</span><br><span class="line">document.getElementById(&quot;a&quot;).click();</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>对于location.href</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">window.onload=function()&#123;</span><br><span class="line">document.location.href=&quot;m4bln://xyz.com&quot;;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="WebView中打开"><a href="#WebView中打开" class="headerlink" title="WebView中打开"></a>WebView中打开</h3><p>在webview中，直接通过loadurl(“m4bln://xyz.com”)是无法打开App的，需要使用shouldOverrideUrlLoading和shouldInterceptRequest进行拦截和处理。</p>
+<p>注：<br><strong><br>shouldOverrideUrlLoading 用于拦截页面切换<br>shouldInterceptRequest 拦截所有的资源请求，例如css,js,iframe
+</strong></p>
+<blockquote>
+<p>shouldOverrideUrlLoading is called when a new page is about to be opened whereas shouldInterceptRequest is called each time a resource is loaded like a css file, a js file etc</p>
+</blockquote>
+<p>因此，对于a标签或document.location都属于页面切换类型，所以用shouldOverrideUrlLoading来实现处理<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">wv.setWebViewClient(new WebViewClient()&#123;</span><br><span class="line">/*</span><br><span class="line">注： 在Android N中 shouldOverrideUrlLoading(WebView view, String url)被废弃，改为shouldOverrideUrlLoading(WebView view, WebResourceRequest request),通过request.getUrl()来获取url。</span><br><span class="line">@Override</span><br><span class="line">public boolean shouldOverrideUrlLoading(WebView view, String url) &#123;</span><br><span class="line">        if(你想在当前页面打开新连接)&#123;</span><br><span class="line">            view.loadUrl(url);</span><br><span class="line">        &#125;else if(在一个新的activity中打开新连接)&#123;</span><br><span class="line">            Intent intent = new Intent(mContext, NewWebViewActivity.class);</span><br><span class="line">            intent.putputExtra(&quot;URL&quot;, url);</span><br><span class="line">            startActivity(intent);</span><br><span class="line">        &#125;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line">public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) &#123;</span><br><span class="line">    String url=&quot;&quot;;</span><br><span class="line">    try&#123;</span><br><span class="line"></span><br><span class="line">        url = request.getUrl().toString();</span><br><span class="line">        if(url.startsWith(&quot;m4bln://&quot;))&#123;</span><br><span class="line">            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));</span><br><span class="line">            startActivity(intent);</span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;catch (Exception e)&#123;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">    view.loadUrl(url);</span><br><span class="line">    return true;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>而对于iframe，上文中虽然提到在浏览器中无法达到目的，但在webview中可以通过shouldInterceptRequest来实现。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line">注： shouldInterceptRequest(WebView view, String url)同样被废弃，这里不再描述</span><br><span class="line">*/</span><br><span class="line">@Override</span><br><span class="line">public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) &#123;</span><br><span class="line">    </span><br><span class="line">    String scheme = request.getUrl().getScheme();</span><br><span class="line">    if (scheme.equals(&quot;m4bln&quot;)) &#123;</span><br><span class="line">        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(request.getUrl().toString()));</span><br><span class="line">        startActivity(intent);</span><br><span class="line">        return null;</span><br><span class="line">    &#125;    </span><br><span class="line">    return super.shouldInterceptRequest(view, request);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>webview完成上述设置后，使用webview加载web页面，均可以实现一启动便自动唤起对应的App。</p>
+<p>需要注意的是：</p>
+<ol>
+<li><p><strong>不是使用webview.loadurl(“m4bln://xyz.com”)直接加载scheme,loadurl加载的是和上述浏览器部分相同的web页。</strong></p>
+</li>
+<li><p><strong>如果webview没有作相应的设置，是无法再通过scheme打开其他App的</strong></p>
+</li>
+<li><p><strong>有人曾经想过利用自定义scheme实现App之间的一个循环启动，实现loop还得取决于App中的webview是如何配置的</strong></p>
+</li>
+<li><p><strong>App的webview里利用自己的scheme唤起自己确实会导致死循环</strong></p>
+</li>
+</ol>
+<h2 id="0x2-Chrome-Intent"><a href="#0x2-Chrome-Intent" class="headerlink" title="0x2 Chrome Intent"></a>0x2 Chrome Intent</h2><p>为了更有序的打通浏览器页面和本地应用推出了Chrome Intent机制，作为标准协议进行推广，其格式如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">intent:</span><br><span class="line">   HOST/URI-path // Optional host </span><br><span class="line">   #Intent; </span><br><span class="line">      package=[string]; </span><br><span class="line">      action=[string]; </span><br><span class="line">      category=[string]; </span><br><span class="line">      component=[string]; </span><br><span class="line">      scheme=[string]; </span><br><span class="line">   end;</span><br></pre></td></tr></table></figure></p>
+<p>当打开本地App失败的时候，还可以使用如下代码重定向到一个新页面，例如App下载页等。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">S.browser_fallback_url=[encoded_full_url]</span><br></pre></td></tr></table></figure></p>
+<p>S.<name>用来传递string类型的参数，i.<name>用来传递整数类型参数，例如：</name></name></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">intent://foobar/#Intent;action=myaction;type=text/plain;S.xyz=123;i.abc=678;end</span><br><span class="line">  </span><br><span class="line">其他参数类型如下：</span><br><span class="line">String =&gt; &apos;S&apos;  </span><br><span class="line">Boolean =&gt;&apos;B&apos;  </span><br><span class="line">Byte =&gt; &apos;b&apos;  </span><br><span class="line">Character =&gt; &apos;c&apos;  </span><br><span class="line">Double =&gt; &apos;d&apos;  </span><br><span class="line">Float =&gt; &apos;f&apos;  </span><br><span class="line">Integer =&gt; &apos;i&apos;  </span><br><span class="line">Long =&gt; &apos;l&apos;  </span><br><span class="line">Short =&gt; &apos;s&apos;</span><br></pre></td></tr></table></figure>
+<p>对于上述例子，我们构造intent为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">intent://xyz.com#Intent;scheme=m4bln;package=com.m4bln.webviewgps;S.browser_fallback_url=https%3A%2F%2Fwww.baidu.com;end</span><br></pre></td></tr></table></figure></p>
+<p>需要注意的是：</p>
+<ol>
+<li><p>package、action等字段非必须，取决于应用的AndroidMenifest.xml配置，上述例子中使用”intent://xyz.com#Intent;scheme=m4bln;end”也可以成功唤起App.(参照Android源码中对intent://的解析 <a href="http://androidxref.com/7.1.2_r36/xref/frameworks/base/core/java/android/content/Intent.java#5044" target="_blank" rel="noopener">http://androidxref.com/7.1.2_r36/xref/frameworks/base/core/java/android/content/Intent.java#5044</a>)</p>
+</li>
+<li><p>除了intent://，intent:，android-app://可以达到同样效果，同样参照源码</p>
+</li>
+<li><p>仅有Chrome支持这种方式，部分国产浏览器屏蔽了intent://这种scheme</p>
+</li>
+<li><p>Chrome Intent同样需要用户点击事件, “#Intent”中的“I”必须为大写！！！</p>
+</li>
+<li><p>Chrome Intent在webview里不支持，同样需要shouldInterceptRequest等来处理</p>
+</li>
+</ol>
+<h3 id="App获取Web传参"><a href="#App获取Web传参" class="headerlink" title="App获取Web传参"></a>App获取Web传参</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">    //...</span><br><span class="line"></span><br><span class="line">    // 获取uri参数</span><br><span class="line">    Intent intent = getIntent();</span><br><span class="line">    String scheme = intent.getScheme();</span><br><span class="line">    Uri uri = intent.getData();</span><br><span class="line">    String str = &quot;&quot;;</span><br><span class="line">    if (uri != null) &#123;</span><br><span class="line">        String host = uri.getHost();</span><br><span class="line">        String dataString = intent.getDataString();</span><br><span class="line">        String from = uri.getQueryParameter(&quot;from&quot;);</span><br><span class="line">        String path = uri.getPath();</span><br><span class="line">        String encodedPath = uri.getEncodedPath();</span><br><span class="line">        String queryString = uri.getQuery();</span><br><span class="line"></span><br><span class="line">        //...根据uri判断打开哪个页，或者打开哪个功能</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="0x3-App监听本地特定端口"><a href="#0x3-App监听本地特定端口" class="headerlink" title="0x3 App监听本地特定端口"></a>0x3 App监听本地特定端口</h2><p>参照WormWhole漏洞（<a href="http://www.freebuf.com/vuls/83789.html）" target="_blank" rel="noopener">http://www.freebuf.com/vuls/83789.html）</a></p>
+<h1 id="iOS"><a href="#iOS" class="headerlink" title="iOS"></a>iOS</h1><h2 id="0x0-自定义Scheme"><a href="#0x0-自定义Scheme" class="headerlink" title="0x0 自定义Scheme"></a>0x0 自定义Scheme</h2><p>在Info.plist中配置Scheme</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;key&gt;CFBundleURLTypes&lt;/key&gt;</span><br><span class="line">	&lt;array&gt;</span><br><span class="line">		&lt;dict&gt;</span><br><span class="line">			&lt;key&gt;CFBundleURLName&lt;/key&gt;</span><br><span class="line">			&lt;string&gt;com.xyz&lt;/string&gt;</span><br><span class="line">			&lt;key&gt;CFBundleURLSchemes&lt;/key&gt;</span><br><span class="line">			&lt;array&gt;</span><br><span class="line">				&lt;string&gt;m4bln&lt;/string&gt;</span><br><span class="line">			&lt;/array&gt;</span><br><span class="line">		&lt;/dict&gt;</span><br><span class="line">	&lt;/array&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="0x1-Universal-links"><a href="#0x1-Universal-links" class="headerlink" title="0x1 Universal links"></a>0x1 Universal links</h2><p>Universal links为iOS9上一个所谓通用链接的深层链接特性，一种能够方便的通过传统HTTP链接来启动app，使用相同的网址打开网站和app；通过唯一的网址，就可以链接一个特定的视图到你的app里面，不需要特别的scheme。</p>
+<ol>
+<li>通过scheme启动app时，浏览器会弹出确认框提示用户是否打开，Universal links不会提示，体验更好；</li>
+<li>Universal links可在微信浏览器中打开外部app</li>
+</ol>
+<p>参考资料：</p>
+<ol>
+<li><a href="https://developer.chrome.com/multidevice/android/intents" target="_blank" rel="noopener">Chrome官方文档</a></li>
+<li><a href="https://developer.android.com/reference/android/webkit/WebViewClient" target="_blank" rel="noopener">shouldoverrideurlloading和shouldinterceptrequest区别</a></li>
+<li><a href="http://www.ayqy.net/blog/android-scheme%E5%91%BC%E8%B5%B7app/" target="_blank" rel="noopener">Android scheme呼起App</a></li>
+<li><a href="http://blog.devzeng.com/blog/ios-url-scheme.html" target="_blank" rel="noopener">iOS中的URL Scheme</a> </li>
+<li><a href="https://www.jianshu.com/p/1970fd59de12" target="_blank" rel="noopener">iOS Universal Links(通用链接)的使用</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/17/使用IPAPatch免越狱调试、修改第三方App/" rel="next" title="iOS应用安全—— IPAPatch免越狱调试、修改第三方App">
+                <i class="fa fa-chevron-left"></i> iOS应用安全—— IPAPatch免越狱调试、修改第三方App
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/11/企业微信的消息/" rel="prev" title="企业微信的消息">
+                企业微信的消息 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">m4bln</p>
+              <p class="site-description motion-element" itemprop="description">影后入林到驿前</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Android"><span class="nav-number">1.</span> <span class="nav-text"><a href="#Android" class="headerlink" title="Android"></a>Android</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0-自定义scheme"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#0x0-&#x81EA;&#x5B9A;&#x4E49;scheme" class="headerlink" title="0x0 &#x81EA;&#x5B9A;&#x4E49;scheme"></a>0x0 &#x81EA;&#x5B9A;&#x4E49;scheme</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x1-Web页打开App"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#0x1-Web&#x9875;&#x6253;&#x5F00;App" class="headerlink" title="0x1 Web&#x9875;&#x6253;&#x5F00;App"></a>0x1 Web&#x9875;&#x6253;&#x5F00;App</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a标签"><span class="nav-number">1.2.0.1.</span> <span class="nav-text"><a href="#a&#x6807;&#x7B7E;" class="headerlink" title="a&#x6807;&#x7B7E;"></a>a&#x6807;&#x7B7E;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#location-href"><span class="nav-number">1.2.0.2.</span> <span class="nav-text"><a href="#location-href" class="headerlink" title="location.href"></a>location.href</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#iframe"><span class="nav-number">1.2.0.3.</span> <span class="nav-text"><a href="#iframe" class="headerlink" title="iframe"></a>iframe</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#浏览器中打开"><span class="nav-number">1.2.1.</span> <span class="nav-text"><a href="#&#x6D4F;&#x89C8;&#x5668;&#x4E2D;&#x6253;&#x5F00;" class="headerlink" title="&#x6D4F;&#x89C8;&#x5668;&#x4E2D;&#x6253;&#x5F00;"></a>&#x6D4F;&#x89C8;&#x5668;&#x4E2D;&#x6253;&#x5F00;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WebView中打开"><span class="nav-number">1.2.2.</span> <span class="nav-text"><a href="#WebView&#x4E2D;&#x6253;&#x5F00;" class="headerlink" title="WebView&#x4E2D;&#x6253;&#x5F00;"></a>WebView&#x4E2D;&#x6253;&#x5F00;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x2-Chrome-Intent"><span class="nav-number">1.3.</span> <span class="nav-text"><a href="#0x2-Chrome-Intent" class="headerlink" title="0x2 Chrome Intent"></a>0x2 Chrome Intent</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#App获取Web传参"><span class="nav-number">1.3.1.</span> <span class="nav-text"><a href="#App&#x83B7;&#x53D6;Web&#x4F20;&#x53C2;" class="headerlink" title="App&#x83B7;&#x53D6;Web&#x4F20;&#x53C2;"></a>App&#x83B7;&#x53D6;Web&#x4F20;&#x53C2;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x3-App监听本地特定端口"><span class="nav-number">1.4.</span> <span class="nav-text"><a href="#0x3-App&#x76D1;&#x542C;&#x672C;&#x5730;&#x7279;&#x5B9A;&#x7AEF;&#x53E3;" class="headerlink" title="0x3 App&#x76D1;&#x542C;&#x672C;&#x5730;&#x7279;&#x5B9A;&#x7AEF;&#x53E3;"></a>0x3 App&#x76D1;&#x542C;&#x672C;&#x5730;&#x7279;&#x5B9A;&#x7AEF;&#x53E3;</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#iOS"><span class="nav-number">2.</span> <span class="nav-text"><a href="#iOS" class="headerlink" title="iOS"></a>iOS</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0-自定义Scheme"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#0x0-&#x81EA;&#x5B9A;&#x4E49;Scheme" class="headerlink" title="0x0 &#x81EA;&#x5B9A;&#x4E49;Scheme"></a>0x0 &#x81EA;&#x5B9A;&#x4E49;Scheme</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x1-Universal-links"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#0x1-Universal-links" class="headerlink" title="0x1 Universal links"></a>0x1 Universal links</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">m4bln</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

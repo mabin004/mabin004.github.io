@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="标准蓝牙设备扫描经典蓝牙设备1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889final BluetoothMa">
+<meta property="og:type" content="article">
+<meta property="og:title" content="蓝牙、BLE设备相关">
+<meta property="og:url" content="https://mabin004.github.io/2018/03/17/蓝牙的发现、扫描/index.html">
+<meta property="og:site_name" content="m4bln">
+<meta property="og:description" content="标准蓝牙设备扫描经典蓝牙设备1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889final BluetoothMa">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-28.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-30.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-29.png">
+<meta property="og:updated_time" content="2018-03-19T09:30:53.273Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="蓝牙、BLE设备相关">
+<meta name="twitter:description" content="标准蓝牙设备扫描经典蓝牙设备1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889final BluetoothMa">
+<meta name="twitter:image" content="https://mabin004.github.io/images/pasted-28.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://mabin004.github.io/2018/03/17/蓝牙的发现、扫描/"/>
+
+
+
+
+
+  <title>蓝牙、BLE设备相关 | m4bln</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">m4bln</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-hint">
+          <a href="/hint/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            hint
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-todo">
+          <a href="/todo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            ToDo
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/17/蓝牙的发现、扫描/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">蓝牙、BLE设备相关</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-17T21:24:45+08:00">
+                2018-03-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="标准蓝牙设备"><a href="#标准蓝牙设备" class="headerlink" title="标准蓝牙设备"></a>标准蓝牙设备</h1><p>扫描经典蓝牙设备<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line">final BluetoothManager bm = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        mBluetoothAdapter = bm.getAdapter();</span><br><span class="line"></span><br><span class="line">        if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled())</span><br><span class="line">        &#123;</span><br><span class="line">            Toast.makeText(this,&quot;please open bluttooth&quot;,Toast.LENGTH_LONG).show();</span><br><span class="line">            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);</span><br><span class="line">            startActivityForResult(enableBtIntent, 0);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        //获取已经绑定的蓝牙</span><br><span class="line">        Set&lt;BluetoothDevice&gt; devices = mBluetoothAdapter.getBondedDevices();</span><br><span class="line">        //遍历已绑定设备</span><br><span class="line">        if (devices.size() &gt; 0) &#123;</span><br><span class="line">            for (BluetoothDevice bluetoothDevice : devices) &#123;</span><br><span class="line">                String info = bluetoothDevice.getName() + &quot;:&quot;</span><br><span class="line">                        + bluetoothDevice.getAddress() + &quot;\n\n&quot;;</span><br><span class="line">                Log.d(&quot;m4bln&quot;,info);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        /*</span><br><span class="line">        //扫描标准蓝牙设备</span><br><span class="line">        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);</span><br><span class="line">        filter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);</span><br><span class="line">        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);</span><br><span class="line">        registerReceiver(mReceiver, filter);</span><br><span class="line">        if (mBluetoothAdapter.startDiscovery())&#123;</span><br><span class="line">            Log.d(&quot;jiyuanyuan&quot;,&quot;开始扫描&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">   //标准蓝牙设备的receiver</span><br><span class="line">    private final BroadcastReceiver mReceiver = new BroadcastReceiver() &#123;</span><br><span class="line">        public void onReceive(Context context, Intent intent) &#123;</span><br><span class="line">            String action = intent.getAction();</span><br><span class="line">            // When discovery finds a device</span><br><span class="line">            switch (intent.getAction()) &#123;</span><br><span class="line">                case BluetoothAdapter.ACTION_DISCOVERY_STARTED:</span><br><span class="line">                    Toast.makeText(getApplicationContext(), &quot;正在搜索蓝牙设备，搜索时间大约一分钟&quot;, Toast.LENGTH_SHORT).show();</span><br><span class="line">                    break;</span><br><span class="line">                case BluetoothAdapter.ACTION_DISCOVERY_FINISHED:</span><br><span class="line">                    Toast.makeText(getApplicationContext(), &quot;搜索蓝牙设备结束&quot;, Toast.LENGTH_SHORT).show();</span><br><span class="line">                    break;</span><br><span class="line">                case BluetoothDevice.ACTION_FOUND:</span><br><span class="line">                    BluetoothDevice bluetoothDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);</span><br><span class="line"></span><br><span class="line">                    Log.d(&quot;jiyuanyuan&quot;,bluetoothDevice.getAddress()+bluetoothDevice.getName());</span><br><span class="line">                    if (bluetoothDevice.getAddress().equals(&quot;1C:52:16:4E:7C:86&quot;))&#123;</span><br><span class="line">                        //78:62:56:D4:A2:3E</span><br><span class="line">                        Log.d(&quot;jiyuanyuan&quot;,&quot;链接 QCY&quot;);</span><br><span class="line">                        //bluetoothDevice.createBond();</span><br><span class="line">                        try &#123;</span><br><span class="line">                            Boolean returnValue = false;</span><br><span class="line">                            Method createBondMethod = BluetoothDevice.class.getMethod(&quot;createBond&quot;);</span><br><span class="line">                            Log.d(&quot;BlueToothTestActivity&quot;, &quot;开始配对&quot;);</span><br><span class="line">                            returnValue = (Boolean) createBondMethod.invoke(bluetoothDevice);</span><br><span class="line">                            Log.d(&quot;BlueToothTestActivity&quot;, &quot;配对返回：&quot;+returnValue.toString());</span><br><span class="line">                        &#125;catch (Exception e) &#123;</span><br><span class="line">                            e.printStackTrace();</span><br><span class="line">                        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">                    &#125;else &#123;</span><br><span class="line">                        Log.d(&quot;jiyuanyuan&quot;,&quot;不相信&quot;);</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    break;</span><br><span class="line">                case BluetoothDevice.ACTION_BOND_STATE_CHANGED:</span><br><span class="line">                    int status = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, BluetoothDevice.BOND_NONE);</span><br><span class="line">                    if (status == BluetoothDevice.BOND_BONDED) &#123;</span><br><span class="line">                        Toast.makeText(getApplicationContext(), &quot;已连接&quot;, Toast.LENGTH_SHORT).show();</span><br><span class="line">                    &#125; else if (status == BluetoothDevice.BOND_NONE) &#123;</span><br><span class="line">                        Toast.makeText(getApplicationContext(), &quot;未连接&quot;, Toast.LENGTH_SHORT).show();</span><br><span class="line">                    &#125;</span><br><span class="line">                    else if(status == BluetoothDevice.BOND_BONDING)&#123;</span><br><span class="line">                        Toast.makeText(getApplicationContext(), &quot;配对中&quot;, Toast.LENGTH_SHORT).show();</span><br><span class="line">                    &#125;</span><br><span class="line">                    break;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://developer.android.google.cn/guide/topics/connectivity/bluetooth.html" target="_blank" rel="noopener">https://developer.android.google.cn/guide/topics/connectivity/bluetooth.html</a></p>
+<h1 id="BLE设备"><a href="#BLE设备" class="headerlink" title="BLE设备"></a>BLE设备</h1><p>BLE（Bluetooh Low Energy）蓝牙低能耗技术是短距离、低成本、可互操作性的无线技术，它利用许多智能手段最大限度地降低功耗。BLE设备有效传输距离被提升到了100米以上，同时只需要一颗纽扣电池就可以工作数年之久。</p>
+<p><img src="/images/pasted-28.png" alt="upload successful"></p>
+<p>Android 4.3 (API level 18)内置了对BLE设备的支持，允许APP实现发现BLE设备、查找服务以及信息传输。</p>
+<h2 id="GAP"><a href="#GAP" class="headerlink" title="GAP"></a>GAP</h2><p>GAP（Generic Access Profile），它用来控制设备连接和广播。GAP 使你的设备被其他设备可见，并决定了你的设备是否可以或者怎样与合同设备进行交互。例如 Beacon 设备就只是向外广播，不支持连接，小米手环就等设备就可以与中心设备连接。</p>
+<ol>
+<li>设备角色<br>GAP 给设备定义了若干角色，其中主要的两个是：外围设备（Peripheral）和中心设备（Central）。<br><strong>外围设备</strong>：一般就是非常小或者简单的低功耗设备，用来提供数据，并连接到一个更加相对强大的中心设备。例如小米手环。<br><strong>中心设备</strong>：中心设备相对比较强大，用来连接其他外围设备。例如手机等。</li>
+<li><p>广播数据<br>在 GAP 中外围设备通过两种方式向外广播数据： Advertising Data Payload（广播数据）和 Scan Response Data Payload（扫描回复），每种数据最长可以包含 31 byte。<br>这里广播数据是必需的，因为外设必需不停的向外广播，让中心设备知道它的存在。扫描回复是可选的，中心设备可以向外设请求扫描回复，这里包含一些设备额外的信息，例如设备的名字。</p>
+</li>
+<li><p>广播流程</p>
+</li>
+</ol>
+<p>外围设备会设定一个广播间隔，每个广播间隔中，它会重新发送自己的广播数据。广播间隔越长，越省电，同时也不太容易扫描到。</p>
+<h2 id="几个概念"><a href="#几个概念" class="headerlink" title="几个概念"></a>几个概念</h2><h3 id="GATT"><a href="#GATT" class="headerlink" title="GATT"></a>GATT</h3><p>通过BLE连接，读写属性类数据的Profile通用规范，现在所有的BLE应用Profile都是基于GATT的。它定义两个 BLE 设备通过叫做 Service 和 Characteristic 的东西进行通信</p>
+<p>GATT 连接需要特别注意的是：GATT 连接是独占的。也就是一个 BLE 外设同时只能被一个中心设备连接。一旦外设被连接，它就会马上停止广播，这样它就对其他设备不可见了。当设备断开，它又开始广播。</p>
+<p>GATT 事务是建立在嵌套的Profiles, Services 和 Characteristics之上的的，如下图所示：<br><a href="http://jlog.qiniudn.com/microcontrollers_GattStructure.png" target="_blank" rel="noopener">http://jlog.qiniudn.com/microcontrollers_GattStructure.png</a><br><img src="/images/pasted-30.png" alt="upload successful"></p>
+<ol>
+<li><p><strong>Profile</strong><br>Profile 并不是实际存在于 BLE 外设上的，它只是一个被 Bluetooth SIG 或者外设设计者预先定义的 Service 的集合。例如心率Profile（Heart Rate Profile）就是结合了 Heart Rate Service 和 Device Information Service。</p>
+</li>
+<li><p><strong>Service</strong><br>Service 是把数据分成一个个的独立逻辑项，它包含一个或者多个 Characteristic。每个 Service 有一个 UUID 唯一标识。 UUID 有 16 bit 的，或者 128 bit 的。16 bit 的 UUID 是官方通过认证的，需要花钱购买，128 bit 是自定义的，这个就可以自己随便设置。(官方的Service <a href="https://www.bluetooth.com/specifications/gatt/services" target="_blank" rel="noopener">https://www.bluetooth.com/specifications/gatt/services</a>)<br>官方通过了一些标准 Service。以 Heart Rate Service为例，可以看到它的官方通过 16 bit UUID 是 0x180D，包含 3 个 Characteristic：Heart Rate Measurement, Body Sensor Location 和 Heart Rate Control Point，并且定义了只有第一个是必须的，它是可选实现的。</p>
+</li>
+<li><p><strong>Characteristic </strong></p>
+</li>
+</ol>
+<p>Characteristic在 GATT 事务中的最低界别的是 Characteristic，Characteristic 是最小的逻辑数据单元，当然它可能包含一个组关联的数据，例如加速度计的 X/Y/Z 三轴值。</p>
+<p>与 Service 类似，每个 Characteristic 用 16 bit 或者 128 bit 的 UUID 唯一标识。你可以免费使用 Bluetooth SIG 官方定义的标准 Characteristic (<a href="https://www.bluetooth.com/specifications/gatt/characteristics)，使用官方定义的，可以确保" target="_blank" rel="noopener">https://www.bluetooth.com/specifications/gatt/characteristics)，使用官方定义的，可以确保</a> BLE 的软件和硬件能相互理解。当然，你可以自定义 Characteristic，这样的话，就只有你自己的软件和外设能够相互理解。</p>
+<p>举个例子， Heart Rate Measurement Characteristic，这是上面提到的 Heart Rate Service 必需实现的 Characteristic，它的 UUID 是 0x2A37。它的数据结构是，开始 8 bit 定义心率数据格式（是UINT8 还是 UINT16？），接下来就是对应格式的实际心率数据。</p>
+<p><strong>实际上，和 BLE 外设打交道，主要是通过 Characteristic。你可以从 Characteristic 读取数据，也可以往 Characteristic 写数据。这样就实现了双向的通信。所以你可以自己实现一个类似串口（UART）的 Sevice，这个 Service 中包含两个 Characteristic，一个被配置只读的通道（RX），另一个配置为只写的通道（TX）。</strong></p>
+<h2 id="Android-BLE-API"><a href="#Android-BLE-API" class="headerlink" title="Android BLE API"></a>Android BLE API</h2><ol>
+<li><p>BluetoothAdapter<br>代表了移动设备的本地的蓝牙适配器, 通过该蓝牙适配器可以对蓝牙进行基本操作，一个Android系统只有一个BluetoothAdapter，通过BluetoothManager获取。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>BluetoothDevice<br>扫描后发现可连接的设备，获取已经连接的设备。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BluetoothDevice bluetoothDevice = bluetoothAdapter.getRemoteDevice(address);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>BluetoothGattCallback<br>对已经连接上设备的某些操作后返回的结果的回调</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">BluetoothGattCallback bluetoothGattCallback = new BluetoothGattCallback()&#123;</span><br><span class="line">	//实现回调方法，根据业务做相应处理</span><br><span class="line">&#125;;</span><br><span class="line">BluetoothGatt bluetoothGatt = bluetoothDevice.connectGatt(this, false, bluetoothGattCallback);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>BluetoothGatt<br>通过BluetoothGatt可以连接设备（connect）,发现服务（discoverServices），并把相应地属性返回到BluetoothGattCallback，可以看成蓝牙设备从连接到断开的生命周期。</p>
+</li>
+</ol>
+<h2 id="扫描BLE设备"><a href="#扫描BLE设备" class="headerlink" title="扫描BLE设备"></a>扫描BLE设备</h2><p>进行BLE设备扫描时，除了蓝牙权限外，还需要申请定位权限并打开GPS（这个非常坑）。扫描周边的BLE设备代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">//获取BluetoothAdapter</span><br><span class="line">final BluetoothManager bm = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);</span><br><span class="line">mBluetoothAdapter = bm.getAdapter();</span><br><span class="line"></span><br><span class="line">//判断蓝牙是否开启</span><br><span class="line">        if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled())</span><br><span class="line">        &#123;</span><br><span class="line">            Toast.makeText(this,&quot;please open bluttooth&quot;,Toast.LENGTH_LONG).show();</span><br><span class="line">            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);</span><br><span class="line">            startActivityForResult(enableBtIntent, 0);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">//扫描BLE设备        </span><br><span class="line">mScanCallback = new LeScanCallback();</span><br><span class="line">BluetoothLeScanner mBluetoothLeScanner = mBluetoothAdapter.getBluetoothLeScanner();</span><br><span class="line">System.out.println(&quot;开始扫描BLE设备。。。&quot;);</span><br><span class="line">mBluetoothLeScanner.startScan(mScanCallback);</span><br><span class="line"></span><br><span class="line">private class LeScanCallback  extends ScanCallback&#123;</span><br><span class="line">	@Override</span><br><span class="line">    public void onScanResult(int callbackType, ScanResult result) &#123;</span><br><span class="line">    if(result != null)&#123;</span><br><span class="line">    System.out.println(&quot;扫面到设备：&quot; + result.getDevice().getName() + &quot;  &quot; + result.getDevice().getAddress());</span><br><span class="line"></span><br><span class="line">	//此处，我们尝试连接MI 设备</span><br><span class="line">    mTargetDeviceName =&quot;MI Band 2&quot;;</span><br><span class="line">    if (result.getDevice().getName() != null &amp;&amp; mTargetDeviceName.equals(result.getDevice().getName())) &#123;</span><br><span class="line">                            //扫描到我们想要的设备后，立即停止扫描</span><br><span class="line">                 result.getDevice().connectGatt(MainActivity.this, false, mGattCallback);</span><br><span class="line">                            mBluetoothLeScanner.stopScan(mScanCallback);</span><br><span class="line">          &#125;</span><br><span class="line"></span><br><span class="line">          &#125;</span><br><span class="line">          else&#123;</span><br><span class="line">          System.out.println(&quot;result为空&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br></pre></td></tr></table></figure></p>
+<h2 id="BLE设备连接"><a href="#BLE设备连接" class="headerlink" title="BLE设备连接"></a>BLE设备连接</h2><p>两个设备通过BLE通信，首先需要建立GATT连接，这里我们讲的是Android设备作为client端，连接GATT Server。连接GATT Server，需要调用BluetoothDevice的connectGatt()方法，此函数带三个参数：Context、autoConnect(boolean)和 BluetoothGattCallback 对象。调用后返回BluetoothGatt对象，它是GATT profile的封装，通过这个对象，我们就能进行GATT Client端的相关操作。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line">BluetoothDevice bluetoothDevice = bluetoothAdapter.getRemoteDevice(address);</span><br><span class="line">BluetoothGattCallback bluetoothGattCallback = new BluetoothGattCallback()&#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) &#123;</span><br><span class="line">        super.onConnectionStateChange(gatt, status, newState);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void onServicesDiscovered(BluetoothGatt gatt, int status) &#123;</span><br><span class="line">        super.onServicesDiscovered(gatt, status);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) &#123;</span><br><span class="line">        super.onCharacteristicRead(gatt, characteristic, status);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) &#123;</span><br><span class="line">        super.onCharacteristicWrite(gatt, characteristic, status);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) &#123;</span><br><span class="line">        super.onCharacteristicChanged(gatt, characteristic);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void onDescriptorRead(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status) &#123;</span><br><span class="line">        super.onDescriptorRead(gatt, descriptor, status);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void onDescriptorWrite(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status) &#123;</span><br><span class="line">        super.onDescriptorWrite(gatt, descriptor, status);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void onReliableWriteCompleted(BluetoothGatt gatt, int status) &#123;</span><br><span class="line">        super.onReliableWriteCompleted(gatt, status);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void onReadRemoteRssi(BluetoothGatt gatt, int rssi, int status) &#123;</span><br><span class="line">        super.onReadRemoteRssi(gatt, rssi, status);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void onMtuChanged(BluetoothGatt gatt, int mtu, int status) &#123;</span><br><span class="line">        super.onMtuChanged(gatt, mtu, status);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">BluetoothGatt bluetoothGatt = bluetoothDevice.connectGatt(this, false, bluetoothGattCallback);</span><br><span class="line"></span><br><span class="line">//以下为获得Gatt后的相关操作对应的响应方法</span><br><span class="line">//notification to onCharacteristicChanged；</span><br><span class="line">bluetoothGatt.setCharacteristicNotification(characteristic, true);</span><br><span class="line"></span><br><span class="line">//readCharacteristic to onCharacteristicRead；</span><br><span class="line">bluetoothGatt.readCharacteristic(characteristic);</span><br><span class="line"></span><br><span class="line">//writeCharacteristic to onCharacteristicWrite；</span><br><span class="line">bluetoothGatt.wirteCharacteristic(mCurrentcharacteristic);</span><br><span class="line"></span><br><span class="line">//connect and disconnect to onConnectionStateChange；</span><br><span class="line">bluetoothGatt.connect();</span><br><span class="line">bluetoothGatt.disconnect();</span><br><span class="line"></span><br><span class="line">//readDescriptor to onDescriptorRead；</span><br><span class="line">bluetoothGatt.readDescriptor(descriptor);</span><br><span class="line"></span><br><span class="line">//writeDescriptor to onDescriptorWrite；</span><br><span class="line">bluetoothGatt.writeDescriptor(descriptor);</span><br><span class="line"></span><br><span class="line">//readRemoteRssi to onReadRemoteRssi；</span><br><span class="line">bluetoothGatt.readRemoteRssi();</span><br><span class="line"></span><br><span class="line">//executeReliableWrite to onReliableWriteCompleted；</span><br><span class="line">bluetoothGatt.executeReliableWrite();</span><br><span class="line"></span><br><span class="line">//discoverServices to onServicesDiscovered;</span><br><span class="line">bluetoothGatt.discoverServices();</span><br></pre></td></tr></table></figure></p>
+<h2 id="数据解析"><a href="#数据解析" class="headerlink" title="数据解析"></a>数据解析</h2><p>数据包格式如下图</p>
+<p><img src="/images/pasted-29.png" alt="upload successful"></p>
+<p>数据包有两种：广播包（Advertising Data）和响应包（Scan Response），其中广播包是每个设备必须广播的，而响应包是可选的。</p>
+<p>每个包都是 31 字节，数据包中分为有效数据（significant）和无效数据（non-significant）两部分。</p>
+<ul>
+<li>有效数据部分：<br>包含若干个广播数据单元，称为AD Structure。如图中所示，AD Structure的组成是：第一个字节是长度值Len，表示接下来的Len个字节是数据部分。数据部分的第一个字节表示数据的类型AD Type，剩下的Len - 1个字节是真正的数据AD data。其中AD type非常关键，决定了AD Data的数据代表的是什么和怎么解析</li>
+<li>无效数据部分：<br>因为广播包的长度必须是31字节，如果有效数据部分不到31字节，剩下的就用0补齐，这部分的数据是无效的，解析的时候，直接忽略即可。</li>
+</ul>
+<p>根据如下数据包，举例说明LBE数据包的解析：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">02 01 06 14 FF 11 22 00 00 00 01 00 1F 09 01 00 00 00 CE DD 5E 5A 5D 23 06 08 48 45 54 2D 35 09 03 E7 FE 12 FF 0F 18 0A 18 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</span><br></pre></td></tr></table></figure></p>
+<p>根据解析规则，可分成如下部分：</p>
+<ol>
+<li><p>广播数据(前31字节)<br>02 01 06 14 FF 11 22 00 00 00 01 00 1F 09 01 00 00 00 CE DD 5E 5A 5D 23 06 08 48 45 54 2D 35</p>
+</li>
+<li><p>响应数据<br>09 03 E7 FE 12 FF 0F 18 0A 18 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</p>
+</li>
+<li><p>有效数据<br>02 01 06 14 FF 11 22 00 00 00 01 00 1F 09 01 00 00 00 CE DD 5E 5A 5D 23 06 08 48 45 54 2D 35 09 03 E7 FE 12 FF 0F 18 0A 18</p>
+</li>
+<li>无效数据<br>00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</li>
+</ol>
+<p>其中的有效数据又可分为如下几个数据单元：</p>
+<ul>
+<li><p>02 01 06</p>
+</li>
+<li><p>14 FF 11 22 00 00 00 01 00 1F 09 01 00 00 00 CE DD 5E 5A 5D 23</p>
+</li>
+<li><p>06 08 48 45 54 2D 35</p>
+</li>
+<li><p>09 03 E7 FE 12 FF 0F 18 0A 18<br>根据上面AD Type定义（所有的 AD type 的定义在<a href="https://www.bluetooth.org/en-us/specification/adopted-specifications" target="_blank" rel="noopener">文档</a>中）分别解析如下：<br>第一组数据告诉我们该设备属于LE普通发现模式，不支持BR/EDR；<br>第二组数据告诉我们该数据为厂商自定义数据，一般是必须解析的，可根据协议规则进行解析获取对应的所需信息；<br>第三组数据告诉我们该设备的简称为HET-5，其中对应的字符是查找ASSIC表得出的；<br>第四组数据告诉我们UUID为E7FE-12FF-0F18-0A18(此处有疑，类型03表示的是16位的UUID，对应的两个字节，而此处有8个字节，估计是设备烧录时把字节位数理解为了字符位数导致的问题).</p>
+</li>
+</ul>
+<h2 id="参考-1"><a href="#参考-1" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a href="https://github.com/Jiesean/BleDemo" target="_blank" rel="noopener">https://github.com/Jiesean/BleDemo</a></li>
+<li><a href="https://developer.android.google.cn/guide/topics/connectivity/bluetooth-le.html" target="_blank" rel="noopener">https://developer.android.google.cn/guide/topics/connectivity/bluetooth-le.html</a></li>
+<li><a href="http://www.huwei.tech/2016/07/07/Android-BLE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/#%E4%BA%94%E3%80%81%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5" target="_blank" rel="noopener">http://www.huwei.tech/2016/07/07/Android-BLE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/#%E4%BA%94%E3%80%81%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5</a></li>
+<li><a href="https://www.race604.com/gatt-profile-intro/" target="_blank" rel="noopener">https://www.race604.com/gatt-profile-intro/</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/15/文件后缀名枚举/" rel="next" title="文件后缀名枚举">
+                <i class="fa fa-chevron-left"></i> 文件后缀名枚举
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/19/主机端口安全、渗透案例/" rel="prev" title="主机端口安全、渗透案例（代）">
+                主机端口安全、渗透案例（代） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">m4bln</p>
+              <p class="site-description motion-element" itemprop="description">影后入林到驿前</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#标准蓝牙设备"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x6807;&#x51C6;&#x84DD;&#x7259;&#x8BBE;&#x5907;" class="headerlink" title="&#x6807;&#x51C6;&#x84DD;&#x7259;&#x8BBE;&#x5907;"></a>&#x6807;&#x51C6;&#x84DD;&#x7259;&#x8BBE;&#x5907;</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#&#x53C2;&#x8003;" class="headerlink" title="&#x53C2;&#x8003;"></a>&#x53C2;&#x8003;</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BLE设备"><span class="nav-number">2.</span> <span class="nav-text"><a href="#BLE&#x8BBE;&#x5907;" class="headerlink" title="BLE&#x8BBE;&#x5907;"></a>BLE&#x8BBE;&#x5907;</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#GAP"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#GAP" class="headerlink" title="GAP"></a>GAP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#几个概念"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#&#x51E0;&#x4E2A;&#x6982;&#x5FF5;" class="headerlink" title="&#x51E0;&#x4E2A;&#x6982;&#x5FF5;"></a>&#x51E0;&#x4E2A;&#x6982;&#x5FF5;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GATT"><span class="nav-number">2.2.1.</span> <span class="nav-text"><a href="#GATT" class="headerlink" title="GATT"></a>GATT</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Android-BLE-API"><span class="nav-number">2.3.</span> <span class="nav-text"><a href="#Android-BLE-API" class="headerlink" title="Android BLE API"></a>Android BLE API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扫描BLE设备"><span class="nav-number">2.4.</span> <span class="nav-text"><a href="#&#x626B;&#x63CF;BLE&#x8BBE;&#x5907;" class="headerlink" title="&#x626B;&#x63CF;BLE&#x8BBE;&#x5907;"></a>&#x626B;&#x63CF;BLE&#x8BBE;&#x5907;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BLE设备连接"><span class="nav-number">2.5.</span> <span class="nav-text"><a href="#BLE&#x8BBE;&#x5907;&#x8FDE;&#x63A5;" class="headerlink" title="BLE&#x8BBE;&#x5907;&#x8FDE;&#x63A5;"></a>BLE&#x8BBE;&#x5907;&#x8FDE;&#x63A5;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据解析"><span class="nav-number">2.6.</span> <span class="nav-text"><a href="#&#x6570;&#x636E;&#x89E3;&#x6790;" class="headerlink" title="&#x6570;&#x636E;&#x89E3;&#x6790;"></a>&#x6570;&#x636E;&#x89E3;&#x6790;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考-1"><span class="nav-number">2.7.</span> <span class="nav-text"><a href="#&#x53C2;&#x8003;-1" class="headerlink" title="&#x53C2;&#x8003;"></a>&#x53C2;&#x8003;</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">m4bln</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="简介目前市面上充斥着各种诸如“充电1分钟，通话2小时”的宣传，手机快速充电成为手机厂商们追逐的一个技术指标。常见的标准充电装置通常为5V/1A 或 5V/2A，快速充电意味着要在电流或电压上有所提高，于是就出现了如QC、PD等各式各样的充电协议，本文作一个简单介绍。 几个关键知识点：  MicroUSB最大支持电流为2A,TYPE-C口最多支持5A PD协议是谷歌和USB-IF推出的，QC是高通推">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于手机充电器">
+<meta property="og:url" content="https://mabin004.github.io/2018/06/27/关于手机充电器/index.html">
+<meta property="og:site_name" content="m4bln">
+<meta property="og:description" content="简介目前市面上充斥着各种诸如“充电1分钟，通话2小时”的宣传，手机快速充电成为手机厂商们追逐的一个技术指标。常见的标准充电装置通常为5V/1A 或 5V/2A，快速充电意味着要在电流或电压上有所提高，于是就出现了如QC、PD等各式各样的充电协议，本文作一个简单介绍。 几个关键知识点：  MicroUSB最大支持电流为2A,TYPE-C口最多支持5A PD协议是谷歌和USB-IF推出的，QC是高通推">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-56.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-59.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-58.png">
+<meta property="og:updated_time" content="2018-06-27T04:04:04.219Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="关于手机充电器">
+<meta name="twitter:description" content="简介目前市面上充斥着各种诸如“充电1分钟，通话2小时”的宣传，手机快速充电成为手机厂商们追逐的一个技术指标。常见的标准充电装置通常为5V/1A 或 5V/2A，快速充电意味着要在电流或电压上有所提高，于是就出现了如QC、PD等各式各样的充电协议，本文作一个简单介绍。 几个关键知识点：  MicroUSB最大支持电流为2A,TYPE-C口最多支持5A PD协议是谷歌和USB-IF推出的，QC是高通推">
+<meta name="twitter:image" content="https://mabin004.github.io/images/pasted-56.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://mabin004.github.io/2018/06/27/关于手机充电器/"/>
+
+
+
+
+
+  <title>关于手机充电器 | m4bln</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">m4bln</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-hint">
+          <a href="/hint/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            hint
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-todo">
+          <a href="/todo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            ToDo
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/06/27/关于手机充电器/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">关于手机充电器</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-27T10:34:04+08:00">
+                2018-06-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>目前市面上充斥着各种诸如“充电1分钟，通话2小时”的宣传，手机快速充电成为手机厂商们追逐的一个技术指标。常见的标准充电装置通常为5V/1A 或 5V/2A，快速充电意味着要在电流或电压上有所提高，于是就出现了如QC、PD等各式各样的充电协议，本文作一个简单介绍。</p>
+<p>几个关键知识点：</p>
+<ul>
+<li>MicroUSB最大支持电流为2A,TYPE-C口最多支持5A</li>
+<li>PD协议是谷歌和USB-IF推出的，QC是高通推出的</li>
+<li>PD 3.0收编了QC 4.0,PD可能会成为主流,谷歌已经强制安卓阵营使用USB接口就必须支持PD协议</li>
+<li>所有用来充电的type-c接口都支持pd2.0协议吗？并不是，type-c只是接口形状，支持的协议各不相同。</li>
+</ul>
+<h2 id="充电要考虑的问题"><a href="#充电要考虑的问题" class="headerlink" title="充电要考虑的问题"></a>充电要考虑的问题</h2><h3 id="一、电池的接受能力"><a href="#一、电池的接受能力" class="headerlink" title="一、电池的接受能力"></a>一、电池的接受能力</h3><p>充电本质上就是“喂饱电池”，目前市面上比较流行的iphone x，华为P9，小米note等，电池容量都不超过3000mAH，按照4.35V作为最高电压，1.5C（C为充电或放电倍率，对于3000mAh的电池1.5C电流就是4500mA）充电来看，最大可能接受的充电功率约为20W（4.35V*4.5A约等于20W），当然，这是极限情况。除了功率接收能力，还要涉及到电流接受能力。在1.5C充电时，3000mAH的电池充电电流将达到4.5A，因此，电池触点和电芯内部的电流传输结构都要进行必要的优化。</p>
+<h3 id="二、适配器的功率提供能力"><a href="#二、适配器的功率提供能力" class="headerlink" title="二、适配器的功率提供能力"></a>二、适配器的功率提供能力</h3><p>在不考虑接口承受能力的情况下，20W功率对适配器来说是轻而易举。但是传统的MicroUSB接口，在标准规范里面最大电流承载能力是2A，最高电压是5.25V。仅仅有10.5W，无法达到20W的要求。怎么解决这个问题呢？显然有两种解决方案，增大电流，或者提升电压。</p>
+<p>如果不改动物理接口，增大电流是不可能的选项，所以，提升电压，是MicroUSB时代的唯一选项，这就是<strong>高通QC</strong>快速充电方法的由来。所以，我们可以看到，1.5A是QC标准比较推荐的电流，因为<strong>2A是MicroUSB的极限</strong>，业界的普遍共识是，不要把器件用到极限值，而是要预留余量。在这方面，OPPO与高通走了相反的道路，他们给MicroUSB在物理上打了补丁，增加了额外的接触针，专门用来传输大电流。最大充电电流达到了4.5A，但是电压维持在5V不变。同样达到了超过20W的功率传输。而Type-C接口的出现，让这个问题不再存在，因为<strong>TYPE-C口最高支持5A输入电流</strong>，完全能够满足现有手机电池的快速充电需求。</p>
+<h3 id="三、手机的充电管理及散热能力"><a href="#三、手机的充电管理及散热能力" class="headerlink" title="三、手机的充电管理及散热能力"></a>三、手机的充电管理及散热能力</h3><p>充电管理，必然涉及到电压变换，恒流控制等环节，带来充电效率的下降和散热问题。因此，理论上最佳的充电设计方案是，手机内部不做充电管理，完全交给外部适配器去控制。在这一点上，QC是比较吃亏的，因为高电压低电流输入，必然导致手机内部要进行能量转换，变为低电压和大电流。这会带来手机散热上的大问题。所以，从技术的角度来看，QC的历史局限性，已经凸显。</p>
+<p>更为严重的问题是，TYPE-C接口和USBPD中都严禁采用除USBPD以外的方式来调整充电电压。高通为此做出了很大的努力去说服USB-IF组织，试图在TYPE-C接口中，让QC和PD同时存在。但是，很可惜，被无情的拒绝了，最新的TYPE-C1.2和USBPD3.0维持了关于这一特性的描述。因此，QC不论在技术上还是在理论上，都将面临着被淘汰的危险。当然，高通自身是很清楚这一趋势的。因此，已经在最新的处理器内核中，集成了USBPD的协商功能。</p>
+<h2 id="PD协议"><a href="#PD协议" class="headerlink" title="PD协议"></a>PD协议</h2><p>USB-PD是USB Power Delivery的缩写，PD协议是目前主流的快充协议之一，是由USB-IF组织制定的一种快速充电规范。市面上的苹果三星华为小米谷歌等等比较新的旗舰机，基本都可以兼容PD 3.0。</p>
+<p>USB-PD的通信是将协议层的消息调制成24MHZ的FSK信号并耦合到VBUS上或者从VBUS上获得FSK信号来实现手机和充电器通信的过程。<br><a href="http://file.elecfans.com/web1/M00/48/46/pIYBAFqofqCARgD1AAAm--4DcJY458.jpg" target="_blank" rel="noopener">http://file.elecfans.com/web1/M00/48/46/pIYBAFqofqCARgD1AAAm--4DcJY458.jpg</a><br><img src="/images/pasted-56.png" alt="upload successful"></p>
+<p><strong>PD协议和Type C的区别：</strong><br>USBPD是在一条线缆中同时支持高达100W电力传输和数据通信的协议规范，而USB Type-C则是一个全新的正反插USB连接器规范。在USBType-C端口中实现了USBPD，它就能支持USBPD规范中定义的100W功率（5V20A），但拥有USB Type-C端口并不一定意味着它支持USBPD。</p>
+<p><img src="/images/pasted-59.png" alt="upload successful"></p>
+<p><strong>PD 3.0收编QC 4.0</strong><br>USB-IF组织发布了USB PD 3.0的重要更新，正式推出旨在一统快速充电技术规范的PPS(Programmable Power Supply)，成功收编了高通的QC4.0，并与国家工信部的泰尔实验室达成了共识，预计将与国标实现统一。</p>
+<p>智能手机进入大屏时代，原有的5V2A micro usb充电极限已经无法满足用户的需求。但是，作为USB协议的制定者USB-IF却没有给出解决办法。这为后来的快速充电技术标准混战埋下了伏笔。于是，高通利用自己的行业地位，开始力推QC2.0和QC3.0，向9V/2A, 12V/1.5A快速充电技术路线进发。但是，不同于非盈利组织定位的USB-IF，高通发布的技术标准都是围绕自己的产品生态和商业利益展开的。因此，纷争不可避免，战火从此点燃。OPPO，MTK，华为，TI等公司相继推出了自己的快速充电标准，试图分得一杯羹。于是，USB-IF在原有的USB PD2.0和USB PD3.0基础上，通过与高通、泰尔实验室以及国内主流手机厂商的多方沟通。终于推出了PPS来满足各方的诉求(或者说是互相妥协)，并明确规定，USB接口不允许通过非USB PD的协议来实现电压调整。从此，快速充电标准，有望走向统一。</p>
+<h2 id="QC协议"><a href="#QC协议" class="headerlink" title="QC协议"></a>QC协议</h2><p>Quick Charge，简写QC，又称QC快充，美商高通公司（Qualcomm）骁龙系统芯片（SnapDragon SoC）中的快速充电技术，目前已经由1.0维护到4.0。</p>
+<p><a href="https://pic4.zhimg.com/v2-660a3ea029ebe6cc2b7af7f29c7579b7_r.jpg" target="_blank" rel="noopener">https://pic4.zhimg.com/v2-660a3ea029ebe6cc2b7af7f29c7579b7_r.jpg</a><br><img src="/images/pasted-58.png" alt="upload successful"></p>
+<h2 id="QI协议"><a href="#QI协议" class="headerlink" title="QI协议"></a>QI协议</h2><p>Qi（发音与命名来自中文字“气”），是一种由无线充电联盟（英语：Wireless Power Consortium，缩写WPC[1]）所制定的短距离（40mm, 1.6英寸[2]）低功率无线感应式电力传输的互连标准，主要目的是提供移动电话手机与其他便携式电子设备便利与通用的无线充电。</p>
+<p>参考资料：</p>
+<ol>
+<li>充电头网 <a href="http://www.chongdiantou.com/" target="_blank" rel="noopener">http://www.chongdiantou.com/</a></li>
+<li>一文看懂pd协议和qc协议的区别 <a href="http://www.elecfans.com/d/647129.html" target="_blank" rel="noopener">http://www.elecfans.com/d/647129.html</a></li>
+<li><a href="http://www.chongdiantou.com/wp/archives/10209.html" target="_blank" rel="noopener">http://www.chongdiantou.com/wp/archives/10209.html</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/25/iOS应用沙箱/" rel="next" title="iOS应用安全 —— WebView安全">
+                <i class="fa fa-chevron-left"></i> iOS应用安全 —— WebView安全
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/01/iOS应用安全-——-ZipperDown/" rel="prev" title="iOS应用安全 —— ZipperDown漏洞">
+                iOS应用安全 —— ZipperDown漏洞 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">m4bln</p>
+              <p class="site-description motion-element" itemprop="description">影后入林到驿前</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x7B80;&#x4ECB;" class="headerlink" title="&#x7B80;&#x4ECB;"></a>&#x7B80;&#x4ECB;</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#充电要考虑的问题"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#&#x5145;&#x7535;&#x8981;&#x8003;&#x8651;&#x7684;&#x95EE;&#x9898;" class="headerlink" title="&#x5145;&#x7535;&#x8981;&#x8003;&#x8651;&#x7684;&#x95EE;&#x9898;"></a>&#x5145;&#x7535;&#x8981;&#x8003;&#x8651;&#x7684;&#x95EE;&#x9898;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、电池的接受能力"><span class="nav-number">1.1.1.</span> <span class="nav-text"><a href="#&#x4E00;&#x3001;&#x7535;&#x6C60;&#x7684;&#x63A5;&#x53D7;&#x80FD;&#x529B;" class="headerlink" title="&#x4E00;&#x3001;&#x7535;&#x6C60;&#x7684;&#x63A5;&#x53D7;&#x80FD;&#x529B;"></a>&#x4E00;&#x3001;&#x7535;&#x6C60;&#x7684;&#x63A5;&#x53D7;&#x80FD;&#x529B;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、适配器的功率提供能力"><span class="nav-number">1.1.2.</span> <span class="nav-text"><a href="#&#x4E8C;&#x3001;&#x9002;&#x914D;&#x5668;&#x7684;&#x529F;&#x7387;&#x63D0;&#x4F9B;&#x80FD;&#x529B;" class="headerlink" title="&#x4E8C;&#x3001;&#x9002;&#x914D;&#x5668;&#x7684;&#x529F;&#x7387;&#x63D0;&#x4F9B;&#x80FD;&#x529B;"></a>&#x4E8C;&#x3001;&#x9002;&#x914D;&#x5668;&#x7684;&#x529F;&#x7387;&#x63D0;&#x4F9B;&#x80FD;&#x529B;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、手机的充电管理及散热能力"><span class="nav-number">1.1.3.</span> <span class="nav-text"><a href="#&#x4E09;&#x3001;&#x624B;&#x673A;&#x7684;&#x5145;&#x7535;&#x7BA1;&#x7406;&#x53CA;&#x6563;&#x70ED;&#x80FD;&#x529B;" class="headerlink" title="&#x4E09;&#x3001;&#x624B;&#x673A;&#x7684;&#x5145;&#x7535;&#x7BA1;&#x7406;&#x53CA;&#x6563;&#x70ED;&#x80FD;&#x529B;"></a>&#x4E09;&#x3001;&#x624B;&#x673A;&#x7684;&#x5145;&#x7535;&#x7BA1;&#x7406;&#x53CA;&#x6563;&#x70ED;&#x80FD;&#x529B;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PD协议"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#PD&#x534F;&#x8BAE;" class="headerlink" title="PD&#x534F;&#x8BAE;"></a>PD&#x534F;&#x8BAE;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#QC协议"><span class="nav-number">1.3.</span> <span class="nav-text"><a href="#QC&#x534F;&#x8BAE;" class="headerlink" title="QC&#x534F;&#x8BAE;"></a>QC&#x534F;&#x8BAE;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#QI协议"><span class="nav-number">1.4.</span> <span class="nav-text"><a href="#QI&#x534F;&#x8BAE;" class="headerlink" title="QI&#x534F;&#x8BAE;"></a>QI&#x534F;&#x8BAE;</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">m4bln</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

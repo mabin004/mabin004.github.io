@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一、模拟器检测 基于模拟器的IMSI、IDS、默认文件等几个方面特征进行检测 基于CPU的检测（如是否包含inter、amd等字段） 电池信息、温度、电量变化等  代码示例： 123456789101112131415//需要添加android.permission.READ_PHONE_STATE权限public boolean isEmulatorByImei(Context context)">
+<meta name="keywords" content="Android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="apk反调试-模拟器检查-签名检测">
+<meta property="og:url" content="https://mabin004.github.io/2017/12/09/apk反调试-模拟器检查-签名检测/index.html">
+<meta property="og:site_name" content="m4bln">
+<meta property="og:description" content="一、模拟器检测 基于模拟器的IMSI、IDS、默认文件等几个方面特征进行检测 基于CPU的检测（如是否包含inter、amd等字段） 电池信息、温度、电量变化等  代码示例： 123456789101112131415//需要添加android.permission.READ_PHONE_STATE权限public boolean isEmulatorByImei(Context context)">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-09T08:35:21.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="apk反调试-模拟器检查-签名检测">
+<meta name="twitter:description" content="一、模拟器检测 基于模拟器的IMSI、IDS、默认文件等几个方面特征进行检测 基于CPU的检测（如是否包含inter、amd等字段） 电池信息、温度、电量变化等  代码示例： 123456789101112131415//需要添加android.permission.READ_PHONE_STATE权限public boolean isEmulatorByImei(Context context)">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://mabin004.github.io/2017/12/09/apk反调试-模拟器检查-签名检测/"/>
+
+
+
+
+
+  <title>apk反调试-模拟器检查-签名检测 | m4bln</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">m4bln</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-hint">
+          <a href="/hint/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            hint
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-todo">
+          <a href="/todo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            ToDo
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/09/apk反调试-模拟器检查-签名检测/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">apk反调试-模拟器检查-签名检测</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-09T15:02:01+08:00">
+                2017-12-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="一、模拟器检测"><a href="#一、模拟器检测" class="headerlink" title="一、模拟器检测"></a>一、模拟器检测</h2><ol>
+<li>基于模拟器的IMSI、IDS、默认文件等几个方面特征进行检测</li>
+<li>基于CPU的检测（如是否包含inter、amd等字段）</li>
+<li>电池信息、温度、电量变化等</li>
+</ol>
+<p>代码示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//需要添加android.permission.READ_PHONE_STATE权限</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEmulatorByImei</span><span class="params">(Context context)</span></span>&#123;</span><br><span class="line">        TelephonyManager tm = (TelephonyManager) 	context.getSystemService(Context.TELEPHONY_SERVICE);</span><br><span class="line">        String imei = tm.getDeviceId();</span><br><span class="line">        <span class="keyword">if</span> (imei == <span class="keyword">null</span> || imei.equals(<span class="string">"000000000000000"</span>))&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEmulatorByBuildModel</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Log.e(<span class="string">"MODEL="</span>, Build.MODEL);</span><br><span class="line">        Log.e(<span class="string">"MANUFACTURER="</span>,Build.MANUFACTURER);</span><br><span class="line">        <span class="keyword">return</span> ( Build.MODEL.equals(<span class="string">"sdk"</span>)) || (Build.MODEL.equals(<span class="string">"google_sdk"</span>) );</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="二、签名监测-native"><a href="#二、签名监测-native" class="headerlink" title="二、签名监测(native)"></a>二、签名监测(native)</h2><p>签名检测在一般在java层实现，通过与远程服务器交互完成校验。如果没有本地校验，则尽可能在native层实现，这里利用反射的方式。</p>
+<p>代码示例：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">SignatureCheck</span><span class="params">(JNIEnv *env, jobject context)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    jclass context_clazz = (*env)-&gt;GetObjectClass(env, context);<span class="comment">//Context的类</span></span><br><span class="line">    </span><br><span class="line">    jmethodID methodID_getPackageManager = (*env)-&gt;GetMethodID(env, context_clazz,<span class="string">"getPackageManager"</span>, <span class="string">"()Landroid/content/pm/PackageManager;"</span>);<span class="comment">// 得到 getPackageManager 方法的 ID</span></span><br><span class="line"></span><br><span class="line">    jobject packageManager = (*env)-&gt;CallObjectMethod(env, context,</span><br><span class="line">                                                      methodID_getPackageManager);<span class="comment">// 获得PackageManager对象</span></span><br><span class="line"></span><br><span class="line">    jclass pm_clazz = (*env)-&gt;GetObjectClass(env, packageManager);<span class="comment">// 获得 PackageManager 类</span></span><br><span class="line"></span><br><span class="line">    jmethodID methodID_pm = (*env)-&gt;GetMethodID(env, pm_clazz, <span class="string">"getPackageInfo"</span>,</span><br><span class="line">                                                <span class="string">"(Ljava/lang/String;I)Landroid/content/pm/PackageInfo;"</span>);<span class="comment">// 得到 getPackageInfo 方法的 ID</span></span><br><span class="line"></span><br><span class="line">    jmethodID methodID_pack = (*env)-&gt;GetMethodID(env, context_clazz,</span><br><span class="line">                                                  <span class="string">"getPackageName"</span>, <span class="string">"()Ljava/lang/String;"</span>);<span class="comment">// 得到 getPackageName 方法的 ID</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    jstring application_package = (*env)-&gt;CallObjectMethod(env, context,</span><br><span class="line">                                                           methodID_pack);<span class="comment">// 获得当前应用的包名</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *str = (*env)-&gt;GetStringUTFChars(env, application_package, <span class="number">0</span>);</span><br><span class="line">    <span class="comment">//__android_log_print(ANDROID_LOG_DEBUG, "JNI", "packageName: %s\n", str);</span></span><br><span class="line"></span><br><span class="line">    jobject packageInfo = (*env)-&gt;CallObjectMethod(env, packageManager,</span><br><span class="line">                                                   methodID_pm, application_package, <span class="number">64</span>);<span class="comment">// 获得PackageInfo</span></span><br><span class="line"></span><br><span class="line">    jclass packageinfo_clazz = (*env)-&gt;GetObjectClass(env, packageInfo);</span><br><span class="line">    jfieldID fieldID_signatures = (*env)-&gt;GetFieldID(env, packageinfo_clazz,</span><br><span class="line">                                                     <span class="string">"signatures"</span>, <span class="string">"[Landroid/content/pm/Signature;"</span>);</span><br><span class="line">    jobjectArray signature_arr = (jobjectArray)(*env)-&gt;GetObjectField(env,</span><br><span class="line">                                                                      packageInfo, fieldID_signatures);</span><br><span class="line"></span><br><span class="line">    jobject signature = (*env)-&gt;GetObjectArrayElement(env, signature_arr, <span class="number">0</span>);<span class="comment">//Signature数组中取出第一个元素</span></span><br><span class="line"></span><br><span class="line">    jclass signature_clazz = (*env)-&gt;GetObjectClass(env, signature);<span class="comment">//读signature的hashcode</span></span><br><span class="line">    jmethodID methodID_hashcode = (*env)-&gt;GetMethodID(env, signature_clazz,</span><br><span class="line">                                                      <span class="string">"hashCode"</span>, <span class="string">"()I"</span>);</span><br><span class="line">    jint hashCode = (*env)-&gt;CallIntMethod(env, signature, methodID_hashcode);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//__android_log_print(ANDROID_LOG_DEBUG, "JNI", "hashcode: %d\n", hashCode);</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (hashCode != <span class="number">1133691199</span>)<span class="comment">//判断与自己签名的hashcode是否相同</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">        <span class="comment">//__android_log_print(ANDROID_LOG_DEBUG, TAG, "Repackaged App, will exit :(",hashCode);</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="三、反调试"><a href="#三、反调试" class="headerlink" title="三、反调试"></a>三、反调试</h2><h3 id="1-ptrace"><a href="#1-ptrace" class="headerlink" title="1. ptrace"></a>1. ptrace</h3><p>ida、gdb等调试工具其实都是使用ptrace进行的, ptrace有一个很重要的特定，一个进程只能被其它一个进程调试。当没有被调试时，/proc/(pid)/status文件中TracePid为0，即</p>
+<p>（1） 如果TracePid不为0时，说明进程正在被调试。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;jni.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;android/log.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/ptrace.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">be_attached_check</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">const</span> <span class="keyword">int</span> bufsize = <span class="number">1024</span>;</span><br><span class="line">        <span class="keyword">char</span> filename[bufsize];</span><br><span class="line">        <span class="keyword">char</span> line[bufsize];</span><br><span class="line">        <span class="keyword">int</span> pid = getpid();</span><br><span class="line">        <span class="built_in">sprintf</span>(filename, <span class="string">"/proc/%d/status"</span>, pid);</span><br><span class="line">        FILE* fd = fopen(filename, <span class="string">"r"</span>);</span><br><span class="line">        <span class="keyword">if</span> (fd != <span class="literal">NULL</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">while</span> (fgets(line, bufsize, fd))</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (<span class="built_in">strncmp</span>(line, <span class="string">"TracerPid"</span>, <span class="number">9</span>) == <span class="number">0</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">int</span> statue = atoi(&amp;line[<span class="number">10</span>]);</span><br><span class="line">                    <span class="comment">//LOGD("%s", line);</span></span><br><span class="line">                    <span class="keyword">if</span> (statue != <span class="number">0</span>)</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="comment">//LOGD("be attached !! kill %d", pid);</span></span><br><span class="line">                        fclose(fd);</span><br><span class="line">                        <span class="keyword">int</span> ret = kill(pid, SIGKILL);</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            fclose(fd);</span><br><span class="line">        &#125; <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            LOGD(<span class="string">"open %s fail..."</span>, filename);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>（2） 进程自己prace自己，就不会被第三方调试了。在jni_OnLoad函数中ptrace自身，代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">JNIEXPORT jint JNICALL <span class="title">JNI_OnLoad</span><span class="params">(JavaVM* pVm, <span class="keyword">void</span>* reserved)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ptrace(PTRACE_TRACEME, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    JNIEnv* env;</span><br><span class="line">    <span class="keyword">if</span> ((*pVm)-&gt;GetEnv(pVm, (<span class="keyword">void</span> **)&amp;env, JNI_VERSION_1_6)) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> JNI_VERSION_1_6;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-暗桩"><a href="#2-暗桩" class="headerlink" title="2. 暗桩"></a>2. 暗桩</h3><p>ptrace容易被逆向搞掉，暗桩是在多个地方插入检测代码，增加逆向难度，例如，新建一个进程每隔几秒检测一次：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">thread_task</span><span class="params">(<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>)<span class="comment">//进程每隔3秒检测一次</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//LOGD("start be_attached_check...");</span></span><br><span class="line">        be_attached_check();</span><br><span class="line">        sleep(<span class="number">3</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">anti_debug</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">pthread_t</span> pthread_id;</span><br><span class="line">    <span class="keyword">int</span> i,ret;</span><br><span class="line">    <span class="keyword">int</span> m=<span class="number">2</span>;</span><br><span class="line">    ret=pthread_create(&amp;pthread_id,<span class="literal">NULL</span>,(<span class="keyword">void</span> *)thread_task,(<span class="keyword">void</span> *)<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">if</span> (ret!=<span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"create pthread error!\n"</span>);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-多个进程互相ptrace"><a href="#3-多个进程互相ptrace" class="headerlink" title="3. 多个进程互相ptrace"></a>3. 多个进程互相ptrace</h3>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/13/Android反调试/" rel="next" title="Android反调试和对抗">
+                <i class="fa fa-chevron-left"></i> Android反调试和对抗
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/09/android源码结构/" rel="prev" title="Android源码结构">
+                Android源码结构 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">m4bln</p>
+              <p class="site-description motion-element" itemprop="description">影后入林到驿前</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、模拟器检测"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x4E00;&#x3001;&#x6A21;&#x62DF;&#x5668;&#x68C0;&#x6D4B;" class="headerlink" title="&#x4E00;&#x3001;&#x6A21;&#x62DF;&#x5668;&#x68C0;&#x6D4B;"></a>&#x4E00;&#x3001;&#x6A21;&#x62DF;&#x5668;&#x68C0;&#x6D4B;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、签名监测-native"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x4E8C;&#x3001;&#x7B7E;&#x540D;&#x76D1;&#x6D4B;-native" class="headerlink" title="&#x4E8C;&#x3001;&#x7B7E;&#x540D;&#x76D1;&#x6D4B;(native)"></a>&#x4E8C;&#x3001;&#x7B7E;&#x540D;&#x76D1;&#x6D4B;(native)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、反调试"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x4E09;&#x3001;&#x53CD;&#x8C03;&#x8BD5;" class="headerlink" title="&#x4E09;&#x3001;&#x53CD;&#x8C03;&#x8BD5;"></a>&#x4E09;&#x3001;&#x53CD;&#x8C03;&#x8BD5;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-ptrace"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#1-ptrace" class="headerlink" title="1. ptrace"></a>1. ptrace</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-暗桩"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#2-&#x6697;&#x6869;" class="headerlink" title="2. &#x6697;&#x6869;"></a>2. &#x6697;&#x6869;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-多个进程互相ptrace"><span class="nav-number">3.3.</span> <span class="nav-text"><a href="#3-&#x591A;&#x4E2A;&#x8FDB;&#x7A0B;&#x4E92;&#x76F8;ptrace" class="headerlink" title="3. &#x591A;&#x4E2A;&#x8FDB;&#x7A0B;&#x4E92;&#x76F8;ptrace"></a>3. &#x591A;&#x4E2A;&#x8FDB;&#x7A0B;&#x4E92;&#x76F8;ptrace</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">m4bln</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

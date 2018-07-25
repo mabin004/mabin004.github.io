@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="概述在Linux/Unix系统中“..”代表的是向上级目录跳转，如果程序在处理到诸如用“../../../../../../../../../../../etc/hosts”表示的文件时没有进行防护，则会跳转出当前工作目录，跳转到到其他目录中,即目录穿越。 在 Android 中由于目录穿越造成任意文件写入的漏洞较为常见。首先是写文件的接口可能本身设计上就允许传入任意路径的参数，另一种情况就是直接">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android中的目录穿越漏洞（待）">
+<meta property="og:url" content="https://mabin004.github.io/2018/03/30/zip解压漏洞/index.html">
+<meta property="og:site_name" content="m4bln">
+<meta property="og:description" content="概述在Linux/Unix系统中“..”代表的是向上级目录跳转，如果程序在处理到诸如用“../../../../../../../../../../../etc/hosts”表示的文件时没有进行防护，则会跳转出当前工作目录，跳转到到其他目录中,即目录穿越。 在 Android 中由于目录穿越造成任意文件写入的漏洞较为常见。首先是写文件的接口可能本身设计上就允许传入任意路径的参数，另一种情况就是直接">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-32.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-31.png">
+<meta property="og:updated_time" content="2018-05-31T14:11:22.141Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android中的目录穿越漏洞（待）">
+<meta name="twitter:description" content="概述在Linux/Unix系统中“..”代表的是向上级目录跳转，如果程序在处理到诸如用“../../../../../../../../../../../etc/hosts”表示的文件时没有进行防护，则会跳转出当前工作目录，跳转到到其他目录中,即目录穿越。 在 Android 中由于目录穿越造成任意文件写入的漏洞较为常见。首先是写文件的接口可能本身设计上就允许传入任意路径的参数，另一种情况就是直接">
+<meta name="twitter:image" content="https://mabin004.github.io/images/pasted-32.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://mabin004.github.io/2018/03/30/zip解压漏洞/"/>
+
+
+
+
+
+  <title>Android中的目录穿越漏洞（待） | m4bln</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">m4bln</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-hint">
+          <a href="/hint/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            hint
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-todo">
+          <a href="/todo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            ToDo
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/30/zip解压漏洞/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android中的目录穿越漏洞（待）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-30T11:17:49+08:00">
+                2018-03-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>在Linux/Unix系统中“..”代表的是向上级目录跳转，如果程序在处理到诸如用“../../../../../../../../../../../etc/hosts”表示的文件时没有进行防护，则会跳转出当前工作目录，跳转到到其他目录中,即目录穿越。</p>
+<p>在 Android 中由于目录穿越造成任意文件写入的漏洞较为常见。首先是写文件的接口可能本身设计上就允许传入任意路径的参数，另一种情况就是直接拼接路径导致可以 “…/” 进行目录穿越。</p>
+<p>由于存在目录穿越漏洞的代码执行者通常是应用本身（非webview沙箱进程），因此一旦存在任意文件写入漏洞，就有可能覆盖原有的文件。此时若应用中存在动态加载代码的逻辑，配合目录穿越则有可能实现任意代码执行。</p>
+<h2 id="目录穿越场景"><a href="#目录穿越场景" class="headerlink" title="目录穿越场景"></a>目录穿越场景</h2><h3 id="1-下载文件到指定的路径"><a href="#1-下载文件到指定的路径" class="headerlink" title="1. 下载文件到指定的路径"></a>1. 下载文件到指定的路径</h3><p>该场景适用于下载路径由用户可控，例如一些下载工具、保存的目录为用户名等特殊情况。</p>
+<h3 id="2-解压-zip-文件时未对-ZipEntry-文件名检查"><a href="#2-解压-zip-文件时未对-ZipEntry-文件名检查" class="headerlink" title="2. 解压 zip 文件时未对 ZipEntry 文件名检查"></a>2. 解压 zip 文件时未对 ZipEntry 文件名检查</h3><p>Android应用中通常会直接下载一些皮肤等资源文件，为了节约流量，一些资源文件通常打包成zip。</p>
+<p>Java代码在解压ZIP文件时会使用到ZipEntry类的getName()方法。如果ZIP文件中包含“../”的字符串，该方法返回值里面会原样返回。如果在这里没有进行防护，继续解压缩操作，就会将解压文件创建到其他目录中。</p>
+<p>漏洞代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">public void UnZipFolder(String zipFileString, String outPathString) throws Exception &#123;</span><br><span class="line">        //ZipInputStream inZip = new ZipInputStream(new FileInputStream(zipFileString));</span><br><span class="line">        ZipInputStream inZip = new ZipInputStream(getAssets().open(&quot;a.zip&quot;));</span><br><span class="line">        ZipEntry zipEntry;</span><br><span class="line">        String szName = &quot;&quot;;</span><br><span class="line">        while ((zipEntry = inZip.getNextEntry()) != null) &#123;</span><br><span class="line">        //调用zipEntry的getName方法没有检查是否包含&quot;../&quot;</span><br><span class="line">            szName = zipEntry.getName();</span><br><span class="line">            if (zipEntry.isDirectory()) &#123;</span><br><span class="line">                // get the folder name of the widget</span><br><span class="line">                szName = szName.substring(0, szName.length() - 1);</span><br><span class="line">                File folder = new File(outPathString + File.separator + szName);</span><br><span class="line">                folder.mkdirs();</span><br><span class="line">            &#125; else &#123;</span><br><span class="line"></span><br><span class="line">                File file = new File(outPathString + File.separator + szName);</span><br><span class="line">                file.createNewFile();</span><br><span class="line">                // get the output stream of the file</span><br><span class="line">                FileOutputStream out = new FileOutputStream(file);</span><br><span class="line">                int len;</span><br><span class="line">                byte[] buffer = new byte[1024];</span><br><span class="line">                // read (len) bytes into buffer</span><br><span class="line">                while ((len = inZip.read(buffer)) != -1) &#123;</span><br><span class="line">                    // write (len) byte from buffer at the position 0</span><br><span class="line">                    out.write(buffer, 0, len);</span><br><span class="line">                    out.flush();</span><br><span class="line">                &#125;</span><br><span class="line">                out.close();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        inZip.close();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>此时，构造一个zip文件，其中某一个文件的名字为“../../../../../../sdcard/exec.so”,调用上述代码时就会触发漏洞。</p>
+<p>在主流操作系统中，文件名是不允许包含“/”的，那么也就无法通过直接压缩的方式构造zip包了。那么如何构造一个包含“../”的zip文件？</p>
+<p><strong>可以先计算含“../”的文件名长度，例如“../../../../../../sdcard/exec.so”长度为32,我们先创建一个文件“aaaaaaaaaaaaaaaaaaaaaaaaaaaaa.so”,之后压缩成为zip，然后再用010editor找到对应字段直接修改即可。</strong></p>
+<p><img src="/images/pasted-32.png" alt="upload successful"></p>
+<h3 id="3-下载时未对-Content-Disposition进行合法性检查"><a href="#3-下载时未对-Content-Disposition进行合法性检查" class="headerlink" title="3. 下载时未对 Content-Disposition进行合法性检查"></a>3. 下载时未对 Content-Disposition进行合法性检查</h3><p>Content-Disposition 是常见的 HTTP 协议 header，在文件下载时可以告诉客户端浏览器下载的文件名。例如服务器返回 Content-Disposition: attachment; filename=”my.html” ，浏览器将弹出另存为对话框（或直接保存），默认的文件名就是 my.html。</p>
+<p>但这个 filename 参数显然是不可信任的。例如恶意网站返回的文件名包含 ../，当 Android 应用尝试将这个文件保存到 /sdcard/Downloads 时，攻击者就有机会把文件写入到 /data/ 目录中了：</p>
+<p>例如如下的代码逻辑：</p>
+<p>服务端：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">header(&apos;Content-Disposition: attachment;filename=../../../../../../../../sdcard/hack.php&apos;);</span><br><span class="line">echo &quot;hello,m4bln&quot;;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure></p>
+<p>客户端<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">public void downloadFiles(String urlStr)&#123;</span><br><span class="line">        FileOutputStream output;</span><br><span class="line"></span><br><span class="line">        try &#123;</span><br><span class="line"></span><br><span class="line">            URL url=new URL(urlStr);</span><br><span class="line">            //创建一个HTTP链接</span><br><span class="line">            HttpURLConnection urlConn=(HttpURLConnection)url.openConnection();</span><br><span class="line">            urlConn.connect();</span><br><span class="line"></span><br><span class="line">            //根据header中的Content-Disposition 获取文件名</span><br><span class="line">            String fileName = urlConn.getHeaderField(&quot;Content-Disposition&quot;);</span><br><span class="line">            fileName = URLDecoder.decode(fileName.substring(fileName.indexOf(&quot;filename&quot;)+10,fileName.length()-1),&quot;UTF-8&quot;);</span><br><span class="line"></span><br><span class="line">            InputStream inputStream=urlConn.getInputStream();</span><br><span class="line"></span><br><span class="line">            File file=new File(getApplicationContext().getFilesDir().toString()+&quot;/&quot;+fileName);</span><br><span class="line"></span><br><span class="line">            output=new FileOutputStream(file);</span><br><span class="line">            byte buffer[]=new byte[4*1024];//每次存4K</span><br><span class="line">            int temp;</span><br><span class="line">            //写入数据</span><br><span class="line">            while((temp=inputStream.read(buffer))!=-1)&#123;</span><br><span class="line">                output.write(buffer,0,temp);</span><br><span class="line">            &#125;</span><br><span class="line">            output.flush();</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line"></span><br><span class="line">            System.out.println(&quot;读写数据异常:&quot;+e);</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>注： 当使用默认浏览器下载时，浏览器会把“../”替换为”.._”</strong><br><img src="/images/pasted-31.png" alt="upload successful"></p>
+<h2 id="几种常见的-Android-下动态加载可执行代码"><a href="#几种常见的-Android-下动态加载可执行代码" class="headerlink" title="几种常见的 Android 下动态加载可执行代码"></a>几种常见的 Android 下动态加载可执行代码</h2><p>如果应用动态加载代码之前未做签名校验，利用目录穿越漏洞进行覆盖，可实现稳定的任意代码执行。此外由于在文件系统中写入了可执行文件，还可以实现持久化攻击的效果。</p>
+<ol>
+<li>DexClassLoader 动态载入应用可写入的 dex 可执行文件</li>
+<li>java.lang.Runtime.exec 方法执行应用可写入的 elf 文件</li>
+<li>System.load 和 System.loadLibrary 动态载入应用可写入的 elf 共享对象</li>
+<li>本地代码使用 system、popen 等类似函数执行应用可写入的 elf 文件</li>
+<li>本地代码使用 dlopen 载入应用可写入的 elf 共享对象</li>
+<li>利用 Multidex 机制：<a href="https://www.nowsecure.com/blog/2015/06/15/a-pattern-for-remote-code-execution-using-arbitrary-file-writes-and-multidex-applications/" target="_blank" rel="noopener">A Pattern for Remote Code Execution using Arbitrary File Writes and MultiDex Applications</a></li>
+</ol>
+<p>关于动态加载需要注意以下几点：</p>
+<p><strong>1. 在Android中，System.loadLibrary()是从应用的lib目录中加载.so文件，而System.load()是用某个.so文件的绝对路径加载，这个.so文件可以不在应用的lib目录中，可以在SD卡中，或者在应用的files目录中，只要应用有读的权限目录中即可。</strong><br><strong>2. 在files目录中，应用具有写入权限，利用ZIP文件目录遍历漏洞可以替换掉原先的so文件，达到远程命令执行的目的。而应用的lib目录是软链接到了/data/app-lib/应用目录，属于system用户，第三方应用在执行时没有写入/data/app-lib目录的权限</strong></p>
+<h2 id="常见的修复方法"><a href="#常见的修复方法" class="headerlink" title="常见的修复方法"></a>常见的修复方法</h2><ol>
+<li>对重要的ZIP压缩包文件进行数字签名校验，校验通过才进行解压。</li>
+<li>检查Zip压缩包中使用ZipEntry.getName()获取的文件名中是否包含”../”或者”..”<br> 检查”../”的时候不必进行URI Decode（以防通过URI编码”..%2F”来进行绕过），测试发现ZipEntry.getName()对于Zip包中有“..%2F”的文件路径不会进行处理。</li>
+<li></li>
+</ol>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><ol>
+<li><a href="https://jaq.alibaba.com/community/art/show?articleid=383" target="_blank" rel="noopener">https://jaq.alibaba.com/community/art/show?articleid=383</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/28107901" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/28107901</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/23/经典漏洞案例整理/" rel="next" title="经典漏洞案例整理">
+                <i class="fa fa-chevron-left"></i> 经典漏洞案例整理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/17/使用IPAPatch免越狱调试、修改第三方App/" rel="prev" title="iOS应用安全—— IPAPatch免越狱调试、修改第三方App">
+                iOS应用安全—— IPAPatch免越狱调试、修改第三方App <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">m4bln</p>
+              <p class="site-description motion-element" itemprop="description">影后入林到驿前</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x6982;&#x8FF0;" class="headerlink" title="&#x6982;&#x8FF0;"></a>&#x6982;&#x8FF0;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#目录穿越场景"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x76EE;&#x5F55;&#x7A7F;&#x8D8A;&#x573A;&#x666F;" class="headerlink" title="&#x76EE;&#x5F55;&#x7A7F;&#x8D8A;&#x573A;&#x666F;"></a>&#x76EE;&#x5F55;&#x7A7F;&#x8D8A;&#x573A;&#x666F;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-下载文件到指定的路径"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#1-&#x4E0B;&#x8F7D;&#x6587;&#x4EF6;&#x5230;&#x6307;&#x5B9A;&#x7684;&#x8DEF;&#x5F84;" class="headerlink" title="1. &#x4E0B;&#x8F7D;&#x6587;&#x4EF6;&#x5230;&#x6307;&#x5B9A;&#x7684;&#x8DEF;&#x5F84;"></a>1. &#x4E0B;&#x8F7D;&#x6587;&#x4EF6;&#x5230;&#x6307;&#x5B9A;&#x7684;&#x8DEF;&#x5F84;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-解压-zip-文件时未对-ZipEntry-文件名检查"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#2-&#x89E3;&#x538B;-zip-&#x6587;&#x4EF6;&#x65F6;&#x672A;&#x5BF9;-ZipEntry-&#x6587;&#x4EF6;&#x540D;&#x68C0;&#x67E5;" class="headerlink" title="2. &#x89E3;&#x538B; zip &#x6587;&#x4EF6;&#x65F6;&#x672A;&#x5BF9; ZipEntry &#x6587;&#x4EF6;&#x540D;&#x68C0;&#x67E5;"></a>2. &#x89E3;&#x538B; zip &#x6587;&#x4EF6;&#x65F6;&#x672A;&#x5BF9; ZipEntry &#x6587;&#x4EF6;&#x540D;&#x68C0;&#x67E5;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-下载时未对-Content-Disposition进行合法性检查"><span class="nav-number">2.3.</span> <span class="nav-text"><a href="#3-&#x4E0B;&#x8F7D;&#x65F6;&#x672A;&#x5BF9;-Content-Disposition&#x8FDB;&#x884C;&#x5408;&#x6CD5;&#x6027;&#x68C0;&#x67E5;" class="headerlink" title="3. &#x4E0B;&#x8F7D;&#x65F6;&#x672A;&#x5BF9; Content-Disposition&#x8FDB;&#x884C;&#x5408;&#x6CD5;&#x6027;&#x68C0;&#x67E5;"></a>3. &#x4E0B;&#x8F7D;&#x65F6;&#x672A;&#x5BF9; Content-Disposition&#x8FDB;&#x884C;&#x5408;&#x6CD5;&#x6027;&#x68C0;&#x67E5;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#几种常见的-Android-下动态加载可执行代码"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x51E0;&#x79CD;&#x5E38;&#x89C1;&#x7684;-Android-&#x4E0B;&#x52A8;&#x6001;&#x52A0;&#x8F7D;&#x53EF;&#x6267;&#x884C;&#x4EE3;&#x7801;" class="headerlink" title="&#x51E0;&#x79CD;&#x5E38;&#x89C1;&#x7684; Android &#x4E0B;&#x52A8;&#x6001;&#x52A0;&#x8F7D;&#x53EF;&#x6267;&#x884C;&#x4EE3;&#x7801;"></a>&#x51E0;&#x79CD;&#x5E38;&#x89C1;&#x7684; Android &#x4E0B;&#x52A8;&#x6001;&#x52A0;&#x8F7D;&#x53EF;&#x6267;&#x884C;&#x4EE3;&#x7801;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常见的修复方法"><span class="nav-number">4.</span> <span class="nav-text"><a href="#&#x5E38;&#x89C1;&#x7684;&#x4FEE;&#x590D;&#x65B9;&#x6CD5;" class="headerlink" title="&#x5E38;&#x89C1;&#x7684;&#x4FEE;&#x590D;&#x65B9;&#x6CD5;"></a>&#x5E38;&#x89C1;&#x7684;&#x4FEE;&#x590D;&#x65B9;&#x6CD5;</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考链接"><span class="nav-number"></span> <span class="nav-text"><a href="#&#x53C2;&#x8003;&#x94FE;&#x63A5;" class="headerlink" title="&#x53C2;&#x8003;&#x94FE;&#x63A5;"></a>&#x53C2;&#x8003;&#x94FE;&#x63A5;</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">m4bln</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

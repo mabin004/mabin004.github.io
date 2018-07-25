@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="批量下载 -O表示下载后的文件名和服务端的文件名一样curl -O http://45.77.10.219/2018-02-2[6-8].html -o指定下载后的文件名curl -o “#1.html” http://45.77.10.219/2018-02-2[6-8].html(#1表示可变参数，该命令结果为6.html,7.html,8.html)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="curl用法">
+<meta property="og:url" content="https://mabin004.github.io/2018/03/06/curl用法/index.html">
+<meta property="og:site_name" content="m4bln">
+<meta property="og:description" content="批量下载 -O表示下载后的文件名和服务端的文件名一样curl -O http://45.77.10.219/2018-02-2[6-8].html -o指定下载后的文件名curl -o “#1.html” http://45.77.10.219/2018-02-2[6-8].html(#1表示可变参数，该命令结果为6.html,7.html,8.html)">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-12.png">
+<meta property="og:updated_time" content="2018-03-06T15:26:21.248Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="curl用法">
+<meta name="twitter:description" content="批量下载 -O表示下载后的文件名和服务端的文件名一样curl -O http://45.77.10.219/2018-02-2[6-8].html -o指定下载后的文件名curl -o “#1.html” http://45.77.10.219/2018-02-2[6-8].html(#1表示可变参数，该命令结果为6.html,7.html,8.html)">
+<meta name="twitter:image" content="https://mabin004.github.io/images/pasted-12.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://mabin004.github.io/2018/03/06/curl用法/"/>
+
+
+
+
+
+  <title>curl用法 | m4bln</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">m4bln</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-hint">
+          <a href="/hint/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            hint
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-todo">
+          <a href="/todo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            ToDo
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/06/curl用法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">curl用法</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-06T15:20:12+08:00">
+                2018-03-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="批量下载"><a href="#批量下载" class="headerlink" title="批量下载"></a>批量下载</h2><ul>
+<li>-O表示下载后的文件名和服务端的文件名一样<br>curl -O <a href="http://45.77.10.219/2018-02-2[6-8].html" target="_blank" rel="noopener">http://45.77.10.219/2018-02-2[6-8].html</a></li>
+<li>-o指定下载后的文件名<br>curl -o “#1.html” <a href="http://45.77.10.219/2018-02-2[6-8].html" target="_blank" rel="noopener">http://45.77.10.219/2018-02-2[6-8].html</a><br>(#1表示可变参数，该命令结果为6.html,7.html,8.html)<a id="more"></a>
+</li>
+</ul>
+<h2 id="模拟请求"><a href="#模拟请求" class="headerlink" title="模拟请求"></a>模拟请求</h2><h3 id="获取服务器http头信息"><a href="#获取服务器http头信息" class="headerlink" title="获取服务器http头信息"></a>获取服务器http头信息</h3><p>curl -i <a href="https://www.baidu.com" target="_blank" rel="noopener">https://www.baidu.com</a></p>
+<h3 id="添加User-Agent"><a href="#添加User-Agent" class="headerlink" title="添加User-Agent"></a>添加User-Agent</h3><p>curl -i -A “Mazilla/4.0 (compatible;MSIE 6.0;Windows NT5.0)” <a href="https://www.baidu.com" target="_blank" rel="noopener">https://www.baidu.com</a></p>
+<p><img src="/images/pasted-12.png" alt="upload successful"></p>
+<h3 id="使用代理"><a href="#使用代理" class="headerlink" title="使用代理"></a>使用代理</h3><p>curl -x 114.115.140.25:3128 <a href="https://www.google.com" target="_blank" rel="noopener">https://www.google.com</a></p>
+<h3 id="指定refer"><a href="#指定refer" class="headerlink" title="指定refer"></a>指定refer</h3><p>对于验证refer的服务器，如防止倒链等可以指定refer<br>curl -e ‘<a href="http://www.baidu.com" target="_blank" rel="noopener">http://www.baidu.com</a>‘ <a href="https://map.baidu.com" target="_blank" rel="noopener">https://map.baidu.com</a></p>
+<h3 id="设置访问域名的主机头突破服务器端限制"><a href="#设置访问域名的主机头突破服务器端限制" class="headerlink" title="设置访问域名的主机头突破服务器端限制"></a>设置访问域名的主机头突破服务器端限制</h3><p>在某些情况下服务器可能禁止通过IP直接访问，或者与需要通特定的域名、主机头才能访问你需要访问的内容，但是此域名DNS还没有解析，或者DNS解析的域名是多个IP，，不能到你需要的IP，你需要让它解析成你需要的特定IP。</p>
+<p>curl  –header “Host:www.freebuf.com” <a href="http://127.0.0.1" target="_blank" rel="noopener">http://127.0.0.1</a></p>
+<p>在较新版本的curl还支持一个为例子显示下：–resolve的选项，可以直接用来指定对url的解析</p>
+<p>curl –resolve www.freebuf.com:80:127.0.0.1 <a href="http://www.freebuf.com" target="_blank" rel="noopener">http://www.freebuf.com</a></p>
+<h3 id="设置POST表单实现web认证"><a href="#设置POST表单实现web认证" class="headerlink" title="设置POST表单实现web认证"></a>设置POST表单实现web认证</h3><p>找到登录页的表单，获取用户名和密码的表单值，例如为user何pass</p>
+<p>curl -d “user=name&amp;pass=pass” 登陆URL</p>
+<h3 id="带cookie访问"><a href="#带cookie访问" class="headerlink" title="带cookie访问"></a>带cookie访问</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1.curl -D cookiename -d “user=name&amp;pass=pass” https://www.xxx.com （通过口令获取cookie，并保存为文件）</span><br><span class="line">2.cat cookie 验证下cookie</span><br><span class="line">3.curl -b cookiename https://www.xxx.com (带着cookie访问)</span><br></pre></td></tr></table></figure>
+<h3 id="文件上传"><a href="#文件上传" class="headerlink" title="文件上传"></a>文件上传</h3><p>例如对于如下表单：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -F "file=@local_a.txt;filename=testaaabcd.txt" http://www.a.com/file</span><br></pre></td></tr></table></figure></p>
+<p>上传文件，local_a.txt为本地路径，文件名称为testaaabcd.txt</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/05/https中间人攻击原理/" rel="next" title="Android https中间人攻击">
+                <i class="fa fa-chevron-left"></i> Android https中间人攻击
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/06/RSA算法原理及应用破解/" rel="prev" title="RSA算法原理及应用破解">
+                RSA算法原理及应用破解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">m4bln</p>
+              <p class="site-description motion-element" itemprop="description">影后入林到驿前</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#批量下载"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x6279;&#x91CF;&#x4E0B;&#x8F7D;" class="headerlink" title="&#x6279;&#x91CF;&#x4E0B;&#x8F7D;"></a>&#x6279;&#x91CF;&#x4E0B;&#x8F7D;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模拟请求"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x6A21;&#x62DF;&#x8BF7;&#x6C42;" class="headerlink" title="&#x6A21;&#x62DF;&#x8BF7;&#x6C42;"></a>&#x6A21;&#x62DF;&#x8BF7;&#x6C42;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取服务器http头信息"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#&#x83B7;&#x53D6;&#x670D;&#x52A1;&#x5668;http&#x5934;&#x4FE1;&#x606F;" class="headerlink" title="&#x83B7;&#x53D6;&#x670D;&#x52A1;&#x5668;http&#x5934;&#x4FE1;&#x606F;"></a>&#x83B7;&#x53D6;&#x670D;&#x52A1;&#x5668;http&#x5934;&#x4FE1;&#x606F;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加User-Agent"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#&#x6DFB;&#x52A0;User-Agent" class="headerlink" title="&#x6DFB;&#x52A0;User-Agent"></a>&#x6DFB;&#x52A0;User-Agent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用代理"><span class="nav-number">2.3.</span> <span class="nav-text"><a href="#&#x4F7F;&#x7528;&#x4EE3;&#x7406;" class="headerlink" title="&#x4F7F;&#x7528;&#x4EE3;&#x7406;"></a>&#x4F7F;&#x7528;&#x4EE3;&#x7406;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指定refer"><span class="nav-number">2.4.</span> <span class="nav-text"><a href="#&#x6307;&#x5B9A;refer" class="headerlink" title="&#x6307;&#x5B9A;refer"></a>&#x6307;&#x5B9A;refer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置访问域名的主机头突破服务器端限制"><span class="nav-number">2.5.</span> <span class="nav-text"><a href="#&#x8BBE;&#x7F6E;&#x8BBF;&#x95EE;&#x57DF;&#x540D;&#x7684;&#x4E3B;&#x673A;&#x5934;&#x7A81;&#x7834;&#x670D;&#x52A1;&#x5668;&#x7AEF;&#x9650;&#x5236;" class="headerlink" title="&#x8BBE;&#x7F6E;&#x8BBF;&#x95EE;&#x57DF;&#x540D;&#x7684;&#x4E3B;&#x673A;&#x5934;&#x7A81;&#x7834;&#x670D;&#x52A1;&#x5668;&#x7AEF;&#x9650;&#x5236;"></a>&#x8BBE;&#x7F6E;&#x8BBF;&#x95EE;&#x57DF;&#x540D;&#x7684;&#x4E3B;&#x673A;&#x5934;&#x7A81;&#x7834;&#x670D;&#x52A1;&#x5668;&#x7AEF;&#x9650;&#x5236;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置POST表单实现web认证"><span class="nav-number">2.6.</span> <span class="nav-text"><a href="#&#x8BBE;&#x7F6E;POST&#x8868;&#x5355;&#x5B9E;&#x73B0;web&#x8BA4;&#x8BC1;" class="headerlink" title="&#x8BBE;&#x7F6E;POST&#x8868;&#x5355;&#x5B9E;&#x73B0;web&#x8BA4;&#x8BC1;"></a>&#x8BBE;&#x7F6E;POST&#x8868;&#x5355;&#x5B9E;&#x73B0;web&#x8BA4;&#x8BC1;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#带cookie访问"><span class="nav-number">2.7.</span> <span class="nav-text"><a href="#&#x5E26;cookie&#x8BBF;&#x95EE;" class="headerlink" title="&#x5E26;cookie&#x8BBF;&#x95EE;"></a>&#x5E26;cookie&#x8BBF;&#x95EE;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件上传"><span class="nav-number">2.8.</span> <span class="nav-text"><a href="#&#x6587;&#x4EF6;&#x4E0A;&#x4F20;" class="headerlink" title="&#x6587;&#x4EF6;&#x4E0A;&#x4F20;"></a>&#x6587;&#x4EF6;&#x4E0A;&#x4F20;</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">m4bln</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

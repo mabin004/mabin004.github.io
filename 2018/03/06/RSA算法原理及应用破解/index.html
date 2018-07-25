@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言RSA算法是现今使用广泛的公钥密码算法，也是号称地球上最安全的加密算法。在了解RSA算法之前，先熟悉下几个术语根据密钥的使用方法，可以将密码分为对称密码和公钥密码对称密码：加密和解密使用同一种密钥的方式公钥密码：加密和解密使用不同的密码的方式，因此公钥密码通常也称为非对称密码。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RSA算法原理及应用破解">
+<meta property="og:url" content="https://mabin004.github.io/2018/03/06/RSA算法原理及应用破解/index.html">
+<meta property="og:site_name" content="m4bln">
+<meta property="og:description" content="前言RSA算法是现今使用广泛的公钥密码算法，也是号称地球上最安全的加密算法。在了解RSA算法之前，先熟悉下几个术语根据密钥的使用方法，可以将密码分为对称密码和公钥密码对称密码：加密和解密使用同一种密钥的方式公钥密码：加密和解密使用不同的密码的方式，因此公钥密码通常也称为非对称密码。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-13.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-14.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-15.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-16.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-17.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-18.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-19.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-20.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-21.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-22.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-23.png">
+<meta property="og:updated_time" content="2018-03-06T15:25:54.067Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RSA算法原理及应用破解">
+<meta name="twitter:description" content="前言RSA算法是现今使用广泛的公钥密码算法，也是号称地球上最安全的加密算法。在了解RSA算法之前，先熟悉下几个术语根据密钥的使用方法，可以将密码分为对称密码和公钥密码对称密码：加密和解密使用同一种密钥的方式公钥密码：加密和解密使用不同的密码的方式，因此公钥密码通常也称为非对称密码。">
+<meta name="twitter:image" content="https://mabin004.github.io/images/pasted-13.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://mabin004.github.io/2018/03/06/RSA算法原理及应用破解/"/>
+
+
+
+
+
+  <title>RSA算法原理及应用破解 | m4bln</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">m4bln</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-hint">
+          <a href="/hint/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            hint
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-todo">
+          <a href="/todo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            ToDo
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/06/RSA算法原理及应用破解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">RSA算法原理及应用破解</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-06T21:48:42+08:00">
+                2018-03-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>RSA算法是现今使用广泛的公钥密码算法，也是号称地球上最安全的加密算法。在了解RSA算法之前，先熟悉下几个术语<br>根据密钥的使用方法，可以将密码分为对称密码和公钥密码<br>对称密码：加密和解密使用同一种密钥的方式<br>公钥密码：加密和解密使用不同的密码的方式，因此公钥密码通常也称为非对称密码。<br><a id="more"></a></p>
+<h1 id="RSA算法原理"><a href="#RSA算法原理" class="headerlink" title="RSA算法原理"></a>RSA算法原理</h1><p>该部分转自<a href="http://blog.csdn.net/dbs1215/article/details/48953589" target="_blank" rel="noopener">http://blog.csdn.net/dbs1215/article/details/48953589</a></p>
+<h2 id="RSA加密"><a href="#RSA加密" class="headerlink" title="RSA加密"></a>RSA加密</h2><p>RSA的加密过程可以使用一个通式来表达，也就是说RSA加密是对明文的E次方后除以N后求余数的过程。</p>
+<p><img src="/images/pasted-13.png" alt="upload successful"></p>
+<p>从通式可知，只要知道E和N任何人都可以进行RSA加密了，所以说E、N是RSA加密的密钥，也就是说E和N的组合就是公钥，我们用(E,N)来表示公钥<br><img src="/images/pasted-14.png" alt="upload successful"><br>不过E和N不并不是随便什么数都可以的，它们都是经过严格的数学计算得出的，关于E和N拥有什么样的要求及其特性后面会讲到。顺便啰嗦一句E是加密（Encryption）的首字母，N是数字（Number）的首字母</p>
+<h2 id="RSA解密"><a href="#RSA解密" class="headerlink" title="RSA解密"></a>RSA解密</h2><p>RSA的解密过程也可以使用一个通式来表达，即对密文的D次方后除以N后求余数的过程。</p>
+<p><img src="/images/pasted-15.png" alt="upload successful"><br>这就是RSA解密过程。知道D和N就能进行解密密文了，所以D和N的组合就是私钥。</p>
+<p><img src="/images/pasted-16.png" alt="upload successful"></p>
+<p>总结如下表：</p>
+<p><img src="/images/pasted-17.png" alt="upload successful"></p>
+<h2 id="生成秘钥对"><a href="#生成秘钥对" class="headerlink" title="生成秘钥对"></a>生成秘钥对</h2><p>既然公钥是（E，N），私钥是（D，N）所以密钥对即为（E，D，N）但密钥对是怎样生成的？</p>
+<p>密钥对生成分求N、求L（L为中间过程的中间数,详见下文描述）、求E和求D以下几个步骤：</p>
+<h3 id="求N"><a href="#求N" class="headerlink" title="求N"></a>求N</h3><p>准备两个质数p，q。这两个数不能太小，太小则会容易破解，将p乘以q就是N</p>
+<p><img src="/images/pasted-18.png" alt="upload successful"></p>
+<h3 id="求L（L为中间过程的中间数）"><a href="#求L（L为中间过程的中间数）" class="headerlink" title="求L（L为中间过程的中间数）"></a>求L（L为中间过程的中间数）</h3><p>L 是 p－1 和 q－1的最小公倍数，可用如下表达式表示：</p>
+<p><img src="/images/pasted-19.png" alt="upload successful"></p>
+<h3 id="求E"><a href="#求E" class="headerlink" title="求E"></a>求E</h3><p>E必须满足两个条件：E是一个比1大比L小的数，E和L的最大公约数为1<br>用gcd(X,Y)来表示X，Y的最大公约数则E条件如下：</p>
+<p><img src="/images/pasted-20.png" alt="upload successful"><br>之所以需要E和L的最大公约数为1是为了保证一定存在解密时需要使用的数D。现在我们已经求出了E和N也就是说我们已经生成了密钥对中的公钥了。</p>
+<h3 id="求D"><a href="#求D" class="headerlink" title="求D"></a>求D</h3><p>数D是由数E计算出来的。D、E和L之间必须满足以下关系：</p>
+<p><img src="/images/pasted-21.png" alt="upload successful"><br>只要D满足上述2个条件，则通过E和N进行加密的密文就可以用D和N进行解密。<br>简单地说条件2是为了保证密文解密后的数据就是明文。<br>现在私钥自然也已经生成了，密钥对也就自然生成了。 </p>
+<p>生成秘钥对总结如下：</p>
+<p><img src="/images/pasted-22.png" alt="upload successful"></p>
+<h2 id="实践举例"><a href="#实践举例" class="headerlink" title="实践举例"></a>实践举例</h2><p>5.1 求N<br>我们准备两个很小对质数，<br>p ＝ 17<br>q ＝ 19<br>N ＝ p ＊ q ＝ 323</p>
+<p>5.2 求L<br>L ＝ lcm（p－1， q－1）＝ lcm(16，18） ＝ 144<br>144为16和18对最小公倍数</p>
+<p>5.3 求E<br>求E必须要满足2个条件：1 &lt; E &lt; L ，gcd（E，L）=1<br>即1 &lt; E &lt; 144，gcd（E，144） ＝ 1<br>E和144互为质数，5显然满足上述2个条件<br>故E ＝ 5</p>
+<p>此时公钥=(E，N）＝ （5，323）</p>
+<p>5.4 求D<br>求D也必须满足2个条件：1 &lt; D &lt; L，E＊D mod L ＝ 1<br>即1 &lt; D &lt; 144，5 ＊ D mod 144 ＝ 1<br>显然当D＝ 29 时满足上述两个条件<br>1 &lt; 29 &lt; 144<br>5＊29 mod 144 ＝ 145 mod 144 ＝ 1<br>此时私钥＝（D，N）＝（29，323）</p>
+<p>5.5 加密<br>准备的明文必须时小于N的数，因为加密或者解密都要mod N其结果必须小于N<br>假设明文 ＝ 123<br>则 密文＝明文EmodN＝1235mod323=225<br>5.6 解密<br>明文＝密文DmodN＝22529mod323=123<br>解密后的明文为123。</p>
+<p>一个直观的解释如下：</p>
+<blockquote>
+<p>123的5次方mod323==Math.pow(123d, 5d) % 323d可以直接计算出是225；<br>再说5.6:<br>因为225的29次方数值太大，直接运算会导致取模结果获取错误结果；可以这样求解<br>(225的5次方mod323)==4;(225的4次方mod323)==290所以<br>225的29次方mod323==(225的5次方mod323)<em>(225的5次方mod323)</em>(225的5次方mod323)<em>(225的5次方mod323)</em>(225的5次方mod323)<em>(225的4次方mod323) mod323==(4 </em> 4 <em> 4 </em> 4 <em> 290 </em> 4) % 323==123</p>
+</blockquote>
+<h1 id="RSA实现破解"><a href="#RSA实现破解" class="headerlink" title="RSA实现破解"></a>RSA实现破解</h1><p>RSA在软件逆向或加解密类的ctf题目中经常看到。在实际应用中，参数N和E是公开的但是D是私有的并且绝不能公开！两个大素数P和Q在生成密钥后便不再需要了，但是必须销毁，否则就可以推算出D。</p>
+<p>为了从公钥(N,E)得到D,需要试图分解N为它的两个素数因子。对于一个很大的模数N（512位或更大）要想分解出它的P和Q是件非常困难的事。</p>
+<h2 id="ctf题目一"><a href="#ctf题目一" class="headerlink" title="ctf题目一"></a>ctf题目一</h2><p>题目：给出密文flag.enc和公钥public.pem,解出密文<br>解题过程如下：</p>
+<ol>
+<li>openssl分析公钥，得到N,E<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl rsa -pubin -text -modulus -in public.pem</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><img src="/images/pasted-23.png" alt="upload successful"></p>
+<p>其中，Modulus 是n的值，Exponent是E的值。</p>
+<ol>
+<li>使用<a href="https://sourceforge.net/projects/msieve/" target="_blank" rel="noopener">msieve工具</a>对N进行分解<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">msieve.exe 0xA41006DEFD378B7395B4E2EB1EC9BF56A61CD9C3B5A0A73528521EEB2FB817A7 -v</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>分解结果如下：</p>
+<blockquote>
+<p>Msieve v. 1.53 (SVN 1005)<br>Wed Feb 28 23:00:33 2018<br>random seeds: f922db80 d61d4d18<br>factoring 74207624142945242263057035287110983967646020057307828709587969646701361764263 (77 digits)<br>searching for 15-digit factors<br>commencing quadratic sieve (77-digit input)<br>using multiplier of 7<br>using generic 32kb sieve core<br>sieve interval: 12 blocks of size 32768<br>processing polynomials in batches of 17<br>using a sieve bound of 921409 (36471 primes)<br>using large prime bound of 92140900 (26 bits)<br>using trial factoring cutoff of 26 bits<br>polynomial ‘A’ values have 10 factors<br>restarting with 19771 full and 188452 partial relations</p>
+<p>36803 relations (19771 full + 17032 combined from 188452 partial), need 36567<br>sieving complete, commencing postprocessing<br>begin with 208223 relations<br>reduce to 51729 relations in 2 passes<br>attempting to read 51729 relations<br>recovered 51729 relations<br>recovered 38607 polynomials<br>attempting to build 36803 cycles<br>found 36803 cycles in 1 passes<br>distribution of cycle lengths:<br>   length 1 : 19771<br>   length 2 : 17032<br>largest cycle: 2 relations<br>matrix is 36471 x 36803 (5.3 MB) with weight 1102159 (29.95/col)<br>sparse part has weight 1102159 (29.95/col)<br>filtering completed in 3 passes<br>matrix is 24858 x 24922 (4.0 MB) with weight 836197 (33.55/col)<br>sparse part has weight 836197 (33.55/col)<br>saving the first 48 matrix rows for later<br>matrix includes 64 packed rows<br>matrix is 24810 x 24922 (2.6 MB) with weight 611256 (24.53/col)<br>sparse part has weight 439905 (17.65/col)<br>commencing Lanczos iteration<br>memory use: 2.7 MB<br>lanczos halted after 394 iterations (dim = 24805)<br>recovered 14 nontrivial dependencies<br>p39 factor: 258631601377848992211685134376492365269<br>p39 factor: 286924040788547268861394901519826758027<br>elapsed time 00:00:06</p>
+</blockquote>
+<p>两个p39 factor为p和q,这里是10进制表示</p>
+<ol>
+<li>生成私钥<br>知道了N，e,p,q，就可以生成私钥了<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">import math</span><br><span class="line">import sys</span><br><span class="line">from Crypto.PublicKey import RSA</span><br><span class="line"></span><br><span class="line">keypair = RSA.generate(1024)</span><br><span class="line"></span><br><span class="line">keypair.p = 0xD7DB8F68BCEC6D7684B37201385D298B</span><br><span class="line">keypair.q = 0xC292A272E8339B145D9DF674B9A875D5</span><br><span class="line">keypair.e = 65537</span><br><span class="line"></span><br><span class="line">keypair.n = keypair.p * keypair.q</span><br><span class="line">Qn = long((keypair.p-1) * (keypair.q-1))</span><br><span class="line"></span><br><span class="line">i = 1</span><br><span class="line">while (True):</span><br><span class="line">    x = (Qn * i ) + 1</span><br><span class="line">    if (x % keypair.e == 0):</span><br><span class="line">        keypair.d = x / keypair.e</span><br><span class="line">        break</span><br><span class="line">    i += 1</span><br><span class="line"></span><br><span class="line">private = open(&apos;private.pem&apos;,&apos;w&apos;)</span><br><span class="line">private.write(keypair.exportKey())</span><br><span class="line">private.close()</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>注：生成的私钥会默认base64加密。</p>
+<p>密钥解密密文<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">openssl rsautl -decrypt -in flag.enc -inkey private.pem -out flag.txt</span><br><span class="line">cat flag.txt </span><br><span class="line">ISG&#123;256bit_is_weak&#125;</span><br></pre></td></tr></table></figure></p>
+<p>附：<br>常用工具下载地址<br>RSA-tool 2 <a href="http://www.skycn.net/soft/appid/39911.html" target="_blank" rel="noopener">http://www.skycn.net/soft/appid/39911.html</a></p>
+<p>msieve <a href="https://sourceforge.net/projects/msieve/" target="_blank" rel="noopener">https://sourceforge.net/projects/msieve/</a></p>
+<p>yafu <a href="https://sourceforge.net/projects/yafu/" target="_blank" rel="noopener">https://sourceforge.net/projects/yafu/</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/06/curl用法/" rel="next" title="curl用法">
+                <i class="fa fa-chevron-left"></i> curl用法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/09/Android-Hook-——-Frida/" rel="prev" title="Android Hook 之 Frida">
+                Android Hook 之 Frida <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">m4bln</p>
+              <p class="site-description motion-element" itemprop="description">影后入林到驿前</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x524D;&#x8A00;" class="headerlink" title="&#x524D;&#x8A00;"></a>&#x524D;&#x8A00;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RSA算法原理"><span class="nav-number">2.</span> <span class="nav-text"><a href="#RSA&#x7B97;&#x6CD5;&#x539F;&#x7406;" class="headerlink" title="RSA&#x7B97;&#x6CD5;&#x539F;&#x7406;"></a>RSA&#x7B97;&#x6CD5;&#x539F;&#x7406;</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RSA加密"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#RSA&#x52A0;&#x5BC6;" class="headerlink" title="RSA&#x52A0;&#x5BC6;"></a>RSA&#x52A0;&#x5BC6;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RSA解密"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#RSA&#x89E3;&#x5BC6;" class="headerlink" title="RSA&#x89E3;&#x5BC6;"></a>RSA&#x89E3;&#x5BC6;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成秘钥对"><span class="nav-number">2.3.</span> <span class="nav-text"><a href="#&#x751F;&#x6210;&#x79D8;&#x94A5;&#x5BF9;" class="headerlink" title="&#x751F;&#x6210;&#x79D8;&#x94A5;&#x5BF9;"></a>&#x751F;&#x6210;&#x79D8;&#x94A5;&#x5BF9;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#求N"><span class="nav-number">2.3.1.</span> <span class="nav-text"><a href="#&#x6C42;N" class="headerlink" title="&#x6C42;N"></a>&#x6C42;N</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#求L（L为中间过程的中间数）"><span class="nav-number">2.3.2.</span> <span class="nav-text"><a href="#&#x6C42;L&#xFF08;L&#x4E3A;&#x4E2D;&#x95F4;&#x8FC7;&#x7A0B;&#x7684;&#x4E2D;&#x95F4;&#x6570;&#xFF09;" class="headerlink" title="&#x6C42;L&#xFF08;L&#x4E3A;&#x4E2D;&#x95F4;&#x8FC7;&#x7A0B;&#x7684;&#x4E2D;&#x95F4;&#x6570;&#xFF09;"></a>&#x6C42;L&#xFF08;L&#x4E3A;&#x4E2D;&#x95F4;&#x8FC7;&#x7A0B;&#x7684;&#x4E2D;&#x95F4;&#x6570;&#xFF09;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#求E"><span class="nav-number">2.3.3.</span> <span class="nav-text"><a href="#&#x6C42;E" class="headerlink" title="&#x6C42;E"></a>&#x6C42;E</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#求D"><span class="nav-number">2.3.4.</span> <span class="nav-text"><a href="#&#x6C42;D" class="headerlink" title="&#x6C42;D"></a>&#x6C42;D</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实践举例"><span class="nav-number">2.4.</span> <span class="nav-text"><a href="#&#x5B9E;&#x8DF5;&#x4E3E;&#x4F8B;" class="headerlink" title="&#x5B9E;&#x8DF5;&#x4E3E;&#x4F8B;"></a>&#x5B9E;&#x8DF5;&#x4E3E;&#x4F8B;</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RSA实现破解"><span class="nav-number">3.</span> <span class="nav-text"><a href="#RSA&#x5B9E;&#x73B0;&#x7834;&#x89E3;" class="headerlink" title="RSA&#x5B9E;&#x73B0;&#x7834;&#x89E3;"></a>RSA&#x5B9E;&#x73B0;&#x7834;&#x89E3;</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ctf题目一"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#ctf&#x9898;&#x76EE;&#x4E00;" class="headerlink" title="ctf&#x9898;&#x76EE;&#x4E00;"></a>ctf&#x9898;&#x76EE;&#x4E00;</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">m4bln</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

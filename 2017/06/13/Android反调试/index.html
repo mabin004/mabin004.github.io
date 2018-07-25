@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="反调试1.自己ptrace自己代码非常简单，在so中加上这行代码即可：1ptrace(PTRACE_TRACEME, 0, 0, 0); 其中PTRACE_TRACEME代表：本进程被其父进程所跟踪。一个进程只能被ptrace一次，通常在调试的时候都会attach被调试应用的进程，如果我们先占坑，父进程attach自己，那么其他的附加调试就会失败。 2.检测Tracerpid的值在自己的应用中的n">
+<meta name="keywords" content="Android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android反调试和对抗">
+<meta property="og:url" content="https://mabin004.github.io/2017/06/13/Android反调试/index.html">
+<meta property="og:site_name" content="m4bln">
+<meta property="og:description" content="反调试1.自己ptrace自己代码非常简单，在so中加上这行代码即可：1ptrace(PTRACE_TRACEME, 0, 0, 0); 其中PTRACE_TRACEME代表：本进程被其父进程所跟踪。一个进程只能被ptrace一次，通常在调试的时候都会attach被调试应用的进程，如果我们先占坑，父进程attach自己，那么其他的附加调试就会失败。 2.检测Tracerpid的值在自己的应用中的n">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-06-15T03:17:41.716Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android反调试和对抗">
+<meta name="twitter:description" content="反调试1.自己ptrace自己代码非常简单，在so中加上这行代码即可：1ptrace(PTRACE_TRACEME, 0, 0, 0); 其中PTRACE_TRACEME代表：本进程被其父进程所跟踪。一个进程只能被ptrace一次，通常在调试的时候都会attach被调试应用的进程，如果我们先占坑，父进程attach自己，那么其他的附加调试就会失败。 2.检测Tracerpid的值在自己的应用中的n">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://mabin004.github.io/2017/06/13/Android反调试/"/>
+
+
+
+
+
+  <title>Android反调试和对抗 | m4bln</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">m4bln</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-hint">
+          <a href="/hint/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            hint
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-todo">
+          <a href="/todo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            ToDo
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/06/13/Android反调试/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android反调试和对抗</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-13T21:10:00+08:00">
+                2017-06-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="反调试"><a href="#反调试" class="headerlink" title="反调试"></a>反调试</h1><h2 id="1-自己ptrace自己"><a href="#1-自己ptrace自己" class="headerlink" title="1.自己ptrace自己"></a>1.自己ptrace自己</h2><p>代码非常简单，在so中加上这行代码即可：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ptrace(PTRACE_TRACEME, 0, 0, 0);</span><br></pre></td></tr></table></figure></p>
+<p>其中PTRACE_TRACEME代表：本进程被其父进程所跟踪。<br>一个进程只能被ptrace一次，通常在调试的时候都会attach被调试应用的进程，如果我们先占坑，父进程attach自己，那么其他的附加调试就会失败。</p>
+<h2 id="2-检测Tracerpid的值"><a href="#2-检测Tracerpid的值" class="headerlink" title="2.检测Tracerpid的值"></a>2.检测Tracerpid的值</h2><p>在自己的应用中的native层加上一个循环检查自己status中的TracerPid字段值，如果非0或者是非自己进程pid(如果采用了第一种方案的话，这里也是需要做一次过滤的)；那么就认为被附加调试了。</p>
+<h2 id="3-IDA端口检测"><a href="#3-IDA端口检测" class="headerlink" title="3.IDA端口检测"></a>3.IDA端口检测</h2><p>读取/proc/net/tcp，查找IDA远程调试的默认23946端口（或者执行命令netstat -apn）</p>
+<h2 id="4-调试器名称检测"><a href="#4-调试器名称检测" class="headerlink" title="4.调试器名称检测"></a>4.调试器名称检测</h2><p>遍历进程，查找类似android_server，gdbserver，gdb等调试器进程</p>
+<h2 id="5-多进程反调试"><a href="#5-多进程反调试" class="headerlink" title="5.多进程反调试"></a>5.多进程反调试</h2><p>目标程序创建了多个进程，互相ptrace，不同进程分工明确，守护或者反调试。只要有一个进程出现异常，集体挂掉，颇有一番兄弟有难同当的感觉。</p>
+<p><strong>对抗</strong><br>多进程都是通过fork出来的，因此我们修改/bionic/libc/bionic/fork.c里面的fork函数来使得目标进程fork失败</p>
+<h2 id="6-检测系统关键文件"><a href="#6-检测系统关键文件" class="headerlink" title="6.检测系统关键文件"></a>6.检测系统关键文件</h2><p>在调试状态下，Linux内核会向一些文件写入进程状态信息，比如/proc/[pid]/status ,/proc/[pid]/task/[pid]/status文件的TracerPid字段写入调试器进程pid，state字段写入t（tracing stop）<br>/proc/[pid]/stat ,/proc/[pid]/task/[pid]/stat文件中第二个字段填入T来表示调试状态<br>/proc/[pid]/wchan , /proc/[pid]/task/[pid]/wchan文件写入ptrace_stop</p>
+<h2 id="7-代码执行时间检测"><a href="#7-代码执行时间检测" class="headerlink" title="7.代码执行时间检测"></a>7.代码执行时间检测</h2><p>调试状态和非调试状态代码执行时间不一样</p>
+<h2 id="8-使用inotify对文件系统进行监视"><a href="#8-使用inotify对文件系统进行监视" class="headerlink" title="8.使用inotify对文件系统进行监视"></a>8.使用inotify对文件系统进行监视</h2><p>/proc/pid/maps<br>/proc/pid/mem<br>/proc/pid/pagemep</p>
+<h1 id="防dump"><a href="#防dump" class="headerlink" title="防dump"></a>防dump</h1><p>通过对目标进程文件/proc/pid/mem文件操作，可以获得其内存的数据。<br>而inotify可以监控文件系统的变化，当文件被打开、删除，读写等操作时，同时用户相应变化。<br>因此可以通过监控/proc/pid/mem 与/proc/pid/pagemep来防止内存dump。</p>
+<p>参考资料：</p>
+<ol>
+<li><a href="https://bbs.pediy.com/thread-223320.htm" target="_blank" rel="noopener">https://bbs.pediy.com/thread-223320.htm</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/13/Android三大hook框架/" rel="next" title="Android三大hook框架">
+                <i class="fa fa-chevron-left"></i> Android三大hook框架
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/09/apk反调试-模拟器检查-签名检测/" rel="prev" title="apk反调试-模拟器检查-签名检测">
+                apk反调试-模拟器检查-签名检测 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">m4bln</p>
+              <p class="site-description motion-element" itemprop="description">影后入林到驿前</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#反调试"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x53CD;&#x8C03;&#x8BD5;" class="headerlink" title="&#x53CD;&#x8C03;&#x8BD5;"></a>&#x53CD;&#x8C03;&#x8BD5;</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-自己ptrace自己"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#1-&#x81EA;&#x5DF1;ptrace&#x81EA;&#x5DF1;" class="headerlink" title="1.&#x81EA;&#x5DF1;ptrace&#x81EA;&#x5DF1;"></a>1.&#x81EA;&#x5DF1;ptrace&#x81EA;&#x5DF1;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-检测Tracerpid的值"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#2-&#x68C0;&#x6D4B;Tracerpid&#x7684;&#x503C;" class="headerlink" title="2.&#x68C0;&#x6D4B;Tracerpid&#x7684;&#x503C;"></a>2.&#x68C0;&#x6D4B;Tracerpid&#x7684;&#x503C;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-IDA端口检测"><span class="nav-number">1.3.</span> <span class="nav-text"><a href="#3-IDA&#x7AEF;&#x53E3;&#x68C0;&#x6D4B;" class="headerlink" title="3.IDA&#x7AEF;&#x53E3;&#x68C0;&#x6D4B;"></a>3.IDA&#x7AEF;&#x53E3;&#x68C0;&#x6D4B;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-调试器名称检测"><span class="nav-number">1.4.</span> <span class="nav-text"><a href="#4-&#x8C03;&#x8BD5;&#x5668;&#x540D;&#x79F0;&#x68C0;&#x6D4B;" class="headerlink" title="4.&#x8C03;&#x8BD5;&#x5668;&#x540D;&#x79F0;&#x68C0;&#x6D4B;"></a>4.&#x8C03;&#x8BD5;&#x5668;&#x540D;&#x79F0;&#x68C0;&#x6D4B;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-多进程反调试"><span class="nav-number">1.5.</span> <span class="nav-text"><a href="#5-&#x591A;&#x8FDB;&#x7A0B;&#x53CD;&#x8C03;&#x8BD5;" class="headerlink" title="5.&#x591A;&#x8FDB;&#x7A0B;&#x53CD;&#x8C03;&#x8BD5;"></a>5.&#x591A;&#x8FDB;&#x7A0B;&#x53CD;&#x8C03;&#x8BD5;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-检测系统关键文件"><span class="nav-number">1.6.</span> <span class="nav-text"><a href="#6-&#x68C0;&#x6D4B;&#x7CFB;&#x7EDF;&#x5173;&#x952E;&#x6587;&#x4EF6;" class="headerlink" title="6.&#x68C0;&#x6D4B;&#x7CFB;&#x7EDF;&#x5173;&#x952E;&#x6587;&#x4EF6;"></a>6.&#x68C0;&#x6D4B;&#x7CFB;&#x7EDF;&#x5173;&#x952E;&#x6587;&#x4EF6;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-代码执行时间检测"><span class="nav-number">1.7.</span> <span class="nav-text"><a href="#7-&#x4EE3;&#x7801;&#x6267;&#x884C;&#x65F6;&#x95F4;&#x68C0;&#x6D4B;" class="headerlink" title="7.&#x4EE3;&#x7801;&#x6267;&#x884C;&#x65F6;&#x95F4;&#x68C0;&#x6D4B;"></a>7.&#x4EE3;&#x7801;&#x6267;&#x884C;&#x65F6;&#x95F4;&#x68C0;&#x6D4B;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-使用inotify对文件系统进行监视"><span class="nav-number">1.8.</span> <span class="nav-text"><a href="#8-&#x4F7F;&#x7528;inotify&#x5BF9;&#x6587;&#x4EF6;&#x7CFB;&#x7EDF;&#x8FDB;&#x884C;&#x76D1;&#x89C6;" class="headerlink" title="8.&#x4F7F;&#x7528;inotify&#x5BF9;&#x6587;&#x4EF6;&#x7CFB;&#x7EDF;&#x8FDB;&#x884C;&#x76D1;&#x89C6;"></a>8.&#x4F7F;&#x7528;inotify&#x5BF9;&#x6587;&#x4EF6;&#x7CFB;&#x7EDF;&#x8FDB;&#x884C;&#x76D1;&#x89C6;</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#防dump"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x9632;dump" class="headerlink" title="&#x9632;dump"></a>&#x9632;dump</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">m4bln</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

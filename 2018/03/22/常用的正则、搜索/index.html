@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="转自：https://www.unix-ninja.com/p/A_cheat-sheet_for_password_crackers 提取E-mail1grep -E -o &amp;quot;\b[a-zA-Z0-9.#?$*_-]+@[a-zA-Z0-9.#?$*_-]+.[a-zA-Z0-9.-]+\b&amp;quot; *.txt &amp;gt; e-mails.txt 提取http url1grep ht">
+<meta property="og:type" content="article">
+<meta property="og:title" content="常用的正则、搜索">
+<meta property="og:url" content="https://mabin004.github.io/2018/03/22/常用的正则、搜索/index.html">
+<meta property="og:site_name" content="m4bln">
+<meta property="og:description" content="转自：https://www.unix-ninja.com/p/A_cheat-sheet_for_password_crackers 提取E-mail1grep -E -o &amp;quot;\b[a-zA-Z0-9.#?$*_-]+@[a-zA-Z0-9.#?$*_-]+.[a-zA-Z0-9.-]+\b&amp;quot; *.txt &amp;gt; e-mails.txt 提取http url1grep ht">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-22T06:51:52.349Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="常用的正则、搜索">
+<meta name="twitter:description" content="转自：https://www.unix-ninja.com/p/A_cheat-sheet_for_password_crackers 提取E-mail1grep -E -o &amp;quot;\b[a-zA-Z0-9.#?$*_-]+@[a-zA-Z0-9.#?$*_-]+.[a-zA-Z0-9.-]+\b&amp;quot; *.txt &amp;gt; e-mails.txt 提取http url1grep ht">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://mabin004.github.io/2018/03/22/常用的正则、搜索/"/>
+
+
+
+
+
+  <title>常用的正则、搜索 | m4bln</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">m4bln</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-hint">
+          <a href="/hint/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            hint
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-todo">
+          <a href="/todo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            ToDo
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/22/常用的正则、搜索/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">常用的正则、搜索</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-22T14:35:32+08:00">
+                2018-03-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>转自：<a href="https://www.unix-ninja.com/p/A_cheat-sheet_for_password_crackers" target="_blank" rel="noopener">https://www.unix-ninja.com/p/A_cheat-sheet_for_password_crackers</a></p>
+<h1 id="提取E-mail"><a href="#提取E-mail" class="headerlink" title="提取E-mail"></a>提取E-mail</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -E -o &quot;\b[a-zA-Z0-9.#?$*_-]+@[a-zA-Z0-9.#?$*_-]+.[a-zA-Z0-9.-]+\b&quot; *.txt &gt; e-mails.txt</span><br></pre></td></tr></table></figure>
+<h1 id="提取http-url"><a href="#提取http-url" class="headerlink" title="提取http url"></a>提取http url</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep http | grep -shoP &apos;http.*?[&quot; &gt;]&apos; *.txt &gt; http-urls.txt</span><br></pre></td></tr></table></figure>
+<p>For extracting HTTPS, FTP and other URL format use<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -E &apos;(((https|ftp|gopher)|mailto)[.:][^ &gt;&quot;	]*|www.[-a-z0-9.]+)[^ .,;	&gt;&quot;&gt;):]&apos; *.txt &gt; urls.txt</span><br></pre></td></tr></table></figure></p>
+<h1 id="提取浮点数"><a href="#提取浮点数" class="headerlink" title="提取浮点数"></a>提取浮点数</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -E -o &quot;^[-+]?[0-9]*.?[0-9]+([eE][-+]?[0-9]+)?$&quot; *.txt &gt; floats.txt</span><br></pre></td></tr></table></figure>
+<h1 id="提取信用卡号码"><a href="#提取信用卡号码" class="headerlink" title="提取信用卡号码"></a>提取信用卡号码</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Visa </span><br><span class="line"># grep -E -o &quot;4[0-9]&#123;3&#125;[ -]?[0-9]&#123;4&#125;[ -]?[0-9]&#123;4&#125;[ -]?[0-9]&#123;4&#125;&quot; *.txt &gt; visa.txt</span><br><span class="line"></span><br><span class="line">MasterCard </span><br><span class="line"># grep -E -o &quot;5[0-9]&#123;3&#125;[ -]?[0-9]&#123;4&#125;[ -]?[0-9]&#123;4&#125;[ -]?[0-9]&#123;4&#125;&quot; *.txt &gt; mastercard.txt</span><br><span class="line"></span><br><span class="line">American Express </span><br><span class="line"># grep -E -o &quot;\b3[47][0-9]&#123;13&#125;\b&quot; *.txt &gt; american-express.txt</span><br><span class="line"></span><br><span class="line">Diners Club </span><br><span class="line"># grep -E -o &quot;\b3(?:0[0-5]|[68][0-9])[0-9]&#123;11&#125;\b&quot; *.txt &gt; diners.txt</span><br><span class="line"></span><br><span class="line">Discover </span><br><span class="line"># grep -E -o &quot;6011[ -]?[0-9]&#123;4&#125;[ -]?[0-9]&#123;4&#125;[ -]?[0-9]&#123;4&#125;&quot; *.txt &gt; discover.txt</span><br><span class="line"></span><br><span class="line">JCB </span><br><span class="line"># grep -E -o &quot;\b(?:2131|1800|35d&#123;3&#125;)d&#123;11&#125;\b&quot; *.txt &gt; jcb.txt</span><br><span class="line"></span><br><span class="line">AMEX </span><br><span class="line"># grep -E -o &quot;3[47][0-9]&#123;2&#125;[ -]?[0-9]&#123;6&#125;[ -]?[0-9]&#123;5&#125;&quot; *.txt &gt; amex.txt</span><br></pre></td></tr></table></figure>
+<h1 id="各种hash的提取"><a href="#各种hash的提取" class="headerlink" title="各种hash的提取"></a>各种hash的提取</h1><h2 id="md5-hash"><a href="#md5-hash" class="headerlink" title="md5 hash"></a>md5 hash</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">egrep -oE &apos;(^|[^a-fA-F0-9])[a-fA-F0-9]&#123;32&#125;([^a-fA-F0-9]|$)&apos; *.txt | egrep -o &apos;[a-fA-F0-9]&#123;32&#125;&apos; &gt; md5-hashes.txt</span><br></pre></td></tr></table></figure>
+<p>或<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -rn &apos;s/.*[^a-fA-F0-9]([a-fA-F0-9]&#123;32&#125;)[^a-fA-F0-9].*/1/p&apos; *.txt &gt; md5-hashes</span><br></pre></td></tr></table></figure></p>
+<p>上述代码用来查找SHA1, SHA256等其他未加salt的hash, 对于其他长度hash,只需要更改{32}中的长度</p>
+<h2 id="Extract-valid-MySQL-Old-hashes"><a href="#Extract-valid-MySQL-Old-hashes" class="headerlink" title="Extract valid MySQL-Old hashes"></a>Extract valid MySQL-Old hashes</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -e &quot;[0-7][0-9a-f]&#123;7&#125;[0-7][0-9a-f]&#123;7&#125;&quot; *.txt &gt; mysql-old-hashes.txt</span><br></pre></td></tr></table></figure>
+<h2 id="Extract-blowfish-hashes"><a href="#Extract-blowfish-hashes" class="headerlink" title="Extract blowfish hashes"></a>Extract blowfish hashes</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -e &quot;$2a\$8\$(.)&#123;75&#125;&quot; *.txt &gt; blowfish-hashes.txt</span><br></pre></td></tr></table></figure>
+<h2 id="Extract-Joomla-hashes"><a href="#Extract-Joomla-hashes" class="headerlink" title="Extract Joomla hashes"></a>Extract Joomla hashes</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">egrep -o &quot;([0-9a-zA-Z]&#123;32&#125;):(w&#123;16,32&#125;)&quot; *.txt &gt; joomla.txt</span><br></pre></td></tr></table></figure>
+<h2 id="Extract-VBulletin-hashes"><a href="#Extract-VBulletin-hashes" class="headerlink" title="Extract VBulletin hashes"></a>Extract VBulletin hashes</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">egrep -o &quot;([0-9a-zA-Z]&#123;32&#125;):(S&#123;3,32&#125;)&quot; *.txt &gt; vbulletin.txt</span><br></pre></td></tr></table></figure>
+<h2 id="Extraxt-phpBB3-MD5"><a href="#Extraxt-phpBB3-MD5" class="headerlink" title="Extraxt phpBB3-MD5"></a>Extraxt phpBB3-MD5</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">egrep -o &apos;$H$S&#123;31&#125;&apos; *.txt &gt; phpBB3-md5.txt</span><br></pre></td></tr></table></figure>
+<h2 id="Extract-Wordpress-MD5"><a href="#Extract-Wordpress-MD5" class="headerlink" title="Extract Wordpress-MD5"></a>Extract Wordpress-MD5</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">egrep -o &apos;$P$S&#123;31&#125;&apos; *.txt &gt; wordpress-md5.txt</span><br></pre></td></tr></table></figure>
+<h2 id="Extract-Drupal-7"><a href="#Extract-Drupal-7" class="headerlink" title="Extract Drupal 7"></a>Extract Drupal 7</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">egrep -o &apos;$S$S&#123;52&#125;&apos; *.txt &gt; drupal-7.txt</span><br></pre></td></tr></table></figure>
+<h2 id="Extract-old-Unix-md5"><a href="#Extract-old-Unix-md5" class="headerlink" title="Extract old Unix-md5"></a>Extract old Unix-md5</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">egrep -o &apos;$1$w&#123;8&#125;S&#123;22&#125;&apos; *.txt &gt; md5-unix-old.txt</span><br></pre></td></tr></table></figure>
+<h2 id="Extract-md5-apr1"><a href="#Extract-md5-apr1" class="headerlink" title="Extract md5-apr1"></a>Extract md5-apr1</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">egrep -o &apos;$apr1$w&#123;8&#125;S&#123;22&#125;&apos; *.txt &gt; md5-apr1.txt</span><br></pre></td></tr></table></figure>
+<h2 id="Extract-sha512crypt-SHA512-Unix"><a href="#Extract-sha512crypt-SHA512-Unix" class="headerlink" title="Extract sha512crypt, SHA512(Unix)"></a>Extract sha512crypt, SHA512(Unix)</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">egrep -o &apos;$6$w&#123;8&#125;S&#123;86&#125;&apos; *.txt &gt; sha512crypt.txt</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/19/主机端口安全、渗透案例/" rel="next" title="主机端口安全、渗透案例（代）">
+                <i class="fa fa-chevron-left"></i> 主机端口安全、渗透案例（代）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/23/经典漏洞案例整理/" rel="prev" title="经典漏洞案例整理">
+                经典漏洞案例整理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">m4bln</p>
+              <p class="site-description motion-element" itemprop="description">影后入林到驿前</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#提取E-mail"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x63D0;&#x53D6;E-mail" class="headerlink" title="&#x63D0;&#x53D6;E-mail"></a>&#x63D0;&#x53D6;E-mail</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#提取http-url"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x63D0;&#x53D6;http-url" class="headerlink" title="&#x63D0;&#x53D6;http url"></a>&#x63D0;&#x53D6;http url</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#提取浮点数"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x63D0;&#x53D6;&#x6D6E;&#x70B9;&#x6570;" class="headerlink" title="&#x63D0;&#x53D6;&#x6D6E;&#x70B9;&#x6570;"></a>&#x63D0;&#x53D6;&#x6D6E;&#x70B9;&#x6570;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#提取信用卡号码"><span class="nav-number">4.</span> <span class="nav-text"><a href="#&#x63D0;&#x53D6;&#x4FE1;&#x7528;&#x5361;&#x53F7;&#x7801;" class="headerlink" title="&#x63D0;&#x53D6;&#x4FE1;&#x7528;&#x5361;&#x53F7;&#x7801;"></a>&#x63D0;&#x53D6;&#x4FE1;&#x7528;&#x5361;&#x53F7;&#x7801;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#各种hash的提取"><span class="nav-number">5.</span> <span class="nav-text"><a href="#&#x5404;&#x79CD;hash&#x7684;&#x63D0;&#x53D6;" class="headerlink" title="&#x5404;&#x79CD;hash&#x7684;&#x63D0;&#x53D6;"></a>&#x5404;&#x79CD;hash&#x7684;&#x63D0;&#x53D6;</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#md5-hash"><span class="nav-number">5.1.</span> <span class="nav-text"><a href="#md5-hash" class="headerlink" title="md5 hash"></a>md5 hash</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Extract-valid-MySQL-Old-hashes"><span class="nav-number">5.2.</span> <span class="nav-text"><a href="#Extract-valid-MySQL-Old-hashes" class="headerlink" title="Extract valid MySQL-Old hashes"></a>Extract valid MySQL-Old hashes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Extract-blowfish-hashes"><span class="nav-number">5.3.</span> <span class="nav-text"><a href="#Extract-blowfish-hashes" class="headerlink" title="Extract blowfish hashes"></a>Extract blowfish hashes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Extract-Joomla-hashes"><span class="nav-number">5.4.</span> <span class="nav-text"><a href="#Extract-Joomla-hashes" class="headerlink" title="Extract Joomla hashes"></a>Extract Joomla hashes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Extract-VBulletin-hashes"><span class="nav-number">5.5.</span> <span class="nav-text"><a href="#Extract-VBulletin-hashes" class="headerlink" title="Extract VBulletin hashes"></a>Extract VBulletin hashes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Extraxt-phpBB3-MD5"><span class="nav-number">5.6.</span> <span class="nav-text"><a href="#Extraxt-phpBB3-MD5" class="headerlink" title="Extraxt phpBB3-MD5"></a>Extraxt phpBB3-MD5</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Extract-Wordpress-MD5"><span class="nav-number">5.7.</span> <span class="nav-text"><a href="#Extract-Wordpress-MD5" class="headerlink" title="Extract Wordpress-MD5"></a>Extract Wordpress-MD5</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Extract-Drupal-7"><span class="nav-number">5.8.</span> <span class="nav-text"><a href="#Extract-Drupal-7" class="headerlink" title="Extract Drupal 7"></a>Extract Drupal 7</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Extract-old-Unix-md5"><span class="nav-number">5.9.</span> <span class="nav-text"><a href="#Extract-old-Unix-md5" class="headerlink" title="Extract old Unix-md5"></a>Extract old Unix-md5</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Extract-md5-apr1"><span class="nav-number">5.10.</span> <span class="nav-text"><a href="#Extract-md5-apr1" class="headerlink" title="Extract md5-apr1"></a>Extract md5-apr1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Extract-sha512crypt-SHA512-Unix"><span class="nav-number">5.11.</span> <span class="nav-text"><a href="#Extract-sha512crypt-SHA512-Unix" class="headerlink" title="Extract sha512crypt, SHA512(Unix)"></a>Extract sha512crypt, SHA512(Unix)</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">m4bln</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

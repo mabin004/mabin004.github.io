@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="背景近期风靡的“吱口令”红包在互联网上铺天盖地，用户复制一段“吱口令”，打开支付宝就可以直接进入抢红包的页面。研究发现，支付宝是通过读取用户剪贴板数据，提取出吱口令，之后加载抢红包页面。 如果黑产可以实现在用户打开某个网页的时候就写入剪贴板，那么用户会在不知不觉打开支付宝时，就会直接进入领取页面。因此，我们尝试了js自动写入剪贴板是否可行。 遍历js事件PC端似乎需要用户主动点击才能实现写入剪贴板">
+<meta property="og:type" content="article">
+<meta property="og:title" content="移动端JavaScript写入剪贴板">
+<meta property="og:url" content="https://mabin004.github.io/2018/01/12/移动端JavaScript写入剪贴板/index.html">
+<meta property="og:site_name" content="m4bln">
+<meta property="og:description" content="背景近期风靡的“吱口令”红包在互联网上铺天盖地，用户复制一段“吱口令”，打开支付宝就可以直接进入抢红包的页面。研究发现，支付宝是通过读取用户剪贴板数据，提取出吱口令，之后加载抢红包页面。 如果黑产可以实现在用户打开某个网页的时候就写入剪贴板，那么用户会在不知不觉打开支付宝时，就会直接进入领取页面。因此，我们尝试了js自动写入剪贴板是否可行。 遍历js事件PC端似乎需要用户主动点击才能实现写入剪贴板">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-02-06T08:52:43.155Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="移动端JavaScript写入剪贴板">
+<meta name="twitter:description" content="背景近期风靡的“吱口令”红包在互联网上铺天盖地，用户复制一段“吱口令”，打开支付宝就可以直接进入抢红包的页面。研究发现，支付宝是通过读取用户剪贴板数据，提取出吱口令，之后加载抢红包页面。 如果黑产可以实现在用户打开某个网页的时候就写入剪贴板，那么用户会在不知不觉打开支付宝时，就会直接进入领取页面。因此，我们尝试了js自动写入剪贴板是否可行。 遍历js事件PC端似乎需要用户主动点击才能实现写入剪贴板">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://mabin004.github.io/2018/01/12/移动端JavaScript写入剪贴板/"/>
+
+
+
+
+
+  <title>移动端JavaScript写入剪贴板 | m4bln</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">m4bln</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-hint">
+          <a href="/hint/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            hint
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-todo">
+          <a href="/todo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            ToDo
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/01/12/移动端JavaScript写入剪贴板/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">移动端JavaScript写入剪贴板</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-12T11:22:35+08:00">
+                2018-01-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>近期风靡的“吱口令”红包在互联网上铺天盖地，用户复制一段“吱口令”，打开支付宝就可以直接进入抢红包的页面。研究发现，支付宝是通过读取用户剪贴板数据，提取出吱口令，之后加载抢红包页面。</p>
+<p>如果黑产可以实现在用户打开某个网页的时候就写入剪贴板，那么用户会在不知不觉打开支付宝时，就会直接进入领取页面。因此，我们尝试了js自动写入剪贴板是否可行。</p>
+<h1 id="遍历js事件"><a href="#遍历js事件" class="headerlink" title="遍历js事件"></a>遍历js事件</h1><p>PC端似乎需要用户主动点击才能实现写入剪贴板，我们首先写一段写入剪贴板的代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;input type=&quot;text&quot; id=&quot;website&quot; value=&quot;tobecopydata&quot; /&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">function copy(e) &#123;</span><br><span class="line"></span><br><span class="line"> website.select()</span><br><span class="line"> document.execCommand(&apos;copy&apos;);</span><br><span class="line"> &#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure></p>
+<p>之后通过遍历js事件来触发复制操作<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// event handler</span></span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'blur'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'error'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'focus'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'load'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'resize'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'scroll'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'afterprint'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'beforeprint'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'beforeunload'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'hashchange'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'languagechange'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'message'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'messageerror'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'offline'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'online'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'pagehide'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'pageshow'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'popstate'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'rejectionhandled'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'storage'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'unhandledrejection'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'unload'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'abort'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'cancel'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'canplay'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'canplaythrough'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'change'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'click'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'close'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'contextmenu'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'cuechange'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'dblclick'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'drag'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'dragend'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'dragenter'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'dragleave'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'dragover'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'dragstart'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'drop'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'durationchange'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'emptied'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'ended'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'input'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'invalid'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'keydown'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'keypress'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'keyup'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'loadeddata'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'loadedmetadata'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'loadstart'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'mousedown'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'mouseenter'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'mouseleave'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'mousemove'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'mouseout'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'mouseover'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'mouseup'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'mousewheel'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'pause'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'play'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'playing'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'progress'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'ratechange'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'reset'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'seeked'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'seeking'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'select'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'stalled'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'submit'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'suspend'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'timeupdate'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'toggle'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'volumechange'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'waiting'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'wheel'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'auxclick'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'gotpointercapture'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'lostpointercapture'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'pointerdown'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'pointermove'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'pointerup'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'pointercancel'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'pointerover'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'pointerout'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'pointerenter'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'pointerleave'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'beforecopy'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'beforecut'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'beforepaste'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'copy'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'cut'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'paste'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'search'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'selectstart'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'webkitfullscreenchange'</span>, copy, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'webkitfullscreenerror'</span>, copy, <span class="literal">true</span>);</span><br></pre></td></tr></table></figure></p>
+<p>通过实验，我们得出以下结论：</p>
+<ol>
+<li>移动端包括Android和iOS都需要点击一下屏幕，无法实现网页加载自动复制。注意是点击一下，而不是滑动。</li>
+<li>PC端其实不需要点击，只需要鼠标移动，即可实现复制</li>
+</ol>
+<p>既然移动端必须要点一下，我们研究实现了再屏幕上任意位置点击，即可写入剪贴板</p>
+<h1 id="Android实现"><a href="#Android实现" class="headerlink" title="Android实现"></a>Android实现</h1><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;input type=<span class="string">"text"</span> id=<span class="string">"website"</span> value=<span class="string">"http://www.sitepoint.com/"</span> /&gt;</span><br><span class="line">&lt;button data-copytarget=<span class="string">"#website"</span> id=<span class="string">"aaa"</span>&gt;copy&lt;<span class="regexp">/button&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">&lt;script type="text/</span>javascript<span class="string">"&gt;</span></span><br><span class="line"><span class="string">document.body.addEventListener('mouseup', copy, true);</span></span><br><span class="line"><span class="string">// event handler</span></span><br><span class="line"><span class="string">function copy(e) &#123;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    website.select()</span></span><br><span class="line"><span class="string"> document.execCommand('copy');</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&lt;/script&gt;</span></span><br></pre></td></tr></table></figure>
+<h1 id="iOS实现"><a href="#iOS实现" class="headerlink" title="iOS实现"></a>iOS实现</h1><p>iOS不支持execCommand，这里用一个叫clipboard.js（<a href="https://clipboardjs.com/）的库，将一个div占满屏幕，然后用户点击任意位置就可以触发点击事件了。" target="_blank" rel="noopener">https://clipboardjs.com/）的库，将一个div占满屏幕，然后用户点击任意位置就可以触发点击事件了。</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;!-- <span class="number">1.</span> Define some markup --&gt;</span><br><span class="line">    &lt;div id=<span class="string">"btn"</span> style=<span class="string">"position:absolute;width:100%;height:100%;"</span> data-clipboard-text=<span class="string">"KjABgP05ll"</span>&gt;</span><br><span class="line">        &lt;span&gt;Copy&lt;<span class="regexp">/span&gt;</span></span><br><span class="line"><span class="regexp">    &lt;/</span>div&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- <span class="number">2.</span> Include library --&gt;</span><br><span class="line">    &lt;script src=<span class="string">"https://cdn.jsdelivr.net/npm/clipboard@1/dist/clipboard.min.js"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line"></span><br><span class="line">    &lt;!-- <span class="number">3.</span> Instantiate clipboard by passing a HTML element --&gt;</span><br><span class="line">    &lt;script&gt;</span><br><span class="line">    <span class="keyword">var</span> btn = <span class="built_in">document</span>.getElementById(<span class="string">'btn'</span>);</span><br><span class="line">    <span class="keyword">var</span> clipboard = <span class="keyword">new</span> Clipboard(btn);</span><br><span class="line">    clipboard.on(<span class="string">'success'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(e);</span><br><span class="line">    &#125;);</span><br><span class="line">    clipboard.on(<span class="string">'error'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(e);</span><br><span class="line">    &#125;);</span><br><span class="line">    &lt;<span class="regexp">/script&gt;</span></span><br><span class="line"><span class="regexp">&lt;/</span>body&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="利用微信实现"><a href="#利用微信实现" class="headerlink" title="利用微信实现"></a>利用微信实现</h1><ul>
+<li>devicemotion事件</li>
+</ul>
+<p>html5提供了几个新的DOM事件来获得设备物理方向及运动的信息，包括：陀螺仪、罗盘及加速计等，devicemotion就是其中一种，例如我们常用的摇一摇功能就是利用了该事件。注册了devicemotion事件后，只要用户轻轻动一下手机，就会触发事件代码。</p>
+<ul>
+<li>微信写入剪贴板的伪协议</li>
+</ul>
+<p>微信Android客户端注册了一个伪协议：weixin://webview/copy/xxxxxxx，对该协议发起请求后，微信会自动将xxxxxxx写入剪贴板。</p>
+<p>结合上述两个特性，很容易实现只要打开网页，就会自动写入剪贴板，而微信一定程度上成为了自动传播吱口令的“帮凶”，具体实现如下：<br>    网页注册devicemotion事件，触发后新建一个iframe发起对伪协议的请求<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">window</span>.DeviceMotionEvent) &#123;</span><br><span class="line">    <span class="built_in">window</span>.addEventListener(<span class="string">'devicemotion'</span>, handler, <span class="literal">false</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    alert(<span class="string">'not support devicemotion'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">handler</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> b = <span class="built_in">document</span>.createElement(<span class="string">"iframe"</span>);</span><br><span class="line">	b.style.cssText = <span class="string">"display:none;width:0px;height:0px;"</span>;</span><br><span class="line">	b.src = <span class="string">"weixin://webview/copy/"</span> + <span class="string">"m4bln"</span>;</span><br><span class="line">	<span class="built_in">document</span>.body.appendChild(b)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/25/OpenCV学习/" rel="next" title="OpenCV学习">
+                <i class="fa fa-chevron-left"></i> OpenCV学习
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/17/WebView那些事儿/" rel="prev" title="Android WebView那些事儿">
+                Android WebView那些事儿 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">m4bln</p>
+              <p class="site-description motion-element" itemprop="description">影后入林到驿前</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x80CC;&#x666F;" class="headerlink" title="&#x80CC;&#x666F;"></a>&#x80CC;&#x666F;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#遍历js事件"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x904D;&#x5386;js&#x4E8B;&#x4EF6;" class="headerlink" title="&#x904D;&#x5386;js&#x4E8B;&#x4EF6;"></a>&#x904D;&#x5386;js&#x4E8B;&#x4EF6;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Android实现"><span class="nav-number">3.</span> <span class="nav-text"><a href="#Android&#x5B9E;&#x73B0;" class="headerlink" title="Android&#x5B9E;&#x73B0;"></a>Android&#x5B9E;&#x73B0;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#iOS实现"><span class="nav-number">4.</span> <span class="nav-text"><a href="#iOS&#x5B9E;&#x73B0;" class="headerlink" title="iOS&#x5B9E;&#x73B0;"></a>iOS&#x5B9E;&#x73B0;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#利用微信实现"><span class="nav-number">5.</span> <span class="nav-text"><a href="#&#x5229;&#x7528;&#x5FAE;&#x4FE1;&#x5B9E;&#x73B0;" class="headerlink" title="&#x5229;&#x7528;&#x5FAE;&#x4FE1;&#x5B9E;&#x73B0;"></a>&#x5229;&#x7528;&#x5FAE;&#x4FE1;&#x5B9E;&#x73B0;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">m4bln</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
