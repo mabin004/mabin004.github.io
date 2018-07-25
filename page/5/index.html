@@ -272,6 +272,140 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/09/cve-2016-5348-利用大文件使gps-crash/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/09/cve-2016-5348-利用大文件使gps-crash/" itemprop="url">cve-2016-5348(利用大文件使gps crash)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-09T16:47:00+08:00">
+                2017-12-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          描述通过中间人攻击（MITM）构造一个gps相关的文件（由Qualcomm提供），可以使Android设备的gps服务崩溃，设备重启。问题出现在AOSP代码和由Quanlcomm实现的XTRA下载代码中。该漏洞还有可能影响所有的Qualcomm GPS芯片。
+背景(GPS和gpsOneXtra)大多数移动设备通过GPS（Global Positioning System）实现定位，它由美国的军事部门开发和维护，其他国家也有类似的定位系统，如俄罗斯的GLONASS，欧洲的Galileo，中国的北斗。
+广播星历是定位卫星发出的无线电信号上载有预报一定时间内卫星根数的电文信息，通过星历接收者可以很快获得离自己最近的卫星，避免了依次去查找卫星。
+Qualcomm开发了一套系统称为gpsOneXtra,通过它设备可以从高通的服务器上下载卫星数据（Xtra文件），该文件包含了当前的卫星位置数据以及未来7天卫星可能的位置，大多数的高通gps芯片都支持这项技术。
+##背景2 -Android和gpsOneXtra文件
+通过对Android设备的流量监控发现，每当设备连接到WiFi网络时，会向高通的服务器发起请求，获取gpsOneXtra文件。在Android相关的源码中，出现了以下url:
+123http://xtra1.gpsonextra.net/xtra.binhttp://xtra2.gpsonextra.net/xtra.binhttp://xtra3.gpsonextra.net/xtra.bin
+123http://xtrapath1.izatcloud.net/xtra2.binhttp://xtrapath2.izatcloud.net/xtra2.binhttp://xtrapath3.izatcloud.net/xtra2.bin
+使用whois工具查询这些域名，发现
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/12/09/cve-2016-5348-利用大文件使gps-crash/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/09/android源码结构/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -877,7 +1011,7 @@ XposedXposed是一个在andoid平台上比较成熟的hook框架，可以完美�
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-count">45</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
