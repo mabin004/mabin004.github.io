@@ -87,7 +87,7 @@
 <meta property="og:description" content="简介最近在对华为P10刷机时，发现解锁bootloader需要关闭“查找我的手机“功能，此外，解锁bootloader后刷recovery时，仍然需要关闭“查找我的手机”才能进行，这种现象表明了Android主系统可以操作bootloader和recovery分区，一番查找后，发现这个功能叫做FRP（Factory Reset Protection）,自Android 5.0后引入，为了防止手机被">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://mabin004.github.io/images/pasted-75.png">
-<meta property="og:updated_time" content="2018-07-25T15:03:49.617Z">
+<meta property="og:updated_time" content="2018-07-26T01:56:18.831Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android FRP功能分析（Factory Reset Protection）">
 <meta name="twitter:description" content="简介最近在对华为P10刷机时，发现解锁bootloader需要关闭“查找我的手机“功能，此外，解锁bootloader后刷recovery时，仍然需要关闭“查找我的手机”才能进行，这种现象表明了Android主系统可以操作bootloader和recovery分区，一番查找后，发现这个功能叫做FRP（Factory Reset Protection）,自Android 5.0后引入，为了防止手机被">
@@ -421,6 +421,7 @@
 <p>事实上，我在一部root的手机上am broadcast -a “com.huawei.remotecontrol.OFF_REMOTE”就可以关闭FRP，无需输入账号验证，因此这里可能存在什么问题，后续待研究。</p>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
 <li><a href="https://support.google.com/nexus/answer/6172890?hl=en" target="_blank" rel="noopener">Help prevent others from using your device without permission</a></li>
+<li><a href="https://blog.csdn.net/woshing123456/article/details/44524051" target="_blank" rel="noopener">https://blog.csdn.net/woshing123456/article/details/44524051</a></li>
 <li><a href="https://www.androidpolice.com/2015/03/12/guide-what-is-android-5-1s-antitheft-device-protection-feature-and-how-do-i-use-it/" target="_blank" rel="noopener">https://www.androidpolice.com/2015/03/12/guide-what-is-android-5-1s-antitheft-device-protection-feature-and-how-do-i-use-it/</a></li>
 <li><a href="http://cfig.github.io/2017/12/20/Android-Factory-Reset-Protection-FRP/" target="_blank" rel="noopener">http://cfig.github.io/2017/12/20/Android-Factory-Reset-Protection-FRP/</a></li>
 </ol>
