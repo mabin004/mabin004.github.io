@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://mabin004.github.io/2018/07/26/Android%E8%AE%BE%E5%A4%87%E7%AE%A1%E7%90%86%E5%99%A8/</loc>
+    
+    <lastmod>2018-07-26T11:05:57.106Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://mabin004.github.io/about/index.html</loc>
+    
+    <lastmod>2018-07-26T09:50:14.229Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://mabin004.github.io/2018/07/25/Android-FRP%E5%8A%9F%E8%83%BD%E5%88%86%E6%9E%90%EF%BC%88Factory-Reset-Protection%EF%BC%89/</loc>
     
     <lastmod>2018-07-26T01:56:18.831Z</lastmod>
@@ -327,13 +341,6 @@
     <loc>https://mabin004.github.io/tags/index.html</loc>
     
     <lastmod>2017-12-09T08:08:54.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://mabin004.github.io/about/index.html</loc>
-    
-    <lastmod>2017-12-09T08:04:30.000Z</lastmod>
     
   </url>
   
