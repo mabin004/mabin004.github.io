@@ -88,7 +88,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://mabin004.github.io/images/pasted-32.png">
 <meta property="og:image" content="https://mabin004.github.io/images/pasted-31.png">
-<meta property="og:updated_time" content="2018-07-25T13:35:18.329Z">
+<meta property="og:updated_time" content="2018-08-07T02:14:27.775Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android中的目录穿越漏洞">
 <meta name="twitter:description" content="概述在Linux/Unix系统中“..”代表的是向上级目录跳转，如果程序在处理到诸如用“../../../../../../../../../../../etc/hosts”表示的文件时没有进行防护，则会跳转出当前工作目录，跳转到到其他目录中,即目录穿越。 在 Android 中由于目录穿越造成任意文件写入的漏洞较为常见。首先是写文件的接口可能本身设计上就允许传入任意路径的参数，另一种情况就是直接">
@@ -394,6 +394,11 @@
         <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>在Linux/Unix系统中“..”代表的是向上级目录跳转，如果程序在处理到诸如用“../../../../../../../../../../../etc/hosts”表示的文件时没有进行防护，则会跳转出当前工作目录，跳转到到其他目录中,即目录穿越。</p>
 <p>在 Android 中由于目录穿越造成任意文件写入的漏洞较为常见。首先是写文件的接口可能本身设计上就允许传入任意路径的参数，另一种情况就是直接拼接路径导致可以 “…/” 进行目录穿越。</p>
 <p>由于存在目录穿越漏洞的代码执行者通常是应用本身（非webview沙箱进程），因此一旦存在任意文件写入漏洞，就有可能覆盖原有的文件。此时若应用中存在动态加载代码的逻辑，配合目录穿越则有可能实现任意代码执行。</p>
+<p><strong>add</strong>:<br>后来又多个团队或研究人员研究目录穿越问题，并起来各式各样的名字，现留下链接以备参考：</p>
+<ol>
+<li>zip-slip总结了多个存在目录穿越的第三方语言或库，并包含了具体的代码实例  <a href="https://github.com/snyk/zip-slip-vulnerability" target="_blank" rel="noopener">https://github.com/snyk/zip-slip-vulnerability</a><br><a href="https://snyk.io/research/zip-slip-vulnerability" target="_blank" rel="noopener">https://snyk.io/research/zip-slip-vulnerability</a></li>
+<li>zipperdown iOS平台下多个APP存在目录穿越漏洞</li>
+</ol>
 <h2 id="目录穿越场景"><a href="#目录穿越场景" class="headerlink" title="目录穿越场景"></a>目录穿越场景</h2><h3 id="1-下载文件到指定的路径"><a href="#1-下载文件到指定的路径" class="headerlink" title="1. 下载文件到指定的路径"></a>1. 下载文件到指定的路径</h3><p>该场景适用于下载路径由用户可控，例如一些下载工具、保存的目录为用户名等特殊情况。</p>
 <h3 id="2-解压-zip-文件时未对-ZipEntry-文件名检查"><a href="#2-解压-zip-文件时未对-ZipEntry-文件名检查" class="headerlink" title="2. 解压 zip 文件时未对 ZipEntry 文件名检查"></a>2. 解压 zip 文件时未对 ZipEntry 文件名检查</h3><p>Android应用中通常会直接下载一些皮肤等资源文件，为了节约流量，一些资源文件通常打包成zip。</p>
 <p>Java代码在解压ZIP文件时会使用到ZipEntry类的getName()方法。如果ZIP文件中包含“../”的字符串，该方法返回值里面会原样返回。如果在这里没有进行防护，继续解压缩操作，就会将解压文件创建到其他目录中。</p>
@@ -422,7 +427,6 @@
 <h2 id="常见的修复方法"><a href="#常见的修复方法" class="headerlink" title="常见的修复方法"></a>常见的修复方法</h2><ol>
 <li>对重要的ZIP压缩包文件进行数字签名校验，校验通过才进行解压。</li>
 <li>检查Zip压缩包中使用ZipEntry.getName()获取的文件名中是否包含”../”或者”..”<br> 检查”../”的时候不必进行URI Decode（以防通过URI编码”..%2F”来进行绕过），测试发现ZipEntry.getName()对于Zip包中有“..%2F”的文件路径不会进行处理。</li>
-<li></li>
 </ol>
 <h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><ol>
 <li><a href="https://jaq.alibaba.com/community/art/show?articleid=383" target="_blank" rel="noopener">https://jaq.alibaba.com/community/art/show?articleid=383</a></li>
@@ -539,7 +543,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-count">49</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

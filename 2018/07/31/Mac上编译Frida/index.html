@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, m4bln" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="frida代码结构：frida-core: Frida core library intended for static linking into bindingsfrida-gum: Low-level code instrumentation library used by frida-corebindings:frida-python: Frida Python bindingsfrida-">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Frida源码分析">
+<meta property="og:url" content="https://mabin004.github.io/2018/07/31/Mac上编译Frida/index.html">
+<meta property="og:site_name" content="m4bln">
+<meta property="og:description" content="frida代码结构：frida-core: Frida core library intended for static linking into bindingsfrida-gum: Low-level code instrumentation library used by frida-corebindings:frida-python: Frida Python bindingsfrida-">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-82.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-83.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-84.png">
+<meta property="og:updated_time" content="2018-08-09T14:06:01.324Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Frida源码分析">
+<meta name="twitter:description" content="frida代码结构：frida-core: Frida core library intended for static linking into bindingsfrida-gum: Low-level code instrumentation library used by frida-corebindings:frida-python: Frida Python bindingsfrida-">
+<meta name="twitter:image" content="https://mabin004.github.io/images/pasted-82.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'SXXZO8IPW0',
+      apiKey: 'b9723880e3b66475126bdc98a4bb9380',
+      indexName: 'm4bln',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到任何搜索结果: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://mabin004.github.io/2018/07/31/Mac上编译Frida/"/>
+
+
+
+
+
+  <title>Frida源码分析 | m4bln</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">m4bln</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-hint">
+          <a href="/hint/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            hint
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-todo">
+          <a href="/todo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            ToDo
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/07/31/Mac上编译Frida/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Frida源码分析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-31T19:07:02+08:00">
+                2018-07-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/31/Mac上编译Frida/" class="leancloud_visitors" data-flag-title="Frida源码分析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="frida代码结构："><a href="#frida代码结构：" class="headerlink" title="frida代码结构："></a>frida代码结构：</h2><p><strong>frida-core</strong>: Frida core library intended for static linking into bindings<br><strong>frida-gum</strong>: Low-level code instrumentation library used by frida-core<br>bindings:<br><strong>frida-python</strong>: Frida Python bindings<br><strong>frida-node</strong>: Frida Node.js bindings<br><strong>frida-qml</strong>: Frida Qml plugin<br><strong>frida-swift</strong>: Frida Swift bindings<br><strong>frida-tools</strong>: Frida CLI tools</p>
+<h3 id="frida-gum解析："><a href="#frida-gum解析：" class="headerlink" title="frida-gum解析："></a>frida-gum解析：</h3><p>frida-gum 本身就是一种跨平台的设计. 有两个点需要处理统一: 1. 针对 CPU 架构的代码 2. 针对操作系统(Backend) 的代码. 同时要在这两个点上构建 CPU/OS 无关代码, 以及规定一些统一的接口.</p>
+<p>frida-gum/gum/arch-* 定义的是与 CPU 架构有关的代码,也就是汇编级操作, 比如汇编指令的读/写/修复.</p>
+<p>frida-gum/gum/backend-* 分两种情况: 1. 定义的是与操作系统有关的代码, 更多是一些内存/进程等操作 2. 对 arch 层级代码的封装成统一逻辑</p>
+<p>frida-gum/* 对 arch 和 backend 的抽象封装成上层的平台/架构无关代码.</p>
+<p>frida-gum/bindings/gumjs/：<br>分V8和Duktape两个引擎，实现了Module、Memory、NativeFunction等功能（<a href="https://www.frida.re/docs/javascript-api/）" target="_blank" rel="noopener">https://www.frida.re/docs/javascript-api/）</a></p>
+<h3 id="指令读-模块"><a href="#指令读-模块" class="headerlink" title="指令读 模块"></a>指令读 模块</h3><p>这个过程需要一个 disammbler, frida-gum 中用的是 capstone. 这一块没啥可以说的, 就是设置好 capsone 的选项读指令就可以.</p>
+<h3 id="frida-java解析"><a href="#frida-java解析" class="headerlink" title="frida-java解析"></a>frida-java解析</h3><h4 id="源码结构"><a href="#源码结构" class="headerlink" title="源码结构"></a>源码结构</h4><ul>
+<li><p>index.js:<br>vm VM虚拟机的wrapper<br>classFactory class的wrapper<br>available 逻辑变量,指明当前的进程是否载入了虚拟机<br>androidVersion 当前版本号<br>enumerateLoadedClasses 枚举所有加载的类<br>enumerateLoadedClassesSync 上面那个API的同步版本， 载入完毕才将所有的类作为一个数组返回<br>enumerateClassLoaders Android N以上的支持<br>enumerateClassLoadersSync 同上</p>
+</li>
+<li><p>classFactory.js:<br>use: 找到类<br>implementation: 实现一个函数<br>overloads:<br>$new $alloc $init</p>
+</li>
+<li><p>vm.js:<br>getEnv<br>perform<br>attachCurrentThread<br>DetachCurrentThread</p>
+</li>
+<li><p>android.js<br>/<em>global Memory, Module, NativeCallback, NativeFunction, NULL, Process</em>/<br>getApi<br>ensureClassInitialized<br>getAndroidVersion<br>getAndroidApiLevel<br>getArtMethodSpec<br>getArtThreadSpec<br>getArtThreadFromEnv<br>withRunnableArtThread<br>withAllArtThreadsSuspended<br>makeArtClassVisitor<br>makeArtClassLoaderVisitor<br>cloneArtMethod</p>
+</li>
+<li><p>env.js<br>JNIEnv的wrapper</p>
+<h4 id="Hook分析"><a href="#Hook分析" class="headerlink" title="Hook分析"></a>Hook分析</h4></li>
+</ul>
+<ol>
+<li>implementation 区分了ART实现和Dalvik实现</li>
+</ol>
+<p><img src="/images/pasted-82.png" alt="upload successful"></p>
+<h5 id="Dalvik-hook实现"><a href="#Dalvik-hook实现" class="headerlink" title="Dalvik hook实现"></a>Dalvik hook实现</h5><p>frida兼容了低版本的Android, 低于Android 5.0时，采用Dalvik虚拟机，其核心实现在replaceDalvikImplementation函数中。</p>
+<p>frida的Dalvik hook和xposed的hook原理相同，都是把要hook的java函数变成native函数，并修改函数的入口为自定义的内容，这样在调用时就会执行自定义的代码。</p>
+<p>首先我们看一下Dalvik虚拟机执行java函数过程：</p>
+<p><img src="/images/pasted-83.png" alt="upload successful"><br>第4步dvmCallMethodV会根据accessFlags决定调用native还是java函数，因此修改accessFlags后，Dalvik会认为这个函数是一个native函数，便走向了native分支。</p>
+<p>Java层的每一个函数在Dalvik中都对应一个Method数据结构，在源代码中定义如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">//https://android.googlesource.com/platform/dalvik/+/6d874d2bda563ada1034d2b3219b35d800fc6860/vm/oo/Object.h#418</span><br><span class="line">struct Method &#123;   </span><br><span class="line">    ClassObject*    clazz;   /* method所属的类 public、native等*/</span><br><span class="line">    u4              accessFlags; /* 访问标记 */</span><br><span class="line">    u2             methodIndex; //method索引</span><br><span class="line">    //三个size为边界值，对于native函数，这3个size均等于参数列表的size</span><br><span class="line">    u2              registersSize;  /* ins + locals */</span><br><span class="line">    u2              outsSize;</span><br><span class="line">    u2              insSize;</span><br><span class="line">    const char*     name;//函数名称</span><br><span class="line">    /*</span><br><span class="line">     * Method prototype descriptor string (return and argument types)</span><br><span class="line">     */</span><br><span class="line">    DexProto        prototype;</span><br><span class="line">    /* short-form method descriptor string */</span><br><span class="line">    const char*     shorty;</span><br><span class="line">    /*</span><br><span class="line">     * The remaining items are not used for abstract or native methods.</span><br><span class="line">     * (JNI is currently hijacking &quot;insns&quot; as a function pointer, set</span><br><span class="line">     * after the first call.  For internal-native this stays null.)</span><br><span class="line">     */</span><br><span class="line">    /* the actual code */</span><br><span class="line">    const u2*       insns;          /* instructions, in memory-mapped .dex */</span><br><span class="line">    /* cached JNI argument and return-type hints */</span><br><span class="line">    int             jniArgInfo;</span><br><span class="line">    /*</span><br><span class="line">     * Native method ptr; could be actual function or a JNI bridge.  We</span><br><span class="line">     * don&apos;t currently discriminate between DalvikBridgeFunc and</span><br><span class="line">     * DalvikNativeFunc; the former takes an argument superset (i.e. two</span><br><span class="line">     * extra args) which will be ignored.  If necessary we can use</span><br><span class="line">     * insns==NULL to detect JNI bridge vs. internal native.</span><br><span class="line">     */</span><br><span class="line">    DalvikBridgeFunc nativeFunc;</span><br><span class="line">    /*</span><br><span class="line">     * Register map data, if available.  This will point into the DEX file</span><br><span class="line">     * if the data was computed during pre-verification, or into the</span><br><span class="line">     * linear alloc area if not.</span><br><span class="line">     */</span><br><span class="line">    const RegisterMap* registerMap;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>replaceDalvikImplementation修改了method中的accessFlags、registersSize、outsSize、insSize和jniArgInfo，将原java函数对应的结构体修改为一个native函数，并调用dvmUseJNIBridge（<a href=",参考http://androidxref.com/4.4.2_r2/xref/dalvik/vm/Jni.cpp#806">dvmUseJNIBridge实现代码</a>）为这个Method设置一个Bridge，改变结构体中的nativeFunc，指向自定义的函数。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">function replaceDalvikImplementation (fn) &#123;</span><br><span class="line">  if (fn === null &amp;&amp; dalvikOriginalMethod === null) &#123;</span><br><span class="line">    return;</span><br><span class="line">  &#125;</span><br><span class="line">//备份原来的method,</span><br><span class="line">  if (dalvikOriginalMethod === null) &#123;</span><br><span class="line">    dalvikOriginalMethod = Memory.dup(methodId, DVM_METHOD_SIZE);</span><br><span class="line">    dalvikTargetMethodId = Memory.dup(methodId, DVM_METHOD_SIZE);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  if (fn !== null) &#123;</span><br><span class="line">   //自定的代码</span><br><span class="line">    implementation = implement(f, fn);</span><br><span class="line"></span><br><span class="line">    let argsSize = argTypes.reduce((acc, t) =&gt; (acc + t.size), 0);</span><br><span class="line">    if (type === INSTANCE_METHOD) &#123;</span><br><span class="line">      argsSize++;</span><br><span class="line">    &#125;</span><br><span class="line">    // 把method变成native函数</span><br><span class="line">    /*</span><br><span class="line">     * make method native (with kAccNative)</span><br><span class="line">     * insSize and registersSize are set to arguments size</span><br><span class="line">     */</span><br><span class="line">    const accessFlags = (Memory.readU32(methodId.add(DVM_METHOD_OFFSET_ACCESS_FLAGS)) | kAccNative) &gt;&gt;&gt; 0;</span><br><span class="line">    const registersSize = argsSize;</span><br><span class="line">    const outsSize = 0;</span><br><span class="line">    const insSize = argsSize;</span><br><span class="line"></span><br><span class="line">    Memory.writeU32(methodId.add(DVM_METHOD_OFFSET_ACCESS_FLAGS), accessFlags);</span><br><span class="line">    Memory.writeU16(methodId.add(DVM_METHOD_OFFSET_REGISTERS_SIZE), registersSize);</span><br><span class="line">    Memory.writeU16(methodId.add(DVM_METHOD_OFFSET_OUTS_SIZE), outsSize);</span><br><span class="line">    Memory.writeU16(methodId.add(DVM_METHOD_OFFSET_INS_SIZE), insSize);</span><br><span class="line">    Memory.writeU32(methodId.add(DVM_METHOD_OFFSET_JNI_ARG_INFO), computeDalvikJniArgInfo(methodId));</span><br><span class="line">    //调用dvmUseJNIBridge为这个Method设置一个Bridge,本质上是修改结构体中的nativeFunc为自定义的implementation函数</span><br><span class="line">    api.dvmUseJNIBridge(methodId, implementation);</span><br><span class="line"></span><br><span class="line">    patchedMethods.add(f);</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    patchedMethods.delete(f);</span><br><span class="line"></span><br><span class="line">    Memory.copy(methodId, dalvikOriginalMethod, DVM_METHOD_SIZE);</span><br><span class="line">    implementation = null;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>自定义的js代码如何生成？<br>implement的实现<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br></pre></td><td class="code"><pre><span class="line">function implement (method, fn) &#123;</span><br><span class="line">  if (method.hasOwnProperty(&apos;overloads&apos;)) &#123;</span><br><span class="line">    throw new Error(&apos;Only re-implementing a concrete (specific) method is possible, not a method &quot;dispatcher&quot;&apos;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  const C = method.holder; // eslint-disable-line</span><br><span class="line">  const type = method.type;</span><br><span class="line">  const retType = method.returnType;</span><br><span class="line">  const argTypes = method.argumentTypes;</span><br><span class="line">  const methodName = method.methodName;</span><br><span class="line">  const rawRetType = retType.type;</span><br><span class="line">  const rawArgTypes = argTypes.map((t) =&gt; (t.type));</span><br><span class="line">  const pendingCalls = method[PENDING_CALLS]; // eslint-disable-line</span><br><span class="line"></span><br><span class="line">  let frameCapacity = 2;</span><br><span class="line">  const argVariableNames = argTypes.map((t, i) =&gt; (&apos;a&apos; + (i + 1)));</span><br><span class="line">  const callArgs = argTypes.map((t, i) =&gt; &#123;</span><br><span class="line">    if (t.fromJni) &#123;</span><br><span class="line">      frameCapacity++;</span><br><span class="line">      return [&apos;argTypes[&apos;, i, &apos;].fromJni.call(self, &apos;, argVariableNames[i], &apos;, env)&apos;].join(&apos;&apos;);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      return argVariableNames[i];</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  let returnCapture, returnStatements, returnNothing;</span><br><span class="line">  if (rawRetType === &apos;void&apos;) &#123;</span><br><span class="line">    returnCapture = &apos;&apos;;</span><br><span class="line">    returnStatements = &apos;env.popLocalFrame(NULL);&apos;;</span><br><span class="line">    returnNothing = &apos;return;&apos;;</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    if (retType.toJni) &#123;</span><br><span class="line">      frameCapacity++;</span><br><span class="line">      returnCapture = &apos;result = &apos;;</span><br><span class="line">      returnStatements = &apos;var rawResult;&apos; +</span><br><span class="line">        &apos;try &#123;&apos; +</span><br><span class="line">        &apos;if (retType.isCompatible.call(this, result)) &#123;&apos; +</span><br><span class="line">        &apos;rawResult = retType.toJni.call(this, result, env);&apos; +</span><br><span class="line">        &apos;&#125; else &#123;&apos; +</span><br><span class="line">        &apos;throw new Error(&quot;Implementation for &quot; + methodName + &quot; expected return value compatible with \&apos;&quot; + retType.className + &quot;\&apos;.&quot;);&apos; +</span><br><span class="line">        &apos;&#125;&apos;;</span><br><span class="line">      if (retType.type === &apos;pointer&apos;) &#123;</span><br><span class="line">        returnStatements += &apos;&#125; catch (e) &#123;&apos; +</span><br><span class="line">          &apos;env.popLocalFrame(NULL);&apos; +</span><br><span class="line">          &apos;throw e;&apos; +</span><br><span class="line">          &apos;&#125;&apos; +</span><br><span class="line">          &apos;return env.popLocalFrame(rawResult);&apos;;</span><br><span class="line">        returnNothing = &apos;return NULL;&apos;;</span><br><span class="line">      &#125; else &#123;</span><br><span class="line">        returnStatements += &apos;&#125; finally &#123;&apos; +</span><br><span class="line">          &apos;env.popLocalFrame(NULL);&apos; +</span><br><span class="line">          &apos;&#125;&apos; +</span><br><span class="line">          &apos;return rawResult;&apos;;</span><br><span class="line">        returnNothing = &apos;return 0;&apos;;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      returnCapture = &apos;result = &apos;;</span><br><span class="line">      returnStatements = &apos;env.popLocalFrame(NULL);&apos; +</span><br><span class="line">        &apos;return result;&apos;;</span><br><span class="line">      returnNothing = &apos;return 0;&apos;;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  let f;</span><br><span class="line">  eval(&apos;f = function (&apos; + [&apos;envHandle&apos;, &apos;thisHandle&apos;].concat(argVariableNames).join(&apos;, &apos;) + &apos;) &#123;&apos; + // eslint-disable-line</span><br><span class="line">    &apos;var env = new Env(envHandle, vm);&apos; +</span><br><span class="line">    &apos;if (env.pushLocalFrame(&apos; + frameCapacity + &apos;) !== JNI_OK) &#123;&apos; +</span><br><span class="line">    &apos;return;&apos; +</span><br><span class="line">    &apos;&#125;&apos; +</span><br><span class="line">    &apos;var self = &apos; + ((type === INSTANCE_METHOD) ? &apos;new C(thisHandle);&apos; : &apos;new C(null);&apos;) +</span><br><span class="line">    &apos;var result;&apos; +</span><br><span class="line">    &apos;var tid = Process.getCurrentThreadId();&apos; +</span><br><span class="line">    &apos;try &#123;&apos; +</span><br><span class="line">    &apos;pendingCalls.add(tid);&apos; +</span><br><span class="line">    &apos;if (ignoredThreads[tid] === undefined) &#123;&apos; +</span><br><span class="line">    returnCapture + &apos;fn.call(&apos; + [&apos;self&apos;].concat(callArgs).join(&apos;, &apos;) + &apos;);&apos; +</span><br><span class="line">    &apos;&#125; else &#123;&apos; +</span><br><span class="line">    returnCapture + &apos;method.call(&apos; + [&apos;self&apos;].concat(callArgs).join(&apos;, &apos;) + &apos;);&apos; +</span><br><span class="line">    &apos;&#125;&apos; +</span><br><span class="line">    &apos;&#125; catch (e) &#123;&apos; +</span><br><span class="line">    &apos;env.popLocalFrame(NULL);&apos; +</span><br><span class="line">    &quot;if (typeof e === &apos;object&apos; &amp;&amp; e.hasOwnProperty(&apos;$handle&apos;)) &#123;&quot; +</span><br><span class="line">    &apos;env.throw(e.$handle);&apos; +</span><br><span class="line">    returnNothing +</span><br><span class="line">    &apos;&#125; else &#123;&apos; +</span><br><span class="line">    &apos;throw e;&apos; +</span><br><span class="line">    &apos;&#125;&apos; +</span><br><span class="line">    &apos;&#125; finally &#123;&apos; +</span><br><span class="line">    &apos;pendingCalls.delete(tid);&apos; +</span><br><span class="line">    &apos;&#125;&apos; +</span><br><span class="line">    returnStatements +</span><br><span class="line">    &apos;&#125;;&apos;);</span><br><span class="line"></span><br><span class="line">  Object.defineProperty(f, &apos;methodName&apos;, &#123;</span><br><span class="line">    enumerable: true,</span><br><span class="line">    value: methodName</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  Object.defineProperty(f, &apos;type&apos;, &#123;</span><br><span class="line">    enumerable: true,</span><br><span class="line">    value: type</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  Object.defineProperty(f, &apos;returnType&apos;, &#123;</span><br><span class="line">    enumerable: true,</span><br><span class="line">    value: retType</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  Object.defineProperty(f, &apos;argumentTypes&apos;, &#123;</span><br><span class="line">    enumerable: true,</span><br><span class="line">    value: argTypes</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  Object.defineProperty(f, &apos;canInvokeWith&apos;, &#123;</span><br><span class="line">    enumerable: true,</span><br><span class="line">    value: function (args) &#123;</span><br><span class="line">      if (args.length !== argTypes.length) &#123;</span><br><span class="line">        return false;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      return argTypes.every((t, i) =&gt; (t.isCompatible(args[i])));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  return new NativeCallback(f, rawRetType, [&apos;pointer&apos;, &apos;pointer&apos;].concat(rawArgTypes));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在自定义的代码里调用原函数？</p>
+<h5 id="ART-hook实现"><a href="#ART-hook实现" class="headerlink" title="ART hook实现"></a>ART hook实现</h5><p>frida的ART hook实现也是把java method转为native method, 但ART的运行机制不同于Dalvik, 其实现也较为复杂，这里从ART运行机制开始解释。</p>
+<p>ART 是一种代替 Dalivk 的新的运行时,它具有更高的执行效率。ART虚拟机执行 Java 方法主要有两种模式：quick code 模式和 Interpreter 模式。</p>
+<ul>
+<li>quick code 模式：执行 arm 汇编指令</li>
+<li>Interpreter 模式：由解释器解释执行 Dalvik 字节码</li>
+</ul>
+<p>即使是在quick code模式中，也有类方法可能需要以Interpreter模式执行。反之亦然。解释执行的类方法通过函数artInterpreterToCompiledCodeBridge的返回值调用本地机器指令执行的类方法；本地机器指令执行的类方法通过函数GetQuickToInterpreterBridge的返回值调用解释执行的类方法；</p>
+<p>ART中的每一个函数都对应一个ARTMethod结构体，其中entry_point_from<em>interpreter</em>和entry_point_from_quick_compiled<em>code</em>分别表示两种模式的调用入口<br>ARTMethod结构如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">//http://androidxref.com/8.1.0_r33/xref/art/runtime/art_method.h#708</span><br><span class="line">class ArtMethod &#123;</span><br><span class="line"> </span><br><span class="line">  GcRoot&lt;mirror::Class&gt; declaring_class_; //method所属的class</span><br><span class="line"></span><br><span class="line">  // Short cuts to declaring_class_-&gt;dex_cache_ member for fast compiled code access. </span><br><span class="line">  GcRoot&lt;mirror::PointerArray&gt; dex_cache_resolved_methods_;</span><br><span class="line"></span><br><span class="line">  // Short cuts to declaring_class_-&gt;dex_cache_ member for fast compiled code access. </span><br><span class="line">  GcRoot&lt;mirror::ObjectArray&lt;mirror::Class&gt;&gt; dex_cache_resolved_types_;</span><br><span class="line"></span><br><span class="line">  // Access flags; low 16 bits are defined by spec. </span><br><span class="line">  uint32_t access_flags_;</span><br><span class="line"></span><br><span class="line">  /* Dex file fields. The defining dex file is available via declaring_class_-&gt;dex_cache_ */</span><br><span class="line"></span><br><span class="line">  // Offset to the CodeItem. </span><br><span class="line">  uint32_t dex_code_item_offset_;</span><br><span class="line"></span><br><span class="line">  // Index into method_ids of the dex file associated with this method. </span><br><span class="line">  uint32_t dex_method_index_;</span><br><span class="line"></span><br><span class="line">  /* End of dex file fields. */</span><br><span class="line"></span><br><span class="line">  // Entry within a dispatch table for this method. For static/direct methods the index is into </span><br><span class="line">  // the declaringClass.directMethods, for virtual methods the vtable and for interface methods the </span><br><span class="line">  // ifTable. </span><br><span class="line">  uint32_t method_index_;</span><br><span class="line"></span><br><span class="line">  // Fake padding field gets inserted here. </span><br><span class="line">  // Must be the last fields in the method. </span><br><span class="line">  // PACKED(4) is necessary for the correctness of </span><br><span class="line">  // RoundUp(OFFSETOF_MEMBER(ArtMethod, ptr_sized_fields_), pointer_size). </span><br><span class="line">  struct PACKED(4) PtrSizedFields &#123;</span><br><span class="line"></span><br><span class="line">    // Method dispatch from the interpreter invokes this pointer which may cause a bridge into </span><br><span class="line">    // 以interpreter模式调用入口</span><br><span class="line">    void* entry_point_from_interpreter_; </span><br><span class="line">    void* entry_point_from_jni_; //jni函数入口</span><br><span class="line"></span><br><span class="line">    // 以quick code调用时的函数入口</span><br><span class="line">    void* entry_point_from_quick_compiled_code_;</span><br><span class="line">  &#125; ptr_sized_fields_;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>ART的执行流程如下图：</p>
+<p><img src="/images/pasted-84.png" alt="upload successful"></p>
+<p>如图所示，对于一个native method, ART虚拟机首先会尝试quickcode模式执行，检查ARTMethod结构中的entry_point_from_quick_compiled<em>code</em>成员，这里分3种情况：</p>
+<ol>
+<li><p>如果函数已经存在quick code, 则指向这个函数对应的 quick code的起始地址，而当quick code不存在时，它的值则会代表其他的意义；</p>
+</li>
+<li><p>当一个 java 函数不存在 quick code时，它的值是函数 artQuickToInterpreterBridge 的地址，用以从 quick 模式切换到 Interpreter 模式来解释执行 java 函数代码；</p>
+</li>
+<li><p>当一个 java native（JNI）函数不存在 quick code时，它的值是函数 art_quick_generic_jni_trampoline 的地址，用以执行没有quick code的 jni 函数；</p>
+</li>
+</ol>
+<p>因此，如果frida把一个java method改为jni method, 显然是不存在quick code，这时需要将entry_point_from_quick_compiled<em>code</em>值修改为art_quick_generic_jni_trampoline 的地址。</p>
+<p>art_quick_generic_jni_trampoline函数实现比较复杂（<a href="https://blog.csdn.net/sinat_38172893/article/details/74612596" target="_blank" rel="noopener">代码分析</a>)，主要负责jni调用的准备，包括堆栈的设置，参数的设置等,该函数最终会调到entry_point_from<em>jni</em>，即jni函数的入口。</p>
+<p>因此，frida把java method改为jni method，需要修改ARTMethod结构体中的这几个值：<br>access<em>flags</em> = native<br>entry_point_from<em>jni</em> = 自定义代码的入口<br>entry_point_from_quick_compiled<em>code</em> = art_quick_generic_jni_trampoline函数的地址<br>entry_point_from<em>interpreter</em> = artInterpreterToCompiledCodeBridge函数地址</p>
+<p>frida对ARTMethod的修改在replaceArtImplementation函数中：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">patchMethod(methodId, &#123;</span><br><span class="line">  //jnicode入口entry_point_from_jni_改为自定义的代码</span><br><span class="line">  &apos;jniCode&apos;: implementation,</span><br><span class="line">  //修改为access_flags_为native</span><br><span class="line">  &apos;accessFlags&apos;: (Memory.readU32(methodId.add(artMethodOffset.accessFlags)) | kAccNative | kAccFastNative) &gt;&gt;&gt; 0,</span><br><span class="line">  //entry_point_from_quick_compiled_code_</span><br><span class="line">  &apos;quickCode&apos;: api.artQuickGenericJniTrampoline,</span><br><span class="line">  //entry_point_from_interpreter_</span><br><span class="line">  &apos;interpreterCode&apos;: api.artInterpreterToCompiledCodeBridge</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>patchMethod实现：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">function patchMethod (methodId, patches) &#123;</span><br><span class="line">  const artMethodSpec = getArtMethodSpec(vm);</span><br><span class="line">  const artMethodOffset = artMethodSpec.offset;</span><br><span class="line">  Object.keys(patches).forEach(name =&gt; &#123;</span><br><span class="line">    const offset = artMethodOffset[name];</span><br><span class="line">    if (offset === undefined) &#123;</span><br><span class="line">      return;</span><br><span class="line">    &#125;</span><br><span class="line">    const address = methodId.add(offset);</span><br><span class="line">    const suffix = (name === &apos;accessFlags&apos; ? &apos;U32&apos; : &apos;Pointer&apos;);</span><br><span class="line">    Memory[&apos;write&apos; + suffix](address, patches[name]);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>getArtMethodSpec实现：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">function _getArtMethodSpec (vm) &#123;</span><br><span class="line">  const api = getApi();</span><br><span class="line">  let spec;</span><br><span class="line"></span><br><span class="line">  vm.perform(() =&gt; &#123;</span><br><span class="line">    const env = vm.getEnv();</span><br><span class="line">    const process = env.findClass(&apos;android/os/Process&apos;);</span><br><span class="line">    const setArgV0 = env.getStaticMethodId(process, &apos;setArgV0&apos;, &apos;(Ljava/lang/String;)V&apos;);</span><br><span class="line"></span><br><span class="line">    const runtimeModule = Process.getModuleByName(&apos;libandroid_runtime.so&apos;);</span><br><span class="line">    const runtimeStart = runtimeModule.base;</span><br><span class="line">    const runtimeEnd = runtimeStart.add(runtimeModule.size);</span><br><span class="line"></span><br><span class="line">    const apiLevel = getAndroidApiLevel();</span><br><span class="line"></span><br><span class="line">    const entrypointFieldSize = (apiLevel &lt;= 21) ? 8 : pointerSize;</span><br><span class="line"></span><br><span class="line">    const expectedAccessFlags = kAccPublic | kAccStatic | kAccFinal | kAccNative;</span><br><span class="line"></span><br><span class="line">    let jniCodeOffset = null;</span><br><span class="line">    let accessFlagsOffset = null;</span><br><span class="line">    let remaining = 2;</span><br><span class="line">    for (let offset = 0; offset !== 64 &amp;&amp; remaining !== 0; offset += 4) &#123;</span><br><span class="line">      const field = setArgV0.add(offset);</span><br><span class="line"></span><br><span class="line">      if (jniCodeOffset === null) &#123;</span><br><span class="line">        const address = Memory.readPointer(field);</span><br><span class="line">        if (address.compare(runtimeStart) &gt;= 0 &amp;&amp; address.compare(runtimeEnd) &lt; 0) &#123;</span><br><span class="line">          jniCodeOffset = offset;</span><br><span class="line">          remaining--;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      if (accessFlagsOffset === null) &#123;</span><br><span class="line">        const flags = Memory.readU32(field);</span><br><span class="line">        if (flags === expectedAccessFlags) &#123;</span><br><span class="line">          accessFlagsOffset = offset;</span><br><span class="line">          remaining--;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (remaining !== 0) &#123;</span><br><span class="line">      throw new Error(&apos;Unable to determine ArtMethod field offsets&apos;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    const quickCodeOffset = jniCodeOffset + entrypointFieldSize;</span><br><span class="line"></span><br><span class="line">    const size = (apiLevel &lt;= 21) ? (quickCodeOffset + 32) : (quickCodeOffset + pointerSize);</span><br><span class="line"></span><br><span class="line">    spec = &#123;</span><br><span class="line">      size: size,</span><br><span class="line">      offset: &#123;</span><br><span class="line">        jniCode: jniCodeOffset,</span><br><span class="line">        quickCode: quickCodeOffset,</span><br><span class="line">        accessFlags: accessFlagsOffset</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    if (&apos;artInterpreterToCompiledCodeBridge&apos; in api) &#123;</span><br><span class="line">      spec.offset.interpreterCode = jniCodeOffset - entrypointFieldSize;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  return spec;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>参考：<a href="https://bbs.pediy.com/thread-229215.htm" target="_blank" rel="noopener">https://bbs.pediy.com/thread-229215.htm</a><br>zhouzhi PPT</p>
+<ol>
+<li><a href="https://blog.csdn.net/zhangmiaoping23/article/details/52572447" target="_blank" rel="noopener">Xposed框架原理深入研究</a></li>
+<li><a href="https://blog.csdn.net/sinat_38172893/article/details/74612596" target="_blank" rel="noopener">art_quick_generic_jni_trampoline分析</a></li>
+<li>[ART Method Execution]（<a href="https://blog.csdn.net/hl09083253cy/article/details/78418702）" target="_blank" rel="noopener">https://blog.csdn.net/hl09083253cy/article/details/78418702）</a></li>
+<li>[ART执行类方法解析流程]（<a href="https://blog.csdn.net/zhu929033262/article/details/75093012）" target="_blank" rel="noopener">https://blog.csdn.net/zhu929033262/article/details/75093012）</a></li>
+</ol>
+<h2 id="mac下编译frida"><a href="#mac下编译frida" class="headerlink" title="mac下编译frida"></a>mac下编译frida</h2><ol>
+<li>git clone <a href="https://github.com/frida/frida" target="_blank" rel="noopener">https://github.com/frida/frida</a></li>
+<li>创建代码签名证书frida-cert<br>参考<a href="https://sourceware.org/gdb/wiki/BuildingOnDarwin中的2.1.1" target="_blank" rel="noopener">https://sourceware.org/gdb/wiki/BuildingOnDarwin中的2.1.1</a>. Create a certificate部分，将gdb-cert替换为frida-cert即可</li>
+<li>make</li>
+</ol>
+<p>采坑记录：</p>
+<ol>
+<li>ANDROID_NDK_ROOT must be set to the location of your r15c NDK.<br>解决办法:<br>设置环境变量ANDROID_NDK_ROOT为ndk_r15c，必须为r15版本，我只是在当前shell里export ANDROID_NDK_ROOT=/home/xxx/ndk-path时无法编译通过，设为系统环境变量时，编译才通过。</li>
+<li>Dependency ‘glib-2.0’ not found<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">meson.build:123:0: ERROR:  Dependency &apos;glib-2.0&apos; not found, tried Extra Frameworks and Pkg-Config:</span><br><span class="line">&apos;utf-8&apos; codec can&apos;t decode byte 0xe5 in position 16: invalid continuation byte</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>实际运行pkg-config –modversion glib-2.0时，发现glib-2.0是存在的，出现以上错误是因为路径中包含中文！！！</p>
+<ol>
+<li>AttributeError: module ‘enum’ has no attribute ‘IntFlag’<br>解决办法: 设置PYTHONPATH为python3.6的路径,export PYTHONPATH=/usr/bin/python3.6</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/26/Android设备管理器/" rel="next" title="Android设备管理器">
+                <i class="fa fa-chevron-left"></i> Android设备管理器
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/02/Android分析常用的工具或命令/" rel="prev" title="Android分析常用的工具或命令">
+                Android分析常用的工具或命令 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">m4bln</p>
+              <p class="site-description motion-element" itemprop="description">影后入林到驿前</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#frida代码结构："><span class="nav-number">1.</span> <span class="nav-text"><a href="#frida&#x4EE3;&#x7801;&#x7ED3;&#x6784;&#xFF1A;" class="headerlink" title="frida&#x4EE3;&#x7801;&#x7ED3;&#x6784;&#xFF1A;"></a>frida&#x4EE3;&#x7801;&#x7ED3;&#x6784;&#xFF1A;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#frida-gum解析："><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#frida-gum&#x89E3;&#x6790;&#xFF1A;" class="headerlink" title="frida-gum&#x89E3;&#x6790;&#xFF1A;"></a>frida-gum&#x89E3;&#x6790;&#xFF1A;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指令读-模块"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#&#x6307;&#x4EE4;&#x8BFB;-&#x6A21;&#x5757;" class="headerlink" title="&#x6307;&#x4EE4;&#x8BFB; &#x6A21;&#x5757;"></a>&#x6307;&#x4EE4;&#x8BFB; &#x6A21;&#x5757;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#frida-java解析"><span class="nav-number">1.3.</span> <span class="nav-text"><a href="#frida-java&#x89E3;&#x6790;" class="headerlink" title="frida-java&#x89E3;&#x6790;"></a>frida-java&#x89E3;&#x6790;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#源码结构"><span class="nav-number">1.3.1.</span> <span class="nav-text"><a href="#&#x6E90;&#x7801;&#x7ED3;&#x6784;" class="headerlink" title="&#x6E90;&#x7801;&#x7ED3;&#x6784;"></a>&#x6E90;&#x7801;&#x7ED3;&#x6784;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Hook分析"><span class="nav-number">1.3.2.</span> <span class="nav-text"><a href="#Hook&#x5206;&#x6790;" class="headerlink" title="Hook&#x5206;&#x6790;"></a>Hook&#x5206;&#x6790;</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Dalvik-hook实现"><span class="nav-number">1.3.2.1.</span> <span class="nav-text"><a href="#Dalvik-hook&#x5B9E;&#x73B0;" class="headerlink" title="Dalvik hook&#x5B9E;&#x73B0;"></a>Dalvik hook&#x5B9E;&#x73B0;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ART-hook实现"><span class="nav-number">1.3.2.2.</span> <span class="nav-text"><a href="#ART-hook&#x5B9E;&#x73B0;" class="headerlink" title="ART hook&#x5B9E;&#x73B0;"></a>ART hook&#x5B9E;&#x73B0;</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mac下编译frida"><span class="nav-number">2.</span> <span class="nav-text"><a href="#mac&#x4E0B;&#x7F16;&#x8BD1;frida" class="headerlink" title="mac&#x4E0B;&#x7F16;&#x8BD1;frida"></a>mac&#x4E0B;&#x7F16;&#x8BD1;frida</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">m4bln</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.3"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("AAhymnaPSbBOge9isiIUi5c8-gzGzoHsz", "79JTCuY3J33b0HodXn8nYFvn");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
