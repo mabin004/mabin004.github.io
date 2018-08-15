@@ -4,6 +4,51 @@
 
     
   <url>
+    <loc>https://mabin004.github.io/2018/08/14/CVE-2018-9445-%E2%80%94%E2%80%94-Android-USB%E4%B8%8A%E7%9A%84%E7%9B%AE%E5%BD%95%E7%A9%BF%E8%B6%8A/</loc>
+    <lastmod>2018-08-15T09:15:36.289Z</lastmod>
+    <data>
+        <display>
+        <title>CVE-2018-9445 —— Android挂载外设的目录穿越</title>
+        <pubTime>2018-08-14T10:55:00.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://mabin004.github.io/2018/03/09/Android-Hook-%E2%80%94%E2%80%94-Frida/</loc>
+    <lastmod>2018-08-14T09:17:56.975Z</lastmod>
+    <data>
+        <display>
+        <title>Android Hook 之 Frida</title>
+        <pubTime>2018-03-09T08:22:02.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://mabin004.github.io/2018/07/31/Mac%E4%B8%8A%E7%BC%96%E8%AF%91Frida/</loc>
+    <lastmod>2018-08-14T06:31:08.019Z</lastmod>
+    <data>
+        <display>
+        <title>Frida源码分析</title>
+        <pubTime>2018-07-31T11:07:02.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://mabin004.github.io/2018/08/13/cve-2018-9375-%E2%80%94%E2%80%94-Android%E4%B8%AA%E4%BA%BA%E5%AD%97%E5%85%B8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/</loc>
     <lastmod>2018-08-13T09:56:03.426Z</lastmod>
     <data>
@@ -25,21 +70,6 @@
         <display>
         <title>利用蓝牙callback逃逸iOS沙箱</title>
         <pubTime>2018-08-10T04:30:30.000Z</pubTime>
-        
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://mabin004.github.io/2018/07/31/Mac%E4%B8%8A%E7%BC%96%E8%AF%91Frida/</loc>
-    <lastmod>2018-08-09T14:06:01.324Z</lastmod>
-    <data>
-        <display>
-        <title>Frida源码分析</title>
-        <pubTime>2018-07-31T11:07:02.000Z</pubTime>
         
          
            
@@ -149,21 +179,6 @@
         <display>
         <title>关于手机充电器 - 充电协议</title>
         <pubTime>2018-06-27T02:34:04.000Z</pubTime>
-        
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://mabin004.github.io/2018/03/09/Android-Hook-%E2%80%94%E2%80%94-Frida/</loc>
-    <lastmod>2018-07-09T08:26:18.323Z</lastmod>
-    <data>
-        <display>
-        <title>Android Hook 之 Frida</title>
-        <pubTime>2018-03-09T08:22:02.000Z</pubTime>
         
          
            

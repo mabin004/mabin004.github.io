@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="m4bln">
 <meta property="og:description" content="Frida简介Frida是一款基于python + javascript 的hook框架，通杀android\ios\linux\win\osx等各平台，由于是基于脚本的交互，相比xposed和substrace cydia更加便捷，本文重点介绍Frida在android下面的使用。 Frida的官网为：http://www.frida.re/ 环境配置 pip install frida 安装f">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-09T08:26:18.323Z">
+<meta property="og:updated_time" content="2018-08-14T09:17:56.975Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Hook 之 Frida">
 <meta name="twitter:description" content="Frida简介Frida是一款基于python + javascript 的hook框架，通杀android\ios\linux\win\osx等各平台，由于是基于脚本的交互，相比xposed和substrace cydia更加便捷，本文重点介绍Frida在android下面的使用。 Frida的官网为：http://www.frida.re/ 环境配置 pip install frida 安装f">
@@ -446,6 +446,9 @@
 <ul>
 <li>这种情况可以枚举函数的overloads属性，挨个hook，或者使用数组索引hook,例如a.overloads[1].implement=xxxx</li>
 </ul>
+<ol>
+<li>使用enumerateLoadedClasses报“VM::GetEnv failed”错误<br>enumerateLoadedClasses需要在Java.perform（）下使用，参考<a href="https://github.com/frida/frida/issues/237" target="_blank" rel="noopener">https://github.com/frida/frida/issues/237</a></li>
+</ol>
 <h2 id="Frida-Hook实例"><a href="#Frida-Hook实例" class="headerlink" title="Frida Hook实例"></a>Frida Hook实例</h2><p>以下为我曾经用过或自己实现的frida脚本，主要适用于Android平台，根据不同的使用场景进行了分类，如需获取更多的使用或脚本，请参考awesome-frida，该项目搜集了各种通过frida实现的hook需求，并且不分区平台</p>
 <p><a href="https://github.com/dweinstein/awesome-frida" target="_blank" rel="noopener">https://github.com/dweinstein/awesome-frida</a></p>
 <h3 id="1-打印hook函数的返回值"><a href="#1-打印hook函数的返回值" class="headerlink" title="1. 打印hook函数的返回值"></a>1. 打印hook函数的返回值</h3><pre><code>直接运行一遍原函数，将结果赋值给一个新变量，输出并return新变量即可，例如：
@@ -578,7 +581,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-count">50</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

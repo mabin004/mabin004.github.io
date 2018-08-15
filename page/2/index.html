@@ -310,6 +310,149 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/06/25/iOS应用沙箱/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/25/iOS应用沙箱/" itemprop="url">iOS应用安全 —— WebView安全</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-25T18:17:00+08:00">
+                2018-06-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/06/25/iOS应用沙箱/" class="leancloud_visitors" data-flag-title="iOS应用安全 —— WebView安全">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          WebView是iOS用于显示网页的控件，是一个基于Webkit引擎、展现web页面的控件。WebView控件功能除了具有一般View的属性和设置外，还可对URL请求、页面加载、渲染、页面交互进行处理。
+iOS下的Webview有UIWebView和WKWebView两种，其中UIWebView在iOS 8之后已经不推荐使用（https://developer.apple.com/documentation/uikit/uiwebview?changes=_6）,但仍然有很多APP使用UIWebView。
+File跨域漏洞UIWebView 此漏洞默认存在， WKWebView如果使用了不恰当的方式比如 [configuration.preferences setValue:@”TRUE” forKey:@”allowFileAccessFromFileURLs”]; 也会存在漏洞
+攻击者可利用App文件下载机制将恶意文件写入沙盒内并诱导用户打开，当用户打开恶意文件时，其中的恶意代码可通过AJAX向“file://”域发起请求，从而远程获取App沙盒内所有的本地敏感数据。
+UIWebViewUIWebView虽然已经被遗弃，但依然还有很多app继续使用，且最新版本的iOS也会兼容UIWebView。由于UIWebView本身存在严重的跨域漏洞，所以只要使用UIWebView都有可能存在跨域漏洞。
+漏洞原因在于UIWebView的WebKitAllowUniversalAccessFromFileURLs和WebKitAllowFileAccessFromFileURLs默认开启，导致通过js可以访问沙箱内的文件，甚至可以静默上传文件到远端。
+漏洞代码示例：123456789UIWebView* uiweb = [[UIWebView alloc] initWithFrame
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/06/25/iOS应用沙箱/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/06/19/iOS应用安全-——-MonkeyDev/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1624,144 +1767,6 @@ Java代码在解压ZIP文件时会使用到ZipEntry类的getName()方法。如�
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/23/经典漏洞案例整理/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/23/经典漏洞案例整理/" itemprop="url">经典漏洞案例整理</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-23T14:44:42+08:00">
-                2018-03-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/03/23/经典漏洞案例整理/" class="leancloud_visitors" data-flag-title="经典漏洞案例整理">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          字符串’\0’在处理字符串时，没有在尾部加‘\0’，导致使用时会读取字符串后边的数据123456789+void BnAudioPolicyService::sanetizeAudioAttributes(audio_attributes_t* attr)+&#123;+    const size_t tagsMaxSize = AUDIO_ATTRIBUTES_TAGS_MAX_SIZE;+    if (strnlen(attr-&gt;tags, tagsMaxSize) &gt;= tagsMaxSize) &#123;+        android_errorWriteLog(0x534e4554, &quot;68953950&quot;); // SafetyNet logging+    &#125;+    attr-&gt;tags[tagsMaxSize - 1] = &apos;\0&apos;;+&#125;+
-strcat123456789101112没有控制好循环次数，导致strcat溢出for (i=0; i &lt; (prop-&gt;len)/sizeof(bt_uuid_t); i++)            &#123;                bt_uuid_t *p_uuid = (bt_uuid_t*)prop-&gt;val + i;                memset(buf, 0, sizeof(buf));                uuid_to_string_legacy(p_uuid, buf);    //buf_length=36 &quot;%.8x-%.4x-%.4x-%.4x-%.8x%.4x&quot;                strcat(value, buf);  //
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/03/23/经典漏洞案例整理/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1812,7 +1817,7 @@ strcat123456789101112没有控制好循环次数，导致strcat溢出for (i=0; i
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-count">50</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
