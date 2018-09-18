@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, m4bln" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="准备Frida环境 越狱设备1.在你的iOS设备上打开Cydia应用程序。2.添加一个源，URL为：https://build.frida.re3.打开Source或搜索Frida，单击Modify，然后单击Install。 非越狱设备需要将frida-garget打包到app中，参考之前的文章《iOS应用安全- 非越狱下使用Frida》  frida用法1.注入到进程注入进程有两种方式：  通过">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在iOS上使用Frida">
+<meta property="og:url" content="https://mabin004.github.io/2018/08/24/在iOS上使用Frida/index.html">
+<meta property="og:site_name" content="m4bln">
+<meta property="og:description" content="准备Frida环境 越狱设备1.在你的iOS设备上打开Cydia应用程序。2.添加一个源，URL为：https://build.frida.re3.打开Source或搜索Frida，单击Modify，然后单击Install。 非越狱设备需要将frida-garget打包到app中，参考之前的文章《iOS应用安全- 非越狱下使用Frida》  frida用法1.注入到进程注入进程有两种方式：  通过">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-133.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-134.png">
+<meta property="og:updated_time" content="2018-08-24T10:08:19.765Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在iOS上使用Frida">
+<meta name="twitter:description" content="准备Frida环境 越狱设备1.在你的iOS设备上打开Cydia应用程序。2.添加一个源，URL为：https://build.frida.re3.打开Source或搜索Frida，单击Modify，然后单击Install。 非越狱设备需要将frida-garget打包到app中，参考之前的文章《iOS应用安全- 非越狱下使用Frida》  frida用法1.注入到进程注入进程有两种方式：  通过">
+<meta name="twitter:image" content="https://mabin004.github.io/images/pasted-133.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'SXXZO8IPW0',
+      apiKey: 'b9723880e3b66475126bdc98a4bb9380',
+      indexName: 'm4bln',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到任何搜索结果: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://mabin004.github.io/2018/08/24/在iOS上使用Frida/"/>
+
+
+
+
+
+  <title>在iOS上使用Frida | m4bln</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">m4bln</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-hint">
+          <a href="/hint/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            hint
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-todo">
+          <a href="/todo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            ToDo
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/08/24/在iOS上使用Frida/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">在iOS上使用Frida</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-24T16:59:00+08:00">
+                2018-08-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/24/在iOS上使用Frida/" class="leancloud_visitors" data-flag-title="在iOS上使用Frida">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="准备Frida环境"><a href="#准备Frida环境" class="headerlink" title="准备Frida环境"></a>准备Frida环境</h3><ul>
+<li>越狱设备<br>1.在你的iOS设备上打开Cydia应用程序。<br>2.添加一个源，URL为：<a href="https://build.frida.re" target="_blank" rel="noopener">https://build.frida.re</a><br>3.打开Source或搜索Frida，单击Modify，然后单击Install。</li>
+<li>非越狱设备<br>需要将frida-garget打包到app中，参考之前的文章《iOS应用安全- 非越狱下使用Frida》</li>
+</ul>
+<h3 id="frida用法"><a href="#frida用法" class="headerlink" title="frida用法"></a>frida用法</h3><h4 id="1-注入到进程"><a href="#1-注入到进程" class="headerlink" title="1.注入到进程"></a>1.注入到进程</h4><p>注入进程有两种方式：</p>
+<ul>
+<li><p>通过frida-tools的REPL</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">frida -U Safari -l NSURL_openURL_hook.js</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>通过frida-bindings<br>以python为例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">jscode=&apos;&apos;&apos;</span><br><span class="line">console.log(&quot;add js code here&quot;);</span><br><span class="line">&apos;&apos;&apos;</span><br><span class="line">process = frida.get_usb_device().attach(&quot;Safari&quot;)</span><br><span class="line">script = process.create_script(jscode)</span><br><span class="line">script.on(&apos;message&apos;, on_message)</span><br><span class="line">print(&apos;[*] dump all class into obclass.txt&apos;)</span><br><span class="line">script.load()</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="2-列出所有运行的进程"><a href="#2-列出所有运行的进程" class="headerlink" title="2.列出所有运行的进程"></a>2.列出所有运行的进程</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">frida-ps -U</span><br></pre></td></tr></table></figure>
+<p>frida-ps -Uai 以pid、名称、进程名称的格式输出<br><img src="/images/pasted-133.png" alt="upload successful"></p>
+<h4 id="3-打印调用栈"><a href="#3-打印调用栈" class="headerlink" title="3.打印调用栈"></a>3.打印调用栈</h4><p>在hook到的函数中加入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">console.log(&apos;\tBacktrace:\n\t&apos; + Thread.backtrace(this.context,</span><br><span class="line">Backtracer.ACCURATE).map(DebugSymbol.fromAddress)</span><br><span class="line">.join(&apos;\n\t&apos;));</span><br></pre></td></tr></table></figure></p>
+<p><img src="/images/pasted-134.png" alt="upload successful"></p>
+<h4 id="4-调用native函数"><a href="#4-调用native函数" class="headerlink" title="4.调用native函数"></a>4.调用native函数</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var address = Module.findExportByName(&apos;libsqlite3.dylib&apos;, &apos;sqlite3_sql&apos;);</span><br><span class="line">var sql = new NativeFunction(address, &apos;char&apos;, [&apos;pointer&apos;]);</span><br><span class="line">sql(statement);</span><br></pre></td></tr></table></figure>
+<h4 id="5-数据类型和转换"><a href="#5-数据类型和转换" class="headerlink" title="5.数据类型和转换"></a>5.数据类型和转换</h4><p>如果对一个变量的类型不确定，可以使用如下代码确定其类型：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console.log(&quot;Type of args[2] -&gt; &quot; + new ObjC.Object(args[2]).$className)</span><br></pre></td></tr></table></figure></p>
+<p>一些常用的数据类型转换：</p>
+<ul>
+<li>NSData转String<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var data = new ObjC.Object(args[2]);</span><br><span class="line">Memory.readUtf8String(data.bytes(), data.length());</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>如果为null的不需要第二个参数</p>
+<ul>
+<li><p>NSData转二进制数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var data = new ObjC.Object(args[2]);</span><br><span class="line">Memory.readByteArray(data.bytes(), data.length());</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>遍历NSArray</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var array = new ObjC.Object(args[2]);</span><br><span class="line">/*</span><br><span class="line"> * Be sure to use valueOf() as NSUInteger is a Number in</span><br><span class="line"> * 32-bit processes, and UInt64 in 64-bit processes. This</span><br><span class="line"> * coerces it into a Number in the latter case.</span><br><span class="line"> */</span><br><span class="line">var count = array.count().valueOf();</span><br><span class="line">for (var i = 0; i !== count; i++) &#123;</span><br><span class="line">  var element = array.objectAtIndex_(i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>遍历NSDictionary</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var dict = new ObjC.Object(args[2]);</span><br><span class="line">var enumerator = dict.keyEnumerator();</span><br><span class="line">var key;</span><br><span class="line">while ((key = enumerator.nextObject()) !== null) &#123;</span><br><span class="line">  var value = dict.objectForKey_(key);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>NSKeyedArchiver</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var parsedValue = ObjC.classes.NSKeyedUnarchiver.unarchiveObjectWithData_(value);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>读一个结构体</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Memory.readU32(args[0].add(4));</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="常用脚本"><a href="#常用脚本" class="headerlink" title="常用脚本"></a>常用脚本</h3><h4 id="1-枚举所有的类"><a href="#1-枚举所有的类" class="headerlink" title="1.枚举所有的类"></a>1.枚举所有的类</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">for (var className in ObjC.classes)</span><br><span class="line">    &#123;</span><br><span class="line">        if (ObjC.classes.hasOwnProperty(className))</span><br><span class="line">        &#123;</span><br><span class="line">            send(className);</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="2-枚举一个类的所有method"><a href="#2-枚举一个类的所有method" class="headerlink" title="2.枚举一个类的所有method"></a>2.枚举一个类的所有method</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">if (ObjC.available)</span><br><span class="line">&#123;</span><br><span class="line">    try</span><br><span class="line">    &#123;</span><br><span class="line">        var className = &quot;NSURL&quot;;</span><br><span class="line">        var methods = eval(&apos;ObjC.classes.&apos; + className + &apos;.$methods&apos;);</span><br><span class="line">        for (var i = 0; i &lt; methods.length; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            try</span><br><span class="line">            &#123;</span><br><span class="line">                if (methods[i].indexOf(&quot;fileURLWithPath&quot;) &gt; -1)</span><br><span class="line">                console.log(&quot;[-] &quot;+methods[i]);</span><br><span class="line">            &#125;</span><br><span class="line">            catch(err)</span><br><span class="line">            &#123;</span><br><span class="line">                console.log(&quot;[!] Exception1: &quot; + err.message);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    catch(err)</span><br><span class="line">    &#123;</span><br><span class="line">        console.log(&quot;[!] Exception2: &quot; + err.message);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="3-Hook一个method"><a href="#3-Hook一个method" class="headerlink" title="3. Hook一个method"></a>3. Hook一个method</h4><p>打印参数时需要注意：</p>
+<ul>
+<li>args[0]：self</li>
+<li>args[1]：The selector (openURL:)</li>
+<li>args[2]：The first param</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">if (ObjC.available)</span><br><span class="line">&#123;</span><br><span class="line">    try</span><br><span class="line">    &#123;</span><br><span class="line">        var className = &quot;JailbreakDetectionVC&quot;;</span><br><span class="line">        var funcName = &quot;- isJailbroken&quot;;</span><br><span class="line">        var hook = eval(&apos;ObjC.classes.&apos; + className + &apos;[&quot;&apos; + funcName + &apos;&quot;]&apos;);</span><br><span class="line">        console.log(&quot;[*] Class Name: &quot; + className);</span><br><span class="line">        console.log(&quot;[*] Method Name: &quot; + funcName);</span><br><span class="line">        Interceptor.attach(hook.implementation, &#123;</span><br><span class="line">          onEnter: function(args) &#123;</span><br><span class="line">            console.log(&quot;aaaa&quot;);</span><br><span class="line">            console.log(&quot;param:&quot;+args[2]+&quot; type:&quot;+typeof args[2]);</span><br><span class="line">          &#125;,</span><br><span class="line">          onLeave: function(retval) &#123;</span><br><span class="line">            console.log(&quot;Return value-&gt; (type:&quot;+typeof retval+&quot;,value:&quot;+retval+&quot;)&quot;);</span><br><span class="line">            newretval = ptr(&quot;0x0&quot;)</span><br><span class="line">            retval.replace(newretval)</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    catch(err)</span><br><span class="line">    &#123;</span><br><span class="line">        console.log(&quot;[!] Exception2: &quot; + err.message);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="4-调用函数"><a href="#4-调用函数" class="headerlink" title="4.调用函数"></a>4.调用函数</h4><ul>
+<li>函数名以”+”开头的，如：“+ URLWithString:”，可以直接通过类名调用方法，相当于java中的static函数</li>
+<li><p>函数名以“-”开头的需要找到一个实例化的对象，然后再调用方法</p>
+<ul>
+<li>如果内存中没有这样的对象<br>这种情况需要手动生成一个实例,用法为ObjC.classes.类名.alloc()</li>
+<li><p>如果内存中存在实例化后的对象<br>这种情况需要先找出一个类的实例,使用var tmp=ObjC.chooseSync(ObjC.classes.类名),例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ObjC.chooseSync(ObjC.classes.PARSHealthPedometer10thHomeViewController)[0]</span><br></pre></td></tr></table></figure>
+<p>其中[0]表示取找到的实例中的第一个实例,可根据实际情况换成其他的实例。<br>调用函数时，以my_obj<a href="">“- requestUploadWithSure”</a>的函数，如果有参数直接附在括号中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">if (ObjC.available)</span><br><span class="line">&#123;</span><br><span class="line">    try</span><br><span class="line">    &#123;</span><br><span class="line">        //var my_obj=ObjC.chooseSync(ObjC.classes.PARSHealthPedometer10thHomeViewController)[0]</span><br><span class="line">        var my_obj=ObjC.classes.PARSHealthPedometer10thHomeViewController.alloc()</span><br><span class="line">        my_obj[&quot;- requestUploadWithSure:&quot;](1)</span><br><span class="line">    &#125;</span><br><span class="line">    catch(err)</span><br><span class="line">    &#123;</span><br><span class="line">        console.log(&quot;[!] Exception2: &quot; + err.message);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">else</span><br><span class="line">&#123;</span><br><span class="line">    console.log(&quot;Objective-C Runtime is not available!&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/23/ollvm学习/" rel="next" title="利用ollvm进行代码混淆">
+                <i class="fa fa-chevron-left"></i> 利用ollvm进行代码混淆
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/01/调试研究/" rel="prev" title="Chrome远程调试">
+                Chrome远程调试 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">m4bln</p>
+              <p class="site-description motion-element" itemprop="description">影后入林到驿前</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#准备Frida环境"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x51C6;&#x5907;Frida&#x73AF;&#x5883;" class="headerlink" title="&#x51C6;&#x5907;Frida&#x73AF;&#x5883;"></a>&#x51C6;&#x5907;Frida&#x73AF;&#x5883;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#frida用法"><span class="nav-number">2.</span> <span class="nav-text"><a href="#frida&#x7528;&#x6CD5;" class="headerlink" title="frida&#x7528;&#x6CD5;"></a>frida&#x7528;&#x6CD5;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-注入到进程"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#1-&#x6CE8;&#x5165;&#x5230;&#x8FDB;&#x7A0B;" class="headerlink" title="1.&#x6CE8;&#x5165;&#x5230;&#x8FDB;&#x7A0B;"></a>1.&#x6CE8;&#x5165;&#x5230;&#x8FDB;&#x7A0B;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-列出所有运行的进程"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#2-&#x5217;&#x51FA;&#x6240;&#x6709;&#x8FD0;&#x884C;&#x7684;&#x8FDB;&#x7A0B;" class="headerlink" title="2.&#x5217;&#x51FA;&#x6240;&#x6709;&#x8FD0;&#x884C;&#x7684;&#x8FDB;&#x7A0B;"></a>2.&#x5217;&#x51FA;&#x6240;&#x6709;&#x8FD0;&#x884C;&#x7684;&#x8FDB;&#x7A0B;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-打印调用栈"><span class="nav-number">2.3.</span> <span class="nav-text"><a href="#3-&#x6253;&#x5370;&#x8C03;&#x7528;&#x6808;" class="headerlink" title="3.&#x6253;&#x5370;&#x8C03;&#x7528;&#x6808;"></a>3.&#x6253;&#x5370;&#x8C03;&#x7528;&#x6808;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-调用native函数"><span class="nav-number">2.4.</span> <span class="nav-text"><a href="#4-&#x8C03;&#x7528;native&#x51FD;&#x6570;" class="headerlink" title="4.&#x8C03;&#x7528;native&#x51FD;&#x6570;"></a>4.&#x8C03;&#x7528;native&#x51FD;&#x6570;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-数据类型和转换"><span class="nav-number">2.5.</span> <span class="nav-text"><a href="#5-&#x6570;&#x636E;&#x7C7B;&#x578B;&#x548C;&#x8F6C;&#x6362;" class="headerlink" title="5.&#x6570;&#x636E;&#x7C7B;&#x578B;&#x548C;&#x8F6C;&#x6362;"></a>5.&#x6570;&#x636E;&#x7C7B;&#x578B;&#x548C;&#x8F6C;&#x6362;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用脚本"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x5E38;&#x7528;&#x811A;&#x672C;" class="headerlink" title="&#x5E38;&#x7528;&#x811A;&#x672C;"></a>&#x5E38;&#x7528;&#x811A;&#x672C;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-枚举所有的类"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#1-&#x679A;&#x4E3E;&#x6240;&#x6709;&#x7684;&#x7C7B;" class="headerlink" title="1.&#x679A;&#x4E3E;&#x6240;&#x6709;&#x7684;&#x7C7B;"></a>1.&#x679A;&#x4E3E;&#x6240;&#x6709;&#x7684;&#x7C7B;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-枚举一个类的所有method"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#2-&#x679A;&#x4E3E;&#x4E00;&#x4E2A;&#x7C7B;&#x7684;&#x6240;&#x6709;method" class="headerlink" title="2.&#x679A;&#x4E3E;&#x4E00;&#x4E2A;&#x7C7B;&#x7684;&#x6240;&#x6709;method"></a>2.&#x679A;&#x4E3E;&#x4E00;&#x4E2A;&#x7C7B;&#x7684;&#x6240;&#x6709;method</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Hook一个method"><span class="nav-number">3.3.</span> <span class="nav-text"><a href="#3-Hook&#x4E00;&#x4E2A;method" class="headerlink" title="3. Hook&#x4E00;&#x4E2A;method"></a>3. Hook&#x4E00;&#x4E2A;method</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-调用函数"><span class="nav-number">3.4.</span> <span class="nav-text"><a href="#4-&#x8C03;&#x7528;&#x51FD;&#x6570;" class="headerlink" title="4.&#x8C03;&#x7528;&#x51FD;&#x6570;"></a>4.&#x8C03;&#x7528;&#x51FD;&#x6570;</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">m4bln</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.3"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("AAhymnaPSbBOge9isiIUi5c8-gzGzoHsz", "79JTCuY3J33b0HodXn8nYFvn");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

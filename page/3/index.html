@@ -310,6 +310,1175 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/06/18/iOS应用安全-——-非越狱下使用Frida/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/18/iOS应用安全-——-非越狱下使用Frida/" itemprop="url">iOS应用安全 —— 非越狱下使用Frida</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-18T09:59:00+08:00">
+                2018-06-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/06/18/iOS应用安全-——-非越狱下使用Frida/" class="leancloud_visitors" data-flag-title="iOS应用安全 —— 非越狱下使用Frida">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          概述frida-server在运行时需要root环境，但如果没有越狱的设备，依然可以使用frida,我们只需要重打包ipa文件，将frida运行库注入ipa文件中，app在启动时会自动加载frida运行库，即可实现在非越狱的设备上使用Frida.
+由于苹果的混淆策略和代码签名，重打包app的难度很高，一些自动重打包的工具如Objection、IPAPatch等简化了重打包过程，但其本质大概相同，以下分步介绍手动重打包frida运行库的过程。
+1. 配置optool和ios-deployoptool可以将一个外部的lib插入到Mach-O文件头，使binary文件在启动时会自动加载该lib。如已经配置过，直接跳过。12345$ git clone https://github.com/alexzielenski/optool.git$ cd optool/$ git submodule update --init --recursive$ xcodebuild$ ln -s &lt;your-path-to-optool&gt;/build/Release/optool /usr/local/bin/optool
+ios-deploy可以在不用Xcode的前提下调试和部署APP:123456$ git clone https://github.com/phonegap/ios-deploy.git$ cd ios-deploy/$ xcodebuild$ cd build/Release$ ./ios-deploy$ ln -s &lt;your-path-to-ios-deploy&gt;/build/Release/ios-deploy /usr/local/bin/ios-deploy
+更新bashrc文件12zsh: # . ~/.zshrcbash: # . ~/.
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/06/18/iOS应用安全-——-非越狱下使用Frida/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/06/11/Android-JsBridge/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/11/Android-JsBridge/" itemprop="url">Android JsBridge</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-11T15:52:51+08:00">
+                2018-06-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/06/11/Android-JsBridge/" class="leancloud_visitors" data-flag-title="Android JsBridge">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          Android客户端中经常会遇到js调用java代码的场景，例如一些Hybrid APP或H5等，JsBridge即通过js调用java或者通过java调用js函数。
+java调用js1. webview的loadUrl1WebView.loadUrl(&quot;javascript:function()&quot;);
+2. webview的evaluateJavascript使用evaluateJavascript可以获得js函数的返回值123456mWebView.evaluateJavascript(&quot;javascript:callJS()&quot;, new ValueCallback&lt;String&gt;() &#123;        @Override        public void onReceiveValue(String value) &#123;            //此处为 js 返回的结果        &#125;&#125;);
+js调用JavaAndroid中js调用java通常有以下几种做法：
+1. 通过WebView的addJavascriptInterface（）进行对象映射定义一个与JS对象映射关系的Android类：AndroidtoJs,在Android里通过WebView设置Android类与JS代码的映射
+java代码：123456789101112mWebView.addJavascriptInterface(new AndroidtoJs(), &quot;test&quot;);public class AndroidtoJs extends Object &#123;    // 定义JS需要调用的方法    // 被JS调用的方法必须加入@JavascriptInterface注解  
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/06/11/Android-JsBridge/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/05/31/iOS应用安全（待）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/31/iOS应用安全（待）/" itemprop="url">iOS应用安全—— 基础篇</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-31T22:10:00+08:00">
+                2018-05-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/05/31/iOS应用安全（待）/" class="leancloud_visitors" data-flag-title="iOS应用安全—— 基础篇">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          越狱几种类型的越狱：
+
+Tethered jailbreaks 不完美越狱，重启后无法保留 
+Semi-tethered jailbreaks  半完美越狱，必须通过连接电脑越狱，设备启动后会自动进入非越狱模式
+Semi-untethered jailbreaks 半完美越狱，设备启动能自己进入到越狱模式，但内核的代码签名校验不会被自动禁用，需要通过启动一个应用完成
+Untethered jailbreaks 完美越狱，一次越狱后即可永久越狱
+
+注意：如果设备已经越狱，切勿升级系统，否则会丢失越狱
+根据iOS版本判断设备是否可以越狱：Can I Jailbreak? https://canijailbreak.com/
+几个iPhone越狱相关的资源：
+
+The iPhone Wiki
+Reddit Jailbreak
+
+Cydia通常在越狱完成后会自动安装Cydia，下面介绍几个在Cydia下需要安装的工具：
+
+openssh默认的ssh账号是root，默认密码为alpine
+Frida在Cydia中添加源 https://build.frida.re后直接搜索安装
+BigBoss Recommended Toolsunix命令行工具，iOS系统不提供，如wget, unrar, less,sqlite3等
+Class Dump提取Mach-O文件信息
+SubstrateHook工具
+AppList查询所有安装的app
+
+NeedleNeedle是iOS平台上的一套动态测试，由mwr开发，类似于Android平台上的Drozer,但因系统的不同而功能不一。
+以下为mac上配置Needle的过程：
+
+安装依赖
+123456789101112131415161718192021#Core dependenciesbrew install pythonbrew install 
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/05/31/iOS应用安全（待）/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/05/14/零宽度空格-Zero-width-space/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/14/零宽度空格-Zero-width-space/" itemprop="url">零宽度空格 Zero-width space</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-14T15:27:22+08:00">
+                2018-05-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/05/14/零宽度空格-Zero-width-space/" class="leancloud_visitors" data-flag-title="零宽度空格 Zero-width space">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          0x0 简介零宽度空格，顾名思义即，具有空格的功能，但宽度为零。例如：1Left​​​​​​​​​​Right
+上述文本中，我们看到的是LeftRight，但实际上在Left和Right之间有10个Zero-width space，它不占用宽度，但占用字节空间。
+0x1 实例Zero-width space的Unicode编码为U+FEFF，二进制编码为“\xE2\x80\x8E”,根据维基百科描述，其主要用于后台处理字符边界而又无需可见空格的情况。
+例如，下边两个字符串，我们在任意位置鼠标双击时会看到明显效果，
+包含Zero-width space，双击任意位置选中某个单词1Lorem​Ipsum​Dolor​Sit​Amet​Consectetur​Adipiscing​Elit​Sed​Do​Eiusmod​Tempor​Incididunt​Ut​Labore​Et​Dolore​Magna​Aliqua​Ut​Enim​Ad​Minim​Veniam​Quis​Nostrud​Exercitation​Ullamco​Laboris​Nisi​Ut​Aliquip​Ex​Ea​Commodo​Consequat​Duis​Aute​Irure​Dolor​In​Reprehenderit​In​Voluptate​Velit​Esse​Cillum​Dolore​Eu​Fugiat​Nulla​Pariatur​Excepteur​Sint​Occaecat​Cupidatat​Non​Proident​Sunt​In​Culpa​Qui​Officia​Deserunt​Mollit​Anim​Id​Est​Laborum
+不含Zero-width space，双击任意位置选中全部字符1LoremIpsumDolorSitAmetConsecteturAdipi
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/05/14/零宽度空格-Zero-width-space/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/05/11/企业微信的消息/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/11/企业微信的消息/" itemprop="url">企业微信的消息</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-11T17:24:28+08:00">
+                2018-05-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/05/11/企业微信的消息/" class="leancloud_visitors" data-flag-title="企业微信的消息">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          LocationMessageHook “com.tencent.wework.foundation.model.pb.WwRichmessage$LocationMessage”函数消息内容12345address: &quot;\345\214\227\344\272\254\345\270\202\345\214\227\344\272\254\345\270\202\346\265\267\346\267\200\345\214\272\345\275\251\345\222\214\345\235\212\350\267\257\345\214\227\345\233\233\347\216\257\350\245\277\350\267\25766\345\217\267&quot;latitude: 39.984293longitude: 116.307449title: &quot;\345\214\227\345\233\233\347\216\257\350\245\277\350\267\25766\345\217\267&quot;zoom: 15.0
+FileMessageHook “com.tencent.wework.foundation.model.pb.WwRichmessage$FileMessage”函数
+filename曾经存在路径穿越漏洞，通过hook String.getBytes()修改filename为”../../../hack.zip”123456789101112131415161718192021222324252627282930313233aes_key: &quot;&quot;decrypt_ret: -1encrypt_key: &quot;&quot;encrypt_size: 0extra: &quot;
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/05/11/企业微信的消息/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/04/28/Web调起APP研究/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/28/Web调起APP研究/" itemprop="url">Web调起APP研究</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-28T10:49:00+08:00">
+                2018-04-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/04/28/Web调起APP研究/" class="leancloud_visitors" data-flag-title="Web调起APP研究">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          应用开发中经常会有从web端启动App的需求，这里总结了常见的几种方式。
+Android0x0 自定义schemeAndroid上常用的是通过scheme协议的方式唤醒本地app客户端。即App在AndroidManifest.xml中为要打开的Activity注册一个intent-filter,添加scheme,并注明host和data等关键字段，前端保持一致后就可以实现在Web页中调起本地App了。
+注册scheme的代码如下：1234567&lt;intent-filter&gt;  &lt;action android:name=&quot;android.intent.action.VIEW&quot;/&gt;  &lt;category android:name=&quot;android.intent.category.DEFAULT&quot;/&gt;  &lt;category android:name=&quot;android.intent.category.BROWSABLE&quot;/&gt;  &lt;!--BROWSABLE指定该Activity能被浏览器安全调用--&gt;  &lt;data android:host=&quot;xyz.com&quot; android:scheme=&quot;m4bln&quot;/&gt;&lt;/intent-filter&gt;
+这里的action、category、data都必须完全匹配才能获得intent，android.intent.category.DEFAULT是默认的，有实际意义的是android.intent.category.BROWSABLE，表示允许通过浏览器启动该activity（调起App）。data限定了触发条件，当scheme为m4bln且host为xyz.co
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/04/28/Web调起APP研究/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/04/17/使用IPAPatch免越狱调试、修改第三方App/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/17/使用IPAPatch免越狱调试、修改第三方App/" itemprop="url">iOS应用安全—— IPAPatch免越狱调试、修改第三方App</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-17T22:01:00+08:00">
+                2018-04-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/04/17/使用IPAPatch免越狱调试、修改第三方App/" class="leancloud_visitors" data-flag-title="iOS应用安全—— IPAPatch免越狱调试、修改第三方App">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          简介IPAPatch可以实现免越狱调试、修改第三方APP,其原理主要是基于砸壳的APP进行修改和签名，并安装在真机设备上，类似于重打包。
+项目地址：https://github.com/Naituw/IPAPatch
+IPAPatch基于Xcode实现，整个过程在 Xcode 中进行，就像在编写自己的 App，此外：
+
+支持链接第三方 Framework
+在 Xcode 中可以直接断点进行调试，可以用 lldb 命令（如 po），输出运行时信息
+可以使用 Xcode 的调试功能查看 View Hierarchy、Memory Graph 等信息
+修改过的 App 可以与原始 App 共存，并自动修改名字以作区分
+
+实现原理主要的自动化过程在 patch.sh 这个脚本里，Xcode 会在把代码编译成 Framework 后执行这个脚本：
+
+解压 IPA 文件
+用 IPA 文件的内容，替换掉 Xcode 生成的 .app 的内容
+通过 OPTOOL，将代码生成的 Framework 及其他外部 Framework，注入到二进制文件中
+对这些文件进行重新签名 完成后，Xcode 会自动将修改过的 .app 安装到 iPhone 上
+
+patch.sh的注释中写的很明确：1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192939495969798991001011021031041051061071081091101111121131141151161171181191201211221
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/04/17/使用IPAPatch免越狱调试、修改第三方App/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/30/zip解压漏洞/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/30/zip解压漏洞/" itemprop="url">Android中的目录穿越漏洞</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-30T11:17:49+08:00">
+                2018-03-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/03/30/zip解压漏洞/" class="leancloud_visitors" data-flag-title="Android中的目录穿越漏洞">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          概述在Linux/Unix系统中“..”代表的是向上级目录跳转，如果程序在处理到诸如用“../../../../../../../../../../../etc/hosts”表示的文件时没有进行防护，则会跳转出当前工作目录，跳转到到其他目录中,即目录穿越。
+在 Android 中由于目录穿越造成任意文件写入的漏洞较为常见。首先是写文件的接口可能本身设计上就允许传入任意路径的参数，另一种情况就是直接拼接路径导致可以 “…/” 进行目录穿越。
+由于存在目录穿越漏洞的代码执行者通常是应用本身（非webview沙箱进程），因此一旦存在任意文件写入漏洞，就有可能覆盖原有的文件。此时若应用中存在动态加载代码的逻辑，配合目录穿越则有可能实现任意代码执行。
+add:后来又多个团队或研究人员研究目录穿越问题，并起来各式各样的名字，现留下链接以备参考：
+
+zip-slip总结了多个存在目录穿越的第三方语言或库，并包含了具体的代码实例  https://github.com/snyk/zip-slip-vulnerabilityhttps://snyk.io/research/zip-slip-vulnerability
+zipperdown iOS平台下多个APP存在目录穿越漏洞
+
+目录穿越场景1. 下载文件到指定的路径该场景适用于下载路径由用户可控，例如一些下载工具、保存的目录为用户名等特殊情况。
+2. 解压 zip 文件时未对 ZipEntry 文件名检查Android应用中通常会直接下载一些皮肤等资源文件，为了节约流量，一些资源文件通常打包成zip。
+Java代码在解压ZIP文件时会使用到ZipEntry类的getName()方法。如果ZIP文件中包含“../”的字符串，该方法返回值里面会原样返回。如果在这里没有进行防护，继续解压缩操作，就会将解压文件创建到其他目录中。
+漏洞代码如下：1
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/30/zip解压漏洞/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/23/经典漏洞案例整理/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -577,1151 +1746,11 @@ For extracting HTTPS, FTP and other URL format use1grep -E &apos;(((https|ftp|go
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/17/蓝牙的发现、扫描/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/17/蓝牙的发现、扫描/" itemprop="url">蓝牙、BLE设备相关</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-17T21:24:45+08:00">
-                2018-03-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/03/17/蓝牙的发现、扫描/" class="leancloud_visitors" data-flag-title="蓝牙、BLE设备相关">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          标准蓝牙设备扫描经典蓝牙设备1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889final BluetoothManager bm = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);        mBluetoothAdapter = bm.getAdapter();        if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled())        &#123;            Toast.makeText(this,&quot;please open bluttooth&quot;,Toast.LENGTH_LONG).show();            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);            startActivityForResult(enableBtIntent, 0);        &#125;        //获取已经绑定的蓝牙        Set&lt;BluetoothDevice&gt; devices = mBluetoothAdapter.getBondedDevices();        //遍历已绑定设备        if (devices.size() &gt;
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/03/17/蓝牙的发现、扫描/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/15/文件后缀名枚举/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/15/文件后缀名枚举/" itemprop="url">文件后缀名枚举</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-15T17:08:08+08:00">
-                2018-03-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/03/15/文件后缀名枚举/" class="leancloud_visitors" data-flag-title="文件后缀名枚举">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          从一份恶意代码分析报告中抽取得，冥冥之中觉得以后有用，收藏以备用。
-.000 .001 .1 .101 .103 .108 .110 .123 .128 .1cd .1sp .1st .3 .3d .3d4 .3dd .3df .3df8 .3dm .3dr .3ds .3dxml .3fr .3g2 .3ga .3gp .3gp2 .3mm .3pr .3w .4w7 .602 .7z .7zip .8 .89t .89y .8ba .8bc .8be .8bf .8bi8 .8bl .8bs .8bx .8by .8li .8svx .8xt .9xt .9xy .a$v .a2c .aa .aa3 .aac .aaf .aah .aaui .ab4 .ab65 .abc .abk .abt .abw .ac2 .ac3 .ac5 .acc .accdb .accde .accdr .accdt .ace .acf .ach .acp .acr .acrobatsecuritysettings .acrodata .acroplugin .acrypt .act .ad .ada .adb .adc .add .ade .adi .adoc .ados .adox .adp .adpb .adr .ads .adt .aea .aec .aep .aepx .aes .aet .afdesign .afm .afp .agd1 .agdl .age3rec .age3sav .age3scn .age3xrec .age3xsav .age3xscn .age3yrec .age3ysav .age3yscn .ahf .ai .aif .aiff .aim .aip .ais .ait .ak .al .al8 .ala .alb3 .alb4 .alb5 .alb6
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/03/15/文件后缀名枚举/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/15/Unicorn使用/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/15/Unicorn使用/" itemprop="url">Unicorn使用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-15T16:03:22+08:00">
-                2018-03-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/03/15/Unicorn使用/" class="leancloud_visitors" data-flag-title="Unicorn使用">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          Unicore简介
-Unocorn引擎是什么?
-
-简单的来讲，一款模拟器。尽管不太常见，你不能用来模拟整个程序或者系统，同时它也不支持syscall。你只能通过手动的方式来映射内存以及数据写入，然后就可以从某个指定的地址开始执行模拟了。
-
-用途
-
-执行一些恶意软件中你感兴趣的函数而不必创建整个进程CTF比赛中也很常用Fuzzing[https://hackernoon.com/afl-unicorn-fuzzing-arbitrary-binary-code-563ca28936bf]GDB插件扩充，例如支持长跳转模拟混淆后的代码
-框架代码12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849from unicorn import *from unicorn.arm_const import *  import struct def read(name):    with open(name) as f:        return f.read() def u32(data):    return struct.unpack(&quot;I&quot;, data)[0] def p32(num):    return struct.pack(&quot;I&quot;, num)  mu = Uc (UC_ARCH_ARM, UC_MODE_LITTLE_ENDIAN)  BASE = 0x10000STACK_ADDR = 0x300000STACK_SIZE = 1024*1024 mu.mem_map(BASE, 1024*1024)mu.mem_map(STACK_ADDR, STACK_SIZE)  mu.mem_write(BASE, 
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/03/15/Unicorn使用/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/13/使用lief对ELF文件Patch/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/13/使用lief对ELF文件Patch/" itemprop="url">使用lief对ELF文件Patch</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-13T12:19:56+08:00">
-                2018-03-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/03/13/使用lief对ELF文件Patch/" class="leancloud_visitors" data-flag-title="使用lief对ELF文件Patch">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          LIEFLIEF可以很方便的对elf， pe，MachO 文件进行parse和patch，由于其提供了python库，故可以实现跨平台。
-这里以Android平台为例进行测试。
-直接修改目标elf的导入符号注：直接修改符号一般适用于修改前后参数类型、个数完全相同的情况
-二进制文件代码如下:123456789101112131415#include &lt;stdio.h&gt;int main()&#123;  printf(&quot;id&quot;);&#125;/*Android.mkLOCAL_PATH := $(call my-dir)include $(CLEAR_VARS)LOCAL_MODULE := lief_testLOCAL_SRC_FILES := main.cLOCAL_CFLAGS += -pie -fPIELOCAL_LDFLAGS += -pie -fPIEinclude $(BUILD_EXECUTABLE)*/
-编译完成后，push到手机中，运行如下图：
-
-使用lief，直接将导入表中的printf符号替换为system12345import liefbinary = lief.parse("lief_test")puts_sym = filter(lambda e: e.name == "printf", binary.dynamic_symbols)[0]puts_sym.name = "system"binary.write("lief_test_patch");
-将lief_test_patch push到手机中，执行结果如下图：
-
-修改 libc 中的相关符号，然后使用 LD_LIBRARY_PATH 加载修改后的库这里需要搞清楚elf加载的lib位置，例如我在一个64bit手机上做实验，那么加载的lib位于/system/l
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/03/13/使用lief对ELF文件Patch/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/09/Android-Hook-——-Frida/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/09/Android-Hook-——-Frida/" itemprop="url">Android Hook 之 Frida</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-09T16:22:02+08:00">
-                2018-03-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/03/09/Android-Hook-——-Frida/" class="leancloud_visitors" data-flag-title="Android Hook 之 Frida">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          Frida简介Frida是一款基于python + javascript 的hook框架，通杀android\ios\linux\win\osx等各平台，由于是基于脚本的交互，相比xposed和substrace cydia更加便捷，本文重点介绍Frida在android下面的使用。
-Frida的官网为：http://www.frida.re/
-环境配置
-pip install frida 安装frida环境
-在root的手机上运行frida server端
-wget https://build.frida.re/frida/android/arm/bin/frida-server
-adb push frida-server /data/lcoal/tmp
-chmod 755 frida-server
-./frida-server &amp;
-
-
-adb forward
-adb forward tcp:27042 tcp:27042
-adb forward tcp:27043 tcp:27043
-
-
-完成配置，直接在PC端运行hook脚本即可
-
-需要注意的是，frida的客户端和服务度版本应该相同，否则会出现不可预知的其他错误。1frida --version 查看版本
-免root实现frida hook（重打包）
-apktool反编译apk
-1$ apktool d test.apk -o test
-
-将对应版本的gadget拷贝到/lib没有了下.例如arm32的设备路径如下.
-
-
-/lib/armeabi/libfrida-gadget.so下载地址:https://github.com/frida/frida/releases/
-
-smali注入加载library,选择application类或者Activity入口.
-1const-string v0, &quot
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/03/09/Android-Hook-——-Frida/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/06/RSA算法原理及应用破解/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/06/RSA算法原理及应用破解/" itemprop="url">RSA算法原理及应用破解</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-06T21:48:42+08:00">
-                2018-03-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/03/06/RSA算法原理及应用破解/" class="leancloud_visitors" data-flag-title="RSA算法原理及应用破解">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>RSA算法是现今使用广泛的公钥密码算法，也是号称地球上最安全的加密算法。在了解RSA算法之前，先熟悉下几个术语<br>根据密钥的使用方法，可以将密码分为对称密码和公钥密码<br>对称密码：加密和解密使用同一种密钥的方式<br>公钥密码：加密和解密使用不同的密码的方式，因此公钥密码通常也称为非对称密码。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/03/06/RSA算法原理及应用破解/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/06/curl用法/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/06/curl用法/" itemprop="url">curl用法</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-06T15:20:12+08:00">
-                2018-03-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/03/06/curl用法/" class="leancloud_visitors" data-flag-title="curl用法">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="批量下载"><a href="#批量下载" class="headerlink" title="批量下载"></a>批量下载</h2><ul>
-<li>-O表示下载后的文件名和服务端的文件名一样<br>curl -O <a href="http://45.77.10.219/2018-02-2[6-8].html" target="_blank" rel="noopener">http://45.77.10.219/2018-02-2[6-8].html</a></li>
-<li>-o指定下载后的文件名<br>curl -o “#1.html” <a href="http://45.77.10.219/2018-02-2[6-8].html" target="_blank" rel="noopener">http://45.77.10.219/2018-02-2[6-8].html</a><br>(#1表示可变参数，该命令结果为6.html,7.html,8.html)
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/03/06/curl用法/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/05/https中间人攻击原理/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/05/https中间人攻击原理/" itemprop="url">Android https中间人攻击</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-05T16:29:49+08:00">
-                2018-03-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/03/05/https中间人攻击原理/" class="leancloud_visitors" data-flag-title="Android https中间人攻击">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>平时的安全研究经常会有抓包的需求，http协议的包使用普通的抓包工具就可以获取，随着厂商安全意识和版权意识的不断提高，多数APP采用了https协议和服务端进行通信，增加了抓包的难度。</p>
-<p>此外，在使用burpsuilt、Fiddler等工具抓https数据包时，通常需要在手机上安装一个证书，即便这样仍然还会出现抓不到包等各种各样的错误和问题，为了解决这些问题，有必要了解下https的原理和实现，方可在遇到问题时根据不同的情况来解决。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/03/05/https中间人攻击原理/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1767,7 +1796,7 @@ smali注入加载library,选择application类或者Activity入口.
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-count">59</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

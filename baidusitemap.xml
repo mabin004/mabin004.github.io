@@ -4,12 +4,178 @@
 
     
   <url>
+    <loc>https://mabin004.github.io/2018/09/17/iPhone%E6%89%93%E5%BC%80%E6%9F%90%E7%BD%91%E7%AB%99%E9%87%8D%E5%90%AF%E5%88%86%E6%9E%90/</loc>
+    <lastmod>2018-09-18T08:14:11.310Z</lastmod>
+    <data>
+        <display>
+        <title>iPhone打开某网站重启分析</title>
+        <pubTime>2018-09-17T02:44:01.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://mabin004.github.io/2018/08/14/CVE-2018-9445-%E2%80%94%E2%80%94-Android-USB%E4%B8%8A%E7%9A%84%E7%9B%AE%E5%BD%95%E7%A9%BF%E8%B6%8A/</loc>
-    <lastmod>2018-08-15T09:15:36.289Z</lastmod>
+    <lastmod>2018-09-13T08:33:38.464Z</lastmod>
     <data>
         <display>
         <title>CVE-2018-9445 —— Android挂载外设的目录穿越</title>
         <pubTime>2018-08-14T10:55:00.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://mabin004.github.io/2018/09/07/CVE-2018-9489%E5%88%86%E6%9E%90/</loc>
+    <lastmod>2018-09-07T08:02:14.159Z</lastmod>
+    <data>
+        <display>
+        <title>CVE-2018-9489分析</title>
+        <pubTime>2018-09-07T07:34:01.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://mabin004.github.io/2018/01/12/%E7%A7%BB%E5%8A%A8%E7%AB%AFJavaScript%E5%86%99%E5%85%A5%E5%89%AA%E8%B4%B4%E6%9D%BF/</loc>
+    <lastmod>2018-09-07T03:57:08.064Z</lastmod>
+    <data>
+        <display>
+        <title>移动端使用JavaScript自动写入剪贴板</title>
+        <pubTime>2018-01-12T03:22:35.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://mabin004.github.io/2018/09/01/%E8%B0%83%E8%AF%95%E7%A0%94%E7%A9%B6/</loc>
+    <lastmod>2018-09-04T08:53:49.128Z</lastmod>
+    <data>
+        <display>
+        <title>Chrome远程调试</title>
+        <pubTime>2018-09-01T13:41:43.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://mabin004.github.io/2018/07/31/Mac%E4%B8%8A%E7%BC%96%E8%AF%91Frida/</loc>
+    <lastmod>2018-09-03T02:33:13.515Z</lastmod>
+    <data>
+        <display>
+        <title>Frida源码分析</title>
+        <pubTime>2018-07-31T11:07:02.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+    
+  <url>
+    <loc>https://mabin004.github.io/2018/08/24/%E5%9C%A8iOS%E4%B8%8A%E4%BD%BF%E7%94%A8Frida/</loc>
+    <lastmod>2018-08-24T10:08:19.765Z</lastmod>
+    <data>
+        <display>
+        <title>在iOS上使用Frida</title>
+        <pubTime>2018-08-24T08:59:00.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://mabin004.github.io/2018/08/23/ollvm%E5%AD%A6%E4%B9%A0/</loc>
+    <lastmod>2018-08-23T13:46:18.721Z</lastmod>
+    <data>
+        <display>
+        <title>利用ollvm进行代码混淆</title>
+        <pubTime>2018-08-23T08:40:28.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://mabin004.github.io/2017/08/01/ptrace/</loc>
+    <lastmod>2018-08-22T10:57:59.788Z</lastmod>
+    <data>
+        <display>
+        <title>ptrace</title>
+        <pubTime>2017-08-01T14:02:00.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://mabin004.github.io/2018/08/22/Android%E5%9F%BA%E4%BA%8EOpenMemory%E7%9A%84%E8%84%B1%E5%A3%B3/</loc>
+    <lastmod>2018-08-22T10:52:39.544Z</lastmod>
+    <data>
+        <display>
+        <title>Android基于OpenMemory的脱壳</title>
+        <pubTime>2018-08-22T09:31:00.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://mabin004.github.io/2018/08/22/c-filt/</loc>
+    <lastmod>2018-08-22T08:20:24.566Z</lastmod>
+    <data>
+        <display>
+        <title>c++filt - 还原so中的函数名</title>
+        <pubTime>2018-08-22T07:46:31.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://mabin004.github.io/2018/08/21/Robust/</loc>
+    <lastmod>2018-08-22T04:22:07.080Z</lastmod>
+    <data>
+        <display>
+        <title>Robust热修复框架原理分析</title>
+        <pubTime>2018-08-21T07:26:00.000Z</pubTime>
         
          
            
@@ -25,21 +191,6 @@
         <display>
         <title>Android Hook 之 Frida</title>
         <pubTime>2018-03-09T08:22:02.000Z</pubTime>
-        
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://mabin004.github.io/2018/07/31/Mac%E4%B8%8A%E7%BC%96%E8%AF%91Frida/</loc>
-    <lastmod>2018-08-14T06:31:08.019Z</lastmod>
-    <data>
-        <display>
-        <title>Frida源码分析</title>
-        <pubTime>2018-07-31T11:07:02.000Z</pubTime>
         
          
            
@@ -124,7 +275,6 @@
     </data>
     </url>
 
-    
     
   <url>
     <loc>https://mabin004.github.io/2018/06/18/iOS%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8-%E2%80%94%E2%80%94-%E9%9D%9E%E8%B6%8A%E7%8B%B1%E4%B8%8B%E4%BD%BF%E7%94%A8Frida/</loc>
@@ -559,21 +709,6 @@
         <display>
         <title>Android直接执行so里的函数</title>
         <pubTime>2018-02-06T13:04:48.000Z</pubTime>
-        
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://mabin004.github.io/2018/01/12/%E7%A7%BB%E5%8A%A8%E7%AB%AFJavaScript%E5%86%99%E5%85%A5%E5%89%AA%E8%B4%B4%E6%9D%BF/</loc>
-    <lastmod>2018-02-06T08:52:43.155Z</lastmod>
-    <data>
-        <display>
-        <title>移动端JavaScript写入剪贴板</title>
-        <pubTime>2018-01-12T03:22:35.000Z</pubTime>
         
          
            

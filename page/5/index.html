@@ -310,6 +310,1142 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/02/06/Android直接执行so里的函数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/06/Android直接执行so里的函数/" itemprop="url">Android直接执行so里的函数</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-06T21:04:48+08:00">
+                2018-02-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/02/06/Android直接执行so里的函数/" class="leancloud_visitors" data-flag-title="Android直接执行so里的函数">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960#include &lt;stdio.h&gt;#include &lt;stdlib.h&gt;#include &lt;dlfcn.h&gt;int main(int argc, char *argv[])&#123;    //decrypt_db in.db out.db key	//char key_in[256] = "thMSot/QNM/iFsDVNksPtXHiqi0wxjD0m2SMLipLEQ4=";    char *in_db = argv[1];    char *out_db = argv[2];    char *key_in = argv[3];	char key_out[256] = &#123;0&#125;;	void *p;    void (*key_func)(char *, char *);    void (*decrypt)(char *, char *, char *);    //dlopen    p=dlopen("./libdatabase_sqlcrypto.so",RTLD_NOW);    if(p==NULL)    &#123;        printf("dlopen error!\n");        exit(0);    &#125;    else        printf("dlopen ok!\n");    //dlsym aes_decrypt_key128    key_func=dlsym(p, "aes_decrypt_key128");    key_f
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/02/06/Android直接执行so里的函数/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/01/24/xmlHttpRequest读取本地文件/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/24/xmlHttpRequest读取本地文件/" itemprop="url">Ajax读取本地文件</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-24T18:21:59+08:00">
+                2018-01-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/01/24/xmlHttpRequest读取本地文件/" class="leancloud_visitors" data-flag-title="Ajax读取本地文件">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="关于Ajax"><a href="#关于Ajax" class="headerlink" title="关于Ajax"></a>关于Ajax</h2><p>AJAX 是一种在无需重新加载整个网页的情况下，能够更新部分网页的技术。</p>
+<p>所有现代浏览器均支持 XMLHttpRequest 对象（IE5 和 IE6 使用 ActiveXObject）。</p>
+<p>XMLHttpRequest 用于在后台与服务器交换数据。这意味着可以在不重新加载整个网页的情况下，对网页的某部分进行更新。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/01/24/xmlHttpRequest读取本地文件/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/01/24/js输出错误/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/24/js输出错误/" itemprop="url">js直接在页面输出错误</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-24T15:06:30+08:00">
+                2018-01-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/01/24/js输出错误/" class="leancloud_visitors" data-flag-title="js直接在页面输出错误">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          hook了window.onerror事件123456789101112131415161718192021222324252627282930313233343536&lt;script&gt;window.onerror = function (msg, url, lineNo, columnNo, error) &#123;    var string = msg.toLowerCase();    var substring = "script error";    if (string.indexOf(substring) &gt; -1)&#123;        //alert('Script Error: See Browser Console for Detail');        var message = [            'Message: ' + msg,            'URL: ' + url,            'Line: ' + lineNo,            'Column: ' + columnNo,            'Error object: ' + JSON.stringify(error)        ].join('\n');        alert('window.onerror: script error '+ message);    &#125; else &#123;        var message = [            'Message: ' + msg,            'URL: ' + url,            'Line: ' + lineNo,            'Column: ' + columnNo,            'Er
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/01/24/js输出错误/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/01/17/apache搭建https站/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/17/apache搭建https站/" itemprop="url">apache搭建https站</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-17T18:35:03+08:00">
+                2018-01-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/01/17/apache搭建https站/" class="leancloud_visitors" data-flag-title="apache搭建https站">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+激活SSL模块
+
+[html] view plain copysudo a2enmod ssl重启apache2[html] view plain copysudo service apache2 restart  
+2.创建自签名SSL证书
+[html] view plain copysudo mkdir /etc/apache2/sslsudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/apache2/ssl/apache.key -out /etc/apache2/ssl/apache.crt  
+3. 编辑配置文件，修改描红部分[html] view plain copysudo vim /etc/apache2/sites-available/default-ssl.conf[html] view plain copy
+            ServerAdmin admin@example.com        ServerName your_domain.com        ServerAlias www.your_domain.com        DocumentRoot /var/www/html        ErrorLog ${APACHE_LOG_DIR}/error.log        CustomLog ${APACHE_LOG_DIR}/access.log combined        SSLEngine on        SSLCertificateFile /etc/apache2/ssl/apache.crt        SSLCertificateKeyFile /etc/apache2/ssl/apache.key       
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/01/17/apache搭建https站/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/01/17/WebView那些事儿/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/17/WebView那些事儿/" itemprop="url">Android WebView那些事儿</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-17T15:13:00+08:00">
+                2018-01-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/01/17/WebView那些事儿/" class="leancloud_visitors" data-flag-title="Android WebView那些事儿">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          Android WebView经常会有一些奇奇怪怪的问题，为了避免日后重复采坑，统一在这里总结下：
+setWebContentsDebuggingEnabledsetWebContentsDebuggingEnabled()用来配置WebView是否支持远程调试，当被设置为true时，既可以用PC端的Chrome来调试手机端的WebView。具体操作如下：
+
+WebView配置如下
+1234//KITKAT版本一下不支持这个APIif (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.KITKAT) &#123;            WebView.setWebContentsDebuggingEnabled(true);        &#125;
+
+手机通过USB连接PC,在Chrome下输入”chrome://inspect”即可进入调试页，同时会显示出所有可调式的WebView页，审查元素、network等调试操作和PC上相同。
+
+
+
+setWebChromeClient和setWebViewClient
+WebViewClient主要帮助WebView处理各种通知、请求事件的，比如：onLoadResource，onPageStart，onPageFinish，onReceiveError，onReceivedHttpAuthRequest 等。
+WebChromeClient主要辅助WebView处理Javascript的对话框、网站图标、网站title、加载进度等，比如:onCloseWindow(关闭WebView)，onCreateWindow()，onJsAlert (WebView上alert无效，需要定制WebChromeClient处理弹出)，onJsPrompt，onJsConfirm，onPro
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/01/17/WebView那些事儿/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/01/12/移动端JavaScript写入剪贴板/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/12/移动端JavaScript写入剪贴板/" itemprop="url">移动端使用JavaScript自动写入剪贴板</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-12T11:22:35+08:00">
+                2018-01-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/01/12/移动端JavaScript写入剪贴板/" class="leancloud_visitors" data-flag-title="移动端使用JavaScript自动写入剪贴板">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          背景近期风靡的“吱口令”红包在互联网上铺天盖地，用户复制一段“吱口令”，打开支付宝就可以直接进入抢红包的页面。研究发现，支付宝是通过读取用户剪贴板数据，提取出吱口令，之后加载抢红包页面。
+如果可以实现在用户打开某个网页的时候就写入剪贴板，那么用户会在不知不觉打开支付宝时，就会直接进入领取页面。因此，我们尝试了js自动写入剪贴板是否可行。
+遍历js事件PC端似乎需要用户主动点击才能实现写入剪贴板，我们首先写一段写入剪贴板的代码12345678&lt;input type=&quot;text&quot; id=&quot;website&quot; value=&quot;tobecopydata&quot; /&gt;&lt;script&gt;function copy(e) &#123; website.select() document.execCommand(&apos;copy&apos;); &#125;&lt;/script&gt;
+之后通过遍历js事件来触发复制操作12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959697// event handlerdocument.body.addEventListener('blur', copy, true);document.body.addEventListener('error', copy, true);document.body.addEventListener('focus', copy, tru
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/01/12/移动端JavaScript写入剪贴板/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/25/OpenCV学习/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/25/OpenCV学习/" itemprop="url">OpenCV学习</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-25T20:15:13+08:00">
+                2017-12-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/12/25/OpenCV学习/" class="leancloud_visitors" data-flag-title="OpenCV学习">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          打开图片123img = cv2.imread('hat.png')cv2.imshow('image', img)cv2.waitKey(0) #没有waitKey没办法显示
+通道提取
+图像通道，在RGB色彩模式下就是指那单独的红色、绿色、蓝色部分。也就是说，一幅完整的图像，是由红色绿色蓝色三个通道组成的。他们共同作用产生了完整的图像。阿尔法通道(Alpha Channel)是指一张图片的透明和半透明度。例如：一个使用32位存储的图片，每8位表示红绿蓝，和阿尔法通道。在这种情况下，就不光可以表示透明还是不透明，阿尔法通道还可以表示256级的半透明度。
+
+1234567r,g,b,a = cv2.split(img) cv2.imshow("Blue",r)  cv2.imshow("Red",g)  cv2.imshow("Green",b) cv2.imshow("Alpha",a)  cv2.waitKey(0)#jpg等压缩格式没有Alpha通道
+通道合并1merged = cv2.merge([b,g,r]) #前面分离出来的三个通道
+灰度转换123gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)cv2.imshow('image', gray)cv2.waitKey(0)
+人脸检测123456789101112face_patterns = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')//xml文件为opencv在GitHub上共享出来的具有普适的训练好的数据sample_image = cv2.imread('muti.jpg')faces = face_patterns.detectMultiScale(sample_image,        
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/12/25/OpenCV学习/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/11/安卓“Janus”漏洞分析（cve-）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/11/安卓“Janus”漏洞分析（cve-）/" itemprop="url">（待补充）安卓“Janus”漏洞分析（CVE-2017-13156)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-11T22:21:00+08:00">
+                2017-12-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/12/11/安卓“Janus”漏洞分析（cve-）/" class="leancloud_visitors" data-flag-title="（待补充）安卓“Janus”漏洞分析（CVE-2017-13156)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          简介“Janus”漏洞是Google在12月发布的安卓系统的安全公告中披露的，由移动安全公司GuardSquare 的研究团队发现，漏洞编号：CVE-2017-13156。该漏洞的可以绕过Andorid的签名校验机制，攻击者可以利用漏洞通过升级的方式对App进行篡改。
+由于安卓系统中App的安全和可信都是建立在签名和校验基础之上，“Janus”漏洞绕过了系统的签名校验，可以说是突破了安卓整个安全机制，导致安卓整个安全体系的沦陷。
+
+一旦攻击者将植入恶意代码的仿冒的App投放到安卓商店等第三方应用市场，就可替代原有的App做下载、更新。网友安装这些仿冒App后，不仅会泄露个人账号、密码、照片、文件等隐私信息，手机更可能被植入木马病毒，进而或导致手机被ROOT，甚至被远程操控。
+
+影响范围
+安卓5.0-8.0的各个版本系统；
+使用安卓Signaturescheme V1签名的App APK文件。
+
+由于，signature scheme V2需要对App进行重新发布，而大量的已经存在的App APK无法使用V2校验机制，所以为了保证向前兼容性，V1的校验方式的还被保留,故该漏洞影响范围较大。
+漏洞分析漏洞原理1、安卓在4.4中引入了新的执行虚拟机ART，这个虚拟机经过重新的设计，实现了大量的优化，提高了应用的运行效率。与“Janus”有关的一个技术点是，ART允许运行一个raw dex，也就是一个纯粹的dex文件，不需要在外面包装一层zip。而ART的前任DALVIK虚拟机就要求dex必须包装在一个zip内部且名字是classes.dex才能运行。当然ART也支持运行包装在ZIP内部的dex文件，要区别文件是ZIP还是dex，就通过文件头的magic字段进行判断：ZIP文件的开头是‘PK’, 而dex文件的开头是’dex’.1代码部分
+2、APK本质是一个ZIP文件，ZIP文件
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/12/11/安卓“Janus”漏洞分析（cve-）/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/10/手机短信PDU格式分析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -589,1235 +1725,11 @@ PDU举例
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/09/Android-AIDL笔记/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/09/Android-AIDL笔记/" itemprop="url">Android AIDL笔记</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-09T17:10:52+08:00">
-                2017-12-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/12/09/Android-AIDL笔记/" class="leancloud_visitors" data-flag-title="Android AIDL笔记">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          在Android系统中，通常一个进程不能访问其它进程的内存。AIDL(Android Interface definition language)允许定义客户端和服务端都同意为了彼此之间的通信使用进程间通信（IPC）的编程接口，其本质是用Binder实现的。
-以下为一个简单的AIDL实例
-服务端1.新建AIDL文件首先用Android Studio 新建一个Android工程，这里命名为com.example.AIDL_Server。在工程目录下，“右键“-&gt;”New”-&gt;”AIDL File”,这里接口命名为“MyAidl”，每个.aidl文件必须定义一个接口并且只需要接口声明。
-这里定义接口方法为Add，返回客户端输入的两个数之和。MyAidl.aidl文件如下：
-12345package com.example.aidl_server.myapplication;interface MyAidl &#123;		int Add(int a,int b);&#125;
-接着Make一下，自动会生成对应的Java文件，生成的文件名和.aidl文件名匹配，但扩展名为.java，本质为Binder实现。
-###2.实现接口上一步定义好了接口和Add方法，需要进一步实现。新建一个Service，在Service中新建一个内部类MyAidl.Stub,在该类中实现Add接口。
-3.对外暴漏接口在Service中的onBind函数中返回接口，另外还需注意在manifest文件中声明Service接口，代码如下：
-123456789101112131415161718	public class Add extends Service &#123;    private MyAidl.Stub mRemote = new MyAidl.Stub()&#123;       
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/12/09/Android-AIDL笔记/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/09/cve-2015-3839-短信-Dos/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/09/cve-2015-3839-短信-Dos/" itemprop="url">cve-2015-3839(短信 Dos)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-09T17:06:00+08:00">
-                2017-12-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/12/09/cve-2015-3839-短信-Dos/" class="leancloud_visitors" data-flag-title="cve-2015-3839(短信 Dos)">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          漏洞描述漏洞发生在Android自带短信应用中updateMessageStatus函数中，该函数用于发送短信完成后更新状态。代码中未对异常进行处理（使用try…finally…，未加catch），且相关的服务对外暴露，恶意程序可以构造恶意的短信发送广播，导致自带的短信应用无法工作。
-漏洞代码如下：
-
-当message为null时，访问message对象中的函数或变量就会发生空指针异常，导致短信应用Crash.
-函数开始对message是否为空作了判断，因此需要绕过判断。createFromPdu函数是对收到的pdu格式的短信进行解析，返回一个SmsMessage对象，如下图：
-
-该函数根据format的格式（3GPP为GSM，3GPP2为CMDA）去解析PDU，最后返回一个wrappedMessage对象，最后的return没有直接返回wrappedMessage对象，而是通过new的方式返回，导致返回值永不为null。因此，只要wrappedMessage对象为null时，就会绕过”if (message==null)”的检查，触发空指针异常。
-漏洞利用为使wrappedMessage对象为null,只需要构造一个无效的PDU串即可。
-&gt;PDU为发送短信时一种固定的编码格式，一般的PDU编码由A B C D E F G H I J K L M十三项组成。A：短信息中心地址长度，2位十六进制数(1字节)。B：短信息中心号码类型，2位十六进制数。C：短信息中心号码，B+C的长度将由A中的数据决定。D：文件头字节，2位十六进制数。E：信息类型，2位十六进制数。F：被叫号码长度，2位十六进制数。G：被叫号码类型，2位十六进制数，取值同B。H：被叫号码，长度由F中的数据决定。I：协议标识，2位十六进制数。J：数据编码方案，2位十六进制数。K：有效期，2位十六进制数。L：用户
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/12/09/cve-2015-3839-短信-Dos/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/09/Android源码编译命令/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/09/Android源码编译命令/" itemprop="url">Android源码编译命令</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-09T16:58:00+08:00">
-                2017-12-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/12/09/Android源码编译命令/" class="leancloud_visitors" data-flag-title="Android源码编译命令">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          1.编译过程1) source build/envsetup.sh
-
-2) lunch,选择编译的平台
-
-3）make －j4
-##2. 命令介绍
-1）m        编译整个android工程
-
-2）mm    编译当前目录下模块，不包括依赖项
-
-3）mmm path  编译指定目录下的模块
-
-4）mma 编译当前目录下所有模块，包括依赖项
-
-5）mmma path 编译指定目录下所有模块，含依赖项
-
-PS： mm／mmm编译较快，mma／mmma会把所有的依赖项一同编译，比较缓慢，首次编译时用mma，以后用mm编译。
-3.Android.mk解析1. mk文件  一个android子项目中会存在一个或多个Android.mk文件 
-
-1) 单一的Android.mk文件 
-
-直接参考NDK的sample目录下的hello-jni项目，在这个项目中只有一个Android.mk文件 
-
-2) 多个Android.mk文件 
-
-如果需要编译的模块比较多，我们可能会将对应的模块放置在相应的目录中， 这样，我们可以在每个目录中定义对应的Android.mk文件（类似于上面的写法）， 最后，在根目录放置一个Android.mk文件，内容如下：
-
-    include $(call all-subdir-makefiles)
-
-只需要这一行就可以了，它的作用就是包含所有子目录中的Android.mk文件 
-2. 变量注意：‘:=’是赋值的意思；’+=’是追加的意思；‘$’表示引用某变量的值。
-1）LOCAL_PATH:  这个变量用于给出当前文件的路径。 
-
-  必须在 Android.mk 的开头定义，可以这样使用：
-          LOCAL_PATH := $(call my-dir) 
-
-   如当前目录下有个文件夹名称 src，则可以这样写 $(call src)，
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/12/09/Android源码编译命令/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/09/cve-2016-5348-利用大文件使gps-crash/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/09/cve-2016-5348-利用大文件使gps-crash/" itemprop="url">cve-2016-5348(利用大文件使gps crash)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-09T16:47:00+08:00">
-                2017-12-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/12/09/cve-2016-5348-利用大文件使gps-crash/" class="leancloud_visitors" data-flag-title="cve-2016-5348(利用大文件使gps crash)">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          描述通过中间人攻击（MITM）构造一个gps相关的文件（由Qualcomm提供），可以使Android设备的gps服务崩溃，设备重启。问题出现在AOSP代码和由Quanlcomm实现的XTRA下载代码中。该漏洞还有可能影响所有的Qualcomm GPS芯片。
-背景(GPS和gpsOneXtra)大多数移动设备通过GPS（Global Positioning System）实现定位，它由美国的军事部门开发和维护，其他国家也有类似的定位系统，如俄罗斯的GLONASS，欧洲的Galileo，中国的北斗。
-广播星历是定位卫星发出的无线电信号上载有预报一定时间内卫星根数的电文信息，通过星历接收者可以很快获得离自己最近的卫星，避免了依次去查找卫星。
-Qualcomm开发了一套系统称为gpsOneXtra,通过它设备可以从高通的服务器上下载卫星数据（Xtra文件），该文件包含了当前的卫星位置数据以及未来7天卫星可能的位置，大多数的高通gps芯片都支持这项技术。
-##背景2 -Android和gpsOneXtra文件
-通过对Android设备的流量监控发现，每当设备连接到WiFi网络时，会向高通的服务器发起请求，获取gpsOneXtra文件。在Android相关的源码中，出现了以下url:
-123http://xtra1.gpsonextra.net/xtra.binhttp://xtra2.gpsonextra.net/xtra.binhttp://xtra3.gpsonextra.net/xtra.bin
-123http://xtrapath1.izatcloud.net/xtra2.binhttp://xtrapath2.izatcloud.net/xtra2.binhttp://xtrapath3.izatcloud.net/xtra2.bin
-使用whois工具查询这些域名，发现
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/12/09/cve-2016-5348-利用大文件使gps-crash/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/09/android源码结构/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/09/android源码结构/" itemprop="url">Android源码结构</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-09T15:03:01+08:00">
-                2017-12-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/12/09/android源码结构/" class="leancloud_visitors" data-flag-title="Android源码结构">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          abi应用程序二进制接口（abi is application binary interface）
-artAndroid运行时机制相关
-bionicLinux内核中库
-
-libc    C库
-limdl  动态链接库相关
-libm  C数学函数，运算相关
-libstdc＋＋ 标准C＋＋库
-
-bootable引导、安装程序，其他设备启动的东西
-buildbuild的时候的一些脚本和环境
-cts兼容性测试框架（compatibility test suite）（没用过）
-dalvikJava虚拟机相关
-development开发相关的工具，SDK、NDK等
-devices特定厂商的设备文件
-docs文档相关
-external外部库和工具的源代码。Webkit，Sqlite，zlib等
-frameworks重要的目录之一。System Server、Package Manager、Activity Manager等关键服务的实现，java层到native层的映射
-hardware部分厂家开源的硬件适配层（HAL）代码，Wifi、电源等
-kernel内核源码
-libcore一些核心的库
-
-Dalvik
-dom
-expectations
-include
-json
-luni
-support
-xml
-
-libnativehelper没用过
-ndk本地开发包
-out编译完成后输出目录，out/target/product/genetic 目录存放编译完成的镜像。
-packages标准的应用程序，相机、短信、拨号等
-pdkplatform build kit，方便vendor适配最新android，避免碎片化
-prebuilt预先编译好的二进制文件，例如交叉编译工具等
-sdk开发环境
-systemandroid核心系统，可以认为是一个微型的Linux系统，运行在Dalvik虚拟机和java层
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/12/09/android源码结构/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/09/apk反调试-模拟器检查-签名检测/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/09/apk反调试-模拟器检查-签名检测/" itemprop="url">apk反调试-模拟器检查-签名检测</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-09T15:02:01+08:00">
-                2017-12-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/12/09/apk反调试-模拟器检查-签名检测/" class="leancloud_visitors" data-flag-title="apk反调试-模拟器检查-签名检测">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          一、模拟器检测
-基于模拟器的IMSI、IDS、默认文件等几个方面特征进行检测
-基于CPU的检测（如是否包含inter、amd等字段）
-电池信息、温度、电量变化等
-
-代码示例：
-123456789101112131415//需要添加android.permission.READ_PHONE_STATE权限public boolean isEmulatorByImei(Context context)&#123;        TelephonyManager tm = (TelephonyManager) 	context.getSystemService(Context.TELEPHONY_SERVICE);        String imei = tm.getDeviceId();        if (imei == null || imei.equals("000000000000000"))&#123;            return true;        &#125;        return false;    &#125;public boolean isEmulatorByBuildModel() &#123;        Log.e("MODEL=", Build.MODEL);        Log.e("MANUFACTURER=",Build.MANUFACTURER);        return ( Build.MODEL.equals("sdk")) || (Build.MODEL.equals("google_sdk") );    &#125;
-二、签名监测(native)签名检测在一般在java层实现，通过与远程服务器交互完成校验。如果没有本地校验，则尽可能在native层实现，这里利用反射的方式。
-代码示例：
-123456
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/12/09/apk反调试-模拟器检查-签名检测/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/06/13/Android反调试/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/06/13/Android反调试/" itemprop="url">Android反调试和对抗</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-13T21:10:00+08:00">
-                2017-06-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/06/13/Android反调试/" class="leancloud_visitors" data-flag-title="Android反调试和对抗">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          反调试1.自己ptrace自己代码非常简单，在so中加上这行代码即可：1ptrace(PTRACE_TRACEME, 0, 0, 0);
-其中PTRACE_TRACEME代表：本进程被其父进程所跟踪。一个进程只能被ptrace一次，通常在调试的时候都会attach被调试应用的进程，如果我们先占坑，父进程attach自己，那么其他的附加调试就会失败。
-2.检测Tracerpid的值在自己的应用中的native层加上一个循环检查自己status中的TracerPid字段值，如果非0或者是非自己进程pid(如果采用了第一种方案的话，这里也是需要做一次过滤的)；那么就认为被附加调试了。
-3.调试器端口检测以IDA为例，读取/proc/net/tcp，查找IDA远程调试的默认23946端口（或者执行命令netstat -apn），如果处于监听状态说明被存在调试可能。
-4.调试器名称检测遍历进程，查找类似android_server，gdbserver，gdb等调试器进程
-5.多进程反调试目标程序创建了多个进程，互相ptrace，不同进程分工明确，守护或者反调试。只要有一个进程出现异常，集体挂掉，颇有一番兄弟有难同当的感觉。
-对抗多进程都是通过fork出来的，因此我们修改/bionic/libc/bionic/fork.c里面的fork函数来使得目标进程fork失败
-6.检测系统关键文件进程被ptrace后通常会有一些特征，这些特征也常常作为反调试的判断依据：
-status/proc/pid/status 和 /proc/pid/task/pid/status：普通状态下，TracerPid这项应该为0；调试状态下为调试进程的PID。
-stat/proc/pid/stat 和 /proc/pid/task/pid/stat：调试状态下，括号后面的第一个字母应该为t
-
-wchan/pro
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/06/13/Android反调试/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/06/13/Android三大hook框架/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/06/13/Android三大hook框架/" itemprop="url">Android三大hook框架</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-13T19:55:00+08:00">
-                2017-06-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/06/13/Android三大hook框架/" class="leancloud_visitors" data-flag-title="Android三大hook框架">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          目前Android主流的hook框架有Xposed、Substrate和frida三种，下面一次介绍三种框架的原理和特性：
-XposedXposed是一个在andoid平台上比较成熟的hook框架，可以完美的在dalvik虚拟机上做到hook任意java方法
-原理Android系统中所有的app进程都是有zygote进程孵化而来的，Xposed会替换/system/bin/app_process文件，app_process在启动过程中会加载XposedBridge.jar这个jar包，从而完成对Zygote进程及其创建的Dalvik虚拟机的劫持
-运行条件
-由于需要替换app_process，故需要root
-重启手机后插件才会生效
-
-使用方法
-1.AndroidManifest.xml中添加Xposed
-
-需在Application Node中添加三个Meta(xposedmodule,xposedminversion和xposeddescription)12345678910111213141516171819202122&lt;manifest xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;      package=&quot;com.example.xposedtest&quot;      android:versionCode=&quot;1&quot;      android:versionName=&quot;1.0&quot; &gt;        &lt;uses-sdk          android:minSdkVersion=&quot;14&quot;          android:targetSdkVersion=&quot;19&quot; /&
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/06/13/Android三大hook框架/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1863,7 +1775,7 @@ XposedXposed是一个在andoid平台上比较成熟的hook框架，可以完美�
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-count">59</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

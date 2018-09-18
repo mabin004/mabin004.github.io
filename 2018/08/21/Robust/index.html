@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, m4bln" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="关于RobustRobust（https://github.com/Meituan-Dianping/Robust/blob/master/README-zh.md）是美团推出的一个热补丁框架，可兼容Android2.3-8.0版本，据称补丁修补成功率高达99.9%。 Robust使用环境配置 在App的build.gradle，加入如下依赖 12345apply plugin: &amp;apos;co">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Robust热修复框架原理分析">
+<meta property="og:url" content="https://mabin004.github.io/2018/08/21/Robust/index.html">
+<meta property="og:site_name" content="m4bln">
+<meta property="og:description" content="关于RobustRobust（https://github.com/Meituan-Dianping/Robust/blob/master/README-zh.md）是美团推出的一个热补丁框架，可兼容Android2.3-8.0版本，据称补丁修补成功率高达99.9%。 Robust使用环境配置 在App的build.gradle，加入如下依赖 12345apply plugin: &amp;apos;co">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-22T04:22:07.080Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Robust热修复框架原理分析">
+<meta name="twitter:description" content="关于RobustRobust（https://github.com/Meituan-Dianping/Robust/blob/master/README-zh.md）是美团推出的一个热补丁框架，可兼容Android2.3-8.0版本，据称补丁修补成功率高达99.9%。 Robust使用环境配置 在App的build.gradle，加入如下依赖 12345apply plugin: &amp;apos;co">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'SXXZO8IPW0',
+      apiKey: 'b9723880e3b66475126bdc98a4bb9380',
+      indexName: 'm4bln',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到任何搜索结果: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://mabin004.github.io/2018/08/21/Robust/"/>
+
+
+
+
+
+  <title>Robust热修复框架原理分析 | m4bln</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">m4bln</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-hint">
+          <a href="/hint/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            hint
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-todo">
+          <a href="/todo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            ToDo
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/08/21/Robust/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Robust热修复框架原理分析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-21T15:26:00+08:00">
+                2018-08-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/21/Robust/" class="leancloud_visitors" data-flag-title="Robust热修复框架原理分析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="关于Robust"><a href="#关于Robust" class="headerlink" title="关于Robust"></a>关于Robust</h2><p>Robust（<a href="https://github.com/Meituan-Dianping/Robust/blob/master/README-zh.md）是美团推出的一个热补丁框架，可兼容Android2.3-8.0版本，据称补丁修补成功率高达99.9%。" target="_blank" rel="noopener">https://github.com/Meituan-Dianping/Robust/blob/master/README-zh.md）是美团推出的一个热补丁框架，可兼容Android2.3-8.0版本，据称补丁修补成功率高达99.9%。</a></p>
+<h2 id="Robust使用"><a href="#Robust使用" class="headerlink" title="Robust使用"></a>Robust使用</h2><h3 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h3><ol>
+<li><p>在App的build.gradle，加入如下依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">apply plugin: &apos;com.android.application&apos;</span><br><span class="line">//制作补丁时将这个打开，auto-patch-plugin紧跟着com.android.application</span><br><span class="line">//apply plugin: &apos;auto-patch-plugin&apos;</span><br><span class="line">apply plugin: &apos;robust&apos;</span><br><span class="line">compile &apos;com.meituan.robust:robust:0.4.82&apos;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在整个项目的build.gradle加入classpath</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">buildscript &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        jcenter()</span><br><span class="line">    &#125;</span><br><span class="line">    dependencies &#123;</span><br><span class="line">         classpath &apos;com.meituan.robust:gradle-plugin:0.4.82&apos;</span><br><span class="line">         classpath &apos;com.meituan.robust:auto-patch-plugin:0.4.82&apos;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在项目的src同级目录下配置robust.xml文件，具体项请参考DEMOapp/robust.xml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">&lt;resources&gt;</span><br><span class="line"></span><br><span class="line">    &lt;switch&gt;</span><br><span class="line">        &lt;!--true代表打开Robust，请注意即使这个值为true，Robust也默认只在Release模式下开启--&gt;</span><br><span class="line">        &lt;!--false代表关闭Robust，无论是Debug还是Release模式都不会运行robust--&gt;</span><br><span class="line">        &lt;turnOnRobust&gt;true&lt;/turnOnRobust&gt;</span><br><span class="line">        &lt;!--&lt;turnOnRobust&gt;false&lt;/turnOnRobust&gt;--&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!--是否开启手动模式，手动模式会去寻找配置项patchPackname包名下的所有类，自动的处理混淆，然后把patchPackname包名下的所有类制作成补丁--&gt;</span><br><span class="line">        &lt;!--这个开关只是把配置项patchPackname包名下的所有类制作成补丁，适用于特殊情况，一般不会遇到--&gt;</span><br><span class="line">        &lt;!--&lt;manual&gt;true&lt;/manual&gt;--&gt;</span><br><span class="line">        &lt;manual&gt;false&lt;/manual&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!--是否强制插入插入代码，Robust默认在debug模式下是关闭的，开启这个选项为true会在debug下插入代码--&gt;</span><br><span class="line">        &lt;!--但是当配置项turnOnRobust是false时，这个配置项不会生效--&gt;</span><br><span class="line">        &lt;!--&lt;forceInsert&gt;true&lt;/forceInsert&gt;--&gt;</span><br><span class="line">        &lt;forceInsert&gt;false&lt;/forceInsert&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!--是否捕获补丁中所有异常，建议上线的时候这个开关的值为true，测试的时候为false--&gt;</span><br><span class="line">        &lt;catchReflectException&gt;true&lt;/catchReflectException&gt;</span><br><span class="line">        &lt;!--&lt;catchReflectException&gt;false&lt;/catchReflectException&gt;--&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!--是否在补丁加上log，建议上线的时候这个开关的值为false，测试的时候为true--&gt;</span><br><span class="line">        &lt;!--&lt;patchLog&gt;true&lt;/patchLog&gt;--&gt;</span><br><span class="line">        &lt;patchLog&gt;false&lt;/patchLog&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!--项目是否支持progaurd--&gt;</span><br><span class="line">        &lt;proguard&gt;true&lt;/proguard&gt;</span><br><span class="line">        &lt;!--&lt;proguard&gt;false&lt;/proguard&gt;--&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!--项目是否支持ASM进行插桩，默认使用ASM，推荐使用ASM，Javaassist在容易和其他字节码工具相互干扰--&gt;</span><br><span class="line">        &lt;useAsm&gt;true&lt;/useAsm&gt;</span><br><span class="line">        &lt;!--&lt;useAsm&gt;false&lt;/useAsm&gt;--&gt;</span><br><span class="line">    &lt;/switch&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--需要热补的包名或者类名，这些包名下的所有类都被会插入代码--&gt;</span><br><span class="line">    &lt;!--这个配置项是各个APP需要自行配置，就是你们App里面你们自己代码的包名，</span><br><span class="line">    这些包名下的类会被Robust插入代码，没有被Robust插入代码的类Robust是无法修复的--&gt;</span><br><span class="line">    &lt;packname name=&quot;hotfixPackage&quot;&gt;</span><br><span class="line">        &lt;name&gt;com.meituan&lt;/name&gt;</span><br><span class="line">        &lt;name&gt;com.sankuai&lt;/name&gt;</span><br><span class="line">        &lt;name&gt;com.dianping&lt;/name&gt;</span><br><span class="line">    &lt;/packname&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--不需要Robust插入代码的包名，Robust库不需要插入代码，如下的配置项请保留，还可以根据各个APP的情况执行添加--&gt;</span><br><span class="line">    &lt;exceptPackname name=&quot;exceptPackage&quot;&gt;</span><br><span class="line">        &lt;name&gt;com.meituan.robust&lt;/name&gt;</span><br><span class="line">        &lt;name&gt;com.meituan.sample.extension&lt;/name&gt;</span><br><span class="line">    &lt;/exceptPackname&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--补丁的包名，请保持和类PatchManipulateImp中fetchPatchList方法中设置的补丁类名保持一致（ setPatchesInfoImplClassFullName(&quot;com.meituan.robust.patch.PatchesInfoImpl&quot;)），</span><br><span class="line">    各个App可以独立定制，需要确保的是setPatchesInfoImplClassFullName设置的包名是如下的配置项，类名必须是：PatchesInfoImpl--&gt;</span><br><span class="line">    &lt;patchPackname name=&quot;patchPackname&quot;&gt;</span><br><span class="line">        &lt;name&gt;com.meituan.robust.patch&lt;/name&gt;</span><br><span class="line">    &lt;/patchPackname&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--自动化补丁中，不需要反射处理的类，这个配置项慎重选择--&gt;</span><br><span class="line">    &lt;noNeedReflectClass name=&quot;classes no need to reflect&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;/noNeedReflectClass&gt;</span><br><span class="line">&lt;/resources&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="自动生成补丁"><a href="#自动生成补丁" class="headerlink" title="自动生成补丁"></a>自动生成补丁</h3><ol>
+<li><p>使用插件时，需要把auto-patch-plugin放置在com.android.application插件之后，其余插件之前。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apply plugin: &apos;com.android.application&apos;</span><br><span class="line">apply plugin: &apos;auto-patch-plugin&apos;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将保存下来的mapping文件和methodsMap.robust文件放在app/robust/文件夹下。</p>
+</li>
+<li><p>修改代码，在改动的方法上面添加@Modify注解,对于Lambda表达式请在修改的方法里面调用RobustModify.modify()方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">   @Modify</span><br><span class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState);</span><br><span class="line">     &#125;</span><br><span class="line">     //或者是被修改的方法里面调用RobustModify.modify()方法</span><br><span class="line">     protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">        RobustModify.modify()</span><br><span class="line">        super.onCreate(savedInstanceState);</span><br><span class="line">     &#125;</span><br><span class="line">```     </span><br><span class="line">新增的方法和字段使用@Add注解</span><br></pre></td></tr></table></figure>
+<p> //增加方法<br> @Add<br> public String getString() {</p>
+<pre><code>return &quot;Robust&quot;;
+</code></pre><p> }<br> //增加类<br> @Add<br> public class NewAddCLass {</p>
+<pre><code>public static String get() {
+   return &quot;robust&quot;;
+ }
+</code></pre><p> }</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">4. 运行和生成线上apk同样的命令，即可生成补丁，补丁目录app/build/outputs/robust/patch.jar</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>./gradlew clean  assembleRelease –stacktrace –no-daemon<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">5. 补丁制作成功后会停止构建apk，出现类似于如下的提示，表示补丁生成成功 </span><br><span class="line"></span><br><span class="line">![upload successful](/images/pasted-115.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## Robust实现原理</span><br><span class="line"></span><br><span class="line">Robust热修复框架的大概原理为：用DexClassLoader加载修复包，然后用loadClass方法加载修复类，new出新对象，再把这新的修复对象设置到指定类的changeQuickRedirect静态变量中即可。</span><br><span class="line"></span><br><span class="line">官方给出的流程图如下：</span><br><span class="line"></span><br><span class="line">![upload successful](/images/pasted-123.png)</span><br><span class="line"></span><br><span class="line">下文中我们将分编译阶段、补丁结构、补丁生效和补丁执行4个阶段来介绍Robust实现原理。</span><br><span class="line"></span><br><span class="line">### 编译阶段</span><br><span class="line">Robust将apk代码中每个函数都在编译打包阶段自动的插入一段代码:</span><br></pre></td></tr></table></figure></p>
+<p>//原函数<br>public long getIndex() {<br>        return 100;<br>    }</p>
+<p>//使用Robust插件编译后<br>public static ChangeQuickRedirect changeQuickRedirect;<br>    public long getIndex() {<br>        if(changeQuickRedirect != null) {<br>            if(PatchProxy.isSupport(new Object[0], this, changeQuickRedirect, false)) {<br>                return ((Long)PatchProxy.accessDispatch(new Object[0], this, changeQuickRedirect, false)).longValue();<br>            }<br>        }<br>        return 100L;<br>    }<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">可以看到Robust为每个class增加了个类型为ChangeQuickRedirect的静态成员，而在每个方法前都插入了使用changeQuickRedirect相关的逻辑，当changeQuickRedirect不为null时，会执行到accessDispatch方法从而替换掉之前老的逻辑，达到修复的目的。</span><br><span class="line"></span><br><span class="line">### 补丁结构</span><br><span class="line">Robust会根据@Modify、@Add等注解搜集所有要修改的函数，并将修复后的文件打包成dex或jar。</span><br><span class="line"></span><br><span class="line">补丁文件主要包含：PatchesInfoImpl.java，xxxPatchControl.java，xxxPatch.java(其中xxx为原类的名字)，如下图：</span><br><span class="line">PatchesInfoImpl只有一个，补丁修改了3个类，因此有3对Patch和PatchControl类</span><br><span class="line"></span><br><span class="line">![upload successful](/images/pasted-118.png)</span><br><span class="line"></span><br><span class="line">其中</span><br><span class="line">- PatchesInfoImpl.java中定义了修复前后class的对应关系：</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">![upload successful](/images/pasted-119.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">- 每个xxxPatchControl.java中都存在以下静态成员变量和方法：</span><br></pre></td></tr></table></figure></p>
+<p>public class xxxPatchControl implements ChangeQuickRedirect<br>{</p>
+<pre><code>public static final String MATCH_ALL_PARAMETER = &quot;(\\w*\\.)*\\w*&quot;;
+
+private static final Map&lt;Object, Object&gt; keyToValueRelation = new WeakHashMap();
+
+//获取函数的参数的方法
+public Object getRealParameter(Object obj){..具体逻辑..}
+
+//判断是否支持修复
+public boolean isSupport(String methodName, Object[] paramArrayOfObject)
+{..具体逻辑.}
+
+//执行到accessDispatch方法替换旧的类方法
+public Object accessDispatch(String methodName, Object[] paramArrayOfObject) {.具体逻辑..}
+}
+
+//解决boolean被优化成byte的问题
+private static Object fixObj(Object booleanObj) {.具体逻辑..}
+</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- xxxPatch.java中是修改后函数的具体实现，例如下图中修改了getTextInfo()方法的返回值</span><br><span class="line"></span><br><span class="line">![upload successful](/images/pasted-120.png)</span><br><span class="line"></span><br><span class="line">### 补丁生效</span><br><span class="line">补丁生效通常在App启动时调用</span><br></pre></td></tr></table></figure></p>
+<p>new PatchExecutor(getApplicationContext(), new PatchManipulateImp(), new RobustCallBackSample()).start();<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PatchExecutor继承Thread类，启动后会调用fetchPatchList()函数拉取补丁，调用applyPatchList()使补丁生效。其具体实现如下：</span><br></pre></td></tr></table></figure></p>
+<p>//可以看到PatchExecutor继承线程类Thread<br>public class PatchExecutor extends Thread {<br>    protected Context context;<br>    protected PatchManipulate patchManipulate;<br>    protected RobustCallBack robustCallBack;<br>    //构造函数<br>    public PatchExecutor(Context context, PatchManipulate patchManipulate, RobustCallBack robustCallBack) {<br>        this.context = context.getApplicationContext();<br>        this.patchManipulate = patchManipulate;<br>        this.robustCallBack = robustCallBack;<br>    }<br>    public void run() {<br>        try {<br>            //拉取补丁列表<br>            List<patch> patches = fetchPatchList();<br>            //应用补丁列表<br>            applyPatchList(patches);<br>        } catch (Throwable t) {<br>            Log.e(“robust”, “PatchExecutor run”, t);<br>            robustCallBack.exceptionNotify(t, “class:PatchExecutor,method:run,line:36”);<br>        }<br>    }<br>    …<br>    }<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- 获取补丁</span><br><span class="line">fetchPatchList最终调用PatchManipulateImp类的fetchPatchList方法</span><br></pre></td></tr></table></figure></patch></p>
+<pre><code>protected List&lt;Patch&gt; fetchPatchList(Context context) {
+    //将app自己的robustApkHash上报给服务端，服务端根据robustApkHash来区分每一次apk build来给app下发补丁
+    //apkhash is the unique identifier for  apk,so you cannnot patch wrong apk.
+    String robustApkHash = RobustApkHashUtils.readRobustApkHash(context);
+    Log.w(&quot;robust&quot;,&quot;robustApkHash :&quot; + robustApkHash);
+    //在这里去联网获取补丁列表
+    Patch patch = new Patch();
+    patch.setName(&quot;123&quot;);
+    //LocalPath是存储原始的补丁文件，这个文件应该是加密过的，TempPath是加密之后的，TempPath下的补丁加载完毕就删除，保证安全性
+    //这里面需要设置一些补丁的信息，主要是联网的获取的补丁信息。重要的如MD5，进行原始补丁文件的简单校验，以及补丁存储的位置，这边推荐把补丁的储存位置放置到应用的私有目录下，保证安全性
+    patch.setLocalPath(Environment.getExternalStorageDirectory().getPath()+ File.separator+&quot;robust&quot;+File.separator + &quot;patch&quot;);
+
+    //setPatchesInfoImplClassFullName 设置项各个App可以独立定制，需要确保的是setPatchesInfoImplClassFullName设置的包名是和xml配置项patchPackname保持一致，而且类名必须是：PatchesInfoImpl
+    //请注意这里的设置
+    patch.setPatchesInfoImplClassFullName(&quot;com.meituan.robust.patch.PatchesInfoImpl&quot;);
+    List  patches = new ArrayList&lt;Patch&gt;();
+    patches.add(patch);
+    return patches;
+}
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 应用补丁</span><br><span class="line">applyPatchList的实现如下:</span><br></pre></td></tr></table></figure>
+<p>protected void applyPatchList(List<patch> patches) {</patch></p>
+<pre><code>for (Patch p : patches) {
+    if (p.isAppliedSuccess()) {
+        Log.d(&quot;robust&quot;, &quot;p.isAppliedSuccess() skip &quot; + p.getLocalPath());
+        continue;
+    }
+    if (patchManipulate.ensurePatchExist(p)) {
+        boolean currentPatchResult = false;
+        try {
+        //真正应用补丁的方法patch()
+            currentPatchResult = patch(context, p);
+        } catch (Throwable t) {
+            robustCallBack.exceptionNotify(t, &quot;class:PatchExecutor method:applyPatchList line:69&quot;);
+        }
+        if (currentPatchResult) {
+            //设置patch 状态为成功
+            p.setAppliedSuccess(true);
+            //统计PATCH成功率 PATCH成功
+            robustCallBack.onPatchApplied(true, p);
+
+        } else {
+            //统计PATCH成功率 PATCH失败
+            robustCallBack.onPatchApplied(false, p);
+        }
+
+        Log.d(&quot;robust&quot;, &quot;patch LocalPath:&quot; + p.getLocalPath() + &quot;,apply result &quot; + currentPatchResult);
+
+    }
+}
+</code></pre><p>   }<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">跟踪patch()函数的实现：</span><br></pre></td></tr></table></figure></p>
+<p>protected boolean patch(Context context, Patch patch) {<br>    //验证patch的hash<br>        if (!patchManipulate.verifyPatch(context, patch)) {<br>            return false;<br>        }<br>    //调用DexClassLoader动态加载dex<br>        DexClassLoader classLoader = new DexClassLoader(patch.getTempPath(), context.getCacheDir().getAbsolutePath(),null, PatchExecutor.class.getClassLoader());<br>        patch.delete(patch.getTempPath());</p>
+<pre><code>    Class patchClass, oldClass;
+
+    Class patchsInfoClass;
+    PatchesInfo patchesInfo = null;
+
+//动态加载PatchesInfoImpl，获取要patch的类,之前介绍过PatchesInfoImpl.java中保存了所有要patch的类以及映射
+    try {
+        patchsInfoClass = classLoader.loadClass(patch.getPatchesInfoImplClassFullName());
+        patchesInfo = (PatchesInfo) patchsInfoClass.newInstance();
+    } catch (Throwable t) {
+        Log.e(&quot;robust&quot;, &quot;PatchsInfoImpl failed,cause of&quot; + t.toString());
+        t.printStackTrace();
+    }
+//调用PatchesInfoImpl的getPatchedClassesInfo，返回一个List
+    List&lt;PatchedClassInfo&gt; patchedClasses = patchesInfo.getPatchedClassesInfo();
+
+
+//循环类名，将patchedClasses中的类打补丁
+    for (PatchedClassInfo patchedClassInfo : patchedClasses) {
+        String patchedClassName = patchedClassInfo.patchedClassName;//修改前的类名,即oldclass
+        String patchClassName = patchedClassInfo.patchClassName;//修改后的类名Control
+
+//将oldClass的changeQuickRedirectField的值设置为patchObject的实例。
+        try {
+            oldClass = classLoader.loadClass(patchedClassName.trim());
+            Field[] fields = oldClass.getDeclaredFields();
+            //遍历Fields找到changeQuickRedirect
+            Field changeQuickRedirectField = null;
+            for (Field field : fields) {
+                if (TextUtils.equals(field.getType().getCanonicalName(), ChangeQuickRedirect.class.getCanonicalName()) &amp;&amp; TextUtils.equals(field.getDeclaringClass().getCanonicalName(), oldClass.getCanonicalName())) {
+                    changeQuickRedirectField = field;
+                    break;
+                }
+            }
+
+            try {
+         //加载补丁类
+                patchClass = classLoader.loadClass(patchClassName);
+                Object patchObject = patchClass.newInstance();
+                changeQuickRedirectField.setAccessible(true);
+         //将原类的changeQuickRedirectField设置为patchObject实例，即补丁类
+                changeQuickRedirectField.set(null, patchObject);
+            } catch (Throwable t) {
+                Log.e(&quot;robust&quot;, &quot;patch failed! &quot;);
+            }
+        } catch (Throwable t) {
+            Log.e(&quot;robust&quot;, &quot;patch failed! &quot;);
+        }
+    }
+    Log.d(&quot;robust&quot;, &quot;patch finished &quot;);
+    return true;
+}
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">上述代码去掉了部分log信息，对关键的处理已经标注了注释，不难看出patch通过classLoader加载了原类和补丁Control类，并遍历原类中的Field找到changeQuickRedirect，将其赋值为一个补丁类的对象。（由于补丁Control类实现了changeQuickRedirect接口，因此可以直接赋值）。</span><br><span class="line"></span><br><span class="line">由于在编译阶段生成的代码中，如果原类的changeQuickRedirect值不为空，就执行补丁逻辑，所以经过这部分代码后，原类的changeQuickRedirect变成一个补丁类的对象。</span><br><span class="line"></span><br><span class="line">### 调用补丁</span><br><span class="line"></span><br><span class="line">由编译阶段可知补丁的调用代码为：</span><br></pre></td></tr></table></figure>
+<pre><code>if(changeQuickRedirect != null) {
+    if(PatchProxy.isSupport(new Object[0], this, changeQuickRedirect, false)) {
+        return ((Long)PatchProxy.accessDispatch(new Object[0], this, changeQuickRedirect, false)).longValue();
+    }
+}
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">我们看看源码中的PatchProxy中的isSupport()的实现：</span><br></pre></td></tr></table></figure>
+<p>public static boolean isSupport(Object[] paramsArray, Object current, ChangeQuickRedirect changeQuickRedirect, boolean isStatic, int methodNumber, Class[] paramsClassTypes, Class returnType) {<br>        //获取 classMethod = className + “:” + methodName + “:” + isStatic + “:” + methodNumber;<br>        String classMethod = getClassMethod(isStatic, methodNumber);</p>
+<pre><code>    Object[] objects = getObjects(paramsArray, current, isStatic);
+    try {
+    //调用changeQuickRedirect.isSupport
+        return changeQuickRedirect.isSupport(classMethod, objects);
+    } catch (Throwable t) {
+        return false;
+    }
+}
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">PatchProxy中的isSupport()会调用changeQuickRedirect中的isSupport()，也就是补丁类中的isSupport()：</span><br><span class="line"></span><br><span class="line">![upload successful](/images/pasted-121.png)</span><br><span class="line"></span><br><span class="line">由于arg5是“className:methodName:isStatic:methodNumber”格式，上述isSupport()相当于return “:22:”.contains(methodNumber)。</span><br><span class="line"></span><br><span class="line">接着，我们看一下accessDispatch的实现：</span><br></pre></td></tr></table></figure>
+<p>public static Object accessDispatch(Object[] paramsArray, Object current, ChangeQuickRedirect changeQuickRedirect, boolean isStatic, int methodNumber, Class[] paramsClassTypes, Class returnType) {</p>
+<pre><code>    //同样获取 classMethod = className + &quot;:&quot; + methodName + &quot;:&quot; + isStatic + &quot;:&quot; + methodNumber;
+    String classMethod = getClassMethod(isStatic, methodNumber);
+    if (TextUtils.isEmpty(classMethod)) {
+        return null;
+    }
+
+    Object[] objects = getObjects(paramsArray, current, isStatic);
+
+    //调用changeQuickRedirect.accessDispatch。
+    return changeQuickRedirect.accessDispatch(classMethod, objects);
+}
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">PatchProxy.accessDispatch调用changeQuickRedirect.accessDispatch：</span><br><span class="line"></span><br><span class="line">![upload successful](/images/pasted-122.png)</span><br><span class="line"></span><br><span class="line">先判断函数是否为static函数，再获取函数的参数列表，根据methodNumber，选取要执行的patch方法去执行。此时，便完成了补丁的执行。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## Robust总结</span><br><span class="line">1. Robust的优缺点</span><br><span class="line"></span><br><span class="line">	- 优点</span><br><span class="line">兼容性高，开发透明；</span><br><span class="line">实时生效。</span><br><span class="line">	- 缺点</span><br><span class="line">每个方法都会增加一段代码，会增大发布包的体积；</span><br><span class="line">每个方法都有一个判断，影响运行效率；</span><br><span class="line"></span><br><span class="line">2. 寻找robust热补丁的位置</span><br><span class="line">	1. 查找PatchManipulateImp类或其派生类，其中setLocalPath一般为原始补丁路径，setTempPath为解密后的补丁路径，一般解密后就会删除；fetchPatchList函数为获取补丁的逻辑，verifyPatch函数为补丁校验逻辑；</span><br><span class="line">    2. Hook dexclassLoader的构造函数,dex路径为其参数</span><br></pre></td></tr></table></figure>
+<pre><code>        var dexclassLoader = Java.use(&quot;dalvik.system.DexClassLoader&quot;);
+    //hook 构造函数$init
+    dexclassLoader.$init.implementation = function(dexPath,optimizedDirectory,librarySearchPath,parent){
+        console.log(&quot;=====================\n&quot;)
+        console.log(&quot;dexPath: &quot;+dexPath);
+        console.log(&quot;optimizedDirectory: &quot;+optimizedDirectory);
+        console.log(&quot;librarySearchPath: &quot;+librarySearchPath);
+        console.log(&quot;parent: &quot;+parent);
+      this.$init(dexPath,optimizedDirectory,librarySearchPath,parent);
+    }
+```
+</code></pre><p>参考资料：</p>
+<ol>
+<li><a href="https://github.com/Meituan-Dianping/Robust/blob/master/README-zh.md" target="_blank" rel="noopener">https://github.com/Meituan-Dianping/Robust/blob/master/README-zh.md</a></li>
+<li><a href="https://bbs.pediy.com/thread-229597.htm" target="_blank" rel="noopener">https://bbs.pediy.com/thread-229597.htm</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/14/CVE-2018-9445-——-Android-USB上的目录穿越/" rel="next" title="CVE-2018-9445 —— Android挂载外设的目录穿越">
+                <i class="fa fa-chevron-left"></i> CVE-2018-9445 —— Android挂载外设的目录穿越
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/22/c-filt/" rel="prev" title="c++filt - 还原so中的函数名">
+                c++filt - 还原so中的函数名 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">m4bln</p>
+              <p class="site-description motion-element" itemprop="description">影后入林到驿前</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#关于Robust"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x5173;&#x4E8E;Robust" class="headerlink" title="&#x5173;&#x4E8E;Robust"></a>&#x5173;&#x4E8E;Robust</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Robust使用"><span class="nav-number">2.</span> <span class="nav-text"><a href="#Robust&#x4F7F;&#x7528;" class="headerlink" title="Robust&#x4F7F;&#x7528;"></a>Robust&#x4F7F;&#x7528;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#环境配置"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#&#x73AF;&#x5883;&#x914D;&#x7F6E;" class="headerlink" title="&#x73AF;&#x5883;&#x914D;&#x7F6E;"></a>&#x73AF;&#x5883;&#x914D;&#x7F6E;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自动生成补丁"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#&#x81EA;&#x52A8;&#x751F;&#x6210;&#x8865;&#x4E01;" class="headerlink" title="&#x81EA;&#x52A8;&#x751F;&#x6210;&#x8865;&#x4E01;"></a>&#x81EA;&#x52A8;&#x751F;&#x6210;&#x8865;&#x4E01;</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">m4bln</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.3"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("AAhymnaPSbBOge9isiIUi5c8-gzGzoHsz", "79JTCuY3J33b0HodXn8nYFvn");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

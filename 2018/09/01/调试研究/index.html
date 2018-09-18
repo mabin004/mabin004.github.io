@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, m4bln" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="远程调试Chrome的调试目标主要分两种：Chrome PC 浏览器和 Chrome Mobile  调试PC端chrome除了使用“审查元素”外，还可以用一个进程的chrome调试另一个进程的chrome。利用命令行启动chrome，并开启调试端口即可：1sudo /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --r">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Chrome远程调试">
+<meta property="og:url" content="https://mabin004.github.io/2018/09/01/调试研究/index.html">
+<meta property="og:site_name" content="m4bln">
+<meta property="og:description" content="远程调试Chrome的调试目标主要分两种：Chrome PC 浏览器和 Chrome Mobile  调试PC端chrome除了使用“审查元素”外，还可以用一个进程的chrome调试另一个进程的chrome。利用命令行启动chrome，并开启调试端口即可：1sudo /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --r">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-135.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-136.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-137.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-138.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-139.png">
+<meta property="og:updated_time" content="2018-09-04T08:53:49.128Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chrome远程调试">
+<meta name="twitter:description" content="远程调试Chrome的调试目标主要分两种：Chrome PC 浏览器和 Chrome Mobile  调试PC端chrome除了使用“审查元素”外，还可以用一个进程的chrome调试另一个进程的chrome。利用命令行启动chrome，并开启调试端口即可：1sudo /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --r">
+<meta name="twitter:image" content="https://mabin004.github.io/images/pasted-135.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'SXXZO8IPW0',
+      apiKey: 'b9723880e3b66475126bdc98a4bb9380',
+      indexName: 'm4bln',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到任何搜索结果: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://mabin004.github.io/2018/09/01/调试研究/"/>
+
+
+
+
+
+  <title>Chrome远程调试 | m4bln</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">m4bln</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-hint">
+          <a href="/hint/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            hint
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-todo">
+          <a href="/todo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            ToDo
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/09/01/调试研究/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Chrome远程调试</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-01T21:41:43+08:00">
+                2018-09-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/09/01/调试研究/" class="leancloud_visitors" data-flag-title="Chrome远程调试">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="远程调试"><a href="#远程调试" class="headerlink" title="远程调试"></a>远程调试</h2><p>Chrome的调试目标主要分两种：Chrome PC 浏览器和 Chrome Mobile</p>
+<p><img src="/images/pasted-135.png" alt="upload successful"></p>
+<h3 id="调试PC端chrome"><a href="#调试PC端chrome" class="headerlink" title="调试PC端chrome"></a>调试PC端chrome</h3><p>除了使用“审查元素”外，还可以用一个进程的chrome调试另一个进程的chrome。利用命令行启动chrome，并开启调试端口即可：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=2333</span><br></pre></td></tr></table></figure></p>
+<p>需要注意被调试端暴露的端口只接受来自127.0.0.1 或者localhost 的端口请求。</p>
+<h3 id="调试Android端chrome"><a href="#调试Android端chrome" class="headerlink" title="调试Android端chrome"></a>调试Android端chrome</h3><p>调试Android端Chrome需要: </p>
+<ol>
+<li>adb连接（USB线连接或adb网络调试）</li>
+<li>手机端webview需要打开调试模式<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">webview.setWebContentsDebuggingEnabled(true)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>满足上述2点后，在PC上的chrome中输入chrome://inspect或about://inspect,即可进入调试界面。</p>
+<p><img src="/images/pasted-136.png" alt="upload successful"></p>
+<h2 id="调试实现"><a href="#调试实现" class="headerlink" title="调试实现"></a>调试实现</h2><p>Chrome的调试本质上通过端口来实现，PC端chrome在开启调试模式时会指定端口，Android端通过adb forward来实现：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb forward tcp:2333 localabstract:webview_devtools_remote_6784</span><br></pre></td></tr></table></figure></p>
+<p>被调试的webview在手机上创建一个Unix Domain Socket, 这个socket的名字为 webview_devtools<em>remote</em><pid>,其中pid为webview所处的进程号，执行adb forward命令后，adb将这个<br>Unix Domain Socket转发到PC上一个本地端口，进而实现了调试。</pid></p>
+<h3 id="调试权限"><a href="#调试权限" class="headerlink" title="调试权限"></a>调试权限</h3><p>Google 为了限制调试端口的接入范围，对于 Chrome PC 浏览器，调试端口只接受来自 127.0.0.1 或者 localhost 的数据请求，所以，无法通过你的本地机器 IP 来调试 Chrome。</p>
+<p>对于 Android Chrome/WebView，调试端口只接受来自于 shell 这个用户数据请求，也就是说只能通过 USB 进行调试，或者通过adb网络连接调试。</p>
+<p>为了测试这一点，我们通过本地socket连接Unix Domain Socket进行了实验验证：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;string.h&gt;</span><br><span class="line">#include &lt;stddef.h&gt;</span><br><span class="line">#include &lt;sys/un.h&gt;</span><br><span class="line">#include &lt;sys/socket.h&gt;</span><br><span class="line">void send_remote_request(char *msg)</span><br><span class="line">&#123;</span><br><span class="line">    int localsocket, len;</span><br><span class="line">    struct sockaddr_un remote;</span><br><span class="line"></span><br><span class="line">    if ((localsocket = socket(AF_UNIX, SOCK_STREAM, 0)) == -1) &#123;</span><br><span class="line">    exit(1);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    char *name=&quot;webview_devtools_remote_6784&quot;;//与java上层相同哦</span><br><span class="line"></span><br><span class="line">    remote.sun_path[0] = &apos;\0&apos;;  /* abstract namespace */</span><br><span class="line">    strcpy(remote.sun_path+1, name);</span><br><span class="line">    remote.sun_family = AF_UNIX;</span><br><span class="line">    int nameLen = strlen(name);</span><br><span class="line">    len = 1 + nameLen + offsetof(struct sockaddr_un, sun_path);</span><br><span class="line"></span><br><span class="line">    if (connect(localsocket, (struct sockaddr *)&amp;remote, len) == -1) &#123;</span><br><span class="line">        printf(&quot;connect error\n&quot;);</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    if (send(localsocket, msg, strlen(msg),0) == -1) &#123;</span><br><span class="line">        printf(&quot;send error\n&quot;);</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    char buf[1024];</span><br><span class="line"></span><br><span class="line">    if (recv(localsocket,buf,1024, 0) == -1)&#123;</span><br><span class="line">        printf(&quot;rece error\n&quot;);</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    printf(&quot;received: %s&quot;,buf);</span><br><span class="line">    </span><br><span class="line">    close(localsocket);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    char *http=&quot;GET /json/version HTTP/1.1\r\nHost: 127.0.0.1\r\nUser-Agent: curl/7.54.0\r\nAccept: */*\r\n\r\n&quot;;</span><br><span class="line">    send_remote_request(http);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上述代码编译的程序在uid=0(root权限)运行时，会受到返回socket数据：</p>
+<p><img src="/images/pasted-137.png" alt="upload successful"></p>
+<p>在其他权限执行时，socket会连接错误：</p>
+<p><img src="/images/pasted-138.png" alt="upload successful"></p>
+<h3 id="请求调试端口"><a href="#请求调试端口" class="headerlink" title="请求调试端口"></a>请求调试端口</h3><p>通过以上的调试方式的接入以及调试端口的打开，这个时候在浏览器中请求127.0.0.1:2333，可以看到以下内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[ &#123;</span><br><span class="line">   &quot;description&quot;: &quot;&#123;\&quot;attached\&quot;:true,\&quot;empty\&quot;:false,\&quot;height\&quot;:1055,\&quot;screenX\&quot;:0,\&quot;screenY\&quot;:210,\&quot;visible\&quot;:true,\&quot;width\&quot;:845&#125;&quot;,</span><br><span class="line">   &quot;devtoolsFrontendUrl&quot;: &quot;http://chrome-devtools-frontend.appspot.com/serve_rev/@8daf58f7f40d22013c59388236c8e71e1117cb2c/inspector.html?ws=127.0.0.1:2333/devtools/page/0F8BF00855E9F57A1D62802C1882DE05&quot;,</span><br><span class="line">   &quot;faviconUrl&quot;: &quot;http://mat1.gtimg.com/www/icon/favicon2.ico&quot;,</span><br><span class="line">   &quot;id&quot;: &quot;0F8BF00855E9F57A1D62802C1882DE05&quot;,</span><br><span class="line">   &quot;title&quot;: &quot;腾讯首页&quot;,</span><br><span class="line">   &quot;type&quot;: &quot;page&quot;,</span><br><span class="line">   &quot;url&quot;: &quot;http://www.qq.com/&quot;,</span><br><span class="line">   &quot;webSocketDebuggerUrl&quot;: &quot;ws://127.0.0.1:2333/devtools/page/0F8BF00855E9F57A1D62802C1882DE05&quot;</span><br><span class="line">&#125; ]</span><br></pre></td></tr></table></figure></p>
+<p>其中，最重要的 2 个参数分别是 id 和 webSocketDebuggerUrl。</p>
+<p>Chrome 会为每个页面分配一个唯一的 id，作为该页面的唯一标识符。几乎对目标浏览器的所有操作都是需要带上这个 id。</p>
+<p>webSocketDebuggerUrl 则在调试该页面需要用到的一个 WebSocket 连接。chrome 的 devtool 的所有调试功能，都是基于 Remote Debugging Protocol 使用 WebSocket 来进行数据传输的。每一个页面都有自己不同的 webSocketDebuggerUrl。这个 webSocketDebuggerUrl是通过 url 的 query 参数传递给 chrome devtool 的。</p>
+<p>chrome 的 devtool 可以从 Chrome 浏览器中进行提取 devtool 源码或者从 blink 源码中获取。在部署好自己的 chrome devtool 代码之后，下面既可以开始对 Chrome 进行调试, 浏览器输入以下内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://path_to_your_devtool/devtool.html?ws=127.0.0.1:2333/devtools/page/0F8BF00855E9F57A1D62802C1882DE05</span><br></pre></td></tr></table></figure></p>
+<p>Chrome 提供了以下这些 http 接口控制目标浏览器:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 获取当前所有可调式页面信息</span><br><span class="line">http://127.0.0.1:9222/json</span><br><span class="line"></span><br><span class="line"># 获取调试目标 WebView/blink 的版本号</span><br><span class="line">http://127.0.0.1:9222/json/version</span><br><span class="line"></span><br><span class="line"># 创建新的 tab，并加载 url</span><br><span class="line">http://127.0.0.1:9222/json/new?url</span><br><span class="line"></span><br><span class="line"># 关闭 id 对应的 tab</span><br><span class="line">http://127.0.0.1:9222/json/close/id</span><br></pre></td></tr></table></figure></p>
+<h2 id="Chrome-Android远程调试诊断"><a href="#Chrome-Android远程调试诊断" class="headerlink" title="Chrome Android远程调试诊断"></a>Chrome Android远程调试诊断</h2><h3 id="是否开启了unix-domain-socket"><a href="#是否开启了unix-domain-socket" class="headerlink" title="是否开启了unix domain socket"></a>是否开启了unix domain socket</h3><p>运行下列命令，如果查到abstract socket：@chrome_devtools_remote，则表明chrome for android 开启了unix domain socket。如果查到abstract socket@webview_devtools_remote_27594，则说明了AndroidWebView也开启了unix domain socket<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /proc/net/unix | grep --text  _devtools_remote</span><br></pre></td></tr></table></figure></p>
+<p><img src="/images/pasted-139.png" alt="upload successful"></p>
+<h3 id="是否开启了websocket服务器"><a href="#是否开启了websocket服务器" class="headerlink" title="是否开启了websocket服务器"></a>是否开启了websocket服务器</h3><p>可以通过ptyhon库websocket-client来测试.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ sudo pip install websocket-client</span><br><span class="line">python</span><br><span class="line">&gt;&gt;&gt; import websocket</span><br><span class="line">&gt;&gt;&gt; ws = websocket.create_connection(&quot;ws://localhost:4000/devtools/page/140&quot;)</span><br><span class="line">&gt;&gt;&gt; ws.send(&quot;Hello,world&quot;)</span><br><span class="line">17</span><br><span class="line">&gt;&gt;&gt; result =  ws.recv()</span><br><span class="line">&gt;&gt;&gt; print result</span><br><span class="line">&#123;&quot;error&quot;:&#123;&quot;code&quot;:-32700,&quot;message&quot;:&quot;Message must be in JSON format&quot;&#125;,&quot;id&quot;:null&#125;</span><br></pre></td></tr></table></figure></p>
+<p>参考资料：</p>
+<ol>
+<li>揭秘浏览器远程调试技术 <a href="http://taobaofed.org/blog/2016/10/19/chrome-remote-debugging-technics/" target="_blank" rel="noopener">http://taobaofed.org/blog/2016/10/19/chrome-remote-debugging-technics/</a></li>
+<li>Chrome for Android Remote Inspector 原理 <a href="https://blog.csdn.net/xxhforest/article/details/52204197" target="_blank" rel="noopener">https://blog.csdn.net/xxhforest/article/details/52204197</a></li>
+<li>LocalServerSocket <a href="https://developer.android.com/reference/android/net/LocalServerSocket" target="_blank" rel="noopener">https://developer.android.com/reference/android/net/LocalServerSocket</a></li>
+<li>Linux下进程间通讯方式 - UNIX Domain Socket <a href="https://blog.csdn.net/z2066411585/article/details/78966434/" target="_blank" rel="noopener">https://blog.csdn.net/z2066411585/article/details/78966434/</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/24/在iOS上使用Frida/" rel="next" title="在iOS上使用Frida">
+                <i class="fa fa-chevron-left"></i> 在iOS上使用Frida
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/07/CVE-2018-9489分析/" rel="prev" title="CVE-2018-9489分析">
+                CVE-2018-9489分析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">m4bln</p>
+              <p class="site-description motion-element" itemprop="description">影后入林到驿前</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#远程调试"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x8FDC;&#x7A0B;&#x8C03;&#x8BD5;" class="headerlink" title="&#x8FDC;&#x7A0B;&#x8C03;&#x8BD5;"></a>&#x8FDC;&#x7A0B;&#x8C03;&#x8BD5;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#调试PC端chrome"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#&#x8C03;&#x8BD5;PC&#x7AEF;chrome" class="headerlink" title="&#x8C03;&#x8BD5;PC&#x7AEF;chrome"></a>&#x8C03;&#x8BD5;PC&#x7AEF;chrome</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调试Android端chrome"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#&#x8C03;&#x8BD5;Android&#x7AEF;chrome" class="headerlink" title="&#x8C03;&#x8BD5;Android&#x7AEF;chrome"></a>&#x8C03;&#x8BD5;Android&#x7AEF;chrome</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调试实现"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x8C03;&#x8BD5;&#x5B9E;&#x73B0;" class="headerlink" title="&#x8C03;&#x8BD5;&#x5B9E;&#x73B0;"></a>&#x8C03;&#x8BD5;&#x5B9E;&#x73B0;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#调试权限"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#&#x8C03;&#x8BD5;&#x6743;&#x9650;" class="headerlink" title="&#x8C03;&#x8BD5;&#x6743;&#x9650;"></a>&#x8C03;&#x8BD5;&#x6743;&#x9650;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#请求调试端口"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#&#x8BF7;&#x6C42;&#x8C03;&#x8BD5;&#x7AEF;&#x53E3;" class="headerlink" title="&#x8BF7;&#x6C42;&#x8C03;&#x8BD5;&#x7AEF;&#x53E3;"></a>&#x8BF7;&#x6C42;&#x8C03;&#x8BD5;&#x7AEF;&#x53E3;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Chrome-Android远程调试诊断"><span class="nav-number">3.</span> <span class="nav-text"><a href="#Chrome-Android&#x8FDC;&#x7A0B;&#x8C03;&#x8BD5;&#x8BCA;&#x65AD;" class="headerlink" title="Chrome Android&#x8FDC;&#x7A0B;&#x8C03;&#x8BD5;&#x8BCA;&#x65AD;"></a>Chrome Android&#x8FDC;&#x7A0B;&#x8C03;&#x8BD5;&#x8BCA;&#x65AD;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#是否开启了unix-domain-socket"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#&#x662F;&#x5426;&#x5F00;&#x542F;&#x4E86;unix-domain-socket" class="headerlink" title="&#x662F;&#x5426;&#x5F00;&#x542F;&#x4E86;unix domain socket"></a>&#x662F;&#x5426;&#x5F00;&#x542F;&#x4E86;unix domain socket</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#是否开启了websocket服务器"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#&#x662F;&#x5426;&#x5F00;&#x542F;&#x4E86;websocket&#x670D;&#x52A1;&#x5668;" class="headerlink" title="&#x662F;&#x5426;&#x5F00;&#x542F;&#x4E86;websocket&#x670D;&#x52A1;&#x5668;"></a>&#x662F;&#x5426;&#x5F00;&#x542F;&#x4E86;websocket&#x670D;&#x52A1;&#x5668;</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">m4bln</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.3"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("AAhymnaPSbBOge9isiIUi5c8-gzGzoHsz", "79JTCuY3J33b0HodXn8nYFvn");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
