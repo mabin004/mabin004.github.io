@@ -310,6 +310,304 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/11/01/远程打挂所有的apple设备-CVE-2018-4407-分析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/01/远程打挂所有的apple设备-CVE-2018-4407-分析/" itemprop="url">远程打挂所有的apple设备 — CVE-2018-4407分析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-01T14:15:44+08:00">
+                2018-11-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/11/01/远程打挂所有的apple设备-CVE-2018-4407-分析/" class="leancloud_visitors" data-flag-title="远程打挂所有的apple设备 — CVE-2018-4407分析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          简述Kevin Backhouse 发现了一个iOS和mac OS的内核漏洞 —— CVE-2018-4407，该漏洞出现在XNU内核中，可以远程攻击使所有的apple设备挂掉。
+漏洞演示demo：https://www.youtube.com/watch?v=aV7yEemjexk
+漏洞已经上报给了Apple并在iOS12（9月17日）和macOS Mojave（9月24日）系统更新中已经修复完成。该漏洞影响以下版本的设备：
+
+iOS 11以及之前的所有设备 (upgrade to iOS 12)
+macOS High Sierra 10.13.6以及以下所有设备(patched in security update 2018-001)
+macOS Sierra 10.12.6以及之前所有的设备(patched in security update 2018-005)
+OS X El Capitan以及之前所有设备
+
+漏洞分析漏洞出现在icmp_error代码中, (bsd/netinet/ip_icmp.c:339):
+我们知道，ICMP报文主要有两大功能：查询报文和差错报文。在互联网传输过程中，IP数据报难免会出现差错，通常出现差错时处理方法就是丢弃，但一般出现差错后，接收方会发送ICMP报文给主机，告诉它一些差错信息，而icmp_error就是这一部分的实现。
+产生漏洞的代码为：1m_copydata(n, 0, icmplen, (caddr_t)&amp;icp-&gt;icmp_ip);
+m_copydata为一个简单的指定长度的数据拷贝，其实现如下：
+icmp_error中的m_copydata是将出错ip数据包的包头复制到icmp的消息体中，其中n为接收到的出错的ip数据包，icp-&gt;icmp_ip为要拷贝的目的地址，如果n的包头过大，超过了icp分
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/11/01/远程打挂所有的apple设备-CVE-2018-4407-分析/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/09/17/USB攻击android手机/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/17/USB攻击android手机/" itemprop="url">CVE-2018-9488 - 从zygote到init</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-17T21:56:12+08:00">
+                2018-09-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/09/17/USB攻击android手机/" class="leancloud_visitors" data-flag-title="CVE-2018-9488 - 从zygote到init">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          概述上一篇文章中利用cve-2018-9445实现了Android系统在mount外设时的目录穿越CVE-2018-9445 —— Android挂载外设的目录穿越，由于字符长度限制，只有5个字符可控，利用极其有限。
+PJ0的Jann Horn，也就是漏洞的原作者对该漏洞进一步分析，发现了更精巧的利用方法，能够基于该漏洞进一步从zygote提权到init，Goole为这一新的利用分配了新的cve编号 —— CVE-2018-9488。
+漏洞分析cve-2018-9445能够利用的前提是USB设备有MBR分区表，且格式为vfat，这样内核的vfat文件系统才会mount。此外，如需进一步利用，还需要绕过以下几种安全措施：
+
+路径穿越5个字符的限制
+SELinux限制了vold进程的操作
+权限限制，如果目录权限不是0700，fs_prepare_dir和chmod会失败
+vfat文件系统限制。vfat格式的U盘被mount后，所有文件会被标记为u:object_r:vfat:s0，这意味着即使mount后的目录为/system或/data等一些系统级别的目录，SELinux Context下的进程（如zygote和system_server）是无法和其交互的。
+media_rw组的进程需要绕过DAC检测
+
+漏洞利用1.伪造一个USB设备如上篇文章所述，blkid支持各种不同的文件系统，在解析文件头得到type, label和 UUID之后，fsck_msdos会再次读取文件，检测文件系统是否为vfat格式，我们只需要构造一个动态可控的USB设备使系统在两次读取信息时，返回不同的值即可满足这两种条件。即blkid在读取时，构造一个长字符串的label,使blkid认为是romfs格式；fsck_msdos在读取时，再修改自己成为一个vfat格式的USB设备。
+这里使用一个树莓派Z
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/09/17/USB攻击android手机/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/09/17/iPhone打开某网站重启分析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -407,13 +705,11 @@ crash分析查看log发现crash log类型为unknown：
 kernel打印出一堆奇怪的东西：
 
 推测应该是webkit占用了过多的内核资源
-参考资料：
+历史上的iPhone crash事件
+2018年5月，点击黑点表情卡死https://baijiahao.baidu.com/s?id=1600048067011062679&amp;wfr=spider&amp;for=pc 影响iOS 10/11
 
-https://www.bleepingcomputer.com/news/security/new-css-attack-restarts-an-iphone-or-freezes-a-mac/
-https://gist.github.com/pwnsdx/ce64de2760996a6c432f06d612e33aea
-
-
-          
+2018年1月 chaiOS bug https://www.idownloadblog.com/2018/01/18/a-fix-for-chaios-messages-bug-will-arrive-next-week/ 影响 
+          ...
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/09/17/iPhone打开某网站重启分析/#more" rel="contents">
@@ -1472,292 +1768,11 @@ Robust使用环境配置
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/08/14/CVE-2018-9445-——-Android-USB上的目录穿越/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/14/CVE-2018-9445-——-Android-USB上的目录穿越/" itemprop="url">CVE-2018-9445 —— Android挂载外设的目录穿越</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-14T18:55:00+08:00">
-                2018-08-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/14/CVE-2018-9445-——-Android-USB上的目录穿越/" class="leancloud_visitors" data-flag-title="CVE-2018-9445 —— Android挂载外设的目录穿越">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          简介Android的USB有host和Accessory两种模式，处于Host模式下的Android设备可以对外围设备进行交互，如读取U盘数据、USB键盘鼠标等。当有外设插入到Android设备上时，系统读取外设的一些硬件信息（如LABEL、UUID等）并自动为其挂载。
-Android系统中由Vold进程（Volume Daemon）负责管理和控制外设，Vold进程如果在挂载外设时没有正确的对硬件信息进行解析，则有可能出现安全问题。CVE-2018-9445就是Vold在挂载外设时，由于未正确获取UUID导致的目录穿越问题。
-漏洞细节当USB设备插到Android手机上时，Vold进程（Volume Daemon）会自动为USB设备进行mount，即使手机处于锁屏状态。Vold进程在mount之前需要知道所连接设备的一些硬件信息，如UUID、type、Label等，其具体实现在system/vold/Utils.cpp的readMetadata()函数中：
-12345678910111213141516171819202122232425262728293031323334353637383940414243/*https://android.googlesource.com/platform/system/vold/+/master/Utils.cpp#212*/std::vector&lt;std::string&gt; cmd;    cmd.push_back(kBlkidPath);    cmd.push_back(&quot;-c&quot;);    cmd.push_back(&quot;/dev/null&quot;);    cmd.push_back(&quot;-s&quot;);    cmd.push_back(&quot;TYPE&quot;
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/08/14/CVE-2018-9445-——-Android-USB上的目录穿越/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/08/13/cve-2018-9375-——-Android个人字典漏洞分析/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/13/cve-2018-9375-——-Android个人字典漏洞分析/" itemprop="url">cve-2018-9375 —— Android Personal Dictionary漏洞分析</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-13T10:16:26+08:00">
-                2018-08-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/13/cve-2018-9375-——-Android个人字典漏洞分析/" class="leancloud_visitors" data-flag-title="cve-2018-9375 —— Android Personal Dictionary漏洞分析">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          关于Personal Dictionary（个人字典）Personal Dictionary（个人字典）是Android系统提供的一个自定义的字典，用于存放用户经常输入的数据或字符以提高输入效率，它位于“设置”—— “语言和输入法” —— “个人字典”中，某些情况下Personal Dictionary中可能存放用户的隐私信息，如密码、地址、电话、信用卡账号等信息。https://ioactive.com/wp-content/uploads/2018/07/exploit-user-dictionary-poc.png
-用户也可以为一个字符串自定义一个shortcut，例如输入myhome，会自动出来详细的地址https://ioactive.com/wp-content/uploads/2018/07/exploit-user-dictionary-poc2.png
-在Andorid系统内部，这些字符保存在一个sqlite数据库中，表名称为“words”，其中包含6个列：_id (INTEGER, PRIMARY KEY)word (TEXT)frequency (INTEGER)locale (TEXT)appid (INTEGER)shortcut (TEXT)
-漏洞细节早期版本的Android系统中，操作Personal Dictionary需要申请权限：android.permission.READ_USER_DICTIONARYandroid.permission.WRITE_USER_DICTIONARY从Android 6.0（API 23）开始, Android规定只有IME和spellchecker才可以操作Personal Dictionary，并提供了对应的provider —— content://user_dictionary/words
-co
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/08/13/cve-2018-9375-——-Android个人字典漏洞分析/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1803,7 +1818,7 @@ co
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">61</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

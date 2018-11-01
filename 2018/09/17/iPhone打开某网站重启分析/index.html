@@ -89,7 +89,12 @@
 <meta property="og:image" content="https://mabin004.github.io/images/pasted-142.png">
 <meta property="og:image" content="https://mabin004.github.io/images/pasted-143.png">
 <meta property="og:image" content="https://mabin004.github.io/images/pasted-144.png">
-<meta property="og:updated_time" content="2018-09-18T08:14:11.310Z">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-151.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-150.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-152.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-153.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-154.png">
+<meta property="og:updated_time" content="2018-10-31T03:08:51.378Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iPhone打开某网站重启分析">
 <meta name="twitter:description" content="概述使用iPhone打开https://xssle.com/ios/ 这个网站，手机就会重启，此外在mac上用Safari浏览器打卡也会陷入卡顿，但不至于重启。 网页分析该网页的源码如下：  可以看到网页由几部分组成：  一张背景图片不断重复 3000多个div嵌套 每个div设置了backdrop-filter、-webkit-backdrop-filter属性  通过精简测试，发现背景图片不影">
@@ -407,6 +412,20 @@
 <p>kernel打印出一堆奇怪的东西：</p>
 <p><img src="/images/pasted-144.png" alt="upload successful"></p>
 <p>推测应该是webkit占用了过多的内核资源</p>
+<h2 id="历史上的iPhone-crash事件"><a href="#历史上的iPhone-crash事件" class="headerlink" title="历史上的iPhone crash事件"></a>历史上的iPhone crash事件</h2><ol>
+<li><p>2018年5月，点击黑点表情卡死<br><a href="https://baijiahao.baidu.com/s?id=1600048067011062679&amp;wfr=spider&amp;for=pc" target="_blank" rel="noopener">https://baijiahao.baidu.com/s?id=1600048067011062679&amp;wfr=spider&amp;for=pc</a> 影响iOS 10/11<br><img src="/images/pasted-151.png" alt="upload successful"></p>
+</li>
+<li><p>2018年1月 chaiOS bug<br> <a href="https://www.idownloadblog.com/2018/01/18/a-fix-for-chaios-messages-bug-will-arrive-next-week/" target="_blank" rel="noopener">https://www.idownloadblog.com/2018/01/18/a-fix-for-chaios-messages-bug-will-arrive-next-week/</a><br> 影响 iOS 10 - 11.2.5<br><img src="/images/pasted-150.png" alt="upload successful"></p>
+</li>
+<li><p>2017年1月，发送“白旗+0+彩虹”表情卡死<br><a href="https://www.leiphone.com/news/201701/GDXeBJxyggxGoe7O.html" target="_blank" rel="noopener">https://www.leiphone.com/news/201701/GDXeBJxyggxGoe7O.html</a><br><img src="/images/pasted-152.png" alt="upload successful"> iOS 10.0到10.2.1</p>
+</li>
+<li><p>2017年5月，gif导致iPhone重启<br><a href="https://www.leiphone.com/news/201705/pUQ6Rzdo26OHWgm7.html" target="_blank" rel="noopener">https://www.leiphone.com/news/201705/pUQ6Rzdo26OHWgm7.html</a></p>
+</li>
+<li><p>2016年，一段美拍视频导致iPhone崩溃<br><a href="https://www.zhihu.com/question/51630274" target="_blank" rel="noopener">https://www.zhihu.com/question/51630274</a><br><img src="/images/pasted-153.png" alt="upload successful"></p>
+</li>
+<li>2015年5月，“Effective Power” Unicode解码<br><a href="https://metro.co.uk/2015/05/27/theres-a-way-of-crashing-someones-iphone-with-a-text-message-5217671/" target="_blank" rel="noopener">https://metro.co.uk/2015/05/27/theres-a-way-of-crashing-someones-iphone-with-a-text-message-5217671/</a></li>
+</ol>
+<p><img src="/images/pasted-154.png" alt="upload successful"></p>
 <p>参考资料：</p>
 <ol>
 <li><a href="https://www.bleepingcomputer.com/news/security/new-css-attack-restarts-an-iphone-or-freezes-a-mac/" target="_blank" rel="noopener">https://www.bleepingcomputer.com/news/security/new-css-attack-restarts-an-iphone-or-freezes-a-mac/</a></li>
@@ -445,6 +464,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/17/USB攻击android手机/" rel="prev" title="CVE-2018-9488 - 从zygote到init">
+                CVE-2018-9488 - 从zygote到init <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -519,7 +542,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">61</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -567,7 +590,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x6982;&#x8FF0;" class="headerlink" title="&#x6982;&#x8FF0;"></a>&#x6982;&#x8FF0;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网页分析"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x7F51;&#x9875;&#x5206;&#x6790;" class="headerlink" title="&#x7F51;&#x9875;&#x5206;&#x6790;"></a>&#x7F51;&#x9875;&#x5206;&#x6790;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#crash分析"><span class="nav-number">3.</span> <span class="nav-text"><a href="#crash&#x5206;&#x6790;" class="headerlink" title="crash&#x5206;&#x6790;"></a>crash&#x5206;&#x6790;</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x6982;&#x8FF0;" class="headerlink" title="&#x6982;&#x8FF0;"></a>&#x6982;&#x8FF0;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网页分析"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x7F51;&#x9875;&#x5206;&#x6790;" class="headerlink" title="&#x7F51;&#x9875;&#x5206;&#x6790;"></a>&#x7F51;&#x9875;&#x5206;&#x6790;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#crash分析"><span class="nav-number">3.</span> <span class="nav-text"><a href="#crash&#x5206;&#x6790;" class="headerlink" title="crash&#x5206;&#x6790;"></a>crash&#x5206;&#x6790;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#历史上的iPhone-crash事件"><span class="nav-number">4.</span> <span class="nav-text"><a href="#&#x5386;&#x53F2;&#x4E0A;&#x7684;iPhone-crash&#x4E8B;&#x4EF6;" class="headerlink" title="&#x5386;&#x53F2;&#x4E0A;&#x7684;iPhone crash&#x4E8B;&#x4EF6;"></a>&#x5386;&#x53F2;&#x4E0A;&#x7684;iPhone crash&#x4E8B;&#x4EF6;</span></a></li></ol></div>
             
 
           </div>

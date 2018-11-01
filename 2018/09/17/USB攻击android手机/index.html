@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, m4bln" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="概述上一篇文章中利用cve-2018-9445实现了Android系统在mount外设时的目录穿越CVE-2018-9445 —— Android挂载外设的目录穿越，由于字符长度限制，只有5个字符可控，利用极其有限。 PJ0的Jann Horn，也就是漏洞的原作者对该漏洞进一步分析，发现了更精巧的利用方法，能够基于该漏洞进一步从zygote提权到init，Goole为这一新的利用分配了新的cve编">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CVE-2018-9488 - 从zygote到init">
+<meta property="og:url" content="https://mabin004.github.io/2018/09/17/USB攻击android手机/index.html">
+<meta property="og:site_name" content="m4bln">
+<meta property="og:description" content="概述上一篇文章中利用cve-2018-9445实现了Android系统在mount外设时的目录穿越CVE-2018-9445 —— Android挂载外设的目录穿越，由于字符长度限制，只有5个字符可控，利用极其有限。 PJ0的Jann Horn，也就是漏洞的原作者对该漏洞进一步分析，发现了更精巧的利用方法，能够基于该漏洞进一步从zygote提权到init，Goole为这一新的利用分配了新的cve编">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-145.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-146.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-148.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-149.png">
+<meta property="og:updated_time" content="2018-10-24T14:54:24.061Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CVE-2018-9488 - 从zygote到init">
+<meta name="twitter:description" content="概述上一篇文章中利用cve-2018-9445实现了Android系统在mount外设时的目录穿越CVE-2018-9445 —— Android挂载外设的目录穿越，由于字符长度限制，只有5个字符可控，利用极其有限。 PJ0的Jann Horn，也就是漏洞的原作者对该漏洞进一步分析，发现了更精巧的利用方法，能够基于该漏洞进一步从zygote提权到init，Goole为这一新的利用分配了新的cve编">
+<meta name="twitter:image" content="https://mabin004.github.io/images/pasted-145.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'SXXZO8IPW0',
+      apiKey: 'b9723880e3b66475126bdc98a4bb9380',
+      indexName: 'm4bln',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到任何搜索结果: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://mabin004.github.io/2018/09/17/USB攻击android手机/"/>
+
+
+
+
+
+  <title>CVE-2018-9488 - 从zygote到init | m4bln</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">m4bln</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-hint">
+          <a href="/hint/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            hint
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-todo">
+          <a href="/todo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            ToDo
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/09/17/USB攻击android手机/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">CVE-2018-9488 - 从zygote到init</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-17T21:56:12+08:00">
+                2018-09-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/09/17/USB攻击android手机/" class="leancloud_visitors" data-flag-title="CVE-2018-9488 - 从zygote到init">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>上一篇文章中利用cve-2018-9445实现了Android系统在mount外设时的目录穿越<a href="./CVE-2018-9445 —— Android挂载外设的目录穿越">CVE-2018-9445 —— Android挂载外设的目录穿越</a>，由于字符长度限制，只有5个字符可控，利用极其有限。</p>
+<p>PJ0的Jann Horn，也就是漏洞的原作者对该漏洞进一步分析，发现了更精巧的利用方法，能够基于该漏洞进一步从zygote提权到init，Goole为这一新的利用分配了<br>新的cve编号 —— CVE-2018-9488。</p>
+<h1 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h1><p>cve-2018-9445能够利用的前提是USB设备有MBR分区表，且格式为vfat，这样内核的vfat文件系统才会mount。此外，如需进一步利用，还需要绕过以下几种安全措施：</p>
+<ul>
+<li>路径穿越5个字符的限制</li>
+<li>SELinux限制了vold进程的操作</li>
+<li>权限限制，如果目录权限不是0700，fs_prepare_dir和chmod会失败</li>
+<li>vfat文件系统限制。vfat格式的U盘被mount后，所有文件会被标记为u:object_r:vfat:s0，这意味着即使mount后的目录为/system或/data等一些系统级别的目录，SELinux Context下的进程（如zygote和system_server）是无法和其交互的。</li>
+<li>media_rw组的进程需要绕过DAC检测</li>
+</ul>
+<h1 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h1><h2 id="1-伪造一个USB设备"><a href="#1-伪造一个USB设备" class="headerlink" title="1.伪造一个USB设备"></a>1.伪造一个USB设备</h2><p>如上篇文章所述，blkid支持各种不同的文件系统，在解析文件头得到type, label和 UUID之后，fsck_msdos会再次读取文件，检测文件系统是否为vfat格式，我们只需要构造一个动态可控的USB设备使系统在两次读取信息时，返回不同的值即可满足这两种条件。即blkid在读取时，构造一个长字符串的label,使blkid认为是romfs格式；fsck_msdos在读取时，再修改自己成为一个vfat格式的USB设备。</p>
+<p>这里使用一个树莓派Zero W去构造一个USB Gadget实现上述功能，USB Gadget实现了 USB 协议定义的设备端的软件功能，Linux 中一切皆文件，因此通过配置一些参数如设备类型，序列号等，就可以被操作系统识别为一个“真实的”USB设备。参考<a href="https://events.static.linuxfound.org/sites/events/files/slides/LinuxConNA-Make-your-own-USB-gadget-Andrzej.Pietrasiewicz.pdf" target="_blank" rel="noopener">Make your own USB gadget”</a>。</p>
+<p>注意之所以使用Zero W是因为其支持USB device模式，Zero W有两个MicroUSB接口，分别用来供电和传输数据，市面上稍早些的树莓派，比如树莓派2B，树莓派3等，它们都只支持作为 Host。<br><img src="/images/pasted-145.png" alt="upload successful"></p>
+<p>为了实现目的，我们使用FUSE来实现辅助构造一个USB设备。 FUSE即用户空间文件系统（Filesystem in Userspace），通过FUSE可以修改文件系统读取属性，以实现不同条件下的读取返回不同的内容，核心代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">static int readdir(const char *path, char *buf, size_t size, off_t offset, struct fuse_file_info *fi) &#123;</span><br><span class="line">	backing_fds[STATE_BLKID] = open(&quot;disk_image_blkid&quot;, O_RDWR);</span><br><span class="line">	backing_fds[STATE_MOUNT] = open(&quot;disk_image_mount&quot;, O_RDWR);</span><br><span class="line">	if (offset == 0 &amp;&amp; size == 0x1000) switch_to_fd_idx(STATE_BLKID);</span><br><span class="line">	if (offset == 0x0011e000 &amp;&amp; size == 0x2000) switch_to_fd_idx(STATE_MOUNT);</span><br><span class="line">    ...</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里构造了两个image,第一个imgae为romfs格式，这里命名为”disk_image_blkid”，通过命令修改其label值以触发漏洞。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># echo -e &apos;-rom1fs-########TYPE=&quot;vfat&quot; UUID=&quot;../../data&quot;\0&apos; &gt; /dev/sdd1</span><br></pre></td></tr></table></figure></p>
+<p>第二个image为vfat格式，这里命名为”disk_image_mount”，放入需要替换的文件。</p>
+<p>编译fuse_intercept.c<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -Wall fuse_intercept.c `pkg-config fuse --cflags --libs` -o fuse_intercept</span><br></pre></td></tr></table></figure></p>
+<p>新建一个目录”mount”，并在控制台中运行fuse_intercept。</p>
+<p>在另一个控制台运行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo modprobe dwc2</span><br><span class="line">sudo modprobe g_mass_storage file=/home/pi/mount/wrapped_image stall=0</span><br></pre></td></tr></table></figure></p>
+<p>告诉内核将mount目录作为一个usb设备。</p>
+<h2 id="2-绕过SELinux"><a href="#2-绕过SELinux" class="headerlink" title="2.绕过SELinux"></a>2.绕过SELinux</h2><p>即使成功的利用漏洞monut到了/data目录，由于Android的一些安全限制，很多代码是无法访问mount的文件系统的。</p>
+<p>基于Android的访问限制，代码访问mount文件系统需要绕过DAC和SELinux两种限制:</p>
+<ul>
+<li>DAC (默认mount的文件属性为media_rw组)</li>
+</ul>
+<p><img src="/images/pasted-146.png" alt="upload successful"></p>
+<ul>
+<li>SELinux （zygote和system_server中的代码无权限加载mount的文件，所有文件为u:object_r:vfat:s0）</li>
+</ul>
+<p><img src="/images/pasted-148.png" alt="upload successful"></p>
+<p>事实上我们挂载的vfat文件系统由于是被动挂载，无法修改文件属性和绕过SELinux限制，利用上述的目录穿越漏洞，除了覆盖一些文件外，是无法实现代码执行的。</p>
+<p>为了实现代码执行，必须切换一下思路。我们知道Android(Linux)的分区是通过mount实现的，既然我们mount的文件无法绕过DAC和SELinux，那么系统mount的文件是如何实现的呢？这就引出了一个新的利用思路：PrivateVolume。</p>
+<p>Android系统的vold支持两种形式的USB —— PublicVolume和PrivateVolume(也就是外部存储和内部存储)，之前的漏洞利用我们一直基于PublicVolume，然而vold还可以挂载为PrivateVolume。PrivateVolume有一个很重要的特点就是可以控制文件的SELinux标签，这是因为PrivateVolume属于ext4文件格式，而ext4是支持修改SELinux的。因此如果能挂载为PrivateVolume，我们就可以绕过SELinux检测，进而实现代码执行。</p>
+<p>挂载成为PrivateVolume需要一些条件：PrivateVolume是由dm-crypt-encrypted加密的ext4文件系统，PrivateVolume必须为GPT分区格式，且包含一个独特的UUID kGptAndroidExpand (193D1EA4-B3CA-11E4-B075-10604B889DCF)。key保存在/data/misc/vold/expand_{partGuid}.key这个路径，其中{partGuid}为GPT分区的GUID。</p>
+<p>正常情况下攻击者不可能挂载一个PrivateVolume，因为手机上没有这个key,即使有，我们也不知道具体的GUID。但是攻击者可以利用之前的目录穿越漏洞覆盖/data/misc 目录，把自己的key和GUID预置在那里。</p>
+<p>这里有人可能会质疑，这个key文件难道没有SELinux限制么？这是因为挂载是由vold进程实现的，正如本节开头所述，vold进程是用来处理mount事件的，因此vold是有权限访问的。</p>
+<p>本节通过挂载成为PrivateVolume，我们可以绕过DAC和SELinux限制，进而实现代码执行。</p>
+<h2 id="3-注入Zygote"><a href="#3-注入Zygote" class="headerlink" title="3.注入Zygote"></a>3.注入Zygote</h2><p>绕过了DAC和SELinux限制，那么如何实现代码执行呢？通过利用漏洞覆盖/data,我们可以替换一些高权限进程加载的第三方库，进而注入我们自己的代码。</p>
+<p>zygote进程具有很高的权限，可以任意修改自己的UID和context,几乎可以访问所有的user数据。zygote在启动时，会加载/data/dalvik-cache/arm64/system@framework@boot*.{art,oat,vdex}三个文件，其中oat和vdex为/system分区的软连接，oat为一个elf文件。</p>
+<p>我们在mount到/data目录时，为保证zygote运行，需要准备这3个文件，其中oat和vdex直接设置为对应的软连接即可，对于oat文件，在<strong>attribute</strong>((constructor))函数中注入我们的代码，这样只要dlopen()加载oat文件时便会执行我们的代码。</p>
+<p>到目前为止我们实现了Zygote进程的代码执行，但只是理论上实现，因为Zygote只要在启动时才会加载这些第三方库，而我们的漏洞在触发时，Zygote已经运行起来了，因此我们需要让Zygote再加载一次。</p>
+<h2 id="4-Crash-system-server"><a href="#4-Crash-system-server" class="headerlink" title="4.Crash system_server"></a>4.Crash system_server</h2><p>为了实现Zygote重新加载一次，重启手机显然是不行的，Zygote倒是重新加载了，但vold进程也会重启，意味着我们漏洞利用也重新来过。因此只能采取软重启，但又保持vold进程不变的方式，来重启Zygote进程。</p>
+<p>Android中有一段用来跟踪宽带占用的代码，这段代码会不断的向/data分区写入数据，但超过2M的数据（mPersistThresholdBytes）写入失败时，就会导致system_server重启，也就意味着Zygote会重启。</p>
+<p>利用这个逻辑，我们可以使用Ping flood来触发Zygote重启。</p>
+<p>使用Ping flood需要基于一个前提，即被攻击设备连接到我们控制的网络中，这有两种办法可以实现：</p>
+<ul>
+<li>Android 9.0之前，在锁屏界面是可以控制手机连接到一个无需密码的wifi，以Pixel为例，只需要下滑屏幕，点击wifi图标下的小三角即可选择要连接的wifi。</li>
+<li>在手机上插一个USB无线网卡</li>
+</ul>
+<p>上述两种办法都可以实现利用Ping flood来crash system_server。</p>
+<p>到目前为止，我们漏洞利用做到了Zygote下的代码执行，Android中的应用都是由Zygote进程孵化而来，因此目前的漏洞利用代码可以访问所有的用户数据，但zygote毕竟权限有限，如不能打开一些块设备文件、访问部分内存空间受限等等，为了扩大化攻击，我们需要进一步提权。</p>
+<h2 id="5-从zygote到vold"><a href="#5-从zygote到vold" class="headerlink" title="5.从zygote到vold"></a>5.从zygote到vold</h2><p>早期的Android通过一个高权限的守护进程来生成crash dump文件，现在的andorid采用/system/bin/crash_dump64和/system/bin/crash_dump32来生成crash dump文件，这两个文件的SELinux标签为u:object_r:crash_dump_exec:s0，当这个标签的文件任何SELinux domain执行时，其context都会变为crash_dump domain。</p>
+<p>crash_dump 的SELinux策略如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">https://android.googlesource.com/platform/system/sepolicy/+/a3b3bdbb2fdbb4c540ef4e6c3ba77f5723ccf46d/public/crash_dump.te:</span><br><span class="line">[...]</span><br><span class="line">allow crash_dump &#123;</span><br><span class="line"> domain</span><br><span class="line"> -init</span><br><span class="line"> -crash_dump</span><br><span class="line"> -keystore</span><br><span class="line"> -logd</span><br><span class="line">&#125;:process &#123; ptrace signal sigchld sigstop sigkill &#125;;</span><br><span class="line">[...]</span><br><span class="line">r_dir_file(crash_dump, domain)</span><br><span class="line">[...]</span><br></pre></td></tr></table></figure></p>
+<p>这个策略允许crash_dump通过ptrace去attach绝大多数其他进程，包括vold进程，因此如果我们在crash_dump context下就可以通过attach拿到了vold进程权限。</p>
+<p>到这里也许我们想把一个预置一个带u:object_r:crash_dump_exec:s0标签的文件，然后去执行它，进而转移到crash_dump domain，然而这是行不通的。这是因为vold在mount时对文件做了权限降级，无法实现SELinux domain transitions。</p>
+<p>因此，现在只能通过注入代码到crash_dump64，我们使用unshare（）创建一个新的挂载点，然后调用pivot_root（）将根目录指向一个我们完全可控的目录，之后再执行crash_dump64。这样kernel会解析crash_dump64的文件头，获取linker的路径(/system/bin/linker64)，并从这个路劲加载linker并执行，如果这个linker是我们自己实现的，这个过程就会执行我们的代码。之后，我们的代码再通过attach到vold进程，拿到vold进程的执行权限。</p>
+<h2 id="6-从vold到init-context"><a href="#6-从vold到init-context" class="headerlink" title="6.从vold到init context"></a>6.从vold到init context</h2><p>到这里为止我们已经通过attach的方式控制了vold进程，作者又从vold提权到init context,注意这里是context，并非init进程。通过查找代码中所有能转为init contect的SELinux策略，发现kernel context可以转为init context:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">https://android.googlesource.com/platform/system/sepolicy/+/master/private/kernel.te:</span><br><span class="line">domain_auto_trans(kernel, init_exec, init)</span><br></pre></td></tr></table></figure></p>
+<p>这意味着如过kernel context的代码执行一个带有init_exec标签的文件，这个文件的context将变为init context。</p>
+<p>运行在kernel context的代码只能是kernel层了，即我们需要想办法让kernel执行一个带init_exec的文件。作者进一步发现当查找一个不存在的key时（例如调用request_key()），/sbin/request-key文件将会被kernel调用，所以利用之前的漏洞，我们替换/sbin目录，并预置我们自己构造的request-key，在获得vold执行权限后，调用request_key(),这时候kernel会调起我们构造的request-key，进而变为init context。</p>
+<h2 id="7-从init-context到kernel"><a href="#7-从init-context到kernel" class="headerlink" title="7.从init context到kernel"></a>7.从init context到kernel</h2><p>理论上从init context还可以进一步提权到kernel权限，但作者到这一步便没有再进行研究。</p>
+<p>通过查找源码中的domain_trans，发现init context可以转为modprobe或vendor_modprobe<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">domain_trans(init, &#123; rootfs toolbox_exec &#125;, modprobe)</span><br><span class="line">domain_trans(init, vendor_toolbox_exec, vendor_modprobe)</span><br></pre></td></tr></table></figure></p>
+<p>modprobe或vendor_modprobe有加载kernel module的权限：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">allow modprobe self:capability sys_module;</span><br><span class="line">allow modprobe &#123; system_file &#125;:system module_load;</span><br><span class="line">allow vendor_modprobe self:capability sys_module;</span><br><span class="line">allow vendor_modprobe &#123; vendor_file &#125;:system module_load;</span><br></pre></td></tr></table></figure></p>
+<p>Android目前对kernel modules的加载还没有签名验证：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">walleye:/ # zcat /proc/config.gz | grep MODULE</span><br><span class="line">CONFIG_MODULES_USE_ELF_RELA=y</span><br><span class="line">CONFIG_MODULES=y</span><br><span class="line"># CONFIG_MODULE_FORCE_LOAD is not set</span><br><span class="line">CONFIG_MODULE_UNLOAD=y</span><br><span class="line">CONFIG_MODULE_FORCE_UNLOAD=y</span><br><span class="line">CONFIG_MODULE_SRCVERSION_ALL=y</span><br><span class="line"># CONFIG_MODULE_SIG is not set</span><br><span class="line"># CONFIG_MODULE_COMPRESS is not set</span><br><span class="line">CONFIG_MODULES_TREE_LOOKUP=y</span><br><span class="line">CONFIG_ARM64_MODULE_CMODEL_LARGE=y</span><br><span class="line">CONFIG_ARM64_MODULE_PLTS=y</span><br><span class="line">CONFIG_RANDOMIZE_MODULE_REGION_FULL=y</span><br><span class="line">CONFIG_DEBUG_SET_MODULE_RONX=y</span><br></pre></td></tr></table></figure></p>
+<p>因此，在init context下执行一个文件变为modprobe context，进而加载一个kernel module可以提权到kernel权限。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这套利用可谓是极其精巧，把一个简单的目录穿越变为了kernel下的代码执行。我总结了漏洞利用过程中几个关键的节点，如下图：</p>
+<p><img src="/images/pasted-149.png" alt="upload successful"></p>
+<p>完成这套利用需要对Android的文件系统、DAC和SELinux有很深的理解，每一个关键环节都能看出作者扎实的基础和功底，是我们学习的榜样！</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><a href="https://googleprojectzero.blogspot.com/2018/09/oatmeal-on-universal-cereal-bus.html" target="_blank" rel="noopener">https://googleprojectzero.blogspot.com/2018/09/oatmeal-on-universal-cereal-bus.html</a></li>
+<li><a href="https://bugs.chromium.org/p/project-zero/issues/detail?id=1583" target="_blank" rel="noopener">https://bugs.chromium.org/p/project-zero/issues/detail?id=1583</a> (“directory traversal over USB via injection in blkid output”)</li>
+<li><a href="https://bugs.chromium.org/p/project-zero/issues/detail?id=1590" target="_blank" rel="noopener">https://bugs.chromium.org/p/project-zero/issues/detail?id=1590</a> (“privesc zygote-&gt;init; chain from USB”)</li>
+<li>使用树莓派 Zero 实现带回显的新型 Bad USB <a href="http://shumeipai.nxez.com/2018/06/26/using-raspberry-pi-zero-to-implement-new-bad-usb-with-echo.html" target="_blank" rel="noopener">http://shumeipai.nxez.com/2018/06/26/using-raspberry-pi-zero-to-implement-new-bad-usb-with-echo.html</a></li>
+<li>FUSE <a href="http://man7.org/linux/man-pages/man4/fuse.4.html" target="_blank" rel="noopener">http://man7.org/linux/man-pages/man4/fuse.4.html</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/17/iPhone打开某网站重启分析/" rel="next" title="iPhone打开某网站重启分析">
+                <i class="fa fa-chevron-left"></i> iPhone打开某网站重启分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/11/01/远程打挂所有的apple设备-CVE-2018-4407-分析/" rel="prev" title="远程打挂所有的apple设备 — CVE-2018-4407分析">
+                远程打挂所有的apple设备 — CVE-2018-4407分析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">m4bln</p>
+              <p class="site-description motion-element" itemprop="description">影后入林到驿前</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x6982;&#x8FF0;" class="headerlink" title="&#x6982;&#x8FF0;"></a>&#x6982;&#x8FF0;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#漏洞分析"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x6F0F;&#x6D1E;&#x5206;&#x6790;" class="headerlink" title="&#x6F0F;&#x6D1E;&#x5206;&#x6790;"></a>&#x6F0F;&#x6D1E;&#x5206;&#x6790;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#漏洞利用"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x6F0F;&#x6D1E;&#x5229;&#x7528;" class="headerlink" title="&#x6F0F;&#x6D1E;&#x5229;&#x7528;"></a>&#x6F0F;&#x6D1E;&#x5229;&#x7528;</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-伪造一个USB设备"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#1-&#x4F2A;&#x9020;&#x4E00;&#x4E2A;USB&#x8BBE;&#x5907;" class="headerlink" title="1.&#x4F2A;&#x9020;&#x4E00;&#x4E2A;USB&#x8BBE;&#x5907;"></a>1.&#x4F2A;&#x9020;&#x4E00;&#x4E2A;USB&#x8BBE;&#x5907;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-绕过SELinux"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#2-&#x7ED5;&#x8FC7;SELinux" class="headerlink" title="2.&#x7ED5;&#x8FC7;SELinux"></a>2.&#x7ED5;&#x8FC7;SELinux</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-注入Zygote"><span class="nav-number">3.3.</span> <span class="nav-text"><a href="#3-&#x6CE8;&#x5165;Zygote" class="headerlink" title="3.&#x6CE8;&#x5165;Zygote"></a>3.&#x6CE8;&#x5165;Zygote</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Crash-system-server"><span class="nav-number">3.4.</span> <span class="nav-text"><a href="#4-Crash-system-server" class="headerlink" title="4.Crash system_server"></a>4.Crash system_server</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-从zygote到vold"><span class="nav-number">3.5.</span> <span class="nav-text"><a href="#5-&#x4ECE;zygote&#x5230;vold" class="headerlink" title="5.&#x4ECE;zygote&#x5230;vold"></a>5.&#x4ECE;zygote&#x5230;vold</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-从vold到init-context"><span class="nav-number">3.6.</span> <span class="nav-text"><a href="#6-&#x4ECE;vold&#x5230;init-context" class="headerlink" title="6.&#x4ECE;vold&#x5230;init context"></a>6.&#x4ECE;vold&#x5230;init context</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-从init-context到kernel"><span class="nav-number">3.7.</span> <span class="nav-text"><a href="#7-&#x4ECE;init-context&#x5230;kernel" class="headerlink" title="7.&#x4ECE;init context&#x5230;kernel"></a>7.&#x4ECE;init context&#x5230;kernel</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.8.</span> <span class="nav-text"><a href="#&#x603B;&#x7ED3;" class="headerlink" title="&#x603B;&#x7ED3;"></a>&#x603B;&#x7ED3;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">3.9.</span> <span class="nav-text"><a href="#&#x53C2;&#x8003;&#x8D44;&#x6599;" class="headerlink" title="&#x53C2;&#x8003;&#x8D44;&#x6599;"></a>&#x53C2;&#x8003;&#x8D44;&#x6599;</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">m4bln</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.3"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("AAhymnaPSbBOge9isiIUi5c8-gzGzoHsz", "79JTCuY3J33b0HodXn8nYFvn");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
