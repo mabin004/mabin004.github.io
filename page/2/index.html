@@ -306,6 +306,143 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/08/22/Android基于OpenMemory的脱壳/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/22/Android基于OpenMemory的脱壳/" itemprop="url">Android基于OpenMemory的脱壳</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-22T17:31:00+08:00">
+                2018-08-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/22/Android基于OpenMemory的脱壳/" class="leancloud_visitors" data-flag-title="Android基于OpenMemory的脱壳">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          OpenMemoryAndroid ART加载外部dex本质上调用DexFile::OpenMemory()加载到内存：123456789101112131415std::unique_ptr&lt;const DexFile&gt; DexFile::OpenMemory(const uint8_t* base,                                                   size_t size,                                                   const std::string&amp; location,                                                   uint32_t location_checksum,                                                   MemMap* mem_map,                                                   const OatDexFile* oat_dex_file,                                                   std::string* error_msg) &#123;  CHECK_ALIGNED(base, 4);  // various dex file structures must be word aligned  std::unique_ptr&lt;DexFile&gt; dex_file(      new DexFile(base, size, location, location_checksum, mem_map, 
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/08/22/Android基于OpenMemory的脱壳/#espandi" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/08/22/c-filt/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -401,7 +538,7 @@ c++filt对于上述例子中的符号我们使用c++filt
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/08/22/c-filt/#more" rel="contents">
+            <a class="btn" href="/2018/08/22/c-filt/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -547,7 +684,7 @@ Robust使用环境配置
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/08/21/Robust/#more" rel="contents">
+            <a class="btn" href="/2018/08/21/Robust/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -693,7 +830,7 @@ Android系统中由Vold进程（Volume Daemon）负责管理和控制外设，Vo
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/08/14/CVE-2018-9445-——-Android-USB上的目录穿越/#more" rel="contents">
+            <a class="btn" href="/2018/08/14/CVE-2018-9445-——-Android-USB上的目录穿越/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -834,7 +971,7 @@ co
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/08/13/cve-2018-9375-——-Android个人字典漏洞分析/#more" rel="contents">
+            <a class="btn" href="/2018/08/13/cve-2018-9375-——-Android个人字典漏洞分析/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -986,7 +1123,7 @@ CVE-2018-
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/08/10/利用蓝牙漏洞逃逸iOS沙箱/#more" rel="contents">
+            <a class="btn" href="/2018/08/10/利用蓝牙漏洞逃逸iOS沙箱/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1134,7 +1271,7 @@ dumpsys
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/08/02/Android分析常用的工具或命令/#more" rel="contents">
+            <a class="btn" href="/2018/08/02/Android分析常用的工具或命令/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1277,7 +1414,7 @@ frida-gum/bindings/gumjs/：分V8和Duktape两个引擎，实现了Module、Memo
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/07/31/Mac上编译Frida/#more" rel="contents">
+            <a class="btn" href="/2018/07/31/Mac上编译Frida/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1421,7 +1558,7 @@ Menifest文件中注册receiver
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/07/26/Android设备管理器/#more" rel="contents">
+            <a class="btn" href="/2018/07/26/Android设备管理器/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1570,162 +1707,7 @@ FRP工作机制我们假设手机被盗取后的几个场景来分析：
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/07/25/Android-FRP功能分析（Factory-Reset-Protection）/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/07/03/XXE漏洞攻击和防御/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/03/XXE漏洞攻击和防御/" itemprop="url">XXE漏洞攻击和防御</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-03T11:08:48+08:00">
-                2018-07-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/03/XXE漏洞攻击和防御/" class="leancloud_visitors" data-flag-title="XXE漏洞攻击和防御">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          一、简介近期微信支付SDK爆出了一个严重的XXE漏洞（http://seclists.org/fulldisclosure/2018/Jul/3），可导致商家服务器上的文件被窃取。
-XXE (XML External Entity Injection) 漏洞发生在应用程序解析 XML 输入时，没有禁止外部实体的加载。在web上愈来愈少，但在一些大家不容易想到的地方还是存在很多，例如之前apktool工具爆出的XXE漏洞用来攻击APK分析人员。
-二、漏洞原理XML用于标记电子文件使其具有结构性的标记语言，可以用来标记数据、定义数据类型，是一种允许用户对自己的标记语言进行定义的源语言。XML文档结构包括XML声明、DTD文档类型定义（可选）、文档元素。
-
-DTD（文档类型定义）DTD（文档类型定义）的作用是定义 XML 文档的合法构建模块。DTD 可以在 XML 文档内声明，也可以外部引用。
-
-内部声明DTD
-
-1&lt;!DOCTYPE 根元素 [元素声明]&gt;
-
-引用外部DTD123&lt;!DOCTYPE 根元素 SYSTEM &quot;文件名&quot;&gt;//或者&lt;!DOCTYPE 根元素 PUBLIC &quot;public_ID&quot; &quot;文件名&quot;&gt;
-
-
-DTD文档中有很多重要的关键字如下：
-- DOCTYPE（DTD的声明）
-- ENTITY（实体的声明）
-- SYSTEM、PUBLIC（外部资源申请）
-ENTITY（实体）实体可以理解为变量，其必须在DTD中定义申明，可以在文档中的其他位置引用该变量的值。
-根据引用方式，实体可分为内部实体、外部实体、参数实体。完整的实体类别可参考 DTD - Entities（https://www.tutorialspoint.com/dtd/dtd_entities.htm）
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/07/03/XXE漏洞攻击和防御/#more" rel="contents">
+            <a class="btn" href="/2018/07/25/Android-FRP功能分析（Factory-Reset-Protection）/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1813,7 +1795,7 @@ ENTITY（实体）实体可以理解为变量，其必须在DTD中定义申明�
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">65</span>
+                  <span class="site-state-item-count">66</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

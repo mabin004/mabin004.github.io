@@ -306,6 +306,146 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/04/28/Web调起APP研究/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/28/Web调起APP研究/" itemprop="url">Web调起APP研究</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-28T10:49:00+08:00">
+                2018-04-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/04/28/Web调起APP研究/" class="leancloud_visitors" data-flag-title="Web调起APP研究">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          应用开发中经常会有从web端启动App的需求，这里总结了常见的几种方式。
+Android0x0 自定义schemeAndroid上常用的是通过scheme协议的方式唤醒本地app客户端。即App在AndroidManifest.xml中为要打开的Activity注册一个intent-filter,添加scheme,并注明host和data等关键字段，前端保持一致后就可以实现在Web页中调起本地App了。
+注册scheme的代码如下：1234567&lt;intent-filter&gt;  &lt;action android:name=&quot;android.intent.action.VIEW&quot;/&gt;  &lt;category android:name=&quot;android.intent.category.DEFAULT&quot;/&gt;  &lt;category android:name=&quot;android.intent.category.BROWSABLE&quot;/&gt;  &lt;!--BROWSABLE指定该Activity能被浏览器安全调用--&gt;  &lt;data android:host=&quot;xyz.com&quot; android:scheme=&quot;m4bln&quot;/&gt;&lt;/intent-filter&gt;
+这里的action、category、data都必须完全匹配才能获得intent，android.intent.category.DEFAULT是默认的，有实际意义的是android.intent.category.BROWSABLE，表示允许通过浏览器启动该activity（调起App）。data限定了触发条件，当scheme为m4bln且host为xyz.co
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/04/28/Web调起APP研究/#espandi" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/04/17/使用IPAPatch免越狱调试、修改第三方App/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -408,7 +548,7 @@ patch.sh的注释中写的很明确：123456789101112131415161718192021222324252
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/04/17/使用IPAPatch免越狱调试、修改第三方App/#more" rel="contents">
+            <a class="btn" href="/2018/04/17/使用IPAPatch免越狱调试、修改第三方App/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -556,7 +696,7 @@ Java代码在解压ZIP文件时会使用到ZipEntry类的getName()方法。如�
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/30/zip解压漏洞/#more" rel="contents">
+            <a class="btn" href="/2018/03/30/zip解压漏洞/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -694,7 +834,7 @@ strcat123456789101112没有控制好循环次数，导致strcat溢出for (i=0; i
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/23/经典漏洞案例整理/#more" rel="contents">
+            <a class="btn" href="/2018/03/23/经典漏洞案例整理/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -836,7 +976,7 @@ For extracting HTTPS, FTP and other URL format use1grep -E &apos;(((https|ftp|go
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/22/常用的正则、搜索/#more" rel="contents">
+            <a class="btn" href="/2018/03/22/常用的正则、搜索/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -973,7 +1113,7 @@ For extracting HTTPS, FTP and other URL format use1grep -E &apos;(((https|ftp|go
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/17/蓝牙的发现、扫描/#more" rel="contents">
+            <a class="btn" href="/2018/03/17/蓝牙的发现、扫描/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1111,7 +1251,7 @@ For extracting HTTPS, FTP and other URL format use1grep -E &apos;(((https|ftp|go
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/15/文件后缀名枚举/#more" rel="contents">
+            <a class="btn" href="/2018/03/15/文件后缀名枚举/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1256,7 +1396,7 @@ Unocorn引擎是什么?
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/15/Unicorn使用/#more" rel="contents">
+            <a class="btn" href="/2018/03/15/Unicorn使用/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1402,7 +1542,7 @@ Unocorn引擎是什么?
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/13/使用lief对ELF文件Patch/#more" rel="contents">
+            <a class="btn" href="/2018/03/13/使用lief对ELF文件Patch/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1568,142 +1708,7 @@ smali注入加载library,选择application类或者Activity入口.
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/09/Android-Hook-——-Frida/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/06/RSA算法原理及应用破解/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/06/RSA算法原理及应用破解/" itemprop="url">RSA算法原理及应用破解</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-06T21:48:42+08:00">
-                2018-03-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/03/06/RSA算法原理及应用破解/" class="leancloud_visitors" data-flag-title="RSA算法原理及应用破解">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>RSA算法是现今使用广泛的公钥密码算法，也是号称地球上最安全的加密算法。在了解RSA算法之前，先熟悉下几个术语<br>根据密钥的使用方法，可以将密码分为对称密码和公钥密码<br>对称密码：加密和解密使用同一种密钥的方式<br>公钥密码：加密和解密使用不同的密码的方式，因此公钥密码通常也称为非对称密码。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/03/06/RSA算法原理及应用破解/#more" rel="contents">
+            <a class="btn" href="/2018/03/09/Android-Hook-——-Frida/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1791,7 +1796,7 @@ smali注入加载library,选择application类或者Activity入口.
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">65</span>
+                  <span class="site-state-item-count">66</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

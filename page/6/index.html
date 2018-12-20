@@ -306,6 +306,146 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/01/12/移动端JavaScript写入剪贴板/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/12/移动端JavaScript写入剪贴板/" itemprop="url">移动端使用JavaScript自动写入剪贴板</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-12T11:22:35+08:00">
+                2018-01-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/01/12/移动端JavaScript写入剪贴板/" class="leancloud_visitors" data-flag-title="移动端使用JavaScript自动写入剪贴板">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          背景近期风靡的“吱口令”红包在互联网上铺天盖地，用户复制一段“吱口令”，打开支付宝就可以直接进入抢红包的页面。研究发现，支付宝是通过读取用户剪贴板数据，提取出吱口令，之后加载抢红包页面。
+如果可以实现在用户打开某个网页的时候就写入剪贴板，那么用户会在不知不觉打开支付宝时，就会直接进入领取页面。因此，我们尝试了js自动写入剪贴板是否可行。
+遍历js事件PC端似乎需要用户主动点击才能实现写入剪贴板，我们首先写一段写入剪贴板的代码12345678&lt;input type=&quot;text&quot; id=&quot;website&quot; value=&quot;tobecopydata&quot; /&gt;&lt;script&gt;function copy(e) &#123; website.select() document.execCommand(&apos;copy&apos;); &#125;&lt;/script&gt;
+之后通过遍历js事件来触发复制操作12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959697// event handlerdocument.body.addEventListener('blur', copy, true);document.body.addEventListener('error', copy, true);document.body.addEventListener('focus', copy, tru
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/01/12/移动端JavaScript写入剪贴板/#espandi" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/25/OpenCV学习/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -399,7 +539,7 @@
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/25/OpenCV学习/#more" rel="contents">
+            <a class="btn" href="/2017/12/25/OpenCV学习/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -547,7 +687,7 @@
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/11/安卓“Janus”漏洞分析（cve-）/#more" rel="contents">
+            <a class="btn" href="/2017/12/11/安卓“Janus”漏洞分析（cve-）/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -693,7 +833,7 @@ PDU举例
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/10/手机短信PDU格式分析/#more" rel="contents">
+            <a class="btn" href="/2017/12/10/手机短信PDU格式分析/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -839,7 +979,7 @@ PDU举例
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/09/cve-2014-7911/#more" rel="contents">
+            <a class="btn" href="/2017/12/09/cve-2014-7911/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -984,7 +1124,7 @@ PDU举例
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/09/Android-AIDL笔记/#more" rel="contents">
+            <a class="btn" href="/2017/12/09/Android-AIDL笔记/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1129,7 +1269,7 @@ PDU举例
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/09/cve-2015-3839-短信-Dos/#more" rel="contents">
+            <a class="btn" href="/2017/12/09/cve-2015-3839-短信-Dos/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1302,7 +1442,7 @@ PS： mm／mmm编译较快，mma／mmma会把所有的依赖项一同编译，�
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/09/Android源码编译命令/#more" rel="contents">
+            <a class="btn" href="/2017/12/09/Android源码编译命令/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1447,7 +1587,7 @@ Qualcomm开发了一套系统称为gpsOneXtra,通过它设备可以从高通的�
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/09/cve-2016-5348-利用大文件使gps-crash/#more" rel="contents">
+            <a class="btn" href="/2017/12/09/cve-2016-5348-利用大文件使gps-crash/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1622,153 +1762,7 @@ systemandroid核心系统，可以认为是一个微型的Linux系统，运行�
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/09/android源码结构/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/09/apk反调试-模拟器检查-签名检测/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/09/apk反调试-模拟器检查-签名检测/" itemprop="url">apk反调试-模拟器检查-签名检测</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-09T15:02:01+08:00">
-                2017-12-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/12/09/apk反调试-模拟器检查-签名检测/" class="leancloud_visitors" data-flag-title="apk反调试-模拟器检查-签名检测">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          一、模拟器检测
-基于模拟器的IMSI、IDS、默认文件等几个方面特征进行检测
-基于CPU的检测（如是否包含inter、amd等字段）
-电池信息、温度、电量变化等
-
-代码示例：
-123456789101112131415//需要添加android.permission.READ_PHONE_STATE权限public boolean isEmulatorByImei(Context context)&#123;        TelephonyManager tm = (TelephonyManager) 	context.getSystemService(Context.TELEPHONY_SERVICE);        String imei = tm.getDeviceId();        if (imei == null || imei.equals("000000000000000"))&#123;            return true;        &#125;        return false;    &#125;public boolean isEmulatorByBuildModel() &#123;        Log.e("MODEL=", Build.MODEL);        Log.e("MANUFACTURER=",Build.MANUFACTURER);        return ( Build.MODEL.equals("sdk")) || (Build.MODEL.equals("google_sdk") );    &#125;
-二、签名监测(native)签名检测在一般在java层实现，通过与远程服务器交互完成校验。如果没有本地校验，则尽可能在native层实现，这里利用反射的方式。
-代码示例：
-123456
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/12/09/apk反调试-模拟器检查-签名检测/#more" rel="contents">
+            <a class="btn" href="/2017/12/09/android源码结构/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1856,7 +1850,7 @@ systemandroid核心系统，可以认为是一个微型的Linux系统，运行�
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">65</span>
+                  <span class="site-state-item-count">66</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

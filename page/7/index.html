@@ -306,6 +306,152 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/09/apk反调试-模拟器检查-签名检测/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/09/apk反调试-模拟器检查-签名检测/" itemprop="url">apk反调试-模拟器检查-签名检测</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-09T15:02:01+08:00">
+                2017-12-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/12/09/apk反调试-模拟器检查-签名检测/" class="leancloud_visitors" data-flag-title="apk反调试-模拟器检查-签名检测">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          一、模拟器检测
+基于模拟器的IMSI、IDS、默认文件等几个方面特征进行检测
+基于CPU的检测（如是否包含inter、amd等字段）
+电池信息、温度、电量变化等
+
+代码示例：
+123456789101112131415//需要添加android.permission.READ_PHONE_STATE权限public boolean isEmulatorByImei(Context context)&#123;        TelephonyManager tm = (TelephonyManager) 	context.getSystemService(Context.TELEPHONY_SERVICE);        String imei = tm.getDeviceId();        if (imei == null || imei.equals("000000000000000"))&#123;            return true;        &#125;        return false;    &#125;public boolean isEmulatorByBuildModel() &#123;        Log.e("MODEL=", Build.MODEL);        Log.e("MANUFACTURER=",Build.MANUFACTURER);        return ( Build.MODEL.equals("sdk")) || (Build.MODEL.equals("google_sdk") );    &#125;
+二、签名监测(native)签名检测在一般在java层实现，通过与远程服务器交互完成校验。如果没有本地校验，则尽可能在native层实现，这里利用反射的方式。
+代码示例：
+123456
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/12/09/apk反调试-模拟器检查-签名检测/#espandi" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/05/关于4k技术/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -401,7 +547,7 @@
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/05/关于4k技术/#more" rel="contents">
+            <a class="btn" href="/2017/12/05/关于4k技术/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -554,7 +700,7 @@ apksigner位于SDK目录的build-tools目录下。必须说明的是，v2签名�
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/11/19/重打包apk相关/#more" rel="contents">
+            <a class="btn" href="/2017/11/19/重打包apk相关/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -700,7 +846,7 @@ ptrace检测进程被ptrace后通常会有一
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/01/ptrace/#more" rel="contents">
+            <a class="btn" href="/2017/08/01/ptrace/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -848,7 +994,7 @@ wchan/pro
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/06/13/Android反调试/#more" rel="contents">
+            <a class="btn" href="/2017/06/13/Android反调试/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -995,7 +1141,7 @@ XposedXposed是一个在andoid平台上比较成熟的hook框架，可以完美�
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/06/13/Android三大hook框架/#more" rel="contents">
+            <a class="btn" href="/2017/06/13/Android三大hook框架/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1083,7 +1229,7 @@ XposedXposed是一个在andoid平台上比较成熟的hook框架，可以完美�
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">65</span>
+                  <span class="site-state-item-count">66</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

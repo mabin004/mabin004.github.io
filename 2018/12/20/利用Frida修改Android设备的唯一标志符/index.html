@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="1.编译过程1) source build/envsetup.sh  2) lunch,选择编译的平台  3）make －j4 ##2. 命令介绍 1）m        编译整个android工程  2）mm    编译当前目录下模块，不包括依赖项  3）mmm path  编译指定目录下的模块  4）mma 编译当前目录下所有模块，包括依赖项  5）mmma path 编译指定目录下所有模块，含">
+<meta name="description" content="Android设备的唯一标识符1.IMEI （手机的身份证号码）IMEI(International Mobile Equipment Identity)是国际移动设备身份码的缩写，国际移动装备辨识码，是由15位数字组成的”电子串号”，它与每台移动电话机一一对应，而且该码是全世界唯一的。每一只移动电话机在组装完成后都将被赋予一个全球唯一的一组号码，这个号码从生产到交付使用都将被制造生产的厂商所记录">
 <meta name="keywords" content="Android">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android源码编译命令">
-<meta property="og:url" content="https://mabin004.github.io/2017/12/09/Android源码编译命令/index.html">
+<meta property="og:title" content="利用Frida修改Android设备的唯一标识符">
+<meta property="og:url" content="https://mabin004.github.io/2018/12/20/利用Frida修改Android设备的唯一标志符/index.html">
 <meta property="og:site_name" content="m4bln">
-<meta property="og:description" content="1.编译过程1) source build/envsetup.sh  2) lunch,选择编译的平台  3）make －j4 ##2. 命令介绍 1）m        编译整个android工程  2）mm    编译当前目录下模块，不包括依赖项  3）mmm path  编译指定目录下的模块  4）mma 编译当前目录下所有模块，包括依赖项  5）mmma path 编译指定目录下所有模块，含">
+<meta property="og:description" content="Android设备的唯一标识符1.IMEI （手机的身份证号码）IMEI(International Mobile Equipment Identity)是国际移动设备身份码的缩写，国际移动装备辨识码，是由15位数字组成的”电子串号”，它与每台移动电话机一一对应，而且该码是全世界唯一的。每一只移动电话机在组装完成后都将被赋予一个全球唯一的一组号码，这个号码从生产到交付使用都将被制造生产的厂商所记录">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-09T08:59:29.000Z">
+<meta property="og:updated_time" content="2018-12-20T15:19:49.342Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android源码编译命令">
-<meta name="twitter:description" content="1.编译过程1) source build/envsetup.sh  2) lunch,选择编译的平台  3）make －j4 ##2. 命令介绍 1）m        编译整个android工程  2）mm    编译当前目录下模块，不包括依赖项  3）mmm path  编译指定目录下的模块  4）mma 编译当前目录下所有模块，包括依赖项  5）mmma path 编译指定目录下所有模块，含">
+<meta name="twitter:title" content="利用Frida修改Android设备的唯一标识符">
+<meta name="twitter:description" content="Android设备的唯一标识符1.IMEI （手机的身份证号码）IMEI(International Mobile Equipment Identity)是国际移动设备身份码的缩写，国际移动装备辨识码，是由15位数字组成的”电子串号”，它与每台移动电话机一一对应，而且该码是全世界唯一的。每一只移动电话机在组装完成后都将被赋予一个全球唯一的一组号码，这个号码从生产到交付使用都将被制造生产的厂商所记录">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://mabin004.github.io/2017/12/09/Android源码编译命令/"/>
+  <link rel="canonical" href="https://mabin004.github.io/2018/12/20/利用Frida修改Android设备的唯一标志符/"/>
 
 
 
 
 
-  <title>Android源码编译命令 | m4bln</title>
+  <title>利用Frida修改Android设备的唯一标识符 | m4bln</title>
   
 
 
@@ -307,7 +307,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/09/Android源码编译命令/">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/12/20/利用Frida修改Android设备的唯一标志符/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="m4bln">
@@ -324,7 +324,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Android源码编译命令</h1>
+          <h1 class="post-title" itemprop="name headline">利用Frida修改Android设备的唯一标识符</h1>
         
 
         <div class="post-meta">
@@ -336,8 +336,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-09T16:58:00+08:00">
-                2017-12-09
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-20T22:18:00+08:00">
+                2018-12-20
               </time>
             
 
@@ -354,7 +354,7 @@
 
           
           
-             <span id="/2017/12/09/Android源码编译命令/" class="leancloud_visitors" data-flag-title="Android源码编译命令">
+             <span id="/2018/12/20/利用Frida修改Android设备的唯一标志符/" class="leancloud_visitors" data-flag-title="利用Frida修改Android设备的唯一标识符">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -385,100 +385,39 @@
       
 
       
-        <h2 id="1-编译过程"><a href="#1-编译过程" class="headerlink" title="1.编译过程"></a>1.编译过程</h2><pre><code>1) source build/envsetup.sh
-
-2) lunch,选择编译的平台
-
-3）make －j4
-</code></pre><p>##2. 命令介绍</p>
-<pre><code>1）m        编译整个android工程
-
-2）mm    编译当前目录下模块，不包括依赖项
-
-3）mmm path  编译指定目录下的模块
-
-4）mma 编译当前目录下所有模块，包括依赖项
-
-5）mmma path 编译指定目录下所有模块，含依赖项
-
-PS： mm／mmm编译较快，mma／mmma会把所有的依赖项一同编译，比较缓慢，首次编译时用mma，以后用mm编译。
-</code></pre><h2 id="3-Android-mk解析"><a href="#3-Android-mk解析" class="headerlink" title="3.Android.mk解析"></a>3.Android.mk解析</h2><h3 id="1-mk文件"><a href="#1-mk文件" class="headerlink" title="1. mk文件"></a>1. mk文件</h3><pre><code>  一个android子项目中会存在一个或多个Android.mk文件 
-
-1) 单一的Android.mk文件 
-
-直接参考NDK的sample目录下的hello-jni项目，在这个项目中只有一个Android.mk文件 
-
-2) 多个Android.mk文件 
-
-如果需要编译的模块比较多，我们可能会将对应的模块放置在相应的目录中， 这样，我们可以在每个目录中定义对应的Android.mk文件（类似于上面的写法）， 最后，在根目录放置一个Android.mk文件，内容如下：
-
-    include $(call all-subdir-makefiles)
-
-只需要这一行就可以了，它的作用就是包含所有子目录中的Android.mk文件 
-</code></pre><h3 id="2-变量"><a href="#2-变量" class="headerlink" title="2. 变量"></a>2. 变量</h3><p>注意：‘:=’是赋值的意思；’+=’是追加的意思；‘$’表示引用某变量的值。</p>
-<pre><code>1）LOCAL_PATH:  这个变量用于给出当前文件的路径。 
-
-  必须在 Android.mk 的开头定义，可以这样使用：
-          LOCAL_PATH := $(call my-dir) 
-
-   如当前目录下有个文件夹名称 src，则可以这样写 $(call src)，那么就会得到 src 目录的完整路径 
-
-   这个变量不会被$(CLEAR_VARS)清除，因此每个 Android.mk 只需要定义一次(即使在一个文件中定义了几个模块的情况下)。
-
-2）CLEAR_VARS:  必须在开始一个新模块之前包含这个脚本：include$(CLEAR_VARS)，用于重置除LOCAL_PATH变量外的，所有LOCAL_XXX系列变量。
-
-3）LOCAL_MODULE: 这是模块的名字，它必须是唯一的，而且不能包含空格。    
-
-4）LOCAL_SRC_FILES:  这是要编译的源代码文件列表。 
-
-   只要列出要传递给编译器的文件，因为编译系统自动计算依赖。注意源代码文件名称都是相对于 LOCAL_PATH的，你可以使用路径部分，例如： 
-    LOCAL_SRC_FILES := foo.c toto/bar.c\ 
-    Hello.c 
-   文件之间可以用空格或Tab键进行分割,换行请用&quot;\&quot; 
-   如果是追加源代码文件的话，请用LOCAL_SRC_FILES += 
-
-5）LOCAL_STATIC_LIBRARIES: 表示该模块需要使用哪些静态库，以便在编译时进行链接时就需要
-
-6）LOCAL_SHARED_LIBRARIES:  表示模块在运行时要依赖的共享库（动态库），在链接时就需要
-
-7）LOCAL_LDLIBS:  编译模块时要使用的附加的链接器选项。这对于使用‘-l’前缀传递指定库的名字是有用的。 
-   例如，LOCAL_LDLIBS := -lz表示告诉链接器生成的模块要在加载时刻链接到/system/lib/libz.so 
-   可查看 docs/STABLE-APIS.TXT 获取使用 NDK发行版能链接到的开放的系统库列表。
-
-8）LOCAL_MODULE_PATH 和 LOCAL_UNSTRIPPED_PATH 
-   在 Android.mk 文件中， 还可以用LOCAL_MODULE_PATH 和LOCAL_UNSTRIPPED_PATH指定最后的目标安装路径. 
-   不同的文件系统路径用以下的宏进行选择： 
-   TARGET_ROOT_OUT：表示根文件系统。 
-   TARGET_OUT：表示 system文件系统。 
-   TARGET_OUT_DATA：表示 data文件系统。 
-   用法如：LOCAL_MODULE_PATH :=$(TARGET_ROOT_OUT) 
-9）BUILD_STATIC_LIBRARY：编译为静态库。 
-    BUILD_SHARED_LIBRARY ：编译为动态库 
-    BUILD_EXECUTABLE：编译为Native C可执行程序
-</code></pre><h2 id="4-编译后的文件"><a href="#4-编译后的文件" class="headerlink" title="4. 编译后的文件"></a>4. 编译后的文件</h2><pre><code> 经过make编译后的产物，都位于/out目录，该目录下主要关注下面几个目录：
-
-1）. /out/host：Android开发工具的产物，包含SDK各种工具，比如adb，dex2oat，aapt等。
-
-2) /out/target/common：通用的一些编译产物，包含Java应用代码和Java库；
-
-3） /out/target/product/[product_name]：针对特定设备的编译产物以及平台相关C/C++代码和二进制文件；
-
-其中，有几个重量级的镜像文件：
-
-system.img:挂载为根分区，主要包含Android OS的系统文件；
-
-ramdisk.img:主要包含init.rc文件和配置文件等；
-
-userdata.img:被挂载在/data，主要包含用户以及应用程序相关的数据；
-
-当然还有boot.img，reocovery.img等镜像文件，这里就不介绍了。
-</code></pre><p>##5. 编译遇到的问题</p>
-<p>###1. GC overhead limit exceeded<br>解决：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">export JACK_SERVER_VM_ARGUMENTS="-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx4g"</span><br><span class="line"></span><br><span class="line">./prebuilts/sdk/tools/jack-admin kill-server</span><br><span class="line"></span><br><span class="line">./prebuilts/sdk/tools/jack-admin start-server</span><br></pre></td></tr></table></figure>
-<h3 id="2-lunch一定要在根目录"><a href="#2-lunch一定要在根目录" class="headerlink" title="2. lunch一定要在根目录"></a>2. lunch一定要在根目录</h3><p>lunch一定要在根目录进行，否则会删除之前编译好的文件。</p>
-<p>例如：我先全部编译一遍，此时在out目录下生成镜像文件。如果再新建一个Terminal，cd 到其它目录里，source一下，然后lunch，此时我原先编译好的文件都丢失了。</p>
-<h3 id="3-编译完成后刷入镜像"><a href="#3-编译完成后刷入镜像" class="headerlink" title="3. 编译完成后刷入镜像"></a>3. 编译完成后刷入镜像</h3><p>make snod命令</p>
-
+        <h2 id="Android设备的唯一标识符"><a href="#Android设备的唯一标识符" class="headerlink" title="Android设备的唯一标识符"></a>Android设备的唯一标识符</h2><h3 id="1-IMEI-（手机的身份证号码）"><a href="#1-IMEI-（手机的身份证号码）" class="headerlink" title="1.IMEI （手机的身份证号码）"></a>1.IMEI （手机的身份证号码）</h3><p>IMEI(International Mobile Equipment Identity)是国际移动设备身份码的缩写，国际移动装备辨识码，是由15位数字组成的”电子串号”，它与每台移动电话机一一对应，而且该码是全世界唯一的。每一只移动电话机在组装完成后都将被赋予一个全球唯一的一组号码，这个号码从生产到交付使用都将被制造生产的厂商所记录。</p>
+<p>有些设备的IMEI有两个，可以在拨号键盘输入“*#06#”查看。普通APP获取需要申请权限()：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//权限 &lt;uses-permissionandroid:name=&quot;android.permission.READ_PHONE_STATE&quot; /&gt;</span><br><span class="line">TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);</span><br><span class="line">//获取IMEI号</span><br><span class="line">String imei = telephonyManager.getDeviceId();</span><br></pre></td></tr></table></figure></p>
+<h3 id="2-IMSI-（SIM卡的身份证号码）"><a href="#2-IMSI-（SIM卡的身份证号码）" class="headerlink" title="2.IMSI （SIM卡的身份证号码）"></a>2.IMSI （SIM卡的身份证号码）</h3><p>IMSI是区别移动用户的标志，储存在SIM卡中，可用于区别移动用户的有效信息。其总长度不超过15位，同样使用0～9的数字，例如460010280100023。其中MCC是移动用户所属国家代号，占3位数字，中国的MCC规定为460；MNC是移动网号码，最多由两位数字组成，用于识别移动用户所归属的移动通信网；MSIN是移动用户识别码，用以识别某一移动通信网中的移动用户，</p>
+<p>IMSI与IMEI权限相同，获取代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//权限 &lt;uses-permissionandroid:name=&quot;android.permission.READ_PHONE_STATE&quot; /&gt;</span><br><span class="line">TelephonyManager telephonyManager=(TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);</span><br><span class="line">//获取IMSI号</span><br><span class="line">String imsi=telephonyManager.getSubscriberId();</span><br></pre></td></tr></table></figure></p>
+<h3 id="3-ANDROID-ID"><a href="#3-ANDROID-ID" class="headerlink" title="3.ANDROID_ID"></a>3.ANDROID_ID</h3><p>ANDROID_ID 是一串64位的数字，并以16进制字符串的形式保存下来，是设备首次启动时随机生成的设备的第一个引导，其记录着一个固定值，通过它可以知道设备的寿命。ANDROID_ID也可视为作为唯一设备标识号的一个好选择，当设备没有手机号时，例如平板设备等，可以采用ANDROID_ID作为标识。<br>需要注意：</p>
+<ul>
+<li><strong>android_id在设备恢复出厂设置后，该值会改变</strong></li>
+<li><strong>部分定制手机获取到的android_id为null</strong></li>
+<li><strong>由于定制问题，不同的设备可能会产生相同的ANDROID_ID</strong></li>
+<li><strong>Android 8.0后不同应用获得的值不同</strong><br>  应用签署密钥、用户和设备的每个组合都具有唯一的 ANDROID_ID 值。因此，在相同设备上运行但具有不同签署密钥的应用将不会再看到相同的 Android ID（即使对于同一用户来说，也是如此）参考<a href="https://developer.android.com/about/versions/oreo/android-8.0-changes?hl=zh-cn" target="_blank" rel="noopener">https://developer.android.com/about/versions/oreo/android-8.0-changes?hl=zh-cn</a></li>
+</ul>
+<p>android_id获取方式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">import android.provider.Settings; </span><br><span class="line">String ANDROID_ID =Settings.System.getString(getContentResolver(),Settings.System.ANDROID_ID);</span><br></pre></td></tr></table></figure></p>
+<h3 id="4-设备序列号（Serial-Number-或-SN）"><a href="#4-设备序列号（Serial-Number-或-SN）" class="headerlink" title="4.设备序列号（Serial Number 或 SN）"></a>4.设备序列号（Serial Number 或 SN）</h3><p>SN码是Serial Number的缩写，有时也叫SerialNo，也就是产品序列号，产品序列是为了验证“产品的合法身份”而引入的一个概念，它是用来保障用户的正版权益，享受合法服务的；一套正版的产品只对应一组产品序列号。别称：机器码、认证码、注册申请码等。</p>
+<p>获取方式：</p>
+<ul>
+<li><p>1.adb shell</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb shell getprop ro.serialno</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>2.android.os.Build</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String SerialNumber = android.os.Build.SERIAL;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>3.android.os.SystemProperties.get<br>此API为hidden API，需要反射获取</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">ClassLoader cl = context.getClassLoader();</span><br><span class="line">Class SystemProperties = cl.loadClass(&quot;android.os.SystemProperties&quot;);</span><br><span class="line"></span><br><span class="line">//参数类型</span><br><span class="line">Class[] paramTypes= new Class[2];</span><br><span class="line">paramTypes[0]= String.class;</span><br><span class="line">paramTypes[1]= String.class;</span><br><span class="line"></span><br><span class="line">Method get = SystemProperties.getMethod(&quot;get&quot;, paramTypes);</span><br><span class="line"></span><br><span class="line">//参数</span><br><span class="line">Object[] params= new Object[2];</span><br><span class="line">params[0]= new String(key);</span><br><span class="line">params[1]= new String(def);</span><br><span class="line"></span><br><span class="line">ret= (String) get.invoke(SystemProperties, params);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>除了SN号，还有制造商、品牌、型号、设备名等其他信息和SN的获取方式相同<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">android.os.Build.BRAND：获取设备品牌</span><br><span class="line">android.os.Build.MODEL ：获取手机的型号 设备名称。</span><br><span class="line">android.os.Build.MANUFACTURER:获取设备制造商</span><br><span class="line">android.os.Build.BOARD：获取设备基板名称</span><br><span class="line">android.os.Build.BOOTLOADER:获取设备引导程序版本号</span><br><span class="line">android.os.Build.CPU_ABI：获取设备指令集名称（CPU的类型）</span><br><span class="line">android.os.Build.CPU_ABI2：获取第二个指令集名称</span><br><span class="line">android.os.Build.DEVICE：获取设备驱动名称</span><br><span class="line">android.os.Build.DISPLAY：获取设备显示的版本包（在系统设置中显示为版本号）和ID一样</span><br><span class="line">android.os.Build.FINGERPRINT：设备的唯一标识。由设备的多个信息拼接合成。</span><br><span class="line">android.os.Build.HARDWARE：设备硬件名称,一般和基板名称一样（BOARD）</span><br><span class="line">android.os.Build.HOST：设备主机地址</span><br><span class="line">android.os.Build.ID:设备版本号。</span><br><span class="line">android:os.Build.PRODUCT：整个产品的名称</span><br><span class="line">android:os.Build.RADIO：无线电固件版本号，通常是不可用的 显示unknown</span><br><span class="line">android.os.Build.TAGS：设备标签。如release-keys 或测试的 test-keys </span><br><span class="line">android.os.Build.TIME：时间</span><br><span class="line">android.os.Build.TYPE:设备版本类型  主要为&quot;user&quot; 或&quot;eng&quot;.</span><br><span class="line">android.os.Build.USER:设备用户名 基本上都为android-build</span><br><span class="line">android.os.Build.VERSION.RELEASE：获取系统版本字符串。如4.1.2 或2.2 或2.3等</span><br><span class="line">android.os.Build.VERSION.CODENAME：设备当前的系统开发代号，一般使用REL代替</span><br><span class="line">android.os.Build.VERSION.INCREMENTAL：系统源代码控制值，一个数字或者git hash值</span><br><span class="line">android.os.Build.VERSION.SDK：系统的API级别 一般使用下面大的SDK_INT 来查看</span><br><span class="line">android.os.Build.VERSION.SDK_INT：系统的API级别 数字表示</span><br></pre></td></tr></table></figure></p>
+<h3 id="5-MAC地址"><a href="#5-MAC地址" class="headerlink" title="5.MAC地址"></a>5.MAC地址</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">android.net.wifi.WifiManager wifi = (android.net.wifi.WifiManager) context.getSystemService(Context.WIFI_SERVICE);</span><br><span class="line">String macAddress = wifi.getConnectionInfo().getMacAddress();</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>没有 WiFi 硬件或者 WiFi 不可用的设备可能返回 null 或空</strong></li>
+<li><strong>Android 6.0开始，谷歌为保护用户数据，用此方法获取到的 Wi-Fi mac 地址都为02:00:00:00:00:00</strong></li>
+<li><strong>需要 ACCESS_WIFI_STATE 权限</strong></li>
+</ul>
+<h2 id="Frida-hook代码"><a href="#Frida-hook代码" class="headerlink" title="Frida hook代码"></a>Frida hook代码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">Java.perform(function() &#123;</span><br><span class="line">	var TelephonyManager = Java.use(&quot;android.telephony.TelephonyManager&quot;);</span><br><span class="line"></span><br><span class="line">    //IMEI hook</span><br><span class="line">    TelephonyManager.getDeviceId.overload().implementation = function () &#123;</span><br><span class="line">               console.log(&quot;[*]Called - getDeviceId()&quot;);</span><br><span class="line">               var temp = this.getDeviceId();</span><br><span class="line">               console.log(&quot;real IMEI: &quot;+temp);</span><br><span class="line">               return &quot;867979021642856&quot;;</span><br><span class="line">    &#125;;</span><br><span class="line">    // muti IMEI</span><br><span class="line">    TelephonyManager.getDeviceId.overload(&apos;int&apos;).implementation = function (p) &#123;</span><br><span class="line">               console.log(&quot;[*]Called - getDeviceId(int) param is&quot;+p);</span><br><span class="line">               var temp = this.getDeviceId(p);</span><br><span class="line">               console.log(&quot;real IMEI &quot;+p+&quot;: &quot;+temp);</span><br><span class="line">               return &quot;867979021642856&quot;;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    //IMSI hook</span><br><span class="line">	TelephonyManager.getSimSerialNumber.overload().implementation = function () &#123;</span><br><span class="line">               console.log(&quot;[*]Called - getSimSerialNumber(String)&quot;);</span><br><span class="line">               var temp = this.getSimSerialNumber();</span><br><span class="line">               console.log(&quot;real IMSI: &quot;+temp);</span><br><span class="line">               return &quot;123456789&quot;;</span><br><span class="line">    &#125;;</span><br><span class="line">    //////////////////////////////////////</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    //ANDOID_ID hook</span><br><span class="line">    var Secure = Java.use(&quot;android.provider.Settings$Secure&quot;);</span><br><span class="line">    Secure.getString.implementation = function (p1,p2) &#123;</span><br><span class="line">    	if(p2.indexOf(&quot;android_id&quot;)&lt;0) return this.getString(p1,p2);</span><br><span class="line">    	console.log(&quot;[*]Called - get android_ID, param is:&quot;+p2);</span><br><span class="line">    	var temp = this.getString(p1,p2);</span><br><span class="line">    	console.log(&quot;real Android_ID: &quot;+temp);</span><br><span class="line">    	return &quot;844de23bfcf93801&quot;;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    //android的hidden API，需要通过反射调用</span><br><span class="line">    var SP = Java.use(&quot;android.os.SystemProperties&quot;);</span><br><span class="line">    SP.get.overload(&apos;java.lang.String&apos;).implementation = function (p1) &#123;</span><br><span class="line">    	var tmp = this.get(p1);</span><br><span class="line">    	console.log(&quot;[*]&quot;+p1+&quot; : &quot;+tmp);</span><br><span class="line"></span><br><span class="line">    	return tmp;</span><br><span class="line">    &#125;</span><br><span class="line">    SP.get.overload(&apos;java.lang.String&apos;, &apos;java.lang.String&apos;).implementation = function (p1,p2) &#123;</span><br><span class="line">    	</span><br><span class="line">    	</span><br><span class="line">    	var tmp = this.get(p1,p2)</span><br><span class="line">    	console.log(&quot;[*]&quot;+p1+&quot;,&quot;+p2+&quot; : &quot;+tmp);</span><br><span class="line">    	return tmp;</span><br><span class="line">    &#125; </span><br><span class="line">    // hook MAC</span><br><span class="line">    var wifi = Java.use(&quot;android.net.wifi.WifiInfo&quot;);</span><br><span class="line">    wifi.getMacAddress.implementation = function () &#123;</span><br><span class="line">    	var tmp = this.getMacAddress();</span><br><span class="line">    	console.log(&quot;[*]real MAC: &quot;+tmp);</span><br><span class="line">    	return tmp;</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -508,8 +447,8 @@ userdata.img:被挂载在/data，主要包含用户以及应用程序相关的�
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/12/09/cve-2016-5348-利用大文件使gps-crash/" rel="next" title="cve-2016-5348(利用大文件使gps crash)">
-                <i class="fa fa-chevron-left"></i> cve-2016-5348(利用大文件使gps crash)
+              <a href="/2018/12/12/指纹/" rel="next" title="指纹识别技术分析">
+                <i class="fa fa-chevron-left"></i> 指纹识别技术分析
               </a>
             
           </div>
@@ -517,10 +456,6 @@ userdata.img:被挂载在/data，主要包含用户以及应用程序相关的�
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/12/09/cve-2015-3839-短信-Dos/" rel="prev" title="cve-2015-3839(短信 Dos)">
-                cve-2015-3839(短信 Dos) <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -643,7 +578,7 @@ userdata.img:被挂载在/data，主要包含用户以及应用程序相关的�
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-编译过程"><span class="nav-number">1.</span> <span class="nav-text"><a href="#1-&#x7F16;&#x8BD1;&#x8FC7;&#x7A0B;" class="headerlink" title="1.&#x7F16;&#x8BD1;&#x8FC7;&#x7A0B;"></a>1.&#x7F16;&#x8BD1;&#x8FC7;&#x7A0B;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Android-mk解析"><span class="nav-number">2.</span> <span class="nav-text"><a href="#3-Android-mk&#x89E3;&#x6790;" class="headerlink" title="3.Android.mk&#x89E3;&#x6790;"></a>3.Android.mk&#x89E3;&#x6790;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-mk文件"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#1-mk&#x6587;&#x4EF6;" class="headerlink" title="1. mk&#x6587;&#x4EF6;"></a>1. mk&#x6587;&#x4EF6;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-变量"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#2-&#x53D8;&#x91CF;" class="headerlink" title="2. &#x53D8;&#x91CF;"></a>2. &#x53D8;&#x91CF;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-编译后的文件"><span class="nav-number">3.</span> <span class="nav-text"><a href="#4-&#x7F16;&#x8BD1;&#x540E;&#x7684;&#x6587;&#x4EF6;" class="headerlink" title="4. &#x7F16;&#x8BD1;&#x540E;&#x7684;&#x6587;&#x4EF6;"></a>4. &#x7F16;&#x8BD1;&#x540E;&#x7684;&#x6587;&#x4EF6;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-lunch一定要在根目录"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#2-lunch&#x4E00;&#x5B9A;&#x8981;&#x5728;&#x6839;&#x76EE;&#x5F55;" class="headerlink" title="2. lunch&#x4E00;&#x5B9A;&#x8981;&#x5728;&#x6839;&#x76EE;&#x5F55;"></a>2. lunch&#x4E00;&#x5B9A;&#x8981;&#x5728;&#x6839;&#x76EE;&#x5F55;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-编译完成后刷入镜像"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#3-&#x7F16;&#x8BD1;&#x5B8C;&#x6210;&#x540E;&#x5237;&#x5165;&#x955C;&#x50CF;" class="headerlink" title="3. &#x7F16;&#x8BD1;&#x5B8C;&#x6210;&#x540E;&#x5237;&#x5165;&#x955C;&#x50CF;"></a>3. &#x7F16;&#x8BD1;&#x5B8C;&#x6210;&#x540E;&#x5237;&#x5165;&#x955C;&#x50CF;</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Android设备的唯一标识符"><span class="nav-number">1.</span> <span class="nav-text"><a href="#Android&#x8BBE;&#x5907;&#x7684;&#x552F;&#x4E00;&#x6807;&#x8BC6;&#x7B26;" class="headerlink" title="Android&#x8BBE;&#x5907;&#x7684;&#x552F;&#x4E00;&#x6807;&#x8BC6;&#x7B26;"></a>Android&#x8BBE;&#x5907;&#x7684;&#x552F;&#x4E00;&#x6807;&#x8BC6;&#x7B26;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-IMEI-（手机的身份证号码）"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#1-IMEI-&#xFF08;&#x624B;&#x673A;&#x7684;&#x8EAB;&#x4EFD;&#x8BC1;&#x53F7;&#x7801;&#xFF09;" class="headerlink" title="1.IMEI &#xFF08;&#x624B;&#x673A;&#x7684;&#x8EAB;&#x4EFD;&#x8BC1;&#x53F7;&#x7801;&#xFF09;"></a>1.IMEI &#xFF08;&#x624B;&#x673A;&#x7684;&#x8EAB;&#x4EFD;&#x8BC1;&#x53F7;&#x7801;&#xFF09;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-IMSI-（SIM卡的身份证号码）"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#2-IMSI-&#xFF08;SIM&#x5361;&#x7684;&#x8EAB;&#x4EFD;&#x8BC1;&#x53F7;&#x7801;&#xFF09;" class="headerlink" title="2.IMSI &#xFF08;SIM&#x5361;&#x7684;&#x8EAB;&#x4EFD;&#x8BC1;&#x53F7;&#x7801;&#xFF09;"></a>2.IMSI &#xFF08;SIM&#x5361;&#x7684;&#x8EAB;&#x4EFD;&#x8BC1;&#x53F7;&#x7801;&#xFF09;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-ANDROID-ID"><span class="nav-number">1.3.</span> <span class="nav-text"><a href="#3-ANDROID-ID" class="headerlink" title="3.ANDROID_ID"></a>3.ANDROID_ID</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-设备序列号（Serial-Number-或-SN）"><span class="nav-number">1.4.</span> <span class="nav-text"><a href="#4-&#x8BBE;&#x5907;&#x5E8F;&#x5217;&#x53F7;&#xFF08;Serial-Number-&#x6216;-SN&#xFF09;" class="headerlink" title="4.&#x8BBE;&#x5907;&#x5E8F;&#x5217;&#x53F7;&#xFF08;Serial Number &#x6216; SN&#xFF09;"></a>4.&#x8BBE;&#x5907;&#x5E8F;&#x5217;&#x53F7;&#xFF08;Serial Number &#x6216; SN&#xFF09;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-MAC地址"><span class="nav-number">1.5.</span> <span class="nav-text"><a href="#5-MAC&#x5730;&#x5740;" class="headerlink" title="5.MAC&#x5730;&#x5740;"></a>5.MAC&#x5730;&#x5740;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Frida-hook代码"><span class="nav-number">2.</span> <span class="nav-text"><a href="#Frida-hook&#x4EE3;&#x7801;" class="headerlink" title="Frida hook&#x4EE3;&#x7801;"></a>Frida hook&#x4EE3;&#x7801;</span></a></li></ol></div>
             
 
           </div>
