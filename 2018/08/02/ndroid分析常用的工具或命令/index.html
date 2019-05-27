@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, m4bln" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="dumpsysdumpsys命令用来查询界面元素层级、系统服务运行状态、电池、网络等一些信息。用法：12345678910HWVTR:/ # dumpsys --helpusage: dumpsys         To dump all services.or:       dumpsys [-t TIMEOUT] [--help | -l | --skip SERVICES | SERVICE">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android分析常用的工具或命令">
+<meta property="og:url" content="https://mabin004.github.io/2018/08/02/ndroid分析常用的工具或命令/index.html">
+<meta property="og:site_name" content="m4bln">
+<meta property="og:description" content="dumpsysdumpsys命令用来查询界面元素层级、系统服务运行状态、电池、网络等一些信息。用法：12345678910HWVTR:/ # dumpsys --helpusage: dumpsys         To dump all services.or:       dumpsys [-t TIMEOUT] [--help | -l | --skip SERVICES | SERVICE">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-76.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-77.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-78.png">
+<meta property="og:updated_time" content="2019-04-26T08:46:05.088Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android分析常用的工具或命令">
+<meta name="twitter:description" content="dumpsysdumpsys命令用来查询界面元素层级、系统服务运行状态、电池、网络等一些信息。用法：12345678910HWVTR:/ # dumpsys --helpusage: dumpsys         To dump all services.or:       dumpsys [-t TIMEOUT] [--help | -l | --skip SERVICES | SERVICE">
+<meta name="twitter:image" content="https://mabin004.github.io/images/pasted-76.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'SXXZO8IPW0',
+      apiKey: 'b9723880e3b66475126bdc98a4bb9380',
+      indexName: 'm4bln',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到任何搜索结果: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://mabin004.github.io/2018/08/02/ndroid分析常用的工具或命令/"/>
+
+
+
+
+
+  <title>Android分析常用的工具或命令 | m4bln</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">m4bln</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-hint">
+          <a href="/hint/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            hint
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-todo">
+          <a href="/todo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            ToDo
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/08/02/ndroid分析常用的工具或命令/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android分析常用的工具或命令</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-02T15:49:23+08:00">
+                2018-08-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/02/ndroid分析常用的工具或命令/" class="leancloud_visitors" data-flag-title="Android分析常用的工具或命令">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="dumpsys"><a href="#dumpsys" class="headerlink" title="dumpsys"></a>dumpsys</h2><p>dumpsys命令用来查询界面元素层级、系统服务运行状态、电池、网络等一些信息。<br>用法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">HWVTR:/ # dumpsys --help</span><br><span class="line">usage: dumpsys</span><br><span class="line">         To dump all services.</span><br><span class="line">or:</span><br><span class="line">       dumpsys [-t TIMEOUT] [--help | -l | --skip SERVICES | SERVICE [ARGS]]</span><br><span class="line">         --help: shows this help</span><br><span class="line">         -l: only list services, do not dump them</span><br><span class="line">         -t TIMEOUT: TIMEOUT to use in seconds instead of default 10 seconds</span><br><span class="line">         --skip SERVICES: dumps all services but SERVICES (comma-separated list)</span><br><span class="line">         SERVICE [ARGS]: dumps only service SERVICE, optionally passing ARGS to it</span><br></pre></td></tr></table></figure></p>
+<p>常用功能：</p>
+<ol>
+<li>dumpsys activity activities | grep mResumedActivity 获取顶层activity</li>
+<li>dumpsys -l  列出所有运行的服务</li>
+<li>dumpsys wifiscanner 获取wifi信息</li>
+<li>dumpsys webviewupdate 获得webview版本等信息</li>
+<li>dumpsys usagestats|grep com.tencent.mm  某个APP的使用情况</li>
+<li>dumpsys shortcut 所有的shortcut</li>
+<li>dumpsys package -h  所有和package相关</li>
+<li>dumpsys ethernet  屏幕信息</li>
+<li>dumpsys battery 电池状态</li>
+<li>dumpsys BastetService DNS信息</li>
+</ol>
+<p>参考：<a href="https://developer.android.com/studio/command-line/dumpsys" target="_blank" rel="noopener">https://developer.android.com/studio/command-line/dumpsys</a></p>
+<h2 id="lsof"><a href="#lsof" class="headerlink" title="lsof"></a>lsof</h2><p>lsof命令用于查看进程开打的文件，打开文件的进程，进程打开的端口(TCP、UDP)。lsof必须以root运行。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-a：列出打开文件存在的进程；</span><br><span class="line">-c&lt;进程名&gt;：列出指定进程所打开的文件；</span><br><span class="line">-g：列出GID号进程详情；</span><br><span class="line">-d&lt;文件号&gt;：列出占用该文件号的进程；</span><br><span class="line">+d&lt;目录&gt;：列出目录下被打开的文件；</span><br><span class="line">+D&lt;目录&gt;：递归列出目录下被打开的文件；</span><br><span class="line">-n&lt;目录&gt;：列出使用NFS的文件；</span><br><span class="line">-i&lt;条件&gt;：列出符合条件的进程。（4、6、协议、:端口、 @ip ）</span><br><span class="line">-p&lt;进程号&gt;：列出指定进程号所打开的文件；</span><br><span class="line">-u：列出UID号进程详情；</span><br><span class="line">-h：显示帮助信息；</span><br><span class="line">-v：显示版本信息。</span><br></pre></td></tr></table></figure></p>
+<p>Android 系统中的lsof不完全支持以上操作，需要安装busybox<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">OnePlus5T:/ # lsof --help</span><br><span class="line">usage: lsof [-lt] [-p PID1,PID2,...] [NAME]...</span><br><span class="line"></span><br><span class="line">Lists open files. If names are given on the command line, only</span><br><span class="line">those files will be shown.</span><br><span class="line"></span><br><span class="line">-l	list uids numerically</span><br><span class="line">-p	for given comma-separated pids only (default all pids)</span><br><span class="line">-t	terse (pid only) output</span><br></pre></td></tr></table></figure></p>
+<p>lsof输出格式为：</p>
+<p><img src="/images/pasted-76.png" alt="upload successful"></p>
+<p>常用到的命令：</p>
+<ul>
+<li>lsof -p [pid] 监控某个进程打开的文件</li>
+<li>lsof [filename] 查找某个文件被谁打开</li>
+<li>lsof -i似乎在android或busybox上不可用，配合grep使用,例如：lsof|grep “TCP :27042”</li>
+</ul>
+<h2 id="proc"><a href="#proc" class="headerlink" title="/proc"></a>/proc</h2><p>/proc是一种虚拟文件系统（/proc/xxx 文件本身的大小却会显示为0字节），存储的是当前内核运行状态的一系列特殊文件，可以通过这些文件查看有关系统硬件及当前正在运行进程的信息。</p>
+<p>由于/proc目录下部分文件是可以被全局可读的，因此经常用来进行侧信道攻击。</p>
+<p>如下为Android 7.1.1 OnePlus手机上的proc目录：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">dr-xr-xr-x   9 root         root       0 2018-08-06 13:55 998</span><br><span class="line">... 略去大部分pid</span><br><span class="line">dr-xr-xr-x   3 root         root       0 2018-08-06 12:05 asound</span><br><span class="line">dr-xr-xr-x   2 root         root       0 2018-08-07 11:45 ath_pktlog</span><br><span class="line">-r--r--r--   1 root         root       0 2018-08-07 11:45 bootloader_log</span><br><span class="line">-r--r--r--   1 root         root       0 2018-08-07 11:45 buddyinfo</span><br><span class="line">dr-xr-xr-x   4 root         root       0 2018-08-07 11:45 bus</span><br><span class="line">-r--r--r--   1 root         root       0 2018-08-07 11:45 cgroups</span><br><span class="line">dr-xr-xr-x   2 root         root       0 2018-08-07 11:45 cld</span><br><span class="line">-r--r-----   1 root         radio      0 2018-08-07 11:45 cmdline</span><br><span class="line">-r--r--r--   1 root         root       0 2018-08-07 11:45 consoles</span><br><span class="line">-r--r--r--   1 root         root       0 2018-08-07 11:45 cpuinfo</span><br><span class="line">-r--r--r--   1 root         root       0 2018-08-07 11:45 crypto</span><br><span class="line">dr-xr-xr-x   2 root         root       0 2018-08-07 11:45 debug</span><br><span class="line">dr-xr-xr-x   2 root         root       0 2018-08-07 11:45 debugdriver</span><br><span class="line">lrwxrwxrwx   1 root         root      29 2018-08-07 11:45 device-tree -&gt; /sys/firmware/devicetree/base</span><br><span class="line">-r--r--r--   1 root         root       0 2018-08-07 11:45 devices</span><br><span class="line">-r--r--r--   1 root         root       0 2018-08-07 11:45 diskstats</span><br><span class="line">dr-xr-xr-x   2 root         root       0 2018-08-07 11:45 driver</span><br><span class="line">-r--r--r--   1 root         root       0 2018-08-07 11:45 execdomains</span><br><span class="line">-r--r--r--   1 root         root       0 2018-08-07 11:45 fb</span><br><span class="line">-r--r--r--   1 root         root       0 2018-08-07 11:45 filesystems</span><br><span class="line">dr-xr-xr-x   5 root         root       0 2018-08-07 11:45 fs</span><br><span class="line">-r--r--r--   1 root         root       0 2018-08-07 11:45 interrupts</span><br><span class="line">-r--------   1 root         root       0 2018-08-07 11:45 iomem</span><br><span class="line">-r--r--r--   1 root         root       0 2018-08-07 11:45 ioports</span><br><span class="line">dr-xr-xr-x 223 root         root       0 2018-08-07 11:45 irq</span><br><span class="line">-r--r--r--   1 root         root       0 2018-08-07 11:45 kallsyms</span><br><span class="line">-r--r--r--   1 root         root       0 2018-08-07 11:45 key-users</span><br><span class="line">-r--r--r--   1 root         root       0 2018-08-07 11:45 keys</span><br><span class="line">-r--r-----   1 root         system     0 1970-09-03 05:58 kmsg</span><br><span class="line">-r--------   1 root         root       0 2018-08-07 11:45 kpagecount</span><br><span class="line">-r--------   1 root         root       0 2018-08-07 11:45 kpageflags</span><br><span class="line">-r--r--r--   1 root         root       0 2018-08-07 11:45 loadavg</span><br><span class="line">-r--r--r--   1 root         root       0 2018-08-07 11:45 locks</span><br><span class="line">-r--r--r--   1 root         root       0 2018-08-07 11:45 mdstat</span><br><span class="line">-r--r--r--   1 root         root       0 2018-08-07 11:45 meminfo</span><br><span class="line">-r--r--r--   1 root         root       0 2018-08-07 11:45 misc</span><br><span class="line">-r--r--r--   1 root         root       0 2018-08-07 11:45 modules</span><br><span class="line">lrwxrwxrwx   1 root         root      11 2018-08-07 11:45 mounts -&gt; self/mounts</span><br><span class="line">lrwxrwxrwx   1 root         root       8 2018-08-07 11:45 net -&gt; self/net</span><br><span class="line">-rw-rw-rw-   1 root         root       0 2018-08-07 11:45 network_info</span><br><span class="line">-rw-rw-rw-   1 root         root       0 2018-08-07 11:45 otrace_on</span><br><span class="line">-r--r--r--   1 root         root       0 2018-08-07 11:45 pagetypeinfo</span><br><span class="line">-r--r--r--   1 root         root       0 2018-08-07 11:45 partitions</span><br><span class="line">-r--r--r--   1 root         root       0 2018-08-07 11:45 proc_state</span><br><span class="line">-r--r--r--   1 root         root       0 2018-08-07 11:45 proc_transaction_log</span><br><span class="line">-r--r--r--   1 root         root       0 2018-08-07 11:45 proc_transactions</span><br><span class="line">-rw-r--r--   1 root         root       0 2018-08-07 11:45 restart_level_all</span><br><span class="line">-rw-rw-rw-   1 root         root       0 2018-08-07 11:45 rf_cable_config</span><br><span class="line">-r--r--r--   1 root         root       0 2018-08-07 11:45 schedstat</span><br><span class="line">dr-xr-xr-x   3 root         root       0 2018-08-07 11:45 scsi</span><br><span class="line">lrwxrwxrwx   1 root         root       0 1970-01-01 08:00 self -&gt; 15165</span><br><span class="line">-rw-r--r--   1 system       system     0 2018-08-07 11:45 ship_mode</span><br><span class="line">-r--r--r--   1 root         root       0 2018-08-07 11:45 softirqs</span><br><span class="line">-r--r--r--   1 root         root       0 2018-08-07 11:45 stat</span><br><span class="line">-r--r--r--   1 root         root       0 2018-08-07 11:45 swaps</span><br><span class="line">dr-xr-xr-x   1 root         root       0 1970-09-03 05:57 sys</span><br><span class="line">--w--w----   1 root         system     0 2018-08-07 11:45 sysrq-trigger</span><br><span class="line">lrwxrwxrwx   1 root         root       0 1970-01-01 08:00 thread-self -&gt; 15165/task/15165</span><br><span class="line">-r--r--r--   1 root         root       0 2018-08-07 11:45 timer_list</span><br><span class="line">-rw-r--r--   1 root         root       0 2018-08-07 11:45 timer_stats</span><br><span class="line">dr-xr-xr-x   2 root         root       0 2018-08-07 11:45 touchpanel</span><br><span class="line">dr-xr-xr-x   4 root         root       0 2018-08-07 11:45 tty</span><br><span class="line">dr-xr-xr-x   2 root         root       0 2018-08-07 11:45 tzdbg</span><br><span class="line">dr-xr-xr-x   2 root         root       0 2018-08-07 11:45 uid_cputime</span><br><span class="line">-r--r--r--   1 root         root       0 2018-08-07 11:45 uptime</span><br><span class="line">-r--r--r--   1 root         root       0 2018-08-07 11:45 version</span><br><span class="line">-r--r-----   1 root         log        0 2018-08-07 11:45 vmallocinfo</span><br><span class="line">-r--r--r--   1 root         root       0 2018-08-07 11:45 vmstat</span><br><span class="line">-r--r--r--   1 root         root       0 2018-08-07 11:45 zoneinfo</span><br></pre></td></tr></table></figure></p>
+<p>某个进程下的文件（/proc/[pid]/）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">OnePlus5T:/proc/6537 # ls -l</span><br><span class="line">total 0</span><br><span class="line">dr-xr-xr-x   2 u0_a139 u0_a139 0 2018-08-06 12:08 attr</span><br><span class="line">-rw-r--r--   1 root    root    0 2018-08-07 11:50 autogroup</span><br><span class="line">-r--------   1 root    root    0 2018-08-07 11:50 auxv</span><br><span class="line">-r--r--r--   1 root    root    0 2018-08-07 11:50 cgroup</span><br><span class="line">--w-------   1 root    root    0 2018-08-07 11:50 clear_refs</span><br><span class="line">-r--r--r--   1 root    root    0 2018-08-07 11:03 cmdline</span><br><span class="line">-rw-r--r--   1 root    root    0 2018-08-07 11:50 comm</span><br><span class="line">-rw-r--r--   1 root    root    0 2018-08-07 11:50 coredump_filter</span><br><span class="line">-r--r--r--   1 root    root    0 2018-08-07 11:50 cpuset</span><br><span class="line">lrwxrwxrwx   1 root    root    0 2018-08-07 11:03 cwd -&gt; /</span><br><span class="line">-r--------   1 root    root    0 2018-08-07 11:50 environ</span><br><span class="line">lrwxrwxrwx   1 root    root    0 2018-08-07 11:03 exe -&gt; /system/bin/app_process32_xposed</span><br><span class="line">dr-x------   2 root    root    0 2018-08-07 11:03 fd</span><br><span class="line">dr-x------   2 root    root    0 2018-08-07 11:03 fdinfo</span><br><span class="line">-r--r--r--   1 root    root    0 2018-08-07 11:50 limits</span><br><span class="line">dr-x------   2 root    root    0 2018-08-07 11:50 map_files</span><br><span class="line">-r--r--r--   1 root    root    0 2018-08-07 11:03 maps</span><br><span class="line">-rw-------   1 root    root    0 2018-08-07 11:50 mem</span><br><span class="line">-r--r--r--   1 root    root    0 2018-08-07 11:50 mountinfo</span><br><span class="line">-r--r--r--   1 root    root    0 2018-08-07 11:50 mounts</span><br><span class="line">-r--------   1 root    root    0 2018-08-07 11:50 mountstats</span><br><span class="line">dr-xr-xr-x  10 u0_a139 u0_a139 0 2018-08-06 12:08 net</span><br><span class="line">dr-x--x--x   2 root    root    0 2018-08-07 11:50 ns</span><br><span class="line">-r--------   1 root    root    0 2018-08-07 11:50 oom_adj</span><br><span class="line">-r--r--r--   1 root    root    0 2018-08-07 11:50 oom_score</span><br><span class="line">-r--r--r--   1 root    root    0 2018-08-06 12:11 oom_score_adj</span><br><span class="line">-r--------   1 root    root    0 2018-08-07 11:50 pagemap</span><br><span class="line">-r--------   1 root    root    0 2018-08-07 11:50 personality</span><br><span class="line">lrwxrwxrwx   1 root    root    0 2018-08-07 11:03 root -&gt; /</span><br><span class="line">-rw-rw-rw-   1 root    root    0 2018-08-07 11:50 sched_group_id</span><br><span class="line">-rw-r--r--   1 root    root    0 2018-08-07 11:50 sched_init_task_load</span><br><span class="line">-rw-r--r--   1 root    root    0 2018-08-07 11:50 sched_wake_up_idle</span><br><span class="line">-r--r--r--   1 root    root    0 2018-08-07 11:50 schedstat</span><br><span class="line">-r--r--r--   1 root    root    0 2018-08-06 12:10 smaps</span><br><span class="line">-r--------   1 root    root    0 2018-08-07 11:50 stack</span><br><span class="line">-r--r--r--   1 root    root    0 2018-08-06 12:08 stat</span><br><span class="line">-r--r--r--   1 root    root    0 2018-08-07 11:50 statm</span><br><span class="line">-r--r--r--   1 root    root    0 2018-08-07 11:50 status</span><br><span class="line">-r--------   1 root    root    0 2018-08-07 11:50 syscall</span><br><span class="line">dr-xr-xr-x 155 u0_a139 u0_a139 0 2018-08-06 12:11 task</span><br><span class="line">-rw-rw-rw-   1 root    root    0 2018-08-07 11:50 timerslack_ns</span><br><span class="line">-r--r--r--   1 root    root    0 2018-08-07 11:50 wakeup</span><br><span class="line">-r--r--r--   1 root    root    0 2018-08-07 11:03 wchan</span><br></pre></td></tr></table></figure></p>
+<p>研究中常用到的文件：</p>
+<ul>
+<li><strong>/proc/pid/maps</strong> 文件、内存映射信息，配合dd使用<br>/proc/6537/map_files/ 目录下保存maps中所有文件的软连接</li>
+</ul>
+<p><img src="/images/pasted-77.png" alt="upload successful"></p>
+<ul>
+<li><p><strong>/proc/pid/mem</strong> 文件io，配合dd使用,也可用open打开，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dd if=/proc/$pid/mem of=output_file ibs=1 offset=1234</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>/proc/pid/status</strong> 进程状态信息，可用于查看进程是否被调试</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">OnePlus5T:/proc/6537 # cat status</span><br><span class="line">Name:	com.tencent.mm</span><br><span class="line">State:	S (sleeping)</span><br><span class="line">Tgid:	6537</span><br><span class="line">Pid:	6537</span><br><span class="line">PPid:	883</span><br><span class="line">TracerPid:	0 (非零表示被调试)</span><br><span class="line">Uid:	10139	10139	10139	10139</span><br><span class="line">Gid:	10139	10139	10139	10139</span><br><span class="line">……</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>/proc/[pid]/cwd</strong> 当前工作目录的符号链接</p>
+</li>
+<li><strong>/proc/[pid]/task</strong> 每个线程一个子目录，目录名为线程ID（付款码侧信道攻击）</li>
+</ul>
+<p>参考：<br>深入解析Linux proc文件系统 <a href="https://blog.csdn.net/ieearth/article/details/72849990" target="_blank" rel="noopener">https://blog.csdn.net/ieearth/article/details/72849990</a></p>
+<h2 id="Monkey"><a href="#Monkey" class="headerlink" title="Monkey"></a>Monkey</h2><p>monkey是android系统自带的一款测试工具<br>例如启动com.tencent.mm应用，并随机发送500个事件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb shell monkey -p com.tencent.mm -v 500</span><br></pre></td></tr></table></figure></p>
+<h2 id="busybox"><a href="#busybox" class="headerlink" title="busybox"></a>busybox</h2><p>BusyBox 是一个集成了三百多个最常用Linux命令和工具的软件, Android中部分命令为linux的阉割版，像awk、wget这些命令，Android中都不提供，因此需要使用busybox完成<br>下载地址：<a href="http://www.busybox.net/downloads/binaries" target="_blank" rel="noopener">http://www.busybox.net/downloads/binaries</a> 选择合适的架构即可</p>
+<h2 id="screencap和screenrecord"><a href="#screencap和screenrecord" class="headerlink" title="screencap和screenrecord"></a>screencap和screenrecord</h2><p><strong>截屏</strong>：adb shell screencap -p /sdcard/tmp.png<br><strong>录像</strong>：adb shell screenrecord /sdcard/demo.mp4</p>
+<h2 id="adb-shell-input"><a href="#adb-shell-input" class="headerlink" title="adb shell input"></a>adb shell input</h2><ul>
+<li>adb shell input text  “hello,world” 获得焦点后输入文字</li>
+<li>adb shell keyevent [–longpress] <keycode> 按键<br>例如：adb shell keyevent 26 或 input keyevent “KEYCODE_POWER” 两个都可以锁屏<br>所有的keycode参考：<a href="https://developer.android.com/reference/android/view/KeyEvent.html" target="_blank" rel="noopener">https://developer.android.com/reference/android/view/KeyEvent.html</a></keycode></li>
+<li>adb shell tap <x> <y>  点击屏幕<br>例如：adb shell input tap 50 250  点击x=50 y=250的位置</y></x></li>
+<li>adb shell swipe <x1> <y1> <x2> <y2> [duration(ms)]  滑动屏幕<br>例如：adb shell input swipe 50 250 250 250 500 最后一位为滑动时间</y2></x2></y1></x1></li>
+</ul>
+<h2 id="adb-logcat"><a href="#adb-logcat" class="headerlink" title="adb logcat"></a>adb logcat</h2><ul>
+<li>”-s”选项 : 设置输出日志的标签, 只显示该标签的日志;<br>例如：adb logcat -s System.out </li>
+<li>”-f”选项 : 将日志输出到文件,  -f 参数执行不成功 默认输出到标准输出流中;<br>例如：adb logcat -f /tmp/log.txt</li>
+<li>”-c”选项 : 清空所有的日志缓存信息;</li>
+<li>“-e”选项 ：正则匹配<br>例如：logcat -e “.*wifi”</li>
+<li>“–pid=<pid>” ：根据pid筛选log<br>例如： adb logcat –pid=1234  </pid></li>
+<li>配合grep<br>例如： adb logcat | grep -i Wifi</li>
+<li><tag>[:priority] tag为标签或<em>,priority为以下几种：<br>– V : Verbose (明细);<br>– D : Debug (调试);<br>– I : Info (信息);<br>– W : Warn (警告);<br>– E : Error (错误);<br>– F: Fatal (严重错误);<br>– S : Silent(Super all output) (最高的优先级, 可能不会记载东西);<br>例如： “adb logcat </em>:E”  输出所有的Error日志</tag></li>
+</ul>
+<h2 id="am命令"><a href="#am命令" class="headerlink" title="am命令"></a>am命令</h2><ul>
+<li>am start<br>am start -n 包名/activity -d data<br>am start -n 包名/activity -e extra (–es <extra_key> <extra_string_value> –ei <extra_key> <extra_int_value>)<br>am start -a android.intent.action.VIEW -d <a href="http://www.google.cn/" target="_blank" rel="noopener">http://www.google.cn/</a></extra_int_value></extra_key></extra_string_value></extra_key></li>
+<li>am startservice<br>am startservice -n 包名/服务名</li>
+<li>am broadcast<br>am broadcast -a com.android.test (–es test_string “this is test string” –ei test_int 100 –ez test_boolean true) </li>
+</ul>
+<h2 id="netstat"><a href="#netstat" class="headerlink" title="netstat"></a>netstat</h2><p>查看设备的端口号信息，（warmwhole检测）<br>-r  Display routing table.<br>-a  Display all sockets (Default: Connected).<br>-l  Display listening server sockets.<br>-t  Display TCP sockets.<br>-u  Display UDP sockets.<br>-w  Display Raw sockets.<br>-x  Display Unix sockets.<br>-e  Display other/more information.<br>-n  Don’t resolve names.<br>-p  Display PID/Program name for sockets.</p>
+<p>例如：netstat -lp  显示所有监听的socket以及对应的pid<br><img src="/images/pasted-78.png" alt="upload successful"></p>
+<h2 id="getprop和setprop"><a href="#getprop和setprop" class="headerlink" title="getprop和setprop"></a>getprop和setprop</h2><ul>
+<li>getprop默认获得所有的参数，常用参数如下：<br>getprop ro.debuggable<br>getprop ro.build.product<br>getprop ro.build.fingerprint<br>getprop ro.serialno</li>
+<li>setprop [key] [value],有些需要特殊权限</li>
+</ul>
+<h2 id="service"><a href="#service" class="headerlink" title="service"></a>service</h2><ul>
+<li>service list 列出所有的服务</li>
+<li>service call 调用服务<br>用法：service call CODE [i32 N | i64 N | f N | d N | s16 STR ]<br>例如：service call phone 1 s16 “10086” 打电话</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/31/Mac上编译Frida/" rel="next" title="Frida源码分析">
+                <i class="fa fa-chevron-left"></i> Frida源码分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/10/利用蓝牙漏洞逃逸iOS沙箱/" rel="prev" title="利用蓝牙callback逃逸iOS沙箱">
+                利用蓝牙callback逃逸iOS沙箱 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">m4bln</p>
+              <p class="site-description motion-element" itemprop="description">影后入林到驿前</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">70</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#dumpsys"><span class="nav-number">1.</span> <span class="nav-text"><a href="#dumpsys" class="headerlink" title="dumpsys"></a>dumpsys</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lsof"><span class="nav-number">2.</span> <span class="nav-text"><a href="#lsof" class="headerlink" title="lsof"></a>lsof</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#proc"><span class="nav-number">3.</span> <span class="nav-text"><a href="#proc" class="headerlink" title="/proc"></a>/proc</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Monkey"><span class="nav-number">4.</span> <span class="nav-text"><a href="#Monkey" class="headerlink" title="Monkey"></a>Monkey</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#busybox"><span class="nav-number">5.</span> <span class="nav-text"><a href="#busybox" class="headerlink" title="busybox"></a>busybox</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#screencap和screenrecord"><span class="nav-number">6.</span> <span class="nav-text"><a href="#screencap&#x548C;screenrecord" class="headerlink" title="screencap&#x548C;screenrecord"></a>screencap&#x548C;screenrecord</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#adb-shell-input"><span class="nav-number">7.</span> <span class="nav-text"><a href="#adb-shell-input" class="headerlink" title="adb shell input"></a>adb shell input</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#adb-logcat"><span class="nav-number">8.</span> <span class="nav-text"><a href="#adb-logcat" class="headerlink" title="adb logcat"></a>adb logcat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#am命令"><span class="nav-number">9.</span> <span class="nav-text"><a href="#am&#x547D;&#x4EE4;" class="headerlink" title="am&#x547D;&#x4EE4;"></a>am&#x547D;&#x4EE4;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#netstat"><span class="nav-number">10.</span> <span class="nav-text"><a href="#netstat" class="headerlink" title="netstat"></a>netstat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#getprop和setprop"><span class="nav-number">11.</span> <span class="nav-text"><a href="#getprop&#x548C;setprop" class="headerlink" title="getprop&#x548C;setprop"></a>getprop&#x548C;setprop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#service"><span class="nav-number">12.</span> <span class="nav-text"><a href="#service" class="headerlink" title="service"></a>service</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">m4bln</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("AAhymnaPSbBOge9isiIUi5c8-gzGzoHsz", "79JTCuY3J33b0HodXn8nYFvn");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

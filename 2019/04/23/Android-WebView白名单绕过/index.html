@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="URL结构scheme://login:password@address:port/path/to/resource/?query_string#fragment  scheme不区分大小写，包括http、https、file、ftp等等,:之后的“//”可省略，例如http:www.qq.com, 此外，多数浏览器在scheme之前加空格也是可以正常解析的 login:password@（认证信">
+<meta name="keywords" content="Android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android WebView URL检查绕过">
+<meta property="og:url" content="https://mabin004.github.io/2019/04/23/Android-WebView白名单绕过/index.html">
+<meta property="og:site_name" content="m4bln">
+<meta property="og:description" content="URL结构scheme://login:password@address:port/path/to/resource/?query_string#fragment  scheme不区分大小写，包括http、https、file、ftp等等,:之后的“//”可省略，例如http:www.qq.com, 此外，多数浏览器在scheme之前加空格也是可以正常解析的 login:password@（认证信">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-04-23T14:39:30.693Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android WebView URL检查绕过">
+<meta name="twitter:description" content="URL结构scheme://login:password@address:port/path/to/resource/?query_string#fragment  scheme不区分大小写，包括http、https、file、ftp等等,:之后的“//”可省略，例如http:www.qq.com, 此外，多数浏览器在scheme之前加空格也是可以正常解析的 login:password@（认证信">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'SXXZO8IPW0',
+      apiKey: 'b9723880e3b66475126bdc98a4bb9380',
+      indexName: 'm4bln',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到任何搜索结果: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://mabin004.github.io/2019/04/23/Android-WebView白名单绕过/"/>
+
+
+
+
+
+  <title>Android WebView URL检查绕过 | m4bln</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">m4bln</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-hint">
+          <a href="/hint/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            hint
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-todo">
+          <a href="/todo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            ToDo
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2019/04/23/Android-WebView白名单绕过/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android WebView URL检查绕过</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-23T17:38:00+08:00">
+                2019-04-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/04/23/Android-WebView白名单绕过/" class="leancloud_visitors" data-flag-title="Android WebView URL检查绕过">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="URL结构"><a href="#URL结构" class="headerlink" title="URL结构"></a>URL结构</h2><p>scheme://login:password@address:port/path/to/resource/?query_string#fragment</p>
+<ul>
+<li>scheme<br>不区分大小写，包括http、https、file、ftp等等,:之后的“//”可省略，例如http:www.qq.com, 此外，多数浏览器在scheme之前加空格也是可以正常解析的</li>
+<li>login:password@（认证信息）<br>服务器有时候需要用户名和密码认证，ftp协议比较常见，http很少见，但这个不常见字段往往可以绕过很多检查</li>
+<li>address<br>address字段可以是一个不区分大小写的域名、一个ipv4地址或带方括号的ipv6地址，部分浏览器接收ip地址的八进制、十进制、十六进制等写法</li>
+<li>port<br>端口号</li>
+<li>/path/to/resource<br>层级路径，可以使用“../”到上一级目录</li>
+<li>query_string<br>查询字符串，格式为”query_string?name1=value1&amp;name2=value2”</li>
+<li>fragment<br>用于html中的页面定位</li>
+</ul>
+<h2 id="白名单绕过"><a href="#白名单绕过" class="headerlink" title="白名单绕过"></a>白名单绕过</h2><p>白名单绕过主要参考rebeyond的文章 <a href="https://www.freebuf.com/articles/terminal/201407.html" target="_blank" rel="noopener">一文彻底搞懂安卓WebView白名单校验</a>, 中间添加了一些自己的绕过方法。</p>
+<h3 id="1-contains"><a href="#1-contains" class="headerlink" title="1.contains"></a>1.contains</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">private static boolean checkDomain(String inputUrl)</span><br><span class="line">&#123;</span><br><span class="line">    String[] whiteList=new String[]&#123;&quot;huawei.com&quot;,&quot;hicloud.com&quot;&#125;;</span><br><span class="line">    for (String whiteDomain:whiteList)</span><br><span class="line">    &#123;</span><br><span class="line">        if (inputUrl.contains(whiteDomain)&gt;0)</span><br><span class="line">            return true;</span><br><span class="line">    &#125;</span><br><span class="line">    return  false;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>绕过方式：<br>任何可以添加字符串的字段</p>
+<ul>
+<li>子域名 huawei.com.mysite.com</li>
+<li>子路径 mysite.com/huawei.com</li>
+<li>参数 mysite.com/xxxx#huawei.com</li>
+</ul>
+<h3 id="2-indexOf"><a href="#2-indexOf" class="headerlink" title="2.indexOf"></a>2.indexOf</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">private static boolean checkDomain(String inputUrl)</span><br><span class="line">&#123;</span><br><span class="line">    String[] whiteList=new String[]&#123;&quot;huawei.com&quot;,&quot;hicloud.com&quot;&#125;;</span><br><span class="line">    for (String whiteDomain:whiteList)</span><br><span class="line">    &#123;</span><br><span class="line">        if (inputUrl.indexOf(whiteDomain)&gt;0)</span><br><span class="line">            return true;</span><br><span class="line">    &#125;</span><br><span class="line">    return  false;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>绕过方式：<br>和contains相同</p>
+<h3 id="3-startsWith、endsWith"><a href="#3-startsWith、endsWith" class="headerlink" title="3.startsWith、endsWith"></a>3.startsWith、endsWith</h3><p>一般白名单会有子域名，因此不用equal</p>
+<p>绕过方式：</p>
+<ul>
+<li>startsWith  huawei.com.mysite.com</li>
+<li>endsWith  mysitehuawei.com</li>
+</ul>
+<h3 id="4-和第一个-之间提取host"><a href="#4-和第一个-之间提取host" class="headerlink" title="4.://和第一个/之间提取host"></a>4.://和第一个/之间提取host</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">private static boolean checkDomain(String inputUrl)</span><br><span class="line">&#123;</span><br><span class="line">    String[] whiteList=new String[]&#123;&quot;huawei.com&quot;,&quot;hicloud.com&quot;&#125;;</span><br><span class="line">    String tempStr=inputUrl.replace(&quot;://&quot;,&quot;&quot;);</span><br><span class="line">    String inputDomain=tempStr.substring(0,tempStr.indexOf(&quot;/&quot;)); //提取host</span><br><span class="line">    for (String whiteDomain:whiteList)</span><br><span class="line">    &#123;</span><br><span class="line">        if (inputDomain.indexOf(whiteDomain)&gt;0)</span><br><span class="line">            return true;</span><br><span class="line">    &#125;</span><br><span class="line">    return  false;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>绕过方式：</p>
+<ul>
+<li>子域名 huawei.com.mysite.com</li>
+<li><a href="http://huawei.com@www.rebeyond.net/poc.htm" target="_blank" rel="noopener">http://huawei.com@www.rebeyond.net/poc.htm</a></li>
+<li><a href="http://a:a@www.huawei.com:b@www.baidu.com" target="_blank" rel="noopener">http://a:a@www.huawei.com:b@www.baidu.com</a> 在android中使用getHost获取到的是huawei.com,但实际访问的是baidu.com</li>
+</ul>
+<h3 id="5-使用java-net-URL提取host"><a href="#5-使用java-net-URL提取host" class="headerlink" title="5.使用java.net.URL提取host"></a>5.使用java.net.URL提取host</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">private static boolean checkDomain(String inputUrl) throws MalformedURLException &#123;</span><br><span class="line">    String[] whiteList=new String[]&#123;&quot;huawei.com&quot;,&quot;hicloud.com&quot;&#125;;</span><br><span class="line">    java.net.URL url=new java.net.URL(inputUrl);</span><br><span class="line">    String host=url.getHost(); //提取host</span><br><span class="line">    for (String whiteDomain:whiteList)</span><br><span class="line">    &#123;</span><br><span class="line">        if (host.equals(whiteDomain)) return true;</span><br><span class="line">                    </span><br><span class="line">    &#125;</span><br><span class="line">    return  false;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>绕过方式：</p>
+<ul>
+<li><a href="http://a:a@www.huawei.com:b@www.baidu.com" target="_blank" rel="noopener">http://a:a@www.huawei.com:b@www.baidu.com</a> 在android中使用getHost获取到的是huawei.com,但实际访问的是baidu.com</li>
+<li><a href="https://www.mysite.com\@www.huawei.com/poc.htm上述URL通过java.net.URL的getHost方法得到的host是www.huawei.com，但实际上访问的确是www.mysite.com" target="_blank" rel="noopener">https://www.mysite.com\@www.huawei.com/poc.htm上述URL通过java.net.URL的getHost方法得到的host是www.huawei.com，但实际上访问的确是www.mysite.com</a></li>
+<li><a href="https://www.mysite.com\\.huawei.com经过java.net.URL的getHost方法提取得到的是www.mysite.com.huawei.com，可以绕过白名单域名的endsWith匹配，但是实际访问的确是www.mysite.com服务器(新版已修复" target="_blank" rel="noopener">https://www.mysite.com\\.huawei.com经过java.net.URL的getHost方法提取得到的是www.mysite.com.huawei.com，可以绕过白名单域名的endsWith匹配，但是实际访问的确是www.mysite.com服务器(新版已修复</a>)</li>
+</ul>
+<h3 id="6-java-net-URI"><a href="#6-java-net-URI" class="headerlink" title="6.java.net.URI"></a>6.java.net.URI</h3><p>java.net.URI能获取到正常的host,但是可以利用JavaScript协议绕过<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">rivate static boolean checkDomain(String inputUrl) throws  URISyntaxException &#123;</span><br><span class="line">    String[] whiteList=new String[]&#123;&quot;huawei.com&quot;,&quot;hicloud.com&quot;&#125;;</span><br><span class="line">    java.net.URI url=new java.net.URI(inputUrl);</span><br><span class="line">    String inputDomain=url.getHost(); //提取host</span><br><span class="line">    for (String whiteDomain:whiteList)</span><br><span class="line">    &#123;</span><br><span class="line">        if (inputDomain.endsWith(&quot;.&quot;+whiteDomain)) //www.huawei.com      app.hicloud.com</span><br><span class="line">            return true;</span><br><span class="line">    &#125;</span><br><span class="line">    return  false;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>绕过方式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">javascript://www.huawei.com/%0d%0awindow.location.href=‘http://www.rebeyond.net/poc.htm‘</span><br></pre></td></tr></table></figure></p>
+<p>相当于执行了一行js代码，第一行通过//符号来骗过java.net.URI获取到值为www.huawei.com的host，恰好//符号在Javascript的世界里是行注释符号，所以第一行实际并没有执行；然后通过%0d%0a换行，继续执行window.location.href=’<a href="http://www.rebeyond.net/poc.htm’" target="_blank" rel="noopener">http://www.rebeyond.net/poc.htm’</a></p>
+<h3 id="7-排除javascript协议"><a href="#7-排除javascript协议" class="headerlink" title="7.排除javascript协议"></a>7.排除javascript协议</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">private static boolean checkDomain(String inputUrl) throws  URISyntaxException &#123;</span><br><span class="line">    if (!inputUrl.startsWith(&quot;http://&quot;)&amp;&amp;!inputUrl.startsWith(&quot;https://&quot;))</span><br><span class="line">    &#123;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">    String[] whiteList=new String[]&#123;&quot;huawei.com&quot;,&quot;hicloud.com&quot;&#125;;</span><br><span class="line">    java.net.URI url=new java.net.URI(inputUrl);</span><br><span class="line">    String inputDomain=url.getHost(); //提取host</span><br><span class="line">    for (String whiteDomain:whiteList)</span><br><span class="line">    &#123;</span><br><span class="line">        if (inputDomain.endsWith(&quot;.&quot;+whiteDomain)) //www.huawei.com      app.hicloud.com</span><br><span class="line">            return true;</span><br><span class="line">    &#125;</span><br><span class="line">    return  false;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>绕过方式：<br>配合url重定向漏洞，例如<a href="https://www.huawei.com/redirect.php?url=http://mysite.com" target="_blank" rel="noopener">https://www.huawei.com/redirect.php?url=http://mysite.com</a></p>
+<p>防御办法：<br>Webview在请求<a href="https://www.huawei.com/redirect.php?url=http://mysite.com的时候，实际是发出了两次请求，第一次是在loadUrl中请求，第二次是请求http://mysite.com，但是第二次请求发生在loadUrl之后，而我们的白名单校验逻辑在loadUrl之前，才导致了绕过。通过在webview的shouldOverrideUrlLoading方法中检测，拦截跳转。" target="_blank" rel="noopener">https://www.huawei.com/redirect.php?url=http://mysite.com的时候，实际是发出了两次请求，第一次是在loadUrl中请求，第二次是请求http://mysite.com，但是第二次请求发生在loadUrl之后，而我们的白名单校验逻辑在loadUrl之前，才导致了绕过。通过在webview的shouldOverrideUrlLoading方法中检测，拦截跳转。</a></p>
+<h2 id="黑名单"><a href="#黑名单" class="headerlink" title="黑名单"></a>黑名单</h2><p>有些app会在URL中指定黑名单，例如竞品域名等，这里简单罗列一些思路：</p>
+<ul>
+<li>使用大小写绕过contains，例如HTTP://MySITe.com</li>
+<li>使用特殊编码</li>
+<li>待补充</li>
+</ul>
+<h2 id="file协议绕过"><a href="#file协议绕过" class="headerlink" title="file协议绕过"></a>file协议绕过</h2><p>APP经常会使用file://协议加载本地文件，通常会限制在一些特定路径中，这里记录一下之前的经验：</p>
+<ul>
+<li>不要用url.startWith(”file://”)来判断是否为file协议，因为“FILE://”(大小)、“File://”(大小写)、“ file://”(前边加空格)、“file:”等方式都可以绕过检测。url.contains(“file://”)更不靠谱，推荐使用getScheme()来判断协议；</li>
+<li>file:///android_asset和file:///android_res 也可以../穿越</li>
+<li>白名单判断了“../，但通过“..\”也是可以穿越的，例如file:///sdcard/..\../sdcard/1.html</li>
+<li>getHost有漏洞（file://a:a@www.qq.com:b@www.baidu.com使用getHost获取到的是qq.com,但实际访问的是baidu.com)</li>
+<li>file://baidu.com/data/data/tmp 前边的baidu.com是可以不被解析的<br>协议头不包括///，还是仍然能够正常loadUrl，如file:mnt/sdcard/filedomain.html</li>
+<li>白名单判断了“../”，但通过url编码绕过，例如file:///data/data/com.app/%2e%2e/%2e%2e/%2e%2e/sdcard/xxx </li>
+<li>replace(“../“,””)可以使用”….//“绕过</li>
+</ul>
+<p>参考资料：</p>
+<ol>
+<li><a href="https://www.freebuf.com/articles/terminal/201407.html" target="_blank" rel="noopener">一文彻底搞懂安卓WebView白名单校验</a> </li>
+<li><p><a href="https://android.googlesource.com/platform/frameworks/base/+/4afa0352d6c1046f9e9b67fbf0011bcd751fcbb5" target="_blank" rel="noopener">https://android.googlesource.com/platform/frameworks/base/+/4afa0352d6c1046f9e9b67fbf0011bcd751fcbb5</a></p>
+</li>
+<li><p><a href="https://android.googlesource.com/platform/frameworks/base/+/0b57631939f5824afef06517df723d2e766e0159" target="_blank" rel="noopener">https://android.googlesource.com/platform/frameworks/base/+/0b57631939f5824afef06517df723d2e766e0159</a></p>
+</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/15/Android-Download-Provider漏洞分析/" rel="next" title="Android Download Provider 3个漏洞分析">
+                <i class="fa fa-chevron-left"></i> Android Download Provider 3个漏洞分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/05/21/CVE-2019-5765分析/" rel="prev" title="CVE-2019-5765分析">
+                CVE-2019-5765分析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">m4bln</p>
+              <p class="site-description motion-element" itemprop="description">影后入林到驿前</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">70</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#URL结构"><span class="nav-number">1.</span> <span class="nav-text"><a href="#URL&#x7ED3;&#x6784;" class="headerlink" title="URL&#x7ED3;&#x6784;"></a>URL&#x7ED3;&#x6784;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#白名单绕过"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x767D;&#x540D;&#x5355;&#x7ED5;&#x8FC7;" class="headerlink" title="&#x767D;&#x540D;&#x5355;&#x7ED5;&#x8FC7;"></a>&#x767D;&#x540D;&#x5355;&#x7ED5;&#x8FC7;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-contains"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#1-contains" class="headerlink" title="1.contains"></a>1.contains</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-indexOf"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#2-indexOf" class="headerlink" title="2.indexOf"></a>2.indexOf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-startsWith、endsWith"><span class="nav-number">2.3.</span> <span class="nav-text"><a href="#3-startsWith&#x3001;endsWith" class="headerlink" title="3.startsWith&#x3001;endsWith"></a>3.startsWith&#x3001;endsWith</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-和第一个-之间提取host"><span class="nav-number">2.4.</span> <span class="nav-text"><a href="#4-&#x548C;&#x7B2C;&#x4E00;&#x4E2A;-&#x4E4B;&#x95F4;&#x63D0;&#x53D6;host" class="headerlink" title="4.://&#x548C;&#x7B2C;&#x4E00;&#x4E2A;/&#x4E4B;&#x95F4;&#x63D0;&#x53D6;host"></a>4.://&#x548C;&#x7B2C;&#x4E00;&#x4E2A;/&#x4E4B;&#x95F4;&#x63D0;&#x53D6;host</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-使用java-net-URL提取host"><span class="nav-number">2.5.</span> <span class="nav-text"><a href="#5-&#x4F7F;&#x7528;java-net-URL&#x63D0;&#x53D6;host" class="headerlink" title="5.&#x4F7F;&#x7528;java.net.URL&#x63D0;&#x53D6;host"></a>5.&#x4F7F;&#x7528;java.net.URL&#x63D0;&#x53D6;host</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-java-net-URI"><span class="nav-number">2.6.</span> <span class="nav-text"><a href="#6-java-net-URI" class="headerlink" title="6.java.net.URI"></a>6.java.net.URI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-排除javascript协议"><span class="nav-number">2.7.</span> <span class="nav-text"><a href="#7-&#x6392;&#x9664;javascript&#x534F;&#x8BAE;" class="headerlink" title="7.&#x6392;&#x9664;javascript&#x534F;&#x8BAE;"></a>7.&#x6392;&#x9664;javascript&#x534F;&#x8BAE;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#黑名单"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x9ED1;&#x540D;&#x5355;" class="headerlink" title="&#x9ED1;&#x540D;&#x5355;"></a>&#x9ED1;&#x540D;&#x5355;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#file协议绕过"><span class="nav-number">4.</span> <span class="nav-text"><a href="#file&#x534F;&#x8BAE;&#x7ED5;&#x8FC7;" class="headerlink" title="file&#x534F;&#x8BAE;&#x7ED5;&#x8FC7;"></a>file&#x534F;&#x8BAE;&#x7ED5;&#x8FC7;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">m4bln</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("AAhymnaPSbBOge9isiIUi5c8-gzGzoHsz", "79JTCuY3J33b0HodXn8nYFvn");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

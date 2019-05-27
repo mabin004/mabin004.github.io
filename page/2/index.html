@@ -306,6 +306,595 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/09/07/CVE-2018-9489分析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/07/CVE-2018-9489分析/" itemprop="url">CVE-2018-9489分析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-07T15:34:01+08:00">
+                2018-09-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/09/07/CVE-2018-9489分析/" class="leancloud_visitors" data-flag-title="CVE-2018-9489分析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          概述CVE-2018-9489是一个很简单，很鸡肋的漏洞，但漏洞无贵贱，在一些特殊的场景中往往会利用这些漏洞完成不可思议的利用。
+简而言之，CVE-2018-9489这个漏洞就是一个0权限的app可以读到系统的mac地址、wifi信息，而这些信息如果是一个普通的app去读取的话是需要申请权限的。
+CVE-2018-9489漏洞通过监听NETWORK_STATE_CHANGED_ACTION和WIFI_P2P_THIS_DEVICE_CHANGED_ACTION这两个广播来获得这些信息。
+漏洞分析Android系统通过WifiManager.NETWORK_STATE_CHANGED_ACTION和WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION这两个广播发送系统的MAC地址、BSSID、wifi名称、IP地址、DNS等信息。
+正常情况下，通过WifiManager类访问这些信息时，需要注册“ACCESS_WIFI_STATE”权限。我们知道搜集了mac地址和BSSID信息时，就可以进行wifi定位，而正常的wifi定位时需要注册“ACCESS_FINE_LOCATION” 和 “ACCESS_COARSE_LOCATION”权限的。
+此外，Android为了数据隐私，从这个6.0版本开始， Android 移除了通过 WiFi 和蓝牙 API 来在应用程序中可编程的访问本地硬件标示符。现在 WifiInfo.getMacAddress() 和 BluetoothAdapter.getAddress() 方法都将返回 “02:00:00:00:00:00”。
+然而通过监听系统广播的方式，一个普通App可以不用申请任何权限去获得这些信息。当然，如上所述，利用CVE-2018-9489可以进行wifi定位、读取MAC地址、内网扫
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/09/07/CVE-2018-9489分析/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/09/01/调试研究/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/01/调试研究/" itemprop="url">Chrome远程调试</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-01T21:41:43+08:00">
+                2018-09-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/09/01/调试研究/" class="leancloud_visitors" data-flag-title="Chrome远程调试">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          远程调试Chrome的调试目标主要分两种：Chrome PC 浏览器和 Chrome Mobile
+
+调试PC端chrome除了使用“审查元素”外，还可以用一个进程的chrome调试另一个进程的chrome。利用命令行启动chrome，并开启调试端口即可：1sudo /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=2333
+需要注意被调试端暴露的端口只接受来自127.0.0.1 或者localhost 的端口请求。
+调试Android端chrome调试Android端Chrome需要: 
+
+adb连接（USB线连接或adb网络调试）
+手机端webview需要打开调试模式1webview.setWebContentsDebuggingEnabled(true)
+
+
+满足上述2点后，在PC上的chrome中输入chrome://inspect或about://inspect,即可进入调试界面。
+
+调试实现Chrome的调试本质上通过端口来实现，PC端chrome在开启调试模式时会指定端口，Android端通过adb forward来实现：1adb forward tcp:2333 localabstract:webview_devtools_remote_6784
+被调试的webview在手机上创建一个Unix Domain Socket, 这个socket的名字为 webview_devtoolsremote,其中pid为webview所处的进程号，执行adb forward命令后，adb将这个Unix Domain Socket转发到PC上一个本地端口，进而实现了调试。
+调试权限Google 为了限制调试端口的接入范围，对于 Chrome PC 浏览
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/09/01/调试研究/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/08/24/在iOS上使用Frida/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/24/在iOS上使用Frida/" itemprop="url">在iOS上使用Frida</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-24T16:59:00+08:00">
+                2018-08-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/24/在iOS上使用Frida/" class="leancloud_visitors" data-flag-title="在iOS上使用Frida">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          准备Frida环境
+越狱设备1.在你的iOS设备上打开Cydia应用程序。2.添加一个源，URL为：https://build.frida.re3.打开Source或搜索Frida，单击Modify，然后单击Install。
+非越狱设备需要将frida-garget打包到app中，参考之前的文章《iOS应用安全- 非越狱下使用Frida》
+
+frida用法1.注入到进程注入进程有两种方式：
+
+通过frida-tools的REPL
+1frida -U Safari -l NSURL_openURL_hook.js
+
+通过frida-bindings以python为例：
+12345678jscode=&apos;&apos;&apos;console.log(&quot;add js code here&quot;);&apos;&apos;&apos;process = frida.get_usb_device().attach(&quot;Safari&quot;)script = process.create_script(jscode)script.on(&apos;message&apos;, on_message)print(&apos;[*] dump all class into obclass.txt&apos;)script.load()
+
+
+2.列出所有运行的进程1frida-ps -U
+frida-ps -Uai 以pid、名称、进程名称的格式输出
+3.打印调用栈在hook到的函数中加入以下代码：123console.log(&apos;\tBacktrace:\n\t&apos; + Thread.backtrace(this.context,Backtracer.ACCURATE).map(DebugSymbol.fromAddress).join(
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/08/24/在iOS上使用Frida/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/08/23/ollvm学习/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/23/ollvm学习/" itemprop="url">利用ollvm进行代码混淆</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-23T16:40:28+08:00">
+                2018-08-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/23/ollvm学习/" class="leancloud_visitors" data-flag-title="利用ollvm进行代码混淆">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          OLLVM简介OLLVM(Obfuscator-LLVM)是瑞士西北应用科技大学于2010年6月份发起的一个项目，该项目旨在提供一套开源的针对LLVM的代码混淆工具，以增加对逆向工程的难度。
+OLLVM是基于LLVM实现的，LLVM是一个编译器框架，它也采用经典的三段式设计。前端可以使用不同的编译工具对代码文件做词法分析以形成抽象语法树AST，然后将分析好的代码转换成LLVM的中间表示IR（intermediate representation）；中间部分的优化器只对中间表示IR操作，通过一系列的Pass对IR做优化；后端负责将优化好的IR解释成对应平台的机器码。LLVM的优点在于，不同的前端语言最终都转换成同一种的IR。
+OLLVM的混淆操作就是在中间表示IR层，通过编写Pass来混淆IR，然后后端依据IR来生成的目标代码也就被混淆了。得益于LLVM的设计，OLLVM适用LLVM支持的所有语言（C, C++, Objective-C, Ada 和 Fortran）和目标平台（x86, x86-64, PowerPC, PowerPC-64, ARM, Thumb, SPARC, Alpha, CellSPU, MIPS, MSP430, SystemZ, 和 XCore）。
+OLLVM的几种混淆方式OLLVM默认支持 -fla -sub -bcf 三个混淆参数，这三个参数可以单独使用，也可以配合着使用。-fla 参数表示使用控制流平展（Control Flow Flattening）模式，-sub参数表示使用指令替换（Instructions Substitution）模式，-bcf参数表示使用控制流伪造（Bogus Control Flow）模式
+
+-sub instruction substitution(指令替换)
+-fla control flow flatten
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/08/23/ollvm学习/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/08/22/Android基于OpenMemory的脱壳/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -392,7 +981,7 @@
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/08/22/Android基于OpenMemory的脱壳/#espandi" rel="contents">
+            <a class="btn" href="/2018/08/22/Android基于OpenMemory的脱壳/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -538,7 +1127,7 @@ c++filt对于上述例子中的符号我们使用c++filt
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/08/22/c-filt/#espandi" rel="contents">
+            <a class="btn" href="/2018/08/22/c-filt/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -684,7 +1273,7 @@ Robust使用环境配置
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/08/21/Robust/#espandi" rel="contents">
+            <a class="btn" href="/2018/08/21/Robust/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -830,7 +1419,7 @@ Android系统中由Vold进程（Volume Daemon）负责管理和控制外设，Vo
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/08/14/CVE-2018-9445-——-Android-USB上的目录穿越/#espandi" rel="contents">
+            <a class="btn" href="/2018/08/14/CVE-2018-9445-——-Android-USB上的目录穿越/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -971,7 +1560,7 @@ co
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/08/13/cve-2018-9375-——-Android个人字典漏洞分析/#espandi" rel="contents">
+            <a class="btn" href="/2018/08/13/cve-2018-9375-——-Android个人字典漏洞分析/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1123,591 +1712,7 @@ CVE-2018-
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/08/10/利用蓝牙漏洞逃逸iOS沙箱/#espandi" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/08/02/Android分析常用的工具或命令/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/02/Android分析常用的工具或命令/" itemprop="url">Android分析常用的工具或命令</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-02T15:49:23+08:00">
-                2018-08-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/02/Android分析常用的工具或命令/" class="leancloud_visitors" data-flag-title="Android分析常用的工具或命令">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          dumpsysdumpsys命令用来查询界面元素层级、系统服务运行状态、电池、网络等一些信息。用法：12345678910HWVTR:/ # dumpsys --helpusage: dumpsys         To dump all services.or:       dumpsys [-t TIMEOUT] [--help | -l | --skip SERVICES | SERVICE [ARGS]]         --help: shows this help         -l: only list services, do not dump them         -t TIMEOUT: TIMEOUT to use in seconds instead of default 10 seconds         --skip SERVICES: dumps all services but SERVICES (comma-separated list)         SERVICE [ARGS]: dumps only service SERVICE, optionally passing ARGS to it
-常用功能：
-
-dumpsys activity top 获取顶层activity
-dumpsys -l  列出所有运行的服务
-dumpsys wifiscanner 获取wifi信息
-dumpsys webviewupdate 获得webview版本等信息
-dumpsys usagestats|grep com.tencent.mm  某个APP的使用情况
-dumpsys shortcut 所有的shortcut
-dumpsys package -h  所有和package相关
-dumpsys ethernet  屏幕信息
-dumpsys
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/08/02/Android分析常用的工具或命令/#espandi" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/07/31/Mac上编译Frida/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/31/Mac上编译Frida/" itemprop="url">Frida源码分析</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-31T19:07:02+08:00">
-                2018-07-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/31/Mac上编译Frida/" class="leancloud_visitors" data-flag-title="Frida源码分析">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          frida代码结构：frida-core: Frida core library intended for static linking into bindingsfrida-gum: Low-level code instrumentation library used by frida-corebindings:frida-python: Frida Python bindingsfrida-node: Frida Node.js bindingsfrida-qml: Frida Qml pluginfrida-swift: Frida Swift bindingsfrida-tools: Frida CLI toolscapstone: instruction disammbler 
-frida-gum解析：frida-gum 本身就是一种跨平台的设计. 有两个点需要处理统一: 1. 针对 CPU 架构的代码 2. 针对操作系统(Backend) 的代码. 同时要在这两个点上构建 CPU/OS 无关代码, 以及规定一些统一的接口.
-frida-gum/gum/arch-* 定义的是与 CPU 架构有关的代码,也就是汇编级操作, 比如汇编指令的读/写/修复.
-frida-gum/gum/backend-* 分两种情况: 1. 定义的是与操作系统有关的代码, 更多是一些内存/进程等操作 2. 对 arch 层级代码的封装成统一逻辑
-frida-gum/* 对 arch 和 backend 的抽象封装成上层的平台/架构无关代码.
-frida-gum/bindings/gumjs/：分V8和Duktape两个引擎，实现了Module、Memory、NativeFunction等功能（https://www.frida.re/docs/javascript-api/）
-两种模式
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/07/31/Mac上编译Frida/#espandi" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/07/26/Android设备管理器/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/26/Android设备管理器/" itemprop="url">Android设备管理器</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-26T18:36:51+08:00">
-                2018-07-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/26/Android设备管理器/" class="leancloud_visitors" data-flag-title="Android设备管理器">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          一、简介Android 提供了一个可管理和操作设备的API叫DevicePolicyManager，使用这个API可以接管手机的应用权限，对手机做出很重要很多大胆的操作,比如设置锁屏方式、恢复出厂设置、设置密码、强制清除密码，修改密码等操作。
-很多“远程查找手机”的实现使用了设备管理器功能，可以实现远程锁定手机，远程擦除，远程响铃等。
-此外，很多恶意软件通过设备管理器进行“锁屏勒索”等恶意操作，为了限制设备管理器被滥用，Android N 规定，第三方应用开发者只能使用DevicePolicyManager.resetPassword为无密码设备设置初始密码，而不能重置或清除已有的设备密码，但在Android N以下还是存在该类型的勒索攻击。
-由于设备管理器的高权限，因此要谨慎对待申请激活设备管理器的App，例如：今日头条、某些安全管家等等，
-二、设备管理器使用
-Menifest文件中注册receiver
-
-123456789101112&lt;receiver  android:name=&quot;.demo.DeviceReceiver&quot;            android:permission=&quot;android.permission.BIND_DEVICE_ADMIN&quot;&gt;            &lt;meta-data                android:name=&quot;android.app.device_admin&quot;                android:resource=&quot;@xml/device_admin&quot; /&gt;            &lt;intent-filter&gt;                &lt;action android:name=&q
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/07/26/Android设备管理器/#espandi" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/07/25/Android-FRP功能分析（Factory-Reset-Protection）/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/25/Android-FRP功能分析（Factory-Reset-Protection）/" itemprop="url">Android FRP功能分析（Factory Reset Protection）</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-25T21:45:00+08:00">
-                2018-07-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/25/Android-FRP功能分析（Factory-Reset-Protection）/" class="leancloud_visitors" data-flag-title="Android FRP功能分析（Factory Reset Protection）">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          简介最近在对华为P10刷机时，发现解锁bootloader需要关闭“查找我的手机“功能，此外，解锁bootloader后刷recovery时，仍然需要关闭“查找我的手机”才能进行，这种现象表明了Android主系统可以操作bootloader和recovery分区，一番查找后，发现这个功能叫做FRP（Factory Reset Protection）,自Android 5.0后引入，为了防止手机被盗后被刷机而引入的一种保护机制。
-FRP工作机制我们假设手机被盗取后的几个场景来分析：
-一、手机有锁屏密码，盗取者无法进入主系统方案1：盗取者为了使用该设备，此时，很容易想到进入recovery模式去恢复出厂设置，即使这样，原机主的设备在reset后数据被清除，但重启后再次进入系统前，FRP保护开始工作，要求输入原设备绑定的账号解锁。如下是在华为手机上做的实验：
-
-方案2：既然原设备的recovery有检查，那盗取者可以刷第三方的recovery,此时便需要解锁bootloader。然而，随着很多手机厂商都不提供解锁bootloader服务，仅仅是解锁bootloader就很困难了，我们再假设盗取者有解锁bootloader的能力，然而FRP又发挥了作用，在bootloader中设置了一个标记位，只有这个标记位置零时才允许解锁bootloader。同样道理，即使完成了解锁bootloader这一关，刷第三方recovery时依然受到FRP保护。
-两种方案都失败了，对于盗取者来说，只能眼睁睁看着设备卖废铁了，所以FRP作用还是挺大的。
-二、无锁屏密码或被破解，盗取者可以进入主系统这个时候就比较尴尬了，失主的数据当然一览无余，但盗取者可能有三种操作：
-
-关闭FRP保护
-添加一个自己的账户或删除原机主账户
-在设置中恢复出厂设置这三种操作无论哪一个，都需要输入原账户的口令进行验证。
-
-当然
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/07/25/Android-FRP功能分析（Factory-Reset-Protection）/#espandi" rel="contents">
+            <a class="btn" href="/2018/08/10/利用蓝牙漏洞逃逸iOS沙箱/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1795,7 +1800,7 @@ FRP工作机制我们假设手机被盗取后的几个场景来分析：
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">66</span>
+                  <span class="site-state-item-count">70</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1847,7 +1852,7 @@ FRP工作机制我们假设手机被盗取后的几个场景来分析：
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
