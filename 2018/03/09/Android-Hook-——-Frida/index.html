@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="m4bln">
 <meta property="og:description" content="Frida简介Frida是一款基于python + javascript 的hook框架，通杀android\ios\linux\win\osx等各平台，由于是基于脚本的交互，相比xposed和substrace cydia更加便捷，本文重点介绍Frida在android下面的使用。 Frida的官网为：http://www.frida.re/ 环境配置 pip install frida 安装f">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-05-14T13:53:17.006Z">
+<meta property="og:updated_time" content="2019-06-21T07:09:59.268Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Hook 之 Frida">
 <meta name="twitter:description" content="Frida简介Frida是一款基于python + javascript 的hook框架，通杀android\ios\linux\win\osx等各平台，由于是基于脚本的交互，相比xposed和substrace cydia更加便捷，本文重点介绍Frida在android下面的使用。 Frida的官网为：http://www.frida.re/ 环境配置 pip install frida 安装f">
@@ -444,7 +444,10 @@
 <li>这种情况可以枚举函数的overloads属性，挨个hook，或者使用数组索引hook,例如a.overloads[1].implement=xxxx</li>
 </ul>
 <ol>
-<li>使用enumerateLoadedClasses报“VM::GetEnv failed”错误<br>enumerateLoadedClasses需要在Java.perform（）下使用，参考<a href="https://github.com/frida/frida/issues/237" target="_blank" rel="noopener">https://github.com/frida/frida/issues/237</a></li>
+<li><p>使用enumerateLoadedClasses报“VM::GetEnv failed”错误<br>enumerateLoadedClasses需要在Java.perform（）下使用，参考<a href="https://github.com/frida/frida/issues/237" target="_blank" rel="noopener">https://github.com/frida/frida/issues/237</a></p>
+</li>
+<li><p>Failed to spawn: unable to find application with identifier ‘com.dzvuhumnjt.kfwmalytfds’<br>如果包名是正确的，应该是这个包名是一个服务，没有lunch activity, 此时只能靠启动后抢时间的方式来attach, spawn行不通</p>
+</li>
 </ol>
 <h2 id="Frida-基础数据类型"><a href="#Frida-基础数据类型" class="headerlink" title="Frida 基础数据类型"></a>Frida 基础数据类型</h2><h3 id="Int"><a href="#Int" class="headerlink" title="Int"></a>Int</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var Integerclass = Java.use(&quot;java.lang.Integer&quot;);</span><br><span class="line">var myint = Integerclass.$new(1440);</span><br></pre></td></tr></table></figure>
 <h3 id="Long"><a href="#Long" class="headerlink" title="Long"></a>Long</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var Longclass = Java.use(&quot;java.lang.Long&quot;);</span><br><span class="line">var myint = Longclass.$new(27893952512)</span><br></pre></td></tr></table></figure>
@@ -588,7 +591,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">70</span>
+                  <span class="site-state-item-count">69</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
