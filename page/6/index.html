@@ -306,6 +306,699 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/05/https中间人攻击原理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/05/https中间人攻击原理/" itemprop="url">Android Https抓包实践</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-05T16:29:49+08:00">
+                2018-03-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/03/05/https中间人攻击原理/" class="leancloud_visitors" data-flag-title="Android Https抓包实践">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          平时的安全研究经常会有抓包的需求，随着互联网厂商安全意识的不断提高，多数Android APP采用了https协议和服务端进行通信，增加了中间人攻击的难度。
+在使用burpsuilt、Fiddler等工具抓https数据包时，通常需要在手机上安装一个证书，即便这样仍然还会出现抓不到包等各种各样的错误和问题，为了解决这些问题，有必要了解下https的原理和实现，方可在遇到问题时根据不同的情况来解决。
+文章有点长，搞个图便于以后采坑定位：
+
+什么是证书这里的证书是指https数字证书，为了防止被中间人挟持，整个互联网都在由http向https切换，证书是https协议中的一个重要角色，本质上证书被用来验证“一个站点是不是真正的站点”。下图是https的协议过程，其中第4阶段就是证书的校验阶段
+
+那么如何通过证书来验证“一个站点是不是真正的站点”呢？首先从证书的内容说起。
+使用openssl可以查看证书的内容，例如：12345678910111213141516171819202122232425262728293031323334353637383940openssl x509  -noout -text -in  kubernetes.pemCertificate:    Data:        Version: 3 (0x2)        Serial Number:            06:6c:9f:d7:c1:bb:10:4c:29:43:e5:71:7b:7b:2c:c8:1a:c1:0e    Signature Algorithm: ecdsa-with-SHA384        Issuer: C=US, O=Amazon, CN=Amazon Root CA 4        Validity            Not Before: May 
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/05/https中间人攻击原理/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/02/28/Android加固厂商特征（转）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/28/Android加固厂商特征（转）/" itemprop="url">Android加固厂商特征（转）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-28T17:42:12+08:00">
+                2018-02-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/02/28/Android加固厂商特征（转）/" class="leancloud_visitors" data-flag-title="Android加固厂商特征（转）">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>from <a href="https://bbs.pediy.com/thread-223248.htm" target="_blank" rel="noopener">https://bbs.pediy.com/thread-223248.htm</a></p>
+<p>娜迦<br>libchaosvmp.so , libddog.solibfdog.so</p>
+<p>爱加密<br>libexec.so, libexecmain.so，ijiami.dat</p>
+<p>梆梆<br>libsecexe.so, libsecmain.so,libSecShell.so</p>
+<p>梆梆企业版<br>libDexHelper.so , libDexHelper-x86.so<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/02/28/Android加固厂商特征（转）/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/02/08/frida导出函数任意调用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/08/frida导出函数任意调用/" itemprop="url">frida导出函数任意调用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-08T15:13:05+08:00">
+                2018-02-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/02/08/frida导出函数任意调用/" class="leancloud_visitors" data-flag-title="frida导出函数任意调用">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>除了hook外，frida提供了rpc接口，可以导出某一个指定的函数，实现随时对其进行调用。</p>
+<p>1.js中指定导出的类和函数，并采用new方法创建一个实例，python文件中导入1.js,输入对应的参数调用即可。如果通过http的方式传递参数，就可以变为一个服务框架，例如salt写的Hrida。（<a href="https://github.com/5alt/hrida）" target="_blank" rel="noopener">https://github.com/5alt/hrida）</a><br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/02/08/frida导出函数任意调用/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/02/06/Android直接执行so里的函数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/06/Android直接执行so里的函数/" itemprop="url">Android直接执行so里的函数</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-06T21:04:48+08:00">
+                2018-02-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/02/06/Android直接执行so里的函数/" class="leancloud_visitors" data-flag-title="Android直接执行so里的函数">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960#include &lt;stdio.h&gt;#include &lt;stdlib.h&gt;#include &lt;dlfcn.h&gt;int main(int argc, char *argv[])&#123;    //decrypt_db in.db out.db key	//char key_in[256] = "thMSot/QNM/iFsDVNksPtXHiqi0wxjD0m2SMLipLEQ4=";    char *in_db = argv[1];    char *out_db = argv[2];    char *key_in = argv[3];	char key_out[256] = &#123;0&#125;;	void *p;    void (*key_func)(char *, char *);    void (*decrypt)(char *, char *, char *);    //dlopen    p=dlopen("./libdatabase_sqlcrypto.so",RTLD_NOW);    if(p==NULL)    &#123;        printf("dlopen error!\n");        exit(0);    &#125;    else        printf("dlopen ok!\n");    //dlsym aes_decrypt_key128    key_func=dlsym(p, "aes_decrypt_key128");    key_f
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/02/06/Android直接执行so里的函数/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/01/24/xmlHttpRequest读取本地文件/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/24/xmlHttpRequest读取本地文件/" itemprop="url">Ajax读取本地文件</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-24T18:21:59+08:00">
+                2018-01-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/01/24/xmlHttpRequest读取本地文件/" class="leancloud_visitors" data-flag-title="Ajax读取本地文件">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="关于Ajax"><a href="#关于Ajax" class="headerlink" title="关于Ajax"></a>关于Ajax</h2><p>AJAX 是一种在无需重新加载整个网页的情况下，能够更新部分网页的技术。</p>
+<p>所有现代浏览器均支持 XMLHttpRequest 对象（IE5 和 IE6 使用 ActiveXObject）。</p>
+<p>XMLHttpRequest 用于在后台与服务器交换数据。这意味着可以在不重新加载整个网页的情况下，对网页的某部分进行更新。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/01/24/xmlHttpRequest读取本地文件/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/01/24/js输出错误/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1007,741 +1700,11 @@ WebChromeClient主要辅助WebView处理Javascript的对话框、网站图标、
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/11/安卓“Janus”漏洞分析（cve-）/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/11/安卓“Janus”漏洞分析（cve-）/" itemprop="url">（待补充）安卓“Janus”漏洞分析（CVE-2017-13156)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-11T22:21:00+08:00">
-                2017-12-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/12/11/安卓“Janus”漏洞分析（cve-）/" class="leancloud_visitors" data-flag-title="（待补充）安卓“Janus”漏洞分析（CVE-2017-13156)">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          简介“Janus”漏洞是Google在12月发布的安卓系统的安全公告中披露的，由移动安全公司GuardSquare 的研究团队发现，漏洞编号：CVE-2017-13156。该漏洞的可以绕过Andorid的签名校验机制，攻击者可以利用漏洞通过升级的方式对App进行篡改。
-由于安卓系统中App的安全和可信都是建立在签名和校验基础之上，“Janus”漏洞绕过了系统的签名校验，可以说是突破了安卓整个安全机制，导致安卓整个安全体系的沦陷。
-
-一旦攻击者将植入恶意代码的仿冒的App投放到安卓商店等第三方应用市场，就可替代原有的App做下载、更新。网友安装这些仿冒App后，不仅会泄露个人账号、密码、照片、文件等隐私信息，手机更可能被植入木马病毒，进而或导致手机被ROOT，甚至被远程操控。
-
-影响范围
-安卓5.0-8.0的各个版本系统；
-使用安卓Signaturescheme V1签名的App APK文件。
-
-由于，signature scheme V2需要对App进行重新发布，而大量的已经存在的App APK无法使用V2校验机制，所以为了保证向前兼容性，V1的校验方式的还被保留,故该漏洞影响范围较大。
-漏洞分析漏洞原理1、安卓在4.4中引入了新的执行虚拟机ART，这个虚拟机经过重新的设计，实现了大量的优化，提高了应用的运行效率。与“Janus”有关的一个技术点是，ART允许运行一个raw dex，也就是一个纯粹的dex文件，不需要在外面包装一层zip。而ART的前任DALVIK虚拟机就要求dex必须包装在一个zip内部且名字是classes.dex才能运行。当然ART也支持运行包装在ZIP内部的dex文件，要区别文件是ZIP还是dex，就通过文件头的magic字段进行判断：ZIP文件的开头是‘PK’, 而dex文件的开头是’dex’.1代码部分
-2、APK本质是一个ZIP文件，ZIP文件
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/12/11/安卓“Janus”漏洞分析（cve-）/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/10/手机短信PDU格式分析/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/10/手机短信PDU格式分析/" itemprop="url">手机短信PDU格式分析</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-10T15:51:00+08:00">
-                2017-12-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/12/10/手机短信PDU格式分析/" class="leancloud_visitors" data-flag-title="手机短信PDU格式分析">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          Text模式和PDU模式目前，发送短消息常用Text和PDU(Protocol Data Unit，协议数据单元)模式。使用Text模式收发短信代码简单，实现起来十分容易，但最大的缺点是不能收发中文短信；而PDU模式不仅支持中文短信，也能发送英文短信。
-PDU模式收发短信可以使用3种编码：7-bit、8-bit和UCS2编码。7-bit编码用于发送普通的ASCII字符，8-bit编码通常用于发送数据消息，UCS2编码用于发送Unicode字符。一般的PDU编码由A B C D E F G H I J K L M十三项组成。
-
-A：短信息中心地址长度，2位十六进制数(1字节)。B：短信息中心号码类型，2位十六进制数。C：短信息中心号码，B+C的长度将由A中的数据决定。D：文件头字节，2位十六进制数。E：信息类型，2位十六进制数。F：被叫号码长度，2位十六进制数。G：被叫号码类型，2位十六进制数，取值同B。H：被叫号码，长度由F中的数据决定。I：协议标识，2位十六进制数。J：数据编码方案，2位十六进制数。K：有效期，2位十六进制数。L：用户数据长度，2位十六进制数。M：用户数据，其长度由L中的数据决定。J中设定采用UCS2编码，这里是中英文的Unicode字符。
-
-PDU举例
-例1发送：SMSC号码是+8613800250500，对方号码是13693092030，消息内容是“Hello!”。从手机发出的PDU串可以是108 91 68 31 08 20 05 05 F0 11 00 0D 91 68 31 96 03 29 30 F0 00 00 00 06 C8 32 9B FD 0E 01
-
-
-对照规范，具体分析：SMSC#+8613800250500Sender:+8613693092030TP_PID:00TP_DCS:00TP_DCS-popis:Uncompress
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/12/10/手机短信PDU格式分析/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/09/cve-2014-7911/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/09/cve-2014-7911/" itemprop="url">cve-2014-7911</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-09T17:13:00+08:00">
-                2017-12-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/12/09/cve-2014-7911/" class="leancloud_visitors" data-flag-title="cve-2014-7911">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          0x00 简介CVE-2014-7911是安卓上序列化的提权漏洞，该漏洞允许恶意应用从普通应用权限提权到system用户执行命令。漏洞的成因源于在安卓系统（&lt;5.0）中，java.io.ObjectInputStream并未校验输入的java对象是否是实际可序列化的。攻击者因此可以构建一个不可序列化的java对象实例，恶意构建其成员变量，当该对象实例被ObjectInputStream反序列化时，将发生类型混淆，对象的Field被视为由本地代码处理的指针，使攻击者获得控制权
-0x01 漏洞分析向system_server传入的不可序列化的android.os.BinderProxy对象实例，其成员变量在反序列化时发生类型混淆，由于BinderProxy的finalize方法包含native代码，于是在本地代码执行时将成员变量强制转换为指针，注意到成员变量是攻击者可控的，也就意味着攻击者可以控制该指针，使其指向攻击者可控的地址空间，最终获得在system_server（uid=1000）中执行代码的权限。
-下面主要结合POC对漏洞进行详细分析。
-
-构建可序列化对象
- 12345public class BinderProxy implements Serializable &#123;	private static final long serialVersionUID = 0;	private int mObject = 0x1337beef;	private int mOrgue = 0x1337beef;	&#125;
- mOrgue和mObject的类型参照源码（frameworks/base/core/java/android/os/Binder.java）
-
-
-123Bundle bundle = new Bundle();AAdroid.os.Binder
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/12/09/cve-2014-7911/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/09/Android-AIDL笔记/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/09/Android-AIDL笔记/" itemprop="url">Android AIDL笔记</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-09T17:10:52+08:00">
-                2017-12-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/12/09/Android-AIDL笔记/" class="leancloud_visitors" data-flag-title="Android AIDL笔记">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          在Android系统中，通常一个进程不能访问其它进程的内存。AIDL(Android Interface definition language)允许定义客户端和服务端都同意为了彼此之间的通信使用进程间通信（IPC）的编程接口，其本质是用Binder实现的。
-以下为一个简单的AIDL实例
-服务端1.新建AIDL文件首先用Android Studio 新建一个Android工程，这里命名为com.example.AIDL_Server。在工程目录下，“右键“-&gt;”New”-&gt;”AIDL File”,这里接口命名为“MyAidl”，每个.aidl文件必须定义一个接口并且只需要接口声明。
-这里定义接口方法为Add，返回客户端输入的两个数之和。MyAidl.aidl文件如下：
-12345package com.example.aidl_server.myapplication;interface MyAidl &#123;		int Add(int a,int b);&#125;
-接着Make一下，自动会生成对应的Java文件，生成的文件名和.aidl文件名匹配，但扩展名为.java，本质为Binder实现。
-###2.实现接口上一步定义好了接口和Add方法，需要进一步实现。新建一个Service，在Service中新建一个内部类MyAidl.Stub,在该类中实现Add接口。
-3.对外暴漏接口在Service中的onBind函数中返回接口，另外还需注意在manifest文件中声明Service接口，代码如下：
-123456789101112131415161718	public class Add extends Service &#123;    private MyAidl.Stub mRemote = new MyAidl.Stub()&#123;       
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/12/09/Android-AIDL笔记/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/09/cve-2015-3839-短信-Dos/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/09/cve-2015-3839-短信-Dos/" itemprop="url">cve-2015-3839(短信 Dos)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-09T17:06:00+08:00">
-                2017-12-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/12/09/cve-2015-3839-短信-Dos/" class="leancloud_visitors" data-flag-title="cve-2015-3839(短信 Dos)">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          漏洞描述漏洞发生在Android自带短信应用中updateMessageStatus函数中，该函数用于发送短信完成后更新状态。代码中未对异常进行处理（使用try…finally…，未加catch），且相关的服务对外暴露，恶意程序可以构造恶意的短信发送广播，导致自带的短信应用无法工作。
-漏洞代码如下：
-
-当message为null时，访问message对象中的函数或变量就会发生空指针异常，导致短信应用Crash.
-函数开始对message是否为空作了判断，因此需要绕过判断。createFromPdu函数是对收到的pdu格式的短信进行解析，返回一个SmsMessage对象，如下图：
-
-该函数根据format的格式（3GPP为GSM，3GPP2为CMDA）去解析PDU，最后返回一个wrappedMessage对象，最后的return没有直接返回wrappedMessage对象，而是通过new的方式返回，导致返回值永不为null。因此，只要wrappedMessage对象为null时，就会绕过”if (message==null)”的检查，触发空指针异常。
-漏洞利用为使wrappedMessage对象为null,只需要构造一个无效的PDU串即可。
-&gt;PDU为发送短信时一种固定的编码格式，一般的PDU编码由A B C D E F G H I J K L M十三项组成。A：短信息中心地址长度，2位十六进制数(1字节)。B：短信息中心号码类型，2位十六进制数。C：短信息中心号码，B+C的长度将由A中的数据决定。D：文件头字节，2位十六进制数。E：信息类型，2位十六进制数。F：被叫号码长度，2位十六进制数。G：被叫号码类型，2位十六进制数，取值同B。H：被叫号码，长度由F中的数据决定。I：协议标识，2位十六进制数。J：数据编码方案，2位十六进制数。K：有效期，2位十六进制数。L：用户
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/12/09/cve-2015-3839-短信-Dos/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1787,7 +1750,7 @@ PDU举例
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">69</span>
+                  <span class="site-state-item-count">75</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1839,7 +1802,7 @@ PDU举例
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

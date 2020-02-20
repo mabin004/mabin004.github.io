@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, m4bln" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="随着Android系统安全漏洞的大幅减少，Android设备的root门槛变得越来越高，知名的root工具KingRoot甚至停止了维护，利用漏洞来root变成一件很困难的事情。 另一方面，厂商对Secure Boot的实现也在不断增强，大多数手机厂商关闭了bootloader解锁通道，通过刷第三方rom或recovery来root设备的方式逐渐不可行。 root是安全人员必备的研究环境，除了使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vitual APP及其环境下的hook技术研究">
+<meta property="og:url" content="https://mabin004.github.io/2019/02/09/itural-APP研究/index.html">
+<meta property="og:site_name" content="m4bln">
+<meta property="og:description" content="随着Android系统安全漏洞的大幅减少，Android设备的root门槛变得越来越高，知名的root工具KingRoot甚至停止了维护，利用漏洞来root变成一件很困难的事情。 另一方面，厂商对Secure Boot的实现也在不断增强，大多数手机厂商关闭了bootloader解锁通道，通过刷第三方rom或recovery来root设备的方式逐渐不可行。 root是安全人员必备的研究环境，除了使用">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-200.png">
+<meta property="og:updated_time" content="2020-02-20T14:40:58.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vitual APP及其环境下的hook技术研究">
+<meta name="twitter:description" content="随着Android系统安全漏洞的大幅减少，Android设备的root门槛变得越来越高，知名的root工具KingRoot甚至停止了维护，利用漏洞来root变成一件很困难的事情。 另一方面，厂商对Secure Boot的实现也在不断增强，大多数手机厂商关闭了bootloader解锁通道，通过刷第三方rom或recovery来root设备的方式逐渐不可行。 root是安全人员必备的研究环境，除了使用">
+<meta name="twitter:image" content="https://mabin004.github.io/images/pasted-200.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'SXXZO8IPW0',
+      apiKey: 'b9723880e3b66475126bdc98a4bb9380',
+      indexName: 'm4bln',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到任何搜索结果: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://mabin004.github.io/2019/02/09/itural-APP研究/"/>
+
+
+
+
+
+  <title>Vitual APP及其环境下的hook技术研究 | m4bln</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">m4bln</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-hint">
+          <a href="/hint/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            hint
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-todo">
+          <a href="/todo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            ToDo
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2019/02/09/itural-APP研究/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Vitual APP及其环境下的hook技术研究</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:12:00+08:00">
+                2019-02-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/02/09/itural-APP研究/" class="leancloud_visitors" data-flag-title="Vitual APP及其环境下的hook技术研究">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>随着Android系统安全漏洞的大幅减少，Android设备的root门槛变得越来越高，知名的root工具KingRoot甚至停止了维护，利用漏洞来root变成一件很困难的事情。</p>
+<p>另一方面，厂商对Secure Boot的实现也在不断增强，大多数手机厂商关闭了bootloader解锁通道，通过刷第三方rom或recovery来root设备的方式逐渐不可行。</p>
+<p>root是安全人员必备的研究环境，除了使用Nexus系列设备外，Vitual APP下的hook不失为一种办法。此外，由于上手简单，VA下的hook更多是被黑产或脚本所利用，本文对这种技术的原理进行分析。</p>
+<h2 id="一、Vitual-APP原理"><a href="#一、Vitual-APP原理" class="headerlink" title="一、Vitual APP原理"></a>一、Vitual APP原理</h2><p>广义的Vitual App 可以理解为轻量级的“Android虚拟机”，即一个宿主APP上运行多个其他APP的形式，一定程度上也可以理解为我们熟知的“应用多开”。这种“虚拟机”并未打破Android原有的系统机制，因此，宿主APP及其虚拟运行的多个APP共享同一个uid/gid。</p>
+<p>我们知道Android上每个APP都运行在自己的沙盒环境中，但APP对于自己的进程、子进程等具有完全的控制权，在自己的沙箱内运行起其他APP，就实现了虚拟化。然而，常规的APP除了运行自己的代码外，还会和操作系统频繁交互，例如各种各样的服务、文件系统等，Vitual App如果成为了APP和操作系统的“中间人”，便实现了APP无感知的虚拟机，这也是Vitual APP的核心技术。</p>
+<p>常见的Vitual APP有以下几类：</p>
+<ul>
+<li>基于<a href="https://github.com/asLody/VirtualApp" target="_blank" rel="noopener">VitualAPP</a>引擎的虚拟工具，例如“太极” （这里的VitualAPP特指github上一款工具，而Vitual APP是广义的虚拟化应用）</li>
+<li>基于<a href="http://www.lbesec.com/#/home" target="_blank" rel="noopener">MultiDroid</a>引擎的虚拟工具,例如“LBE平行空间”</li>
+<li>基于<a href="https://github.com/DroidPluginTeam/DroidPlugin" target="_blank" rel="noopener">DroidPlugin</a>，如“360分身大师”</li>
+<li>厂商自带的“应用分身工具”、“多开工具”等</li>
+</ul>
+<p>Vitual APP目前被广泛应用于插件化开发、无感知热更新、应用多开、手机模拟信息、脚本自动化等技术领域，这里我们对常见技术流派的原理进行简单分析。</p>
+<h3 id="1-VitualAPP"><a href="#1-VitualAPP" class="headerlink" title="1.VitualAPP"></a>1.VitualAPP</h3><p>VirtualApp是一个开源的Android App虚拟化引擎，允许在其中创建虚拟空间，并在这个虚拟空间中运行其他应用。项目地址：<a href="https://github.com/asLody/VirtualApp（PS:VA的作者是一名高中生）" target="_blank" rel="noopener">https://github.com/asLody/VirtualApp（PS:VA的作者是一名高中生）</a></p>
+<p>VirtualApp主要有三部分构成：</p>
+<ul>
+<li>Main Process<br>进程名io.virtualapp，主要负责VirtualApp用户界面及应用管理</li>
+<li>Server Process<br>进程名io.virtualapp:x，主要负责实现各种系统服务的代理，这部分也是其能够完成虚拟APP的核心</li>
+<li>VApp Process<br>进程名io.virtualapp:p[x]，作为将来运行client应用的进程，当client应用启动后，其进程名会更新为client应用的包名</li>
+</ul>
+<p>VirtualApp之所以能够实现虚拟空间，是因为其对许多系统服务进行了代理和替换。Android应用调用系统服务，是通过Binder机制进行IPC。因此，应用所持有的是系统服务的BinderProxy，VirtualApp通过对这些BinderProxer构造代理并替换，便实现了对系统服务的代理和替换。具体的替换方式可参考<a href="http://rk700.github.io/2017/03/15/virtualapp-basic/" target="_blank" rel="noopener">http://rk700.github.io/2017/03/15/virtualapp-basic/</a></p>
+<p>原理虽然简单，但由于需要处理各种各样的系统服务，VirtualApp的代码实现起来还是比较麻烦的，此外，VA还要处理APP的安装、启动、广播等。由于巨大的工作量，后期的VitualApp也推出了商业版本。一份非官方的VA文档可以作为参考<a href="https://github.com/prife/VirtualAppDoc。" target="_blank" rel="noopener">https://github.com/prife/VirtualAppDoc。</a></p>
+<h3 id="2-MultiDroid"><a href="#2-MultiDroid" class="headerlink" title="2.MultiDroid"></a>2.MultiDroid</h3><p>MutiDroid并没有开源其代码，据一些非官方的文档（<a href="https://blog.csdn.net/xiaoyangsavvy/article/details/73479780）描述，其关键的实现技术有：" target="_blank" rel="noopener">https://blog.csdn.net/xiaoyangsavvy/article/details/73479780）描述，其关键的实现技术有：</a></p>
+<ul>
+<li>Framework层的虚拟实现</li>
+<li>文件系统虚拟化</li>
+<li>Android系统组件管理</li>
+<li>应用进程管理</li>
+</ul>
+<p>但这些技术同样也是VitualApp需要处理的，也有人在逆向LBE的dex里发现了和VA相同的类，毕竟都是对系统服务进行代理，系统服务相关的类名相同自然也是应该的，由于对其未开源，这里对MultiDroid引擎的实现不作分析。</p>
+<h3 id="3-DroidPlugin"><a href="#3-DroidPlugin" class="headerlink" title="3.DroidPlugin"></a>3.DroidPlugin</h3><p>DroidPlugin是360推出的一款虚拟插件<a href="https://github.com/DroidPluginTeam/DroidPlugin" target="_blank" rel="noopener">https://github.com/DroidPluginTeam/DroidPlugin</a> ，weishu的文章里详细解释了DroidPlugin的原理（<a href="https://github.com/tiann/understand-plugin-framework），DroidPlugin更多的被用于热修复中。" target="_blank" rel="noopener">https://github.com/tiann/understand-plugin-framework），DroidPlugin更多的被用于热修复中。</a></p>
+<p>DroidPlugin主要通过Binder动态代理的方式对系统进行hook,同时也对Android的四大组件进行了处理，详细实现可以参考作者github中的Doc目录里的分析文章。</p>
+<h3 id="4-厂商实现"><a href="#4-厂商实现" class="headerlink" title="4.厂商实现"></a>4.厂商实现</h3><p>由于可以定制化修改系统，相比于其他绞尽脑汁的hook方案，厂商可谓开启的上帝模式，因此在系统上运行一个APP的两个实例实现起来轻而易举。所以严格来讲，手机厂商的实现不能叫Vitual APP了。此外，厂商还可以用Android的多用户机制，实现“访客模式”、“隐私模式”等功能。</p>
+<h2 id="二、无root下的hook"><a href="#二、无root下的hook" class="headerlink" title="二、无root下的hook"></a>二、无root下的hook</h2><p>我们知道常用的hook工具如Xposed、frida等都需要在root环境下运行，这是因为在无root的环境下，hook工具和目标APP是相互独立的进程，hook工具没有注入目标代码的权限。</p>
+<p>通过Vitual APP的技术，我们把目标APP加载到自己控制的沙箱空间内，本质上可以注入任意代码，因此就可以实现hook的功能了。上文解释Vitual APP原理时，我们也提到了hook，但和此节的hook还是有区别的，前者是对系统服务等关键函数的hook,后者作为一个工具，需要实现任意函数下的hook。因此，无root环境下的hook除了结合Vitual APP外，还需要实现任意函数hook，这也就是常说的AOP拦截（Aspect Oriented Programming）。</p>
+<p>例如，“太极”(<a href="https://github.com/taichi-framework/TaiChi" target="_blank" rel="noopener">https://github.com/taichi-framework/TaiChi</a>) 是一款比较知名的无root环境下的hook工具，</p>
+<h3 id="1-Epic原理"><a href="#1-Epic原理" class="headerlink" title="1.Epic原理"></a>1.Epic原理</h3><p><a href="https://github.com/tiann/epic/blob/master/README_cn.md" target="_blank" rel="noopener">Epic</a> 是一个在虚拟机层面、以Java Method为粒度的运行时Hook 框架（支持 Android 4.0 ~ 10.0）。</p>
+<blockquote>
+<p>它可以拦截本进程内部几乎任意的 Java 方法调用，可用于实现 AOP 编程、运行时插桩、性能分析、安全审计等。Epic 被 VirtualXposed 以及 太极 使用，用来实现非 Root 场景下的 Xposed 功能，已经经过了相当广泛的验证。</p>
+</blockquote>
+<p>Epic的实现原理可参考<a href="http://weishu.me/2017/11/23/dexposed-on-art/，" target="_blank" rel="noopener">http://weishu.me/2017/11/23/dexposed-on-art/，</a> 其大致原理是：每一个java方法在ART虚拟机中都对应一个ArtMethod对象，这个ArtMethod对象包含Java方法的所有信息，例如名字，参数类型，方法本身代码的入口地址（entrypoint)等。其中的entrypoint是函数执行的入口，通过替换entrypoint可以实现控制流的挟持。</p>
+<p>ArtMethod类定义如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//http://androidxref.com/8.1.0_r33/xref/art/runtime/art_method.h#708</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ArtMethod</span> &#123;</span></span><br><span class="line"> </span><br><span class="line">  GcRoot&lt;mirror::Class&gt; declaring_class_; <span class="comment">//method所属的class</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Short cuts to declaring_class_-&gt;dex_cache_ member for fast compiled code access. </span></span><br><span class="line">  GcRoot&lt;mirror::PointerArray&gt; dex_cache_resolved_methods_;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Short cuts to declaring_class_-&gt;dex_cache_ member for fast compiled code access. </span></span><br><span class="line">  GcRoot&lt;mirror::ObjectArray&lt;mirror::Class&gt;&gt; dex_cache_resolved_types_;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Access flags; low 16 bits are defined by spec. </span></span><br><span class="line">  <span class="keyword">uint32_t</span> access_flags_;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Dex file fields. The defining dex file is available via declaring_class_-&gt;dex_cache_ */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Offset to the CodeItem. </span></span><br><span class="line">  <span class="keyword">uint32_t</span> dex_code_item_offset_;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Index into method_ids of the dex file associated with this method. </span></span><br><span class="line">  <span class="keyword">uint32_t</span> dex_method_index_;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* End of dex file fields. */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Entry within a dispatch table for this method. For static/direct methods the index is into </span></span><br><span class="line">  <span class="comment">// the declaringClass.directMethods, for virtual methods the vtable and for interface methods the </span></span><br><span class="line">  <span class="comment">// ifTable. </span></span><br><span class="line">  <span class="keyword">uint32_t</span> method_index_;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Fake padding field gets inserted here. </span></span><br><span class="line">  <span class="comment">// Must be the last fields in the method. </span></span><br><span class="line">  <span class="comment">// PACKED(4) is necessary for the correctness of </span></span><br><span class="line">  <span class="comment">// RoundUp(OFFSETOF_MEMBER(ArtMethod, ptr_sized_fields_), pointer_size). </span></span><br><span class="line">  <span class="function">struct <span class="title">PACKED</span><span class="params">(<span class="number">4</span>)</span> PtrSizedFields </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Method dispatch from the interpreter invokes this pointer which may cause a bridge into </span></span><br><span class="line">    <span class="comment">// 以interpreter模式调用入口</span></span><br><span class="line">    <span class="keyword">void</span>* entry_point_from_interpreter_; </span><br><span class="line">    <span class="keyword">void</span>* entry_point_from_jni_; <span class="comment">//jni函数入口</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 以quick code调用时的函数入口</span></span><br><span class="line">    <span class="keyword">void</span>* entry_point_from_quick_compiled_code_;</span><br><span class="line">  &#125; ptr_sized_fields_;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>例如，hook Log.i()函数的实现如下图：</p>
+<p><img src="/images/pasted-200.png" alt="upload successful"></p>
+<p>找到Log.i()函数对应的ArtMethod对象，其对应的entry_point指向Log.i()函数的指令，修改对应指令的前8个字节，使程序执行到预先分配好的内存（图中的0x7f132450），这段内存的指令实现一个分发器的功能，例如判断是否需要hook，如不修要跳回原来的地址执行，如需要hook，则跳转到另一个java方法的entrypoint执行。</p>
+<p>Epic的原理虽然简单，但实现起来需要维护堆栈平衡，以及需要支持6.0，7.0，8.0，9.0等不同系统上的ART实现，例如第一次运行的时候采用的还是解释执行的方式，需要手动触发编译成机器码等等。</p>
+<h2 id="三、Vitual-APP应用"><a href="#三、Vitual-APP应用" class="headerlink" title="三、Vitual APP应用"></a>三、Vitual APP应用</h2><p>Vitual APP作为Andoird APP上的虚拟技术，有比较广泛的应用，例如：</p>
+<ul>
+<li><p>应用多开</p>
+<p>  如微信多开这样的需求，需要注意的是，由于多开应用和Vitual APP处于同一个进程空间，多开的应用数据会被互相读取，彼此之间没有沙箱隔离机制。</p>
+<p>  另外，多开技术也广泛被黑产、羊毛党等利用，是他们用更低的成本来获取更多的利润。</p>
+</li>
+<li><p>监测工具<br>  Vitual APP这种“自我hook”的技术也可以用于APP自身的监控，例如hook一些敏感API的调用，监测和记录第三方SDK有没有其他恶意行为。也可以用于一些自动化的测试、埋点分析等。</p>
+</li>
+<li><p>hook<br>  由于可以实现无root环境下的hook，Vitual APP技术可以用来模拟数据（如修改定位数据、修改设备参数）、制作插件（如抢红包插件）等</p>
+</li>
+<li><p>免杀<br>  由于Vitual APP的特性，恶意应用通过将恶意代码加密存储在虚拟环境中，实现动态调用。传统的静态检测皆是对应用的包名、证书、代码等进行识别，识别的则是Vitual APP的信息，没有恶意特征，因此躲避了查杀。</p>
+</li>
+</ul>
+<p>参考资料：</p>
+<ol>
+<li>VitualAPP <a href="https://github.com/asLody/VirtualApp" target="_blank" rel="noopener">https://github.com/asLody/VirtualApp</a></li>
+<li>太极 <a href="https://www.taichi-app.com/#/about" target="_blank" rel="noopener">https://www.taichi-app.com/#/about</a></li>
+<li>epic <a href="https://github.com/tiann/epic" target="_blank" rel="noopener">https://github.com/tiann/epic</a></li>
+<li>epic原理 <a href="http://weishu.me/2017/11/23/dexposed-on-art/" target="_blank" rel="noopener">http://weishu.me/2017/11/23/dexposed-on-art/</a></li>
+<li>VirtualApp沙盒基本原理 <a href="http://rk700.github.io/2017/03/15/virtualapp-basic/" target="_blank" rel="noopener">http://rk700.github.io/2017/03/15/virtualapp-basic/</a></li>
+<li>应用多开对抗 <a href="https://bbs.pediy.com/thread-255212.htm" target="_blank" rel="noopener">https://bbs.pediy.com/thread-255212.htm</a></li>
+<li>VitualAPP非官方文档 <a href="https://github.com/prife/VirtualAppDoc" target="_blank" rel="noopener">https://github.com/prife/VirtualAppDoc</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/20/利用Frida修改Android设备的唯一标志符/" rel="next" title="利用Frida修改Android设备的唯一标识符">
+                <i class="fa fa-chevron-left"></i> 利用Frida修改Android设备的唯一标识符
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/15/Android-Download-Provider漏洞分析/" rel="prev" title="Android Download Provider 3个漏洞分析">
+                Android Download Provider 3个漏洞分析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">m4bln</p>
+              <p class="site-description motion-element" itemprop="description">影后入林到驿前</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">75</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、Vitual-APP原理"><span class="nav-text"><a href="#&#x4E00;&#x3001;Vitual-APP&#x539F;&#x7406;" class="headerlink" title="&#x4E00;&#x3001;Vitual APP&#x539F;&#x7406;"></a>&#x4E00;&#x3001;Vitual APP&#x539F;&#x7406;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-VitualAPP"><span class="nav-text"><a href="#1-VitualAPP" class="headerlink" title="1.VitualAPP"></a>1.VitualAPP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-MultiDroid"><span class="nav-text"><a href="#2-MultiDroid" class="headerlink" title="2.MultiDroid"></a>2.MultiDroid</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-DroidPlugin"><span class="nav-text"><a href="#3-DroidPlugin" class="headerlink" title="3.DroidPlugin"></a>3.DroidPlugin</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-厂商实现"><span class="nav-text"><a href="#4-&#x5382;&#x5546;&#x5B9E;&#x73B0;" class="headerlink" title="4.&#x5382;&#x5546;&#x5B9E;&#x73B0;"></a>4.&#x5382;&#x5546;&#x5B9E;&#x73B0;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、无root下的hook"><span class="nav-text"><a href="#&#x4E8C;&#x3001;&#x65E0;root&#x4E0B;&#x7684;hook" class="headerlink" title="&#x4E8C;&#x3001;&#x65E0;root&#x4E0B;&#x7684;hook"></a>&#x4E8C;&#x3001;&#x65E0;root&#x4E0B;&#x7684;hook</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Epic原理"><span class="nav-text"><a href="#1-Epic&#x539F;&#x7406;" class="headerlink" title="1.Epic&#x539F;&#x7406;"></a>1.Epic&#x539F;&#x7406;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、Vitual-APP应用"><span class="nav-text"><a href="#&#x4E09;&#x3001;Vitual-APP&#x5E94;&#x7528;" class="headerlink" title="&#x4E09;&#x3001;Vitual APP&#x5E94;&#x7528;"></a>&#x4E09;&#x3001;Vitual APP&#x5E94;&#x7528;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">m4bln</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("AAhymnaPSbBOge9isiIUi5c8-gzGzoHsz", "79JTCuY3J33b0HodXn8nYFvn");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

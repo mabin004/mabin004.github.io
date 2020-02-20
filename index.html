@@ -306,6 +306,603 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2020/02/20/本机号码一键登录的安全分析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/02/20/本机号码一键登录的安全分析/" itemprop="url">一个手机热点泄露你所有的账户信息？</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-20T22:47:00+08:00">
+                2020-02-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2020/02/20/本机号码一键登录的安全分析/" class="leancloud_visitors" data-flag-title="一个手机热点泄露你所有的账户信息？">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          在移动互联网生活中，用手机建立热点共享网络是一个很常见的场景，无论是Android还是iOS系统，简单的几步操作就可以迅速的建立热点，将你的4G网络分享给他人使用。
+由于连接热点的热备和宿主之间网络互通，操作系统做了很多隔离和保护措施，以保障热点的安全使用，通过热点的机制去攻击宿主操作系统是一件很困难的事情。尽管如此，随着一些新兴业务的开展，通过热点窃取你所有账户也成为了可能……
+手机热点背后到底泄露了什么东西？这要从“手机号码一键登录”开始说起。
+0x0 什么是“手机号码一键登录”移动互联网时代，手机里APP的数量越来越多，而初次使用APP通常采用“手机号+验证码”的方式进行注册，填写验证码是一个非常麻烦的事情，早期的APP直接获取短信权限，从短信中提取出验证码帮用户填好，但随着用户隐私意识的加强通常不会赋给APP读取短信的权限，于是就只能手动去短信中找出验证码，多次点击跳转复制粘贴的操作使注册流程变动非常繁琐。
+为了解决这个用户痛点，运营商推出了“手机号码一键登录”这个技术（也叫“本机号码一键登录”、“手机号免密登录”等），彻底告别了验证码。
+例如手机上打开”货拉拉“，APP会自动获取你手机号，点击”本机号码一键登录“后这个按钮后，APP会直接使用你的手机号进行注册登录,整个过程中不需要任何验证码，做到了真正的一键登录。
+
+如此简单的交互彻底解决了APP在注册和登录时的痛点，告别了烦人的短信验证码，为互联网应用提供全新的用户账号认证一站式解决方案。
+然而，作为一名安全研究人员，看到自己的手机号在没有任何权限提示的情况下直接被显示了出来，自然而然的产生了警觉。为了探索这种技术的安全性，我对其背后的原理进行了分析。
+0x1 一键登录的原理我们带着几个疑问去解释一键登录的原理。
+1.手机号能被APP获取吗？正常情况下，APP是无法读取手机号的，即使给了APP所有的权限，它也读
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/02/20/本机号码一键登录的安全分析/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2019/12/11/通用的jsBridge/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/12/11/通用的jsBridge/" itemprop="url">Android通用的jsBridge漏洞挖掘</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-11T11:13:09+08:00">
+                2019-12-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/12/11/通用的jsBridge/" class="leancloud_visitors" data-flag-title="Android通用的jsBridge漏洞挖掘">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          1. 定位jsBridge- Smali静态查找
+    - 调用 addjavascriptinterface函数
+    - 静态 使用@JavascriptInterface annotation的
+- 动态hook
+    - hook addjavascriptinterface函数
+    - 第三方webview, 枚举所有类，看是否有addjavascriptinterface函数,进而hook
+- Chrome远程调试，window.object找到导出的js对象
+2. 找到所有WebView组件- 跟踪Menifest文件里带webview的组件
+- Activity里继承WebView的
+- 第三方webview, 枚举所有类，看是否继承webview，或有webview的成员函数
+3. 找特权域白名单如果存在，在每次执行导出的java方法时都会判断
+- getHost 
+- getUrl
+- contain, indexof, startswith等
+4. 打开debug模式- 调用setWebContentsDebuggingEnabled函数
+- 少数app里有隐藏的开关
+
+          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/12/11/通用的jsBridge/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2019/10/10/提取设备中的apk文件/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/10/10/提取设备中的apk文件/" itemprop="url">提取设备中的apk文件</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-10T15:00:00+08:00">
+                2019-10-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/10/10/提取设备中的apk文件/" class="leancloud_visitors" data-flag-title="提取设备中的apk文件">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          测试的时候经常需要从设备中提取apk文件，通常情况下，普通apk安装包位于/data/app/目录下，系统apk位于/system/app或/system/priv-app/目录下，结合包名就可以找到apk文件的路径，由于全局可读，所以直接dump出来就可以。
+Android 8.0之后，apk文件的路径添加了随机字符，例如“/data/app/com.tencent.mobileqq-onrUh_8jpKjlW5JhNSDwNQ==/base.apk”，这就给提取apk文件带来了困难。然而有一个命令是可以很方便找到这个路径的，那就是pm path。
+不仅仅普通apk，连系统apk路径也能显示出来
+之后直接adb pull /data/data/com.x.x.x/app_name.apk就可以拿到apk文件了。
+附一些可能用到的命令：
+
+pm list packages列出所有安装的apk
+
+pm list packages -f列出APK的路径
+
+pm list packages -s列出所有的system APP
+
+pm list packages -3列出所有的第三方APP
+
+pm list packages keywords匹配关键字的包名
+
+
+
+          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/10/10/提取设备中的apk文件/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2019/06/27/Android上利用Strace跟踪系统调用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/27/Android上利用Strace跟踪系统调用/" itemprop="url">Android上利用strace跟踪系统调用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-27T11:49:00+08:00">
+                2019-06-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/06/27/Android上利用Strace跟踪系统调用/" class="leancloud_visitors" data-flag-title="Android上利用strace跟踪系统调用">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          strace 是linux下的调试利器,它被用来跟踪所有的系统调用，打印系统调用的参数和返回值，Android 也支持strace。
+安装straceAndroid系统并没有自带strace的binary，需要自己编译移植到Android设备中,在Android源码下仅编译strace模块即可1mmma -j6 external/strace
+如果不想配环境自己编译，去其他地方下载静态链接的strace binary也可以，但安全性需要自己把握，例如https://github.com/andrew-d/static-binaries/blob/master/binaries/linux/arm/strace。
+得到binary后，push到/data/local/tmp下更改权限，关闭SELinux后即可使用。12345adb push strace /data/local/tmp/adb shellandroid:/ $ chmod 777 /data/local/tmp/stracesuandroid:/ # setenforce 0
+使用strace1.attach到正在运行的进程1strace -f -p PID -o strace_log.txt
+-f表示跟踪所有子进程，包括新起的进程。由于strace会打出大量的日志，所有需要进一步从日志筛选出想要的内容。
+2.在应用启动前strace试过Android官方文档中的setprop的方法，不起作用，这里采用另一种方式。主要原理是设置应用启动后等待调试，然后运行strace，再调试应用即可。12345am set-debug-app -w com.package.nameam start com.package.name/com.path.to.MainActivity // 或者手动打开appps -A | gr
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/06/27/Android上利用Strace跟踪系统调用/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2019/05/21/CVE-2019-5765分析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -745,6 +1342,153 @@ Download Provider首先了解下Download Provider。Android系统的ContentProvi
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2019/02/09/itural-APP研究/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/09/itural-APP研究/" itemprop="url">Vitual APP及其环境下的hook技术研究</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:12:00+08:00">
+                2019-02-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/02/09/itural-APP研究/" class="leancloud_visitors" data-flag-title="Vitual APP及其环境下的hook技术研究">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          随着Android系统安全漏洞的大幅减少，Android设备的root门槛变得越来越高，知名的root工具KingRoot甚至停止了维护，利用漏洞来root变成一件很困难的事情。
+另一方面，厂商对Secure Boot的实现也在不断增强，大多数手机厂商关闭了bootloader解锁通道，通过刷第三方rom或recovery来root设备的方式逐渐不可行。
+root是安全人员必备的研究环境，除了使用Nexus系列设备外，Vitual APP下的hook不失为一种办法。此外，由于上手简单，VA下的hook更多是被黑产或脚本所利用，本文对这种技术的原理进行分析。
+一、Vitual APP原理广义的Vitual App 可以理解为轻量级的“Android虚拟机”，即一个宿主APP上运行多个其他APP的形式，一定程度上也可以理解为我们熟知的“应用多开”。这种“虚拟机”并未打破Android原有的系统机制，因此，宿主APP及其虚拟运行的多个APP共享同一个uid/gid。
+我们知道Android上每个APP都运行在自己的沙盒环境中，但APP对于自己的进程、子进程等具有完全的控制权，在自己的沙箱内运行起其他APP，就实现了虚拟化。然而，常规的APP除了运行自己的代码外，还会和操作系统频繁交互，例如各种各样的服务、文件系统等，Vitual App如果成为了APP和操作系统的“中间人”，便实现了APP无感知的虚拟机，这也是Vitual APP的核心技术。
+常见的Vitual APP有以下几类：
+
+基于VitualAPP引擎的虚拟工具，例如“太极” （这里的VitualAPP特指github上一款工具，而Vitual APP是广义的虚拟化应用）
+基于MultiDroid引擎的虚拟工具,例如“LBE平行空间”
+基于DroidPlugin，如“360分身大师”
+厂商自带的“应用分身工具”、“多开工
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/02/09/itural-APP研究/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/12/20/利用Frida修改Android设备的唯一标志符/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -904,7 +1648,7 @@ IMSI与IMEI权限相同，获取代码：1234//权限 &lt;uses-permissionandroid
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/12/12/指纹/" itemprop="url">指纹识别技术分析</a></h1>
+                <a class="post-title-link" href="/2018/12/12/指纹/" itemprop="url">指纹识别技术安全分析</a></h1>
         
 
         <div class="post-meta">
@@ -934,7 +1678,7 @@ IMSI与IMEI权限相同，获取代码：1234//权限 &lt;uses-permissionandroid
 
           
           
-             <span id="/2018/12/12/指纹/" class="leancloud_visitors" data-flag-title="指纹识别技术分析">
+             <span id="/2018/12/12/指纹/" class="leancloud_visitors" data-flag-title="指纹识别技术安全分析">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1058,757 +1802,11 @@ IMSI与IMEI权限相同，获取代码：1234//权限 &lt;uses-permissionandroid
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/12/11/智能门锁/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/11/智能门锁/" itemprop="url">智能门锁</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-11T18:10:05+08:00">
-                2018-12-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/12/11/智能门锁/" class="leancloud_visitors" data-flag-title="智能门锁">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          本文搜集所有和只能门锁相关的漏洞、设计、案例等。本文大部分内容来自CNCERT发布的《智能门锁网络安全分析报告》，结合其他资料作的搜集，作为日后智能门锁安全的wiki。
-一、门锁设计相关两种架构：门锁直接联网、门锁通过手机联网
-四种角色：主人、长期居住、重复访客、临时访客
-门锁的交互介质：蓝牙、NFC、RFID、WiFi、数据流量
-二、几种开锁的方式以及攻击面1.固定密码开锁实现机制：安装时先进行门锁初始化，并完成密码设置，该密码存储在智能门锁的固态存储空间，有时也可能会上传到云端进行存储。在用户开锁时，在门锁上输入密码，如果输入的密码与预先设置的密码一致，则可打开门锁。（该模式本质上相当于用密码去登录一个账户）
-攻击面暴力破解、密码重置漏洞、按键痕迹残留、默认密码、后门密码等
-漏洞案例暂无
-2.临时密码开锁实现机制户主会通过手机APP从云端获取当前时段开锁的临时密码，并通过短信、微信或者手机APP等方式将临时密码发送给访客。访客在门锁上输入接收到的临时密码后，门锁会将该密码与云端自动生成的当前时段临时密码进行对比，如果成功，则开锁。
-攻击面临时密码有效期、临时密码泄露、
-漏洞案例3.生物信息开锁实现机制生物特征主要有指纹、掌纹、虹膜和人脸等。该类门锁在安装的过程中，会将指纹、掌纹、虹膜和人脸等生物特征初始化到智能门锁固态存储或者云端。用户开锁时，门锁需要采集用户的指纹、掌纹、虹膜和人脸特征，并传统到云端与初始化特征进行对比，如果对比成功，则开锁。
-攻击面指纹泄露、指纹残留、人脸（图片）、
-漏洞案例4.智能卡开锁实现机制用于智能门锁开锁的智能卡主要有RFID卡、NFC卡和CPU卡三类，该类门锁主要应用在酒店和公寓等场景。
-
-使用RFID卡的门锁，门禁管理系统会在RFID卡中写入代表该卡身份的字符串，在开锁时，门锁提取RFID卡中的字符串，并传输到云端进行对比，对比成功，则开
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/12/11/智能门锁/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/11/01/远程打挂所有的apple设备-CVE-2018-4407-分析/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/01/远程打挂所有的apple设备-CVE-2018-4407-分析/" itemprop="url">远程打挂所有的apple设备 — CVE-2018-4407分析</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-01T14:15:44+08:00">
-                2018-11-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/11/01/远程打挂所有的apple设备-CVE-2018-4407-分析/" class="leancloud_visitors" data-flag-title="远程打挂所有的apple设备 — CVE-2018-4407分析">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          简述Kevin Backhouse 发现了一个iOS和mac OS的内核漏洞 —— CVE-2018-4407，该漏洞出现在XNU内核中，可以远程攻击使所有的apple设备挂掉。
-漏洞演示demo：https://www.youtube.com/watch?v=aV7yEemjexk
-漏洞已经上报给了Apple并在iOS12（9月17日）和macOS Mojave（9月24日）系统更新中已经修复完成。该漏洞影响以下版本的设备：
-
-iOS 11以及之前的所有设备 (upgrade to iOS 12)
-macOS High Sierra 10.13.6以及以下所有设备(patched in security update 2018-001)
-macOS Sierra 10.12.6以及之前所有的设备(patched in security update 2018-005)
-OS X El Capitan以及之前所有设备
-
-漏洞分析漏洞出现在icmp_error代码中, (bsd/netinet/ip_icmp.c:339):
-我们知道，ICMP报文主要有两大功能：查询报文和差错报文。在互联网传输过程中，IP数据报难免会出现差错，通常出现差错时处理方法就是丢弃，但一般出现差错后，接收方会发送ICMP报文给主机，告诉它一些差错信息，而icmp_error就是这一部分的实现。
-产生漏洞的代码为：1m_copydata(n, 0, icmplen, (caddr_t)&amp;icp-&gt;icmp_ip);
-m_copydata为一个简单的指定长度的数据拷贝，其实现如下：
-icmp_error中的m_copydata是将出错ip数据包的包头复制到icmp的消息体中，其中n为接收到的出错的ip数据包，icp-&gt;icmp_ip为要拷贝的目的地址，如果n的包头过大，超过了icp分
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/11/01/远程打挂所有的apple设备-CVE-2018-4407-分析/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/09/17/USB攻击android手机/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/17/USB攻击android手机/" itemprop="url">CVE-2018-9488 - 从zygote到init</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-17T21:56:12+08:00">
-                2018-09-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/09/17/USB攻击android手机/" class="leancloud_visitors" data-flag-title="CVE-2018-9488 - 从zygote到init">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          概述上一篇文章中利用cve-2018-9445实现了Android系统在mount外设时的目录穿越CVE-2018-9445 —— Android挂载外设的目录穿越，由于字符长度限制，只有5个字符可控，利用极其有限。
-PJ0的Jann Horn，也就是漏洞的原作者对该漏洞进一步分析，发现了更精巧的利用方法，能够基于该漏洞进一步从zygote提权到init，Goole为这一新的利用分配了新的cve编号 —— CVE-2018-9488。
-漏洞分析cve-2018-9445能够利用的前提是USB设备有MBR分区表，且格式为vfat，这样内核的vfat文件系统才会mount。此外，如需进一步利用，还需要绕过以下几种安全措施：
-
-路径穿越5个字符的限制
-SELinux限制了vold进程的操作
-权限限制，如果目录权限不是0700，fs_prepare_dir和chmod会失败
-vfat文件系统限制。vfat格式的U盘被mount后，所有文件会被标记为u:object_r:vfat:s0，这意味着即使mount后的目录为/system或/data等一些系统级别的目录，SELinux Context下的进程（如zygote和system_server）是无法和其交互的。
-media_rw组的进程需要绕过DAC检测
-
-漏洞利用1.伪造一个USB设备如上篇文章所述，blkid支持各种不同的文件系统，在解析文件头得到type, label和 UUID之后，fsck_msdos会再次读取文件，检测文件系统是否为vfat格式，我们只需要构造一个动态可控的USB设备使系统在两次读取信息时，返回不同的值即可满足这两种条件。即blkid在读取时，构造一个长字符串的label,使blkid认为是romfs格式；fsck_msdos在读取时，再修改自己成为一个vfat格式的USB设备。
-这里使用一个树莓派Z
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/09/17/USB攻击android手机/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/09/17/iPhone打开某网站重启分析/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/17/iPhone打开某网站重启分析/" itemprop="url">iPhone打开某网站重启分析</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-17T10:44:01+08:00">
-                2018-09-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/09/17/iPhone打开某网站重启分析/" class="leancloud_visitors" data-flag-title="iPhone打开某网站重启分析">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          概述使用iPhone打开https://xssle.com/ios/ 这个网站，手机就会重启，此外在mac上用Safari浏览器打卡也会陷入卡顿，但不至于重启。
-网页分析该网页的源码如下：
-
-可以看到网页由几部分组成：
-
-一张背景图片不断重复
-3000多个div嵌套
-每个div设置了backdrop-filter、-webkit-backdrop-filter属性
-
-通过精简测试，发现背景图片不影响crash，故能造成iPhone crash的核心代码为：12345678&lt;html&gt;&lt;style&gt;    div&#123;        backdrop-filter: blur(10px);        -webkit-backdrop-filter: blur(10px);    &#125;&lt;/style&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt; ..... &lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
-crash分析查看log发现crash log类型为unknown：
-
-kernel打印出一堆奇怪的东西：
-
-推测应该是webkit占用了过多的内核资源
-历史上的iPhone crash事件
-2018年5月，点击黑点表情卡死https://baijiahao.baidu.com/s?id=1600048067011062679&amp;wfr=spider&amp;for=pc 影响iOS 10/11
-
-2018年1月 chaiOS bug https://www.idownloadblog.com/2018/01/18/a-fix-for-chaios-messages-bug-will-arrive-next-week/ 影响 
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/09/17/iPhone打开某网站重启分析/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/09/07/CVE-2018-9489分析/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/07/CVE-2018-9489分析/" itemprop="url">CVE-2018-9489分析</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-07T15:34:01+08:00">
-                2018-09-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/09/07/CVE-2018-9489分析/" class="leancloud_visitors" data-flag-title="CVE-2018-9489分析">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          概述CVE-2018-9489是一个很简单，很鸡肋的漏洞，但漏洞无贵贱，在一些特殊的场景中往往会利用这些漏洞完成不可思议的利用。
-简而言之，CVE-2018-9489这个漏洞就是一个0权限的app可以读到系统的mac地址、wifi信息，而这些信息如果是一个普通的app去读取的话是需要申请权限的。
-CVE-2018-9489漏洞通过监听NETWORK_STATE_CHANGED_ACTION和WIFI_P2P_THIS_DEVICE_CHANGED_ACTION这两个广播来获得这些信息。
-漏洞分析Android系统通过WifiManager.NETWORK_STATE_CHANGED_ACTION和WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION这两个广播发送系统的MAC地址、BSSID、wifi名称、IP地址、DNS等信息。
-正常情况下，通过WifiManager类访问这些信息时，需要注册“ACCESS_WIFI_STATE”权限。我们知道搜集了mac地址和BSSID信息时，就可以进行wifi定位，而正常的wifi定位时需要注册“ACCESS_FINE_LOCATION” 和 “ACCESS_COARSE_LOCATION”权限的。
-此外，Android为了数据隐私，从这个6.0版本开始， Android 移除了通过 WiFi 和蓝牙 API 来在应用程序中可编程的访问本地硬件标示符。现在 WifiInfo.getMacAddress() 和 BluetoothAdapter.getAddress() 方法都将返回 “02:00:00:00:00:00”。
-然而通过监听系统广播的方式，一个普通App可以不用申请任何权限去获得这些信息。当然，如上所述，利用CVE-2018-9489可以进行wifi定位、读取MAC地址、内网扫
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/09/07/CVE-2018-9489分析/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1854,7 +1852,7 @@ CVE-2018-9489漏洞通过监听NETWORK_STATE_CHANGED_ACTION和WIFI_P2P_THIS_DEVI
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">69</span>
+                  <span class="site-state-item-count">75</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1906,7 +1904,7 @@ CVE-2018-9489漏洞通过监听NETWORK_STATE_CHANGED_ACTION和WIFI_P2P_THIS_DEVI
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

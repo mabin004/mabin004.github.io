@@ -89,7 +89,7 @@
 <meta property="og:image" content="https://mabin004.github.io/images/pasted-76.png">
 <meta property="og:image" content="https://mabin004.github.io/images/pasted-77.png">
 <meta property="og:image" content="https://mabin004.github.io/images/pasted-78.png">
-<meta property="og:updated_time" content="2019-04-26T08:46:05.088Z">
+<meta property="og:updated_time" content="2019-07-24T02:54:45.687Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android分析常用的工具或命令">
 <meta name="twitter:description" content="dumpsysdumpsys命令用来查询界面元素层级、系统服务运行状态、电池、网络等一些信息。用法：12345678910HWVTR:/ # dumpsys --helpusage: dumpsys         To dump all services.or:       dumpsys [-t TIMEOUT] [--help | -l | --skip SERVICES | SERVICE">
@@ -463,6 +463,11 @@
 <li>getprop默认获得所有的参数，常用参数如下：<br>getprop ro.debuggable<br>getprop ro.build.product<br>getprop ro.build.fingerprint<br>getprop ro.serialno</li>
 <li>setprop [key] [value],有些需要特殊权限</li>
 </ul>
+<h2 id="svc"><a href="#svc" class="headerlink" title="svc"></a>svc</h2><p>命令行下控制数据、wifi等开关</p>
+<ul>
+<li>svc data enable 打开数据流量<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">OnePlus5T:/ # svc</span><br><span class="line">Available commands:</span><br><span class="line">    help         Show information about the subcommands</span><br><span class="line">    power        Control the power manager</span><br><span class="line">    data         Control mobile data connectivity</span><br><span class="line">    wifi         Control the Wi-Fi manager</span><br><span class="line">    usb          Control Usb state</span><br><span class="line">    nfc          Control NFC functions</span><br><span class="line">    bluetooth    Control Bluetooth service</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
 <h2 id="service"><a href="#service" class="headerlink" title="service"></a>service</h2><ul>
 <li>service list 列出所有的服务</li>
 <li>service call 调用服务<br>用法：service call CODE [i32 N | i64 N | f N | d N | s16 STR ]<br>例如：service call phone 1 s16 “10086” 打电话</li>
@@ -578,7 +583,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">69</span>
+                  <span class="site-state-item-count">75</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -626,7 +631,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#dumpsys"><span class="nav-number">1.</span> <span class="nav-text"><a href="#dumpsys" class="headerlink" title="dumpsys"></a>dumpsys</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lsof"><span class="nav-number">2.</span> <span class="nav-text"><a href="#lsof" class="headerlink" title="lsof"></a>lsof</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#proc"><span class="nav-number">3.</span> <span class="nav-text"><a href="#proc" class="headerlink" title="/proc"></a>/proc</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Monkey"><span class="nav-number">4.</span> <span class="nav-text"><a href="#Monkey" class="headerlink" title="Monkey"></a>Monkey</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#busybox"><span class="nav-number">5.</span> <span class="nav-text"><a href="#busybox" class="headerlink" title="busybox"></a>busybox</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#screencap和screenrecord"><span class="nav-number">6.</span> <span class="nav-text"><a href="#screencap&#x548C;screenrecord" class="headerlink" title="screencap&#x548C;screenrecord"></a>screencap&#x548C;screenrecord</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#adb-shell-input"><span class="nav-number">7.</span> <span class="nav-text"><a href="#adb-shell-input" class="headerlink" title="adb shell input"></a>adb shell input</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#adb-logcat"><span class="nav-number">8.</span> <span class="nav-text"><a href="#adb-logcat" class="headerlink" title="adb logcat"></a>adb logcat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#am命令"><span class="nav-number">9.</span> <span class="nav-text"><a href="#am&#x547D;&#x4EE4;" class="headerlink" title="am&#x547D;&#x4EE4;"></a>am&#x547D;&#x4EE4;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#netstat"><span class="nav-number">10.</span> <span class="nav-text"><a href="#netstat" class="headerlink" title="netstat"></a>netstat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#getprop和setprop"><span class="nav-number">11.</span> <span class="nav-text"><a href="#getprop&#x548C;setprop" class="headerlink" title="getprop&#x548C;setprop"></a>getprop&#x548C;setprop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#service"><span class="nav-number">12.</span> <span class="nav-text"><a href="#service" class="headerlink" title="service"></a>service</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#dumpsys"><span class="nav-text"><a href="#dumpsys" class="headerlink" title="dumpsys"></a>dumpsys</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lsof"><span class="nav-text"><a href="#lsof" class="headerlink" title="lsof"></a>lsof</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#proc"><span class="nav-text"><a href="#proc" class="headerlink" title="/proc"></a>/proc</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Monkey"><span class="nav-text"><a href="#Monkey" class="headerlink" title="Monkey"></a>Monkey</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#busybox"><span class="nav-text"><a href="#busybox" class="headerlink" title="busybox"></a>busybox</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#screencap和screenrecord"><span class="nav-text"><a href="#screencap&#x548C;screenrecord" class="headerlink" title="screencap&#x548C;screenrecord"></a>screencap&#x548C;screenrecord</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#adb-shell-input"><span class="nav-text"><a href="#adb-shell-input" class="headerlink" title="adb shell input"></a>adb shell input</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#adb-logcat"><span class="nav-text"><a href="#adb-logcat" class="headerlink" title="adb logcat"></a>adb logcat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#am命令"><span class="nav-text"><a href="#am&#x547D;&#x4EE4;" class="headerlink" title="am&#x547D;&#x4EE4;"></a>am&#x547D;&#x4EE4;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#netstat"><span class="nav-text"><a href="#netstat" class="headerlink" title="netstat"></a>netstat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#getprop和setprop"><span class="nav-text"><a href="#getprop&#x548C;setprop" class="headerlink" title="getprop&#x548C;setprop"></a>getprop&#x548C;setprop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#svc"><span class="nav-text"><a href="#svc" class="headerlink" title="svc"></a>svc</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#service"><span class="nav-text"><a href="#service" class="headerlink" title="service"></a>service</span></a></li></ol></div>
             
 
           </div>
@@ -646,7 +651,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

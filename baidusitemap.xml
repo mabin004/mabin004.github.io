@@ -4,8 +4,133 @@
 
     
   <url>
+    <loc>https://mabin004.github.io/2020/02/20/%E6%9C%AC%E6%9C%BA%E5%8F%B7%E7%A0%81%E4%B8%80%E9%94%AE%E7%99%BB%E5%BD%95%E7%9A%84%E5%AE%89%E5%85%A8%E5%88%86%E6%9E%90/</loc>
+    <lastmod>2020-02-20T15:13:58.297Z</lastmod>
+    <data>
+        <display>
+        <title>一个手机热点泄露你所有的账户信息？</title>
+        <pubTime>2020-02-20T14:47:00.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://mabin004.github.io/2019/12/11/%E9%80%9A%E7%94%A8%E7%9A%84jsBridge/</loc>
+    <lastmod>2020-02-20T14:44:01.583Z</lastmod>
+    <data>
+        <display>
+        <title>Android通用的jsBridge漏洞挖掘</title>
+        <pubTime>2019-12-11T03:13:09.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://mabin004.github.io/2019/02/09/itural-APP%E7%A0%94%E7%A9%B6/</loc>
+    <lastmod>2020-02-20T14:40:58.000Z</lastmod>
+    <data>
+        <display>
+        <title>Vitual APP及其环境下的hook技术研究</title>
+        <pubTime>2019-02-09T03:12:00.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+    
+  <url>
+    <loc>https://mabin004.github.io/2019/10/10/%E6%8F%90%E5%8F%96%E8%AE%BE%E5%A4%87%E4%B8%AD%E7%9A%84apk%E6%96%87%E4%BB%B6/</loc>
+    <lastmod>2019-12-25T07:20:18.107Z</lastmod>
+    <data>
+        <display>
+        <title>提取设备中的apk文件</title>
+        <pubTime>2019-10-10T07:00:00.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://mabin004.github.io/2017/06/13/Android%E5%8F%8D%E8%B0%83%E8%AF%95/</loc>
+    <lastmod>2019-12-10T06:59:10.492Z</lastmod>
+    <data>
+        <display>
+        <title>Android反调试和对抗</title>
+        <pubTime>2017-06-13T13:10:00.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://mabin004.github.io/2017/06/13/Android%E4%B8%89%E5%A4%A7hook%E6%A1%86%E6%9E%B6/</loc>
+    <lastmod>2019-12-10T06:56:49.584Z</lastmod>
+    <data>
+        <display>
+        <title>Android三大hook框架</title>
+        <pubTime>2017-06-13T11:55:00.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://mabin004.github.io/2018/09/01/%E8%B0%83%E8%AF%95%E7%A0%94%E7%A9%B6/</loc>
+    <lastmod>2019-11-27T07:43:06.586Z</lastmod>
+    <data>
+        <display>
+        <title>Chrome远程调试</title>
+        <pubTime>2018-09-01T13:41:43.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://mabin004.github.io/2018/03/09/droid-Hook-%E2%80%94%E2%80%94-Frida/</loc>
+    <lastmod>2019-11-26T13:30:54.524Z</lastmod>
+    <data>
+        <display>
+        <title>Android Hook 之 Frida</title>
+        <pubTime>2018-03-09T08:22:02.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://mabin004.github.io/2018/03/05/https%E4%B8%AD%E9%97%B4%E4%BA%BA%E6%94%BB%E5%87%BB%E5%8E%9F%E7%90%86/</loc>
-    <lastmod>2019-06-26T10:37:19.671Z</lastmod>
+    <lastmod>2019-11-20T03:27:45.712Z</lastmod>
     <data>
         <display>
         <title>Android Https抓包实践</title>
@@ -18,13 +143,78 @@
     </url>
 
     
+    
   <url>
-    <loc>https://mabin004.github.io/2018/03/09/Android-Hook-%E2%80%94%E2%80%94-Frida/</loc>
-    <lastmod>2019-06-21T07:09:59.268Z</lastmod>
+    <loc>https://mabin004.github.io/2017/10/10/%E4%B8%8B%E8%BD%BDGooglePlay%E4%B8%8A%E7%9A%84apk%E6%96%87%E4%BB%B6/</loc>
+    <lastmod>2019-10-10T07:38:30.275Z</lastmod>
     <data>
         <display>
-        <title>Android Hook 之 Frida</title>
-        <pubTime>2018-03-09T08:22:02.000Z</pubTime>
+        <title>下载GooglePlay上的apk文件</title>
+        <pubTime>2017-10-10T07:30:00.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://mabin004.github.io/2018/08/02/ndroid%E5%88%86%E6%9E%90%E5%B8%B8%E7%94%A8%E7%9A%84%E5%B7%A5%E5%85%B7%E6%88%96%E5%91%BD%E4%BB%A4/</loc>
+    <lastmod>2019-07-24T02:54:45.687Z</lastmod>
+    <data>
+        <display>
+        <title>Android分析常用的工具或命令</title>
+        <pubTime>2018-08-02T07:49:23.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://mabin004.github.io/2019/06/27/Android%E4%B8%8A%E5%88%A9%E7%94%A8Strace%E8%B7%9F%E8%B8%AA%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/</loc>
+    <lastmod>2019-06-27T06:23:56.662Z</lastmod>
+    <data>
+        <display>
+        <title>Android上利用strace跟踪系统调用</title>
+        <pubTime>2019-06-27T03:49:00.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://mabin004.github.io/2018/12/11/%E6%99%BA%E8%83%BD%E9%97%A8%E9%94%81/</loc>
+    <lastmod>2019-06-26T10:40:15.507Z</lastmod>
+    <data>
+        <display>
+        <title>智能门锁安全分析</title>
+        <pubTime>2018-12-11T10:10:05.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://mabin004.github.io/2018/12/12/%E6%8C%87%E7%BA%B9/</loc>
+    <lastmod>2019-06-26T10:40:03.750Z</lastmod>
+    <data>
+        <display>
+        <title>指纹识别技术安全分析</title>
+        <pubTime>2018-12-12T10:46:00.000Z</pubTime>
         
          
            
@@ -40,21 +230,6 @@
         <display>
         <title>CVE-2019-5765分析</title>
         <pubTime>2019-05-21T04:08:00.000Z</pubTime>
-        
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://mabin004.github.io/2018/08/02/ndroid%E5%88%86%E6%9E%90%E5%B8%B8%E7%94%A8%E7%9A%84%E5%B7%A5%E5%85%B7%E6%88%96%E5%91%BD%E4%BB%A4/</loc>
-    <lastmod>2019-04-26T08:46:05.088Z</lastmod>
-    <data>
-        <display>
-        <title>Android分析常用的工具或命令</title>
-        <pubTime>2018-08-02T07:49:23.000Z</pubTime>
         
          
            
@@ -97,7 +272,6 @@
     </url>
 
     
-    
   <url>
     <loc>https://mabin004.github.io/2018/12/20/%E5%88%A9%E7%94%A8Frida%E4%BF%AE%E6%94%B9Android%E8%AE%BE%E5%A4%87%E7%9A%84%E5%94%AF%E4%B8%80%E6%A0%87%E5%BF%97%E7%AC%A6/</loc>
     <lastmod>2018-12-20T15:19:49.342Z</lastmod>
@@ -108,36 +282,6 @@
         
         <tag>Android</tag>
          
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://mabin004.github.io/2018/12/12/%E6%8C%87%E7%BA%B9/</loc>
-    <lastmod>2018-12-13T15:44:35.378Z</lastmod>
-    <data>
-        <display>
-        <title>指纹识别技术分析</title>
-        <pubTime>2018-12-12T10:46:00.000Z</pubTime>
-        
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://mabin004.github.io/2018/12/11/%E6%99%BA%E8%83%BD%E9%97%A8%E9%94%81/</loc>
-    <lastmod>2018-12-12T10:45:16.947Z</lastmod>
-    <data>
-        <display>
-        <title>智能门锁</title>
-        <pubTime>2018-12-11T10:10:05.000Z</pubTime>
-        
          
            
         </display>
@@ -222,7 +366,6 @@
     </url>
 
     
-    
   <url>
     <loc>https://mabin004.github.io/2018/08/14/CVE-2018-9445-%E2%80%94%E2%80%94-Android-USB%E4%B8%8A%E7%9A%84%E7%9B%AE%E5%BD%95%E7%A9%BF%E8%B6%8A/</loc>
     <lastmod>2018-09-18T09:59:46.055Z</lastmod>
@@ -260,21 +403,6 @@
         <display>
         <title>移动端使用JavaScript自动写入剪贴板</title>
         <pubTime>2018-01-12T03:22:35.000Z</pubTime>
-        
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://mabin004.github.io/2018/09/01/%E8%B0%83%E8%AF%95%E7%A0%94%E7%A9%B6/</loc>
-    <lastmod>2018-09-04T08:53:49.128Z</lastmod>
-    <data>
-        <display>
-        <title>Chrome远程调试</title>
-        <pubTime>2018-09-01T13:41:43.000Z</pubTime>
         
          
            
@@ -411,23 +539,6 @@
         <title>利用蓝牙callback逃逸iOS沙箱</title>
         <pubTime>2018-08-10T04:30:30.000Z</pubTime>
         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://mabin004.github.io/2017/06/13/Android%E5%8F%8D%E8%B0%83%E8%AF%95/</loc>
-    <lastmod>2018-08-08T07:58:17.504Z</lastmod>
-    <data>
-        <display>
-        <title>Android反调试和对抗</title>
-        <pubTime>2017-06-13T13:10:00.000Z</pubTime>
-        
-        <tag>Android</tag>
-         
          
            
         </display>
@@ -593,21 +704,6 @@
         <display>
         <title>iOS应用安全—— IPAPatch免越狱调试、修改第三方App</title>
         <pubTime>2018-04-17T14:01:00.000Z</pubTime>
-        
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://mabin004.github.io/2017/06/13/Android%E4%B8%89%E5%A4%A7hook%E6%A1%86%E6%9E%B6/</loc>
-    <lastmod>2018-06-15T02:46:53.193Z</lastmod>
-    <data>
-        <display>
-        <title>Android三大hook框架</title>
-        <pubTime>2017-06-13T11:55:00.000Z</pubTime>
         
          
            

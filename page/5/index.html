@@ -306,6 +306,709 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/30/zip解压漏洞/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/30/zip解压漏洞/" itemprop="url">Android中的目录穿越漏洞</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-30T11:17:49+08:00">
+                2018-03-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/03/30/zip解压漏洞/" class="leancloud_visitors" data-flag-title="Android中的目录穿越漏洞">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          概述在Linux/Unix系统中“..”代表的是向上级目录跳转，如果程序在处理到诸如用“../../../../../../../../../../../etc/hosts”表示的文件时没有进行防护，则会跳转出当前工作目录，跳转到到其他目录中,即目录穿越。
+在 Android 中由于目录穿越造成任意文件写入的漏洞较为常见。首先是写文件的接口可能本身设计上就允许传入任意路径的参数，另一种情况就是直接拼接路径导致可以 “…/” 进行目录穿越。
+由于存在目录穿越漏洞的代码执行者通常是应用本身（非webview沙箱进程），因此一旦存在任意文件写入漏洞，就有可能覆盖原有的文件。此时若应用中存在动态加载代码的逻辑，配合目录穿越则有可能实现任意代码执行。
+add:后来又多个团队或研究人员研究目录穿越问题，并起来各式各样的名字，现留下链接以备参考：
+
+zip-slip总结了多个存在目录穿越的第三方语言或库，并包含了具体的代码实例  https://github.com/snyk/zip-slip-vulnerabilityhttps://snyk.io/research/zip-slip-vulnerability
+zipperdown iOS平台下多个APP存在目录穿越漏洞
+
+目录穿越场景1. 下载文件到指定的路径该场景适用于下载路径由用户可控，例如一些下载工具、保存的目录为用户名等特殊情况。
+2. 解压 zip 文件时未对 ZipEntry 文件名检查Android应用中通常会直接下载一些皮肤等资源文件，为了节约流量，一些资源文件通常打包成zip。
+Java代码在解压ZIP文件时会使用到ZipEntry类的getName()方法。如果ZIP文件中包含“../”的字符串，该方法返回值里面会原样返回。如果在这里没有进行防护，继续解压缩操作，就会将解压文件创建到其他目录中。
+漏洞代码如下：1
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/30/zip解压漏洞/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/23/经典漏洞案例整理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/23/经典漏洞案例整理/" itemprop="url">经典漏洞案例整理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-23T14:44:42+08:00">
+                2018-03-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/03/23/经典漏洞案例整理/" class="leancloud_visitors" data-flag-title="经典漏洞案例整理">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          字符串’\0’在处理字符串时，没有在尾部加‘\0’，导致使用时会读取字符串后边的数据123456789+void BnAudioPolicyService::sanetizeAudioAttributes(audio_attributes_t* attr)+&#123;+    const size_t tagsMaxSize = AUDIO_ATTRIBUTES_TAGS_MAX_SIZE;+    if (strnlen(attr-&gt;tags, tagsMaxSize) &gt;= tagsMaxSize) &#123;+        android_errorWriteLog(0x534e4554, &quot;68953950&quot;); // SafetyNet logging+    &#125;+    attr-&gt;tags[tagsMaxSize - 1] = &apos;\0&apos;;+&#125;+
+strcat123456789101112没有控制好循环次数，导致strcat溢出for (i=0; i &lt; (prop-&gt;len)/sizeof(bt_uuid_t); i++)            &#123;                bt_uuid_t *p_uuid = (bt_uuid_t*)prop-&gt;val + i;                memset(buf, 0, sizeof(buf));                uuid_to_string_legacy(p_uuid, buf);    //buf_length=36 &quot;%.8x-%.4x-%.4x-%.4x-%.8x%.4x&quot;                strcat(value, buf);  //
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/23/经典漏洞案例整理/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/22/常用的正则、搜索/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/22/常用的正则、搜索/" itemprop="url">常用的正则、搜索</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-22T14:35:32+08:00">
+                2018-03-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/03/22/常用的正则、搜索/" class="leancloud_visitors" data-flag-title="常用的正则、搜索">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          转自：https://www.unix-ninja.com/p/A_cheat-sheet_for_password_crackers
+提取E-mail1grep -E -o &quot;\b[a-zA-Z0-9.#?$*_-]+@[a-zA-Z0-9.#?$*_-]+.[a-zA-Z0-9.-]+\b&quot; *.txt &gt; e-mails.txt
+提取http url1grep http | grep -shoP &apos;http.*?[&quot; &gt;]&apos; *.txt &gt; http-urls.txt
+For extracting HTTPS, FTP and other URL format use1grep -E &apos;(((https|ftp|gopher)|mailto)[.:][^ &gt;&quot;	]*|www.[-a-z0-9.]+)[^ .,;	&gt;&quot;&gt;):]&apos; *.txt &gt; urls.txt
+提取浮点数1grep -E -o &quot;^[-+]?[0-9]*.?[0-9]+([eE][-+]?[0-9]+)?$&quot; *.txt &gt; floats.txt
+提取信用卡号码1234567891011121314151617181920Visa # grep -E -o &quot;4[0-9]&#123;3&#125;[ -]?[0-9]&#123;4&#125;[ -]?[0-9]&#123;4&#125;[ -]?[0-9]&#123;4&#125;&quot; *.txt &gt; visa.txtMasterCard # grep -E -o &quot;5[0-9]&#123;3&#125;[ -]?[0-9]&#123;4&#125;[ -]?[
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/22/常用的正则、搜索/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/17/蓝牙的发现、扫描/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/17/蓝牙的发现、扫描/" itemprop="url">蓝牙、BLE设备相关</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-17T21:24:45+08:00">
+                2018-03-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/03/17/蓝牙的发现、扫描/" class="leancloud_visitors" data-flag-title="蓝牙、BLE设备相关">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          标准蓝牙设备扫描经典蓝牙设备1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889final BluetoothManager bm = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);        mBluetoothAdapter = bm.getAdapter();        if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled())        &#123;            Toast.makeText(this,&quot;please open bluttooth&quot;,Toast.LENGTH_LONG).show();            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);            startActivityForResult(enableBtIntent, 0);        &#125;        //获取已经绑定的蓝牙        Set&lt;BluetoothDevice&gt; devices = mBluetoothAdapter.getBondedDevices();        //遍历已绑定设备        if (devices.size() &gt;
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/17/蓝牙的发现、扫描/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/15/文件后缀名枚举/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/15/文件后缀名枚举/" itemprop="url">文件后缀名枚举</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-15T17:08:08+08:00">
+                2018-03-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/03/15/文件后缀名枚举/" class="leancloud_visitors" data-flag-title="文件后缀名枚举">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          从一份恶意代码分析报告中抽取得，冥冥之中觉得以后有用，收藏以备用。
+.000 .001 .1 .101 .103 .108 .110 .123 .128 .1cd .1sp .1st .3 .3d .3d4 .3dd .3df .3df8 .3dm .3dr .3ds .3dxml .3fr .3g2 .3ga .3gp .3gp2 .3mm .3pr .3w .4w7 .602 .7z .7zip .8 .89t .89y .8ba .8bc .8be .8bf .8bi8 .8bl .8bs .8bx .8by .8li .8svx .8xt .9xt .9xy .a$v .a2c .aa .aa3 .aac .aaf .aah .aaui .ab4 .ab65 .abc .abk .abt .abw .ac2 .ac3 .ac5 .acc .accdb .accde .accdr .accdt .ace .acf .ach .acp .acr .acrobatsecuritysettings .acrodata .acroplugin .acrypt .act .ad .ada .adb .adc .add .ade .adi .adoc .ados .adox .adp .adpb .adr .ads .adt .aea .aec .aep .aepx .aes .aet .afdesign .afm .afp .agd1 .agdl .age3rec .age3sav .age3scn .age3xrec .age3xsav .age3xscn .age3yrec .age3ysav .age3yscn .ahf .ai .aif .aiff .aim .aip .ais .ait .ak .al .al8 .ala .alb3 .alb4 .alb5 .alb6
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/15/文件后缀名枚举/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/15/Unicorn使用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -597,7 +1300,7 @@ Unocorn引擎是什么?
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/09/Android-Hook-——-Frida/">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/09/droid-Hook-——-Frida/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="m4bln">
@@ -616,7 +1319,7 @@ Unocorn引擎是什么?
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/09/Android-Hook-——-Frida/" itemprop="url">Android Hook 之 Frida</a></h1>
+                <a class="post-title-link" href="/2018/03/09/droid-Hook-——-Frida/" itemprop="url">Android Hook 之 Frida</a></h1>
         
 
         <div class="post-meta">
@@ -646,7 +1349,7 @@ Unocorn引擎是什么?
 
           
           
-             <span id="/2018/03/09/Android-Hook-——-Frida/" class="leancloud_visitors" data-flag-title="Android Hook 之 Frida">
+             <span id="/2018/03/09/droid-Hook-——-Frida/" class="leancloud_visitors" data-flag-title="Android Hook 之 Frida">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -712,7 +1415,7 @@ smali注入加载library,选择application类或者Activity入口.
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/09/Android-Hook-——-Frida/#more" rel="contents">
+            <a class="btn" href="/2018/03/09/droid-Hook-——-Frida/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1022,704 +1725,11 @@ smali注入加载library,选择application类或者Activity入口.
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/05/https中间人攻击原理/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/05/https中间人攻击原理/" itemprop="url">Android Https抓包实践</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-05T16:29:49+08:00">
-                2018-03-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/03/05/https中间人攻击原理/" class="leancloud_visitors" data-flag-title="Android Https抓包实践">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          平时的安全研究经常会有抓包的需求，随着互联网厂商安全意识的不断提高，多数Android APP采用了https协议和服务端进行通信，增加了中间人攻击的难度。
-在使用burpsuilt、Fiddler等工具抓https数据包时，通常需要在手机上安装一个证书，即便这样仍然还会出现抓不到包等各种各样的错误和问题，为了解决这些问题，有必要了解下https的原理和实现，方可在遇到问题时根据不同的情况来解决。
-文章有点长，搞个图便于以后采坑定位：
-
-什么是证书这里的证书是指https数字证书，为了防止被中间人挟持，整个互联网都在由http向https切换，证书是https协议中的一个重要角色，本质上证书被用来验证“一个站点是不是真正的站点”。下图是https的协议过程，其中第4阶段就是证书的校验阶段
-
-那么如何通过证书来验证“一个站点是不是真正的站点”呢？首先从证书的内容说起。
-使用openssl可以查看证书的内容，例如：12345678910111213141516171819202122232425262728293031323334353637383940openssl x509  -noout -text -in  kubernetes.pemCertificate:    Data:        Version: 3 (0x2)        Serial Number:            06:6c:9f:d7:c1:bb:10:4c:29:43:e5:71:7b:7b:2c:c8:1a:c1:0e    Signature Algorithm: ecdsa-with-SHA384        Issuer: C=US, O=Amazon, CN=Amazon Root CA 4        Validity            Not Before: May 
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/03/05/https中间人攻击原理/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/02/28/Android加固厂商特征（转）/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/28/Android加固厂商特征（转）/" itemprop="url">Android加固厂商特征（转）</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-28T17:42:12+08:00">
-                2018-02-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/02/28/Android加固厂商特征（转）/" class="leancloud_visitors" data-flag-title="Android加固厂商特征（转）">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>from <a href="https://bbs.pediy.com/thread-223248.htm" target="_blank" rel="noopener">https://bbs.pediy.com/thread-223248.htm</a></p>
-<p>娜迦<br>libchaosvmp.so , libddog.solibfdog.so</p>
-<p>爱加密<br>libexec.so, libexecmain.so，ijiami.dat</p>
-<p>梆梆<br>libsecexe.so, libsecmain.so,libSecShell.so</p>
-<p>梆梆企业版<br>libDexHelper.so , libDexHelper-x86.so<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/02/28/Android加固厂商特征（转）/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/02/08/frida导出函数任意调用/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/08/frida导出函数任意调用/" itemprop="url">frida导出函数任意调用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-08T15:13:05+08:00">
-                2018-02-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/02/08/frida导出函数任意调用/" class="leancloud_visitors" data-flag-title="frida导出函数任意调用">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>除了hook外，frida提供了rpc接口，可以导出某一个指定的函数，实现随时对其进行调用。</p>
-<p>1.js中指定导出的类和函数，并采用new方法创建一个实例，python文件中导入1.js,输入对应的参数调用即可。如果通过http的方式传递参数，就可以变为一个服务框架，例如salt写的Hrida。（<a href="https://github.com/5alt/hrida）" target="_blank" rel="noopener">https://github.com/5alt/hrida）</a><br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/02/08/frida导出函数任意调用/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/02/06/Android直接执行so里的函数/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/06/Android直接执行so里的函数/" itemprop="url">Android直接执行so里的函数</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-06T21:04:48+08:00">
-                2018-02-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/02/06/Android直接执行so里的函数/" class="leancloud_visitors" data-flag-title="Android直接执行so里的函数">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960#include &lt;stdio.h&gt;#include &lt;stdlib.h&gt;#include &lt;dlfcn.h&gt;int main(int argc, char *argv[])&#123;    //decrypt_db in.db out.db key	//char key_in[256] = "thMSot/QNM/iFsDVNksPtXHiqi0wxjD0m2SMLipLEQ4=";    char *in_db = argv[1];    char *out_db = argv[2];    char *key_in = argv[3];	char key_out[256] = &#123;0&#125;;	void *p;    void (*key_func)(char *, char *);    void (*decrypt)(char *, char *, char *);    //dlopen    p=dlopen("./libdatabase_sqlcrypto.so",RTLD_NOW);    if(p==NULL)    &#123;        printf("dlopen error!\n");        exit(0);    &#125;    else        printf("dlopen ok!\n");    //dlsym aes_decrypt_key128    key_func=dlsym(p, "aes_decrypt_key128");    key_f
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/02/06/Android直接执行so里的函数/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/01/24/xmlHttpRequest读取本地文件/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/24/xmlHttpRequest读取本地文件/" itemprop="url">Ajax读取本地文件</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-24T18:21:59+08:00">
-                2018-01-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/01/24/xmlHttpRequest读取本地文件/" class="leancloud_visitors" data-flag-title="Ajax读取本地文件">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="关于Ajax"><a href="#关于Ajax" class="headerlink" title="关于Ajax"></a>关于Ajax</h2><p>AJAX 是一种在无需重新加载整个网页的情况下，能够更新部分网页的技术。</p>
-<p>所有现代浏览器均支持 XMLHttpRequest 对象（IE5 和 IE6 使用 ActiveXObject）。</p>
-<p>XMLHttpRequest 用于在后台与服务器交换数据。这意味着可以在不重新加载整个网页的情况下，对网页的某部分进行更新。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/01/24/xmlHttpRequest读取本地文件/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1765,7 +1775,7 @@ smali注入加载library,选择application类或者Activity入口.
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">69</span>
+                  <span class="site-state-item-count">75</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1817,7 +1827,7 @@ smali注入加载library,选择application类或者Activity入口.
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

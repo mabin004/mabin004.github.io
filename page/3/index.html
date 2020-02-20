@@ -306,6 +306,737 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/08/21/Robust/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/21/Robust/" itemprop="url">Robust热修复框架原理分析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-21T15:26:00+08:00">
+                2018-08-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/21/Robust/" class="leancloud_visitors" data-flag-title="Robust热修复框架原理分析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          关于RobustRobust（https://github.com/Meituan-Dianping/Robust/blob/master/README-zh.md）是美团推出的一个热补丁框架，可兼容Android2.3-8.0版本，据称补丁修补成功率高达99.9%。
+Robust使用环境配置
+在App的build.gradle，加入如下依赖
+12345apply plugin: &apos;com.android.application&apos;//制作补丁时将这个打开，auto-patch-plugin紧跟着com.android.application//apply plugin: &apos;auto-patch-plugin&apos;apply plugin: &apos;robust&apos;compile &apos;com.meituan.robust:robust:0.4.82&apos;
+
+在整个项目的build.gradle加入classpath
+123456789buildscript &#123;    repositories &#123;        jcenter()    &#125;    dependencies &#123;         classpath &apos;com.meituan.robust:gradle-plugin:0.4.82&apos;         classpath &apos;com.meituan.robust:auto-patch-plugin:0.4.82&apos;   &#125;&#125;
+
+在项目的src同级目录下配置robust.xml文件，具体项请参考DEMOapp/robust.xml
+1234567891011121314151617181920212223242526
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/08/21/Robust/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/08/14/CVE-2018-9445-——-Android-USB上的目录穿越/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/14/CVE-2018-9445-——-Android-USB上的目录穿越/" itemprop="url">CVE-2018-9445 —— Android挂载外设的目录穿越</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-14T18:55:00+08:00">
+                2018-08-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/14/CVE-2018-9445-——-Android-USB上的目录穿越/" class="leancloud_visitors" data-flag-title="CVE-2018-9445 —— Android挂载外设的目录穿越">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          简介Android的USB有host和Accessory两种模式，处于Host模式下的Android设备可以对外围设备进行交互，如读取U盘数据、USB键盘鼠标等。当有外设插入到Android设备上时，系统读取外设的一些硬件信息（如LABEL、UUID等）并自动为其挂载。
+常见的USB设备有以下几种：
+
+USB Sticks即U盘，用于手机和U盘之间拷贝数据，即使处于锁屏状态，系统也会自动mount。（Android 9之后，系统阻止了锁屏情况下的mount）
+USB keyboardsUSB键盘或鼠标，可以用来操控手机，在锁屏下也会自动mount。
+USB ethernet adaptersUSB网卡，插入手机后，通过DHCP可以获取ip地址联通网络，锁屏下也可以使用
+
+Android系统中由Vold进程（Volume Daemon）负责管理和控制外设，Vold进程如果在挂载外设时没有正确的对硬件信息进行解析，则有可能出现安全问题。CVE-2018-9445就是Vold在挂载外设时，由于未正确获取UUID导致的目录穿越问题。
+漏洞细节当USB设备插到Android手机上时，Vold进程（Volume Daemon）会自动为USB设备进行mount，即使手机处于锁屏状态。Vold进程在mount之前需要知道所连接设备的一些硬件信息，如UUID、type、Label等，其具体实现在system/vold/Utils.cpp的readMetadata()函数中：
+12345678910111213141516171819202122232425262728293031323334353637383940414243/*https://android.googlesource.com/platform/system/vold/+/master/Utils.cpp#212*/std:
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/08/14/CVE-2018-9445-——-Android-USB上的目录穿越/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/08/13/cve-2018-9375-——-Android个人字典漏洞分析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/13/cve-2018-9375-——-Android个人字典漏洞分析/" itemprop="url">cve-2018-9375 —— Android Personal Dictionary漏洞分析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-13T10:16:26+08:00">
+                2018-08-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/13/cve-2018-9375-——-Android个人字典漏洞分析/" class="leancloud_visitors" data-flag-title="cve-2018-9375 —— Android Personal Dictionary漏洞分析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          关于Personal Dictionary（个人字典）Personal Dictionary（个人字典）是Android系统提供的一个自定义的字典，用于存放用户经常输入的数据或字符以提高输入效率，它位于“设置”—— “语言和输入法” —— “个人字典”中，某些情况下Personal Dictionary中可能存放用户的隐私信息，如密码、地址、电话、信用卡账号等信息。https://ioactive.com/wp-content/uploads/2018/07/exploit-user-dictionary-poc.png
+用户也可以为一个字符串自定义一个shortcut，例如输入myhome，会自动出来详细的地址https://ioactive.com/wp-content/uploads/2018/07/exploit-user-dictionary-poc2.png
+在Andorid系统内部，这些字符保存在一个sqlite数据库中，表名称为“words”，其中包含6个列：_id (INTEGER, PRIMARY KEY)word (TEXT)frequency (INTEGER)locale (TEXT)appid (INTEGER)shortcut (TEXT)
+漏洞细节早期版本的Android系统中，操作Personal Dictionary需要申请权限：android.permission.READ_USER_DICTIONARYandroid.permission.WRITE_USER_DICTIONARY从Android 6.0（API 23）开始, Android规定只有IME和spellchecker才可以操作Personal Dictionary，并提供了对应的provider —— content://user_dictionary/words
+co
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/08/13/cve-2018-9375-——-Android个人字典漏洞分析/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/08/10/利用蓝牙漏洞逃逸iOS沙箱/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/10/利用蓝牙漏洞逃逸iOS沙箱/" itemprop="url">利用蓝牙callback逃逸iOS沙箱</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-10T12:30:30+08:00">
+                2018-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/10/利用蓝牙漏洞逃逸iOS沙箱/" class="leancloud_visitors" data-flag-title="利用蓝牙callback逃逸iOS沙箱">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          iOS的Sandbox和IPC机制iOS的sandbox限制了普通的应用程序只能访问自身沙箱内的资源，应用程序在进行系统调用时会受到sandbox的策略限制。因此，为了实现权限提升，逃逸iOS的sandbox是必要的。
+iOS系统提供了IPC机制（进程间通信），如URL schemes, Mach, pipes等，Mach IPC是一套面向消息的IPC机制，实现对象与对象之间的通信，源对象发送一条消息，这条消息加入到目标对象的队列中等待处理。如果产生应答，则通过另一条消息传递回去。消息分简单消息和复杂消息，分别对应两种不同的结构：
+
+简单消息
+
+
+
+复杂消息
+
+
+Mach对象之间的消息时基于端口传递的，消息从某一个端口发送到另一个端口。向一个端口发送消息实际上是将消息放在队列中，直到消息被处理。查找一个对象的句柄(标识应用程序中的不同对象和同类中的不同的实例的值)，实际上查找的是这个对象端口的句柄，给定一个对象的端口，就可以通信了。Mach消息传递使用的是Mach_msg()函数。
+基于Mach的消息机制，iOS又提供了XPC、NSXPC等进程间通信机制，通过这些机制，sandbox内的应用可以和没有sandbox的Mach service进行通信，如果这些service在处理消息时发生错误，就有可能出现由sandbox到非sandbox的代码执行。
+为了发现这些问题，我们将目标放在Mach service的消息处理上，那么如何找到实现Mach service的binary文件呢？
+/System/Library/LaunchDaemons的plist文件包含了大多数Mach service，其中MachServices字段指向了一组Mach services,ProgramArguments字段指向实现这些Mach service的binary文件。
+
+CVE-2018-
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/08/10/利用蓝牙漏洞逃逸iOS沙箱/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/08/02/ndroid分析常用的工具或命令/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/02/ndroid分析常用的工具或命令/" itemprop="url">Android分析常用的工具或命令</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-02T15:49:23+08:00">
+                2018-08-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/02/ndroid分析常用的工具或命令/" class="leancloud_visitors" data-flag-title="Android分析常用的工具或命令">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          dumpsysdumpsys命令用来查询界面元素层级、系统服务运行状态、电池、网络等一些信息。用法：12345678910HWVTR:/ # dumpsys --helpusage: dumpsys         To dump all services.or:       dumpsys [-t TIMEOUT] [--help | -l | --skip SERVICES | SERVICE [ARGS]]         --help: shows this help         -l: only list services, do not dump them         -t TIMEOUT: TIMEOUT to use in seconds instead of default 10 seconds         --skip SERVICES: dumps all services but SERVICES (comma-separated list)         SERVICE [ARGS]: dumps only service SERVICE, optionally passing ARGS to it
+常用功能：
+
+dumpsys activity activities | grep mResumedActivity 获取顶层activity
+dumpsys -l  列出所有运行的服务
+dumpsys wifiscanner 获取wifi信息
+dumpsys webviewupdate 获得webview版本等信息
+dumpsys usagestats|grep com.tencent.mm  某个APP的使用情况
+dumpsys shortcut 所有的shortcut
+dumpsys package -h  所有和package相关
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/08/02/ndroid分析常用的工具或命令/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/07/31/Mac上编译Frida/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1036,742 +1767,11 @@ ZipArchive相关代码1234567891011121314151617-(BOOL) UnzipFileTo:(NSString*) p
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/06/27/关于手机充电器/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/27/关于手机充电器/" itemprop="url">关于手机充电器 - 充电协议</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-27T10:34:04+08:00">
-                2018-06-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/06/27/关于手机充电器/" class="leancloud_visitors" data-flag-title="关于手机充电器 - 充电协议">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          简介目前市面上充斥着各种诸如“充电1分钟，通话2小时”的宣传，手机快速充电成为手机厂商们追逐的一个技术指标。常见的标准充电装置通常为5V/1A 或 5V/2A，快速充电意味着要在电流或电压上有所提高，于是就出现了如QC、PD等各式各样的充电协议，本文作一个简单介绍。
-几个关键知识点：
-
-MicroUSB最大支持电流为2A,TYPE-C口最多支持5A
-PD协议是谷歌和USB-IF推出的，QC是高通推出的
-PD 3.0收编了QC 4.0,PD可能会成为主流,谷歌已经强制安卓阵营使用USB接口就必须支持PD协议
-所有用来充电的type-c接口都支持pd2.0协议吗？并不是，type-c只是接口形状，支持的协议各不相同。
-
-充电要考虑的问题一、电池的接受能力充电本质上就是“喂饱电池”，目前市面上比较流行的iphone x，华为P9，小米note等，电池容量都不超过3000mAH，按照4.35V作为最高电压，1.5C（C为充电或放电倍率，对于3000mAh的电池1.5C电流就是4500mA）充电来看，最大可能接受的充电功率约为20W（4.35V*4.5A约等于20W），当然，这是极限情况。除了功率接收能力，还要涉及到电流接受能力。在1.5C充电时，3000mAH的电池充电电流将达到4.5A，因此，电池触点和电芯内部的电流传输结构都要进行必要的优化。
-二、适配器的功率提供能力在不考虑接口承受能力的情况下，20W功率对适配器来说是轻而易举。但是传统的MicroUSB接口，在标准规范里面最大电流承载能力是2A，最高电压是5.25V。仅仅有10.5W，无法达到20W的要求。怎么解决这个问题呢？显然有两种解决方案，增大电流，或者提升电压。
-如果不改动物理接口，增大电流是不可能的选项，所以，提升电压，是MicroUSB时代的唯一选项，这就是高通QC快速充电方法的由来。所以，我们可以看到，1.5A
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/06/27/关于手机充电器/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/06/25/iOS应用沙箱/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/25/iOS应用沙箱/" itemprop="url">iOS应用安全 —— WebView安全</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-25T18:17:00+08:00">
-                2018-06-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/06/25/iOS应用沙箱/" class="leancloud_visitors" data-flag-title="iOS应用安全 —— WebView安全">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          WebView是iOS用于显示网页的控件，是一个基于Webkit引擎、展现web页面的控件。WebView控件功能除了具有一般View的属性和设置外，还可对URL请求、页面加载、渲染、页面交互进行处理。
-iOS下的Webview有UIWebView和WKWebView两种，其中UIWebView在iOS 8之后已经不推荐使用（https://developer.apple.com/documentation/uikit/uiwebview?changes=_6）,但仍然有很多APP使用UIWebView。
-File跨域漏洞UIWebView 此漏洞默认存在， WKWebView如果使用了不恰当的方式比如 [configuration.preferences setValue:@”TRUE” forKey:@”allowFileAccessFromFileURLs”]; 也会存在漏洞
-攻击者可利用App文件下载机制将恶意文件写入沙盒内并诱导用户打开，当用户打开恶意文件时，其中的恶意代码可通过AJAX向“file://”域发起请求，从而远程获取App沙盒内所有的本地敏感数据。
-UIWebViewUIWebView虽然已经被遗弃，但依然还有很多app继续使用，且最新版本的iOS也会兼容UIWebView。由于UIWebView本身存在严重的跨域漏洞，所以只要使用UIWebView都有可能存在跨域漏洞。
-漏洞原因在于UIWebView的WebKitAllowUniversalAccessFromFileURLs和WebKitAllowFileAccessFromFileURLs默认开启，导致通过js可以访问沙箱内的文件，甚至可以静默上传文件到远端。
-漏洞代码示例：123456789UIWebView* uiweb = [[UIWebView alloc] initWithFrame
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/06/25/iOS应用沙箱/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/06/19/iOS应用安全-——-MonkeyDev/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/19/iOS应用安全-——-MonkeyDev/" itemprop="url">iOS应用安全 —— MonkeyDev的使用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-19T19:22:00+08:00">
-                2018-06-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/06/19/iOS应用安全-——-MonkeyDev/" class="leancloud_visitors" data-flag-title="iOS应用安全 —— MonkeyDev的使用">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          概述MonkeyDev的功能主要如下：
-
-可以使用Xcode开发CaptainHook Tweak、Logos Tweak 和 Command-line Tool，在越狱机器开发插件，这是原来iOSOpenDev功能的迁移和改进。
-只需拖入一个砸壳应用，自动集成class-dump、restore-symbol、Reveal、Cycript和注入的动态库并重签名安装到非越狱机器。
-支持调试自己编写的动态库和第三方App
-支持通过CocoaPods第三方应用集成SDK以及非越狱插件，简单来说就是通过CocoaPods搭建了一个非越狱插件商店。
-
-MonkeyDev wiki: https://github.com/AloneMonkey/MonkeyDev/wiki
-安装
-安装最新的theos
-1sudo git clone --recursive https://github.com/theos/theos.git /opt/theos
-
-安装ldid
-1brew install ldid
-
-安装MonkeyDev
-1sudo /bin/sh -c &quot;$(curl -fsSL https://raw.githubusercontent.com/AloneMonkey/MonkeyDev/master/bin/md-install)&quot;
-
-
-更新MonkeyDev1sudo /bin/sh -c &quot;$(curl -fsSL https://raw.githubusercontent.com/AloneMonkey/MonkeyDev/master/bin/md-update)&quot;
-参考https://github.com/AloneMonkey/MonkeyDev/wiki/%E5%AE%89%E8%A3%85
-使用安装完成之后，打开Xco
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/06/19/iOS应用安全-——-MonkeyDev/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/06/18/iOS应用安全-——-非越狱下使用Frida/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/18/iOS应用安全-——-非越狱下使用Frida/" itemprop="url">iOS应用安全 —— 非越狱下使用Frida</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-18T09:59:00+08:00">
-                2018-06-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/06/18/iOS应用安全-——-非越狱下使用Frida/" class="leancloud_visitors" data-flag-title="iOS应用安全 —— 非越狱下使用Frida">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          概述frida-server在运行时需要root环境，但如果没有越狱的设备，依然可以使用frida,我们只需要重打包ipa文件，将frida运行库注入ipa文件中，app在启动时会自动加载frida运行库，即可实现在非越狱的设备上使用Frida.
-由于苹果的混淆策略和代码签名，重打包app的难度很高，一些自动重打包的工具如Objection、IPAPatch等简化了重打包过程，但其本质大概相同，以下分步介绍手动重打包frida运行库的过程。
-1. 配置optool和ios-deployoptool可以将一个外部的lib插入到Mach-O文件头，使binary文件在启动时会自动加载该lib。如已经配置过，直接跳过。12345$ git clone https://github.com/alexzielenski/optool.git$ cd optool/$ git submodule update --init --recursive$ xcodebuild$ ln -s &lt;your-path-to-optool&gt;/build/Release/optool /usr/local/bin/optool
-ios-deploy可以在不用Xcode的前提下调试和部署APP:123456$ git clone https://github.com/phonegap/ios-deploy.git$ cd ios-deploy/$ xcodebuild$ cd build/Release$ ./ios-deploy$ ln -s &lt;your-path-to-ios-deploy&gt;/build/Release/ios-deploy /usr/local/bin/ios-deploy
-更新bashrc文件12zsh: # . ~/.zshrcbash: # . ~/.
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/06/18/iOS应用安全-——-非越狱下使用Frida/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/06/11/Android-JsBridge/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/11/Android-JsBridge/" itemprop="url">Android JsBridge</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-11T15:52:51+08:00">
-                2018-06-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/06/11/Android-JsBridge/" class="leancloud_visitors" data-flag-title="Android JsBridge">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          Android客户端中经常会遇到js调用java代码的场景，例如一些Hybrid APP或H5等，JsBridge即通过js调用java或者通过java调用js函数。
-java调用js1. webview的loadUrl1WebView.loadUrl(&quot;javascript:function()&quot;);
-2. webview的evaluateJavascript使用evaluateJavascript可以获得js函数的返回值123456mWebView.evaluateJavascript(&quot;javascript:callJS()&quot;, new ValueCallback&lt;String&gt;() &#123;        @Override        public void onReceiveValue(String value) &#123;            //此处为 js 返回的结果        &#125;&#125;);
-js调用JavaAndroid中js调用java通常有以下几种做法：
-1. 通过WebView的addJavascriptInterface（）进行对象映射定义一个与JS对象映射关系的Android类：AndroidtoJs,在Android里通过WebView设置Android类与JS代码的映射
-java代码：123456789101112mWebView.addJavascriptInterface(new AndroidtoJs(), &quot;test&quot;);public class AndroidtoJs extends Object &#123;    // 定义JS需要调用的方法    // 被JS调用的方法必须加入@JavascriptInterface注解  
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/06/11/Android-JsBridge/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1817,7 +1817,7 @@ java代码：123456789101112mWebView.addJavascriptInterface(new AndroidtoJs(), &
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">69</span>
+                  <span class="site-state-item-count">75</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1869,7 +1869,7 @@ java代码：123456789101112mWebView.addJavascriptInterface(new AndroidtoJs(), &
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

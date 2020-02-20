@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, m4bln" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Frida简介Frida是一款基于python + javascript 的hook框架，通杀android\ios\linux\win\osx等各平台，由于是基于脚本的交互，相比xposed和substrace cydia更加便捷，本文重点介绍Frida在android下面的使用。 Frida的官网为：http://www.frida.re/ 环境配置 pip install frida 安装f">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Hook 之 Frida">
+<meta property="og:url" content="https://mabin004.github.io/2018/03/09/droid-Hook-——-Frida/index.html">
+<meta property="og:site_name" content="m4bln">
+<meta property="og:description" content="Frida简介Frida是一款基于python + javascript 的hook框架，通杀android\ios\linux\win\osx等各平台，由于是基于脚本的交互，相比xposed和substrace cydia更加便捷，本文重点介绍Frida在android下面的使用。 Frida的官网为：http://www.frida.re/ 环境配置 pip install frida 安装f">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-195.png">
+<meta property="og:updated_time" content="2019-11-26T13:30:54.524Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android Hook 之 Frida">
+<meta name="twitter:description" content="Frida简介Frida是一款基于python + javascript 的hook框架，通杀android\ios\linux\win\osx等各平台，由于是基于脚本的交互，相比xposed和substrace cydia更加便捷，本文重点介绍Frida在android下面的使用。 Frida的官网为：http://www.frida.re/ 环境配置 pip install frida 安装f">
+<meta name="twitter:image" content="https://mabin004.github.io/images/pasted-195.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'SXXZO8IPW0',
+      apiKey: 'b9723880e3b66475126bdc98a4bb9380',
+      indexName: 'm4bln',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到任何搜索结果: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://mabin004.github.io/2018/03/09/droid-Hook-——-Frida/"/>
+
+
+
+
+
+  <title>Android Hook 之 Frida | m4bln</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">m4bln</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-hint">
+          <a href="/hint/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            hint
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-todo">
+          <a href="/todo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            ToDo
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/09/droid-Hook-——-Frida/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android Hook 之 Frida</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-09T16:22:02+08:00">
+                2018-03-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/03/09/droid-Hook-——-Frida/" class="leancloud_visitors" data-flag-title="Android Hook 之 Frida">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Frida简介"><a href="#Frida简介" class="headerlink" title="Frida简介"></a>Frida简介</h2><p>Frida是一款基于python + javascript 的hook框架，通杀android\ios\linux\win\osx等各平台，由于是基于脚本的交互，相比xposed和substrace cydia更加便捷，本文重点介绍Frida在android下面的使用。</p>
+<p>Frida的官网为：<a href="http://www.frida.re/" target="_blank" rel="noopener">http://www.frida.re/</a></p>
+<h2 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h2><ol>
+<li>pip install frida 安装frida环境</li>
+<li>在root的手机上运行frida server端<ol>
+<li>wget <a href="https://build.frida.re/frida/android/arm/bin/frida-server" target="_blank" rel="noopener">https://build.frida.re/frida/android/arm/bin/frida-server</a></li>
+<li>adb push frida-server /data/lcoal/tmp</li>
+<li>chmod 755 frida-server</li>
+<li>./frida-server &amp;</li>
+</ol>
+</li>
+<li>adb forward<ol>
+<li>adb forward tcp:27042 tcp:27042</li>
+<li>adb forward tcp:27043 tcp:27043</li>
+</ol>
+</li>
+<li>完成配置，直接在PC端运行hook脚本即可</li>
+</ol>
+<p>需要注意的是，frida的客户端和服务度版本应该相同，否则会出现不可预知的其他错误。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">frida --version 查看版本</span><br></pre></td></tr></table></figure></p>
+<h2 id="免root实现frida-hook（重打包）"><a href="#免root实现frida-hook（重打包）" class="headerlink" title="免root实现frida hook（重打包）"></a>免root实现frida hook（重打包）</h2><ol>
+<li><p>apktool反编译apk</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apktool d test.apk -o test</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将对应版本的gadget拷贝到/lib没有了下.例如arm32的设备路径如下.</p>
+</li>
+</ol>
+<p>/lib/armeabi/libfrida-gadget.so<br>下载地址:<br><a href="https://github.com/frida/frida/releases/" target="_blank" rel="noopener">https://github.com/frida/frida/releases/</a></p>
+<ol>
+<li><p>smali注入加载library,选择application类或者Activity入口.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const-string v0, &quot;frida-gadget&quot; invoke-static &#123;v0&#125;, Ljava/lang/System;-&gt;loadLibrary(Ljava/lang/String;)V</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果apk没有网络权限需要在配置清单中加入如下权限申明</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;uses-permission android:name=&quot;android.permission.INTERNET&quot; /&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>回编译apk</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apktool b -o newtest.apk test/</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重新签名安装运行.成功后启动app会有如下日志</p>
+</li>
+</ol>
+<p>Frida: Listening on TCP port 27042</p>
+<h2 id="实现hook"><a href="#实现hook" class="headerlink" title="实现hook"></a>实现hook</h2><p>以下为frida hook的框架代码，只需要修改jscode就可以实现自定义的hook<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">import frida, sys</span><br><span class="line">def on_message(message, data):</span><br><span class="line">    if message[&apos;type&apos;] == &apos;send&apos;:</span><br><span class="line">        print(&quot;[*] &#123;0&#125;&quot;.format(message[&apos;payload&apos;]))</span><br><span class="line">    else:</span><br><span class="line">        print(message)</span><br><span class="line">jscode = &quot;&quot;&quot;</span><br><span class="line">Java.perform(function () &#123;</span><br><span class="line">    // 要hook的类名</span><br><span class="line">    var MainActivity = Java.use(&apos;com.example.xxx.MainActivity&apos;);</span><br><span class="line">    // hook按钮点击事件</span><br><span class="line">    MainActivity.onClick.implementation = function (v) &#123;</span><br><span class="line">        // Show a message to know that the function got called</span><br><span class="line">        send(&apos;onClick&apos;);</span><br><span class="line">        </span><br><span class="line">        // 执行原始方法代码</span><br><span class="line">        this.onClick(v);</span><br><span class="line"></span><br><span class="line">        //修改MainActivity中属性的值</span><br><span class="line">        this.m.value = 0;</span><br><span class="line">        this.n.value = 1;</span><br><span class="line">        this.cnt.value = 999;</span><br><span class="line">        //打印日志</span><br><span class="line">        console.log(&apos;Done:&apos; + JSON.stringify(this.cnt));</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;);</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line"># 设置要注入的进程名或者pid</span><br><span class="line">process = frida.get_usb_device().attach(&apos;com.example.seccon2015.rock_paper_scissors&apos;)</span><br><span class="line">script = process.create_script(jscode)</span><br><span class="line">script.on(&apos;message&apos;, on_message)</span><br><span class="line">print(&apos;[*] Running CTF&apos;)</span><br><span class="line">script.load()</span><br><span class="line">sys.stdin.read()</span><br></pre></td></tr></table></figure></p>
+<h2 id="采坑记录"><a href="#采坑记录" class="headerlink" title="采坑记录"></a>采坑记录</h2><ol>
+<li><p>需要自己注意脚本加载时机 app启动后进行attach.可以使用-f参数frida来生成已经注入的进程(先注入Zygote为耗时操作),通常配合–no-pause使用. </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">frida -U -f com.tencent.tmgp.pubgmhd  -l chiji.js</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>hook不上的原因？</p>
+</li>
+</ol>
+<ul>
+<li>要hook的函数是不是正好被打了热补丁？</li>
+<li>hook的进程是否正确，比如com.tencent.mm有好几个进程</li>
+</ul>
+<ol>
+<li>hook中可能出现“函数名参数完全相同，但返回值不同的情况”，这种情况frida暂时无法实现，收到测试此情况代码编译不会通过，但编译后可以改bytecode，不影响执行结果</li>
+</ol>
+<ul>
+<li>这种情况可以枚举函数的overloads属性，挨个hook，或者使用数组索引hook,例如a.overloads[1].implement=xxxx</li>
+</ul>
+<ol>
+<li><p>使用enumerateLoadedClasses报“VM::GetEnv failed”错误<br>enumerateLoadedClasses需要在Java.perform（）下使用，参考<a href="https://github.com/frida/frida/issues/237" target="_blank" rel="noopener">https://github.com/frida/frida/issues/237</a></p>
+</li>
+<li><p>Failed to spawn: unable to find application with identifier ‘com.dzvuhumnjt.kfwmalytfds’<br>如果包名是正确的，应该是这个包名是一个服务，没有lunch activity, 此时只能靠启动后抢时间的方式来attach, spawn行不通</p>
+</li>
+<li><p>判断一个函数是public还是privte<br>反射出 method 类来调getModifiers()</p>
+</li>
+<li><p>unable to access process with pid 1204 due to system restrictions; try <code>sudo sysctl kernel.yama.ptrace_scope=0</code>, or run Frida as root<br>magisk 里面的一个叫magisk hide的东西会妨碍frida的进程，关掉这个即可</p>
+</li>
+</ol>
+<h2 id="Frida-基础数据类型"><a href="#Frida-基础数据类型" class="headerlink" title="Frida 基础数据类型"></a>Frida 基础数据类型</h2><h3 id="Int"><a href="#Int" class="headerlink" title="Int"></a>Int</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var Integerclass = Java.use(&quot;java.lang.Integer&quot;);</span><br><span class="line">var myint = Integerclass.$new(1440);</span><br></pre></td></tr></table></figure>
+<h3 id="Long"><a href="#Long" class="headerlink" title="Long"></a>Long</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var Longclass = Java.use(&quot;java.lang.Long&quot;);</span><br><span class="line">var myint = Longclass.$new(27893952512)</span><br></pre></td></tr></table></figure>
+<h3 id="ByteArray"><a href="#ByteArray" class="headerlink" title="ByteArray"></a>ByteArray</h3><ol>
+<li><p>js传给python</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// js中send（byte[]数组）</span><br><span class="line">def on_message(message, data):</span><br><span class="line">    if message[&apos;type&apos;] == &apos;send&apos;:</span><br><span class="line">        data = message[&apos;payload&apos;]</span><br><span class="line">        for i in range(len(data)):</span><br><span class="line">        	data[i] = data[i] &amp; 0xff</span><br><span class="line">        open(&quot;tmp&quot;,&apos;wb&apos;).write(bytearray(data))</span><br><span class="line">    else:</span><br><span class="line">    	pass</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>python传给js</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var a = Java.array(&apos;byte&apos;, [ 0xac,0x37,0x43,0x4f,0xaf,0xa8]);</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="遍历map"><a href="#遍历map" class="headerlink" title="遍历map"></a>遍历map</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">var mapcls = Java.use(&quot;java.util.Map&quot;);</span><br><span class="line">var mymap = Java.cast(a1, mapcls);</span><br><span class="line">var result = &quot;&quot;;</span><br><span class="line">var keyset = mymap.keySet();</span><br><span class="line">var it = keyset.iterator();</span><br><span class="line">while(it.hasNext())&#123;</span><br><span class="line">    var keystr = it.next().toString();</span><br><span class="line">    var valuestr = mymap.get(keystr).toString();</span><br><span class="line">    result += keystr+&quot;:&quot;+valuestr+&quot; &quot;;</span><br><span class="line">&#125;</span><br><span class="line">console.log(result);</span><br></pre></td></tr></table></figure>
+<h2 id="Frida-Hook实例"><a href="#Frida-Hook实例" class="headerlink" title="Frida Hook实例"></a>Frida Hook实例</h2><p>以下为我曾经用过或自己实现的frida脚本，主要适用于Android平台，根据不同的使用场景进行了分类，如需获取更多的使用或脚本，请参考awesome-frida，该项目搜集了各种通过frida实现的hook需求，并且不分区平台</p>
+<p><a href="https://github.com/dweinstein/awesome-frida" target="_blank" rel="noopener">https://github.com/dweinstein/awesome-frida</a></p>
+<h3 id="1-打印hook函数的返回值"><a href="#1-打印hook函数的返回值" class="headerlink" title="1. 打印hook函数的返回值"></a>1. 打印hook函数的返回值</h3><pre><code>直接运行一遍原函数，将结果赋值给一个新变量，输出并return新变量即可，例如：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Java.perform(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> cls = Java.use(<span class="string">"com.tencent.mm.sdk.platformtools.w"</span>);</span><br><span class="line">    cls.w.overload(<span class="string">"java.lang.String"</span>,<span class="string">"java.lang.String"</span>).implementation=<span class="function"><span class="keyword">function</span>(<span class="params">p1,p2</span>)</span>&#123;</span><br><span class="line">	   <span class="keyword">var</span> req = <span class="keyword">this</span>.w(p1,p2);</span><br><span class="line">       <span class="built_in">console</span>.log(req);</span><br><span class="line">       <span class="keyword">return</span> req;</span><br><span class="line">&#125;;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="2-hook重载函数"><a href="#2-hook重载函数" class="headerlink" title="2. hook重载函数"></a>2. hook重载函数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cls.loadUrl.overload(&quot;java.lang.String&quot;).implementation = function(param)……</span><br><span class="line">cls.loadUrl.overload(&quot;java.lang.String&quot;,&quot;java.util.Map&quot;).implementation=</span><br></pre></td></tr></table></figure>
+<h3 id="3-打印java函数的调用栈"><a href="#3-打印java函数的调用栈" class="headerlink" title="3. 打印java函数的调用栈"></a>3. 打印java函数的调用栈</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var Exc = Java.use(&quot;java.lang.Exception&quot;);</span><br><span class="line">var Log = Java.use(&quot;android.util.Log&quot;);</span><br><span class="line">xxxx.implementation = function(param)&#123;</span><br><span class="line">	    var e = Exc.$new(&quot;&quot;);</span><br><span class="line">		var log = Log.$new();</span><br><span class="line">		console.log(log.getStackTraceString(e));</span><br><span class="line">	  &#125;;</span><br></pre></td></tr></table></figure>
+<p>或<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console.log(Java.use(&quot;android.util.Log&quot;).getStackTraceString(Java.use(&quot;java.lang.Exception&quot;).$new()))</span><br></pre></td></tr></table></figure></p>
+<h3 id="4-打印native函数调用栈"><a href="#4-打印native函数调用栈" class="headerlink" title="4. 打印native函数调用栈"></a>4. 打印native函数调用栈</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">"begin===="</span>);</span><br><span class="line"><span class="keyword">var</span> libavmp = Module.findBaseAddress(<span class="string">"libsgavmpso-6.4.20.so"</span>);</span><br><span class="line"><span class="keyword">var</span> func = ptr(<span class="built_in">parseInt</span>(libavmp)+<span class="number">0x1ea</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">"libavmp base: "</span>+libavmp);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">"function base: "</span>+func);</span><br><span class="line">Interceptor.attach(func, &#123;</span><br><span class="line">	    onEnter: <span class="function"><span class="keyword">function</span>(<span class="params">args</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(Thread.backtrace(<span class="keyword">this</span>.context,Backtracer.ACCURATE).map(DebugSymbol.fromAddress).join(<span class="string">" "</span>));</span><br><span class="line">			</span><br><span class="line"></span><br><span class="line">	    &#125;,</span><br><span class="line">	    onLeave:<span class="function"><span class="keyword">function</span>(<span class="params">retval</span>)</span>&#123;</span><br><span class="line">	    	<span class="built_in">console</span>.log(<span class="string">"retval: "</span>+retval);</span><br><span class="line">	    &#125;</span><br><span class="line">	&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="5-dump内存"><a href="#5-dump内存" class="headerlink" title="5. dump内存"></a>5. dump内存</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var data = Memory.readByteArray(ptr(0x824a9000), 159744);</span><br><span class="line">console.log(&#123;type: &apos;data-for-you&apos; &#125;, data);</span><br></pre></td></tr></table></figure>
+<h3 id="6-Hook-Android-IMEI"><a href="#6-Hook-Android-IMEI" class="headerlink" title="6. Hook Android IMEI"></a>6. Hook Android IMEI</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">Java.perform(function () &#123;</span><br><span class="line">var TM = Java.use(&quot;android.telephony.TelephonyManager&quot;);</span><br><span class="line">console.log(&quot;hook start...&quot;);</span><br><span class="line"></span><br><span class="line">   TM.getSimSerialNumber.overload().implementation = function () &#123;</span><br><span class="line">               console.log(&quot;Called - getSimSerialNumber(String)&quot;);</span><br><span class="line">               var temp = this.getSimSerialNumber();</span><br><span class="line">               console.log(temp);</span><br><span class="line">               return &quot;123456789&quot;;</span><br><span class="line">           &#125;;</span><br><span class="line"></span><br><span class="line">   TM.getDeviceId.overload().implementation = function () &#123;</span><br><span class="line">               console.log(&quot;Called - deviceID()&quot;);</span><br><span class="line">               var temp = this.getDeviceId();</span><br><span class="line">               console.log(temp);</span><br><span class="line">               return &quot;867979021642856&quot;;</span><br><span class="line">           &#125;;</span><br><span class="line"></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="7-Hook-Android-webview-http请求"><a href="#7-Hook-Android-webview-http请求" class="headerlink" title="7. Hook Android webview http请求"></a>7. Hook Android webview http请求</h3><p>主要针对以下webview中的以下函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- loadUrl(String url)   </span><br><span class="line">- loadUrl(String url, Map&lt;String, String&gt; additionalHttpHeaders)</span><br><span class="line">- loadData(String data, String mimeType, String encoding)</span><br><span class="line">- loadDataWithBaseURL(String baseUrl, String data, String mimeType, String encoding, String historyUrl)</span><br><span class="line">- postUrl(String url, byte[] postData)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">Java.perform(function () &#123;</span><br><span class="line">var cls = Java.use(&quot;android.webkit.WebView&quot;);</span><br><span class="line">console.log(&quot;class start:------------------&quot;); </span><br><span class="line"></span><br><span class="line">cls.loadUrl.overload(&quot;java.lang.String&quot;).implementation = function(param)&#123;</span><br><span class="line">    console.log(&quot;loadUrl hooked &quot;+param);</span><br><span class="line">    this.loadUrl(&quot;file:///sdcard/1.html&quot;);</span><br><span class="line">   	&#125;;</span><br><span class="line"></span><br><span class="line">cls.loadUrl.overload(&quot;java.lang.String&quot;,&quot;java.util.Map&quot;).implementation = function(p1,p2)&#123;</span><br><span class="line">    console.log(&quot;loadUrl2 hooked&quot;+p1 + p2);</span><br><span class="line">    this.loadUrl(&quot;file:///sdcard/1.html&quot;,null);</span><br><span class="line">   	&#125;;</span><br><span class="line"></span><br><span class="line">cls.loadDataWithBaseURL.implementation = function(p1,p2,p3,p4,p5)&#123;</span><br><span class="line">   console.log(&quot;loadDataWithBaseURL hooked&quot;+p1 + p2);</span><br><span class="line">   this.loadDataWithBaseURL(&quot;file:///sdcard/1.html&quot;,null,null,null,null);</span><br><span class="line">  	&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">cls.postUrl.implementation = function(p1,p2)&#123;</span><br><span class="line">   console.log(&quot;postUrl hooked&quot;+p1);</span><br><span class="line">   this.postUrl(&quot;file:///sdcard/1.html&quot;,null);</span><br><span class="line">  	&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="8-获取context"><a href="#8-获取context" class="headerlink" title="8. 获取context"></a>8. 获取context</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var currentApplication = Java.use(&apos;android.app.ActivityThread&apos;).currentApplication();</span><br><span class="line">var context = currentApplication.getApplicationContext();</span><br></pre></td></tr></table></figure>
+<h3 id="9-创建bundle对象"><a href="#9-创建bundle对象" class="headerlink" title="9. 创建bundle对象"></a>9. 创建bundle对象</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var bundle = Bundle.$new();</span><br><span class="line">//调用实例方法需要使用call</span><br><span class="line">Bundle.putString.call(bundle,&apos;key1&apos;,&apos;value1&apos;)</span><br><span class="line">//也可以指定具体的参数类型</span><br><span class="line">//Bundle.putString.overload(&apos;java.lang.String&apos;,&apos;java.lang.String&apos;).call(bundle,&apos;key1&apos;,&apos;value1&apos;)</span><br><span class="line">this.getIntent().putExtra(&apos;testBundle&apos;,bundle)</span><br><span class="line">//activity.getIntent().getBundleExtra(&quot;testBundle&quot;);</span><br><span class="line">var outB = this.getIntent().getBundleExtra(&apos;testBundle&apos;)</span><br><span class="line">console.log(outB);</span><br></pre></td></tr></table></figure>
+<h3 id="10-hook-对象"><a href="#10-hook-对象" class="headerlink" title="10. hook 对象"></a>10. hook 对象</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//读取实例对象的属性值，对于得到的对象，需要使用Java.cast()方法转换后才可以使用</span><br><span class="line">// PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(),0);</span><br><span class="line">// String pkg = packageInfo.packageName;</span><br><span class="line">var t = this.getPackageManager().getPackageInfo(this.getPackageName(),0);</span><br><span class="line">var packageInfo = Java.cast(t.$handle, PackageInfo);</span><br><span class="line">var pkg = packageInfo.packageName.value</span><br><span class="line">console.log(pkg)</span><br></pre></td></tr></table></figure>
+<h3 id="11-导出函数并被任意调用"><a href="#11-导出函数并被任意调用" class="headerlink" title="11. 导出函数并被任意调用"></a>11. 导出函数并被任意调用</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">rdev = frida.get_remote_device()</span><br><span class="line">session = rdev.attach(&quot;com.eg.android.AlipayGphone&quot;)</span><br><span class="line"></span><br><span class="line">jscode=&quot;&quot;&quot;</span><br><span class="line">rpc.exports = &#123;</span><br><span class="line">    myfunc: function(aa,bb,cc)&#123;</span><br><span class="line">        Java.perform(function () &#123;</span><br><span class="line">            try&#123;</span><br><span class="line">                classf = Java.use(&apos;com.alipay.android.phone.wallet.sharetoken.service.f&apos;);</span><br><span class="line">                var result = classf.a(aa,bb,cc);//a为static函数</span><br><span class="line">                //f = Hrida.$new(); 非static函数需要new一个实例</span><br><span class="line">                console.log(&quot;myfunc result: &quot;+result);</span><br><span class="line">                return result.toString() </span><br><span class="line"></span><br><span class="line">            &#125;catch(e)&#123;</span><br><span class="line">                console.log(e)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        //return result</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">script = session.create_script(jscode)</span><br><span class="line">script.on(&quot;message&quot;, my_message_handler)</span><br><span class="line">script.load()</span><br><span class="line"></span><br><span class="line">command = &quot;&quot;</span><br><span class="line">while 1 == 1:</span><br><span class="line">    command = raw_input(&quot;Exit: 9999 0: default others: zhikouling&quot;)</span><br><span class="line">    if command == &quot;9999&quot;:</span><br><span class="line">        break</span><br><span class="line">    else:</span><br><span class="line">     a = &quot;b54578ff9d5fcbf6&quot;</span><br><span class="line">     b = None</span><br><span class="line">     c = &quot;快来吱付寳&quot;</span><br><span class="line">     script.exports.myfunc(a,b,c)</span><br></pre></td></tr></table></figure>
+<p>需要获取返回值的情况<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">rpc.exports.foo = function () &#123;</span><br><span class="line">  return new Promise(function (resolve, reject) &#123;</span><br><span class="line">    Java.perform(function () &#123;</span><br><span class="line">      try &#123;</span><br><span class="line">        var result = ...</span><br><span class="line">        resolve(result);</span><br><span class="line">      &#125; catch (e) &#123;</span><br><span class="line">        reject(e);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<h3 id="12-hook构造函数"><a href="#12-hook构造函数" class="headerlink" title="12. hook构造函数"></a>12. hook构造函数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">obj.$init.implementation = function ()&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="13-枚举所有加载的类"><a href="#13-枚举所有加载的类" class="headerlink" title="13.枚举所有加载的类"></a>13.枚举所有加载的类</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Java.enumerateLoadedClasses(&#123;</span><br><span class="line">		onMatch: function(classname)&#123;</span><br><span class="line">			if (classname.indexOf(&quot;XmlPullParser&quot;)&gt;-1)&#123;</span><br><span class="line">			console.log(classname);</span><br><span class="line">		&#125;</span><br><span class="line">		&#125;,</span><br><span class="line"></span><br><span class="line">		onComplete: function ()&#123;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="14-打印函数参数类型"><a href="#14-打印函数参数类型" class="headerlink" title="14.打印函数参数类型"></a>14.打印函数参数类型</h3><p><img src="/images/pasted-195.png" alt="upload successful"></p>
+<h3 id="15-注册一个类-Java-registerClass"><a href="#15-注册一个类-Java-registerClass" class="headerlink" title="15.注册一个类(Java.registerClass)"></a>15.注册一个类(Java.registerClass)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">Java.perform(function() &#123;</span><br><span class="line">   var FLAG_SECURE = 0x2000;</span><br><span class="line"></span><br><span class="line">   var Runnable = Java.use(&quot;java.lang.Runnable&quot;);</span><br><span class="line">   var DisableSecureRunnable = Java.registerClass(&#123;</span><br><span class="line">      name: &quot;me.bhamza.DisableSecureRunnable&quot;,</span><br><span class="line">      implements: [Runnable],</span><br><span class="line">      fields: &#123;</span><br><span class="line">         activity: &quot;android.app.Activity&quot;,</span><br><span class="line">      &#125;,</span><br><span class="line">      methods: &#123;</span><br><span class="line">         $init: [&#123;</span><br><span class="line">            returnType: &quot;void&quot;,</span><br><span class="line">            argumentTypes: [&quot;android.app.Activity&quot;],</span><br><span class="line">            implementation: function (activity) &#123;</span><br><span class="line">               this.activity.value = activity;</span><br><span class="line">            &#125;</span><br><span class="line">         &#125;],</span><br><span class="line">         run: function() &#123;</span><br><span class="line">            var flags = this.activity.value.getWindow().getAttributes().flags.value; // get current value</span><br><span class="line">            flags &amp;= ~FLAG_SECURE; // toggle it</span><br><span class="line">            this.activity.value.getWindow().setFlags(flags, FLAG_SECURE); // disable it!</span><br><span class="line">            console.log(&quot;Done disabling SECURE flag...&quot;);</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;);</span><br><span class="line"></span><br><span class="line">   Java.choose(&quot;com.example.app.FlagSecureTestActivity&quot;, &#123;</span><br><span class="line">      &quot;onMatch&quot;: function (instance) &#123;</span><br><span class="line">         var runnable = DisableSecureRunnable.$new(instance);</span><br><span class="line">         instance.runOnUiThread(runnable);</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;onComplete&quot;: function () &#123;&#125;</span><br><span class="line">   &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h1 id="其他参考"><a href="#其他参考" class="headerlink" title="其他参考"></a>其他参考</h1><ol>
+<li><a href="https://github.com/FloatingGuy/fg-Blog/blob/7df0bd47b42d11b787fe394259fa30288307ae48/source/_posts/%E5%BC%80%E5%8F%91/frida%20hook%20%E6%93%8D%E4%BD%9C%E6%89%8B%E5%86%8C.md" target="_blank" rel="noopener">https://github.com/FloatingGuy/fg-Blog/blob/7df0bd47b42d11b787fe394259fa30288307ae48/source/_posts/%E5%BC%80%E5%8F%91/frida%20hook%20%E6%93%8D%E4%BD%9C%E6%89%8B%E5%86%8C.md</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/06/RSA算法原理及应用破解/" rel="next" title="RSA算法原理及应用破解">
+                <i class="fa fa-chevron-left"></i> RSA算法原理及应用破解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/13/使用lief对ELF文件Patch/" rel="prev" title="使用lief对ELF文件Patch">
+                使用lief对ELF文件Patch <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">m4bln</p>
+              <p class="site-description motion-element" itemprop="description">影后入林到驿前</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">75</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Frida简介"><span class="nav-text"><a href="#Frida&#x7B80;&#x4ECB;" class="headerlink" title="Frida&#x7B80;&#x4ECB;"></a>Frida&#x7B80;&#x4ECB;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境配置"><span class="nav-text"><a href="#&#x73AF;&#x5883;&#x914D;&#x7F6E;" class="headerlink" title="&#x73AF;&#x5883;&#x914D;&#x7F6E;"></a>&#x73AF;&#x5883;&#x914D;&#x7F6E;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#免root实现frida-hook（重打包）"><span class="nav-text"><a href="#&#x514D;root&#x5B9E;&#x73B0;frida-hook&#xFF08;&#x91CD;&#x6253;&#x5305;&#xFF09;" class="headerlink" title="&#x514D;root&#x5B9E;&#x73B0;frida hook&#xFF08;&#x91CD;&#x6253;&#x5305;&#xFF09;"></a>&#x514D;root&#x5B9E;&#x73B0;frida hook&#xFF08;&#x91CD;&#x6253;&#x5305;&#xFF09;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现hook"><span class="nav-text"><a href="#&#x5B9E;&#x73B0;hook" class="headerlink" title="&#x5B9E;&#x73B0;hook"></a>&#x5B9E;&#x73B0;hook</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#采坑记录"><span class="nav-text"><a href="#&#x91C7;&#x5751;&#x8BB0;&#x5F55;" class="headerlink" title="&#x91C7;&#x5751;&#x8BB0;&#x5F55;"></a>&#x91C7;&#x5751;&#x8BB0;&#x5F55;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Frida-基础数据类型"><span class="nav-text"><a href="#Frida-&#x57FA;&#x7840;&#x6570;&#x636E;&#x7C7B;&#x578B;" class="headerlink" title="Frida &#x57FA;&#x7840;&#x6570;&#x636E;&#x7C7B;&#x578B;"></a>Frida &#x57FA;&#x7840;&#x6570;&#x636E;&#x7C7B;&#x578B;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Int"><span class="nav-text"><a href="#Int" class="headerlink" title="Int"></a>Int</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Long"><span class="nav-text"><a href="#Long" class="headerlink" title="Long"></a>Long</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ByteArray"><span class="nav-text"><a href="#ByteArray" class="headerlink" title="ByteArray"></a>ByteArray</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#遍历map"><span class="nav-text"><a href="#&#x904D;&#x5386;map" class="headerlink" title="&#x904D;&#x5386;map"></a>&#x904D;&#x5386;map</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Frida-Hook实例"><span class="nav-text"><a href="#Frida-Hook&#x5B9E;&#x4F8B;" class="headerlink" title="Frida Hook&#x5B9E;&#x4F8B;"></a>Frida Hook&#x5B9E;&#x4F8B;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-打印hook函数的返回值"><span class="nav-text"><a href="#1-&#x6253;&#x5370;hook&#x51FD;&#x6570;&#x7684;&#x8FD4;&#x56DE;&#x503C;" class="headerlink" title="1. &#x6253;&#x5370;hook&#x51FD;&#x6570;&#x7684;&#x8FD4;&#x56DE;&#x503C;"></a>1. &#x6253;&#x5370;hook&#x51FD;&#x6570;&#x7684;&#x8FD4;&#x56DE;&#x503C;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-hook重载函数"><span class="nav-text"><a href="#2-hook&#x91CD;&#x8F7D;&#x51FD;&#x6570;" class="headerlink" title="2. hook&#x91CD;&#x8F7D;&#x51FD;&#x6570;"></a>2. hook&#x91CD;&#x8F7D;&#x51FD;&#x6570;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-打印java函数的调用栈"><span class="nav-text"><a href="#3-&#x6253;&#x5370;java&#x51FD;&#x6570;&#x7684;&#x8C03;&#x7528;&#x6808;" class="headerlink" title="3. &#x6253;&#x5370;java&#x51FD;&#x6570;&#x7684;&#x8C03;&#x7528;&#x6808;"></a>3. &#x6253;&#x5370;java&#x51FD;&#x6570;&#x7684;&#x8C03;&#x7528;&#x6808;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-打印native函数调用栈"><span class="nav-text"><a href="#4-&#x6253;&#x5370;native&#x51FD;&#x6570;&#x8C03;&#x7528;&#x6808;" class="headerlink" title="4. &#x6253;&#x5370;native&#x51FD;&#x6570;&#x8C03;&#x7528;&#x6808;"></a>4. &#x6253;&#x5370;native&#x51FD;&#x6570;&#x8C03;&#x7528;&#x6808;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-dump内存"><span class="nav-text"><a href="#5-dump&#x5185;&#x5B58;" class="headerlink" title="5. dump&#x5185;&#x5B58;"></a>5. dump&#x5185;&#x5B58;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-Hook-Android-IMEI"><span class="nav-text"><a href="#6-Hook-Android-IMEI" class="headerlink" title="6. Hook Android IMEI"></a>6. Hook Android IMEI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-Hook-Android-webview-http请求"><span class="nav-text"><a href="#7-Hook-Android-webview-http&#x8BF7;&#x6C42;" class="headerlink" title="7. Hook Android webview http&#x8BF7;&#x6C42;"></a>7. Hook Android webview http&#x8BF7;&#x6C42;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-获取context"><span class="nav-text"><a href="#8-&#x83B7;&#x53D6;context" class="headerlink" title="8. &#x83B7;&#x53D6;context"></a>8. &#x83B7;&#x53D6;context</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-创建bundle对象"><span class="nav-text"><a href="#9-&#x521B;&#x5EFA;bundle&#x5BF9;&#x8C61;" class="headerlink" title="9. &#x521B;&#x5EFA;bundle&#x5BF9;&#x8C61;"></a>9. &#x521B;&#x5EFA;bundle&#x5BF9;&#x8C61;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-hook-对象"><span class="nav-text"><a href="#10-hook-&#x5BF9;&#x8C61;" class="headerlink" title="10. hook &#x5BF9;&#x8C61;"></a>10. hook &#x5BF9;&#x8C61;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-导出函数并被任意调用"><span class="nav-text"><a href="#11-&#x5BFC;&#x51FA;&#x51FD;&#x6570;&#x5E76;&#x88AB;&#x4EFB;&#x610F;&#x8C03;&#x7528;" class="headerlink" title="11. &#x5BFC;&#x51FA;&#x51FD;&#x6570;&#x5E76;&#x88AB;&#x4EFB;&#x610F;&#x8C03;&#x7528;"></a>11. &#x5BFC;&#x51FA;&#x51FD;&#x6570;&#x5E76;&#x88AB;&#x4EFB;&#x610F;&#x8C03;&#x7528;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-hook构造函数"><span class="nav-text"><a href="#12-hook&#x6784;&#x9020;&#x51FD;&#x6570;" class="headerlink" title="12. hook&#x6784;&#x9020;&#x51FD;&#x6570;"></a>12. hook&#x6784;&#x9020;&#x51FD;&#x6570;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-枚举所有加载的类"><span class="nav-text"><a href="#13-&#x679A;&#x4E3E;&#x6240;&#x6709;&#x52A0;&#x8F7D;&#x7684;&#x7C7B;" class="headerlink" title="13.&#x679A;&#x4E3E;&#x6240;&#x6709;&#x52A0;&#x8F7D;&#x7684;&#x7C7B;"></a>13.&#x679A;&#x4E3E;&#x6240;&#x6709;&#x52A0;&#x8F7D;&#x7684;&#x7C7B;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-打印函数参数类型"><span class="nav-text"><a href="#14-&#x6253;&#x5370;&#x51FD;&#x6570;&#x53C2;&#x6570;&#x7C7B;&#x578B;" class="headerlink" title="14.&#x6253;&#x5370;&#x51FD;&#x6570;&#x53C2;&#x6570;&#x7C7B;&#x578B;"></a>14.&#x6253;&#x5370;&#x51FD;&#x6570;&#x53C2;&#x6570;&#x7C7B;&#x578B;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-注册一个类-Java-registerClass"><span class="nav-text"><a href="#15-&#x6CE8;&#x518C;&#x4E00;&#x4E2A;&#x7C7B;-Java-registerClass" class="headerlink" title="15.&#x6CE8;&#x518C;&#x4E00;&#x4E2A;&#x7C7B;(Java.registerClass)"></a>15.&#x6CE8;&#x518C;&#x4E00;&#x4E2A;&#x7C7B;(Java.registerClass)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其他参考"><span class="nav-text"><a href="#&#x5176;&#x4ED6;&#x53C2;&#x8003;" class="headerlink" title="&#x5176;&#x4ED6;&#x53C2;&#x8003;"></a>&#x5176;&#x4ED6;&#x53C2;&#x8003;</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">m4bln</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("AAhymnaPSbBOge9isiIUi5c8-gzGzoHsz", "79JTCuY3J33b0HodXn8nYFvn");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
