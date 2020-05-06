@@ -220,16 +220,6 @@
         </li>
       
         
-        <li class="menu-item menu-item-todo">
-          <a href="/todo/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
-            
-            ToDo
-          </a>
-        </li>
-      
-        
         <li class="menu-item menu-item-about">
           <a href="/about/" rel="section">
             
@@ -292,6 +282,192 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/12/12/指纹/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/12/指纹/" itemprop="url">指纹识别技术安全分析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-12T18:46:00+08:00">
+                2018-12-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/12/12/指纹/" class="leancloud_visitors" data-flag-title="指纹识别技术安全分析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          本文大部分总结和研究各种指纹识别的原理和安全性，作为日后指纹安全的参考wiki。
+现阶段，任何一种生物特征识别，都是通过传感器把生物特征投影成像为数字信号，指纹也不例外。具体来说分为指纹图像提取、预处理、特征提取、比对等步骤。
+
+指纹识别原理根据指纹图像提取技术的不同，现阶段主要分为光学指纹、电容指纹、超声波指纹以及屏下指纹几大类。
+1.光学指纹光学指纹识别的原理如下图，手指按在指纹采集器上后，内部的光源将光线打到手指上，经过手指反射后汇集到识别器上，获得指纹图像。
+
+现在有很多门禁、打卡机等等使用光学指纹识别技术，其缺点是如果手上有油污或者汗水，识别效果就会大幅度降低。
+
+优点
+光学指纹传感器可靠，价格便宜
+
+缺点
+手指湿水后影响光的反射
+手指有干皮导致识别不了
+可能会有痕迹遗留
+无法识别活体，指纹可复制
+
+攻击面
+利用普通的蜡就可以制作假指纹
+残留的指纹直接盖上纸片
+
+2.电容指纹电容感测的原理就是当用户将手指按在传感器上时，会测量出指纹引起的极小的电导率变化信号，然后用测量到的数据形成一副指纹的图像。手指最外层的皮肤也就是指纹，是不导电的，而指纹里面的皮下层是导电的
+
+电容指纹识别技术相比于光学传感器体积小、集成度高。所以这种传感器广泛应用于手机、便携设备等地方。例如高级门锁、保险箱等
+优点
+体积小，集成度高
+图像质量较高
+手指上的干皮不影响识别
+依靠活体导电，有效对抗伪造
+
+缺点
+手指湿脏水后由于脏水导电，导致识别不准
+成本高
+
+攻击面
+利通导电溶液制作假指纹
+
+3.超声指纹原理是利用超声波具有穿透材料的能力，且随材料的不同产生大小不同的回波。因此，利用皮肤与空气对于声波阻抗的差异，就可以区分指纹凹凸不平的图像，甚至能渗透到皮肤表面之下识别指纹独特的3D特征
+
+优点
+湿手不影响识别
+
+缺点
+成本高
+识别速度慢
+
+攻击面
+较难攻击
+
+4.屏下指纹通俗地说，屏下指纹识别
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/12/12/指纹/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
     
       
 
@@ -773,7 +949,7 @@ media_rw组的进程需要绕过DAC检测
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/09/17/iPhone打开某网站重启分析/" itemprop="url">iPhone打开某网站重启分析</a></h1>
+                <a class="post-title-link" href="/2018/09/17/iPhone打开某网站重启分析/" itemprop="url">历史上能使iPhone设备Crash的案例</a></h1>
         
 
         <div class="post-meta">
@@ -803,7 +979,7 @@ media_rw组的进程需要绕过DAC检测
 
           
           
-             <span id="/2018/09/17/iPhone打开某网站重启分析/" class="leancloud_visitors" data-flag-title="iPhone打开某网站重启分析">
+             <span id="/2018/09/17/iPhone打开某网站重启分析/" class="leancloud_visitors" data-flag-title="历史上能使iPhone设备Crash的案例">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -836,25 +1012,16 @@ media_rw组的进程需要绕过DAC检测
       
         
           
-          概述使用iPhone打开https://xssle.com/ios/ 这个网站，手机就会重启，此外在mac上用Safari浏览器打卡也会陷入卡顿，但不至于重启。
-网页分析该网页的源码如下：
+          历史上的iPhone crash事件1. 2018年5月，点击黑点表情卡死https://baijiahao.baidu.com/s?id=1600048067011062679&amp;wfr=spider&amp;for=pc 影响iOS 10/11
+2. 2018年1月 chaiOS bughttps://www.idownloadblog.com/2018/01/18/a-fix-for-chaios-messages-bug-will-arrive-next-week/  
+影响 iOS 10 - 11.2.5
 
-可以看到网页由几部分组成：
-
-一张背景图片不断重复
-3000多个div嵌套
-每个div设置了backdrop-filter、-webkit-backdrop-filter属性
-
-通过精简测试，发现背景图片不影响crash，故能造成iPhone crash的核心代码为：12345678&lt;html&gt;&lt;style&gt;    div&#123;        backdrop-filter: blur(10px);        -webkit-backdrop-filter: blur(10px);    &#125;&lt;/style&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt; ..... &lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
-crash分析查看log发现crash log类型为unknown：
-
-kernel打印出一堆奇怪的东西：
-
-推测应该是webkit占用了过多的内核资源
-历史上的iPhone crash事件
-2018年5月，点击黑点表情卡死https://baijiahao.baidu.com/s?id=1600048067011062679&amp;wfr=spider&amp;for=pc 影响iOS 10/11
-
-2018年1月 chaiOS bug https://www.idownloadblog.com/2018/01/18/a-fix-for-chaios-messages-bug-will-arrive-next-week/ 影响 
+3. 2017年1月，发送“白旗+0+彩虹”表情卡死https://www.leiphone.com/news/201701/GDXeBJxyggxGoe7O.html iOS 10.0到10.2.1
+4. 2017年5月，gif导致iPhone重启https://www.leiphone.com/news/201705/pUQ6Rzdo26OHWgm7.html
+5. 2016年，一段美拍视频导致iPhone崩溃https://www.zhihu.com/question/51630274
+6. 2015年5月，“Effective Power” Unicode解码https://metro.co.uk/2015/05/27/theres-a-way-of-crashing-someones-iphone-with-a-text-message-5217671/
+7. 2018年，打开某网站Crashhttps://www.bleepingcomputer.com/news/security/new-css-attack-restarts-an-iphone-or-freezes-a-mac/
+概述使用iPhone打开https://xssle.com
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1622,152 +1789,6 @@ OLLVM的几种混淆方式OLLVM默认支持 -fla -sub -bcf 三个混淆参数，
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/08/22/c-filt/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/22/c-filt/" itemprop="url">c++filt - 还原so中的函数名</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-22T15:46:31+08:00">
-                2018-08-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/22/c-filt/" class="leancloud_visitors" data-flag-title="c++filt - 还原so中的函数名">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          C++的name manglingC++是允许函数重载的，也就引出了编译器的name mangling（名字修饰）机制,其目的是给同名的重载函数不同的签名。
-例如，对于如下代码：12345678int test(int a,int b)&#123;  return a+b;&#125;int test(int a)&#123; return a;&#125;
-使用g++编译成so后，使用nm -a (ldd -r命令也可以)查看so中的符号：
-
-发现两个test函数名字变为Z4testi和Z4testii, 这就是name mangling机制产生的。其中_Z是一个前缀，4表示函数名长度（test长度为4），i表示参数类型。
-C++的name mangling遵循一定的规则，因此是可逆的，即通过符号还原出原来的函数定义。这个工具就叫c++filt。
-c++filt对于上述例子中的符号我们使用c++filt
-
-可以看到还原出来我们定义的函数。
-当然，工程中的函数并没有我们给出的例子中那么简单，例如Android中有那么多的类和命名空间，其编译生成的符号也是很复杂的，例如123$c++filt __ZN3art7DexFile10OpenMemoryEPKhjRKNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEjPNS_6MemMapEPKNS_10OatDexFileEPS9_输出：art::DexFile::OpenMemory(unsigned char const*, unsigned int, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; 
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/08/22/c-filt/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1818,7 +1839,7 @@ c++filt对于上述例子中的符号我们使用c++filt
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">75</span>
+                  <span class="site-state-item-count">77</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1831,7 +1852,7 @@ c++filt对于上述例子中的符号我们使用c++filt
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

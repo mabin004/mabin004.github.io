@@ -220,16 +220,6 @@
         </li>
       
         
-        <li class="menu-item menu-item-todo">
-          <a href="/todo/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
-            
-            ToDo
-          </a>
-        </li>
-      
-        
         <li class="menu-item menu-item-about">
           <a href="/about/" rel="section">
             
@@ -292,6 +282,290 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/01/12/移动端JavaScript写入剪贴板/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/12/移动端JavaScript写入剪贴板/" itemprop="url">移动端使用JavaScript自动写入剪贴板</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-12T11:22:35+08:00">
+                2018-01-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/01/12/移动端JavaScript写入剪贴板/" class="leancloud_visitors" data-flag-title="移动端使用JavaScript自动写入剪贴板">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          背景近期风靡的“吱口令”红包在互联网上铺天盖地，用户复制一段“吱口令”，打开支付宝就可以直接进入抢红包的页面。研究发现，支付宝是通过读取用户剪贴板数据，提取出吱口令，之后加载抢红包页面。
+如果可以实现在用户打开某个网页的时候就写入剪贴板，那么用户会在不知不觉打开支付宝时，就会直接进入领取页面。因此，我们尝试了js自动写入剪贴板是否可行。
+遍历js事件PC端似乎需要用户主动点击才能实现写入剪贴板，我们首先写一段写入剪贴板的代码12345678&lt;input type=&quot;text&quot; id=&quot;website&quot; value=&quot;tobecopydata&quot; /&gt;&lt;script&gt;function copy(e) &#123; website.select() document.execCommand(&apos;copy&apos;); &#125;&lt;/script&gt;
+之后通过遍历js事件来触发复制操作12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959697// event handlerdocument.body.addEventListener('blur', copy, true);document.body.addEventListener('error', copy, true);document.body.addEventListener('focus', copy, tru
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/01/12/移动端JavaScript写入剪贴板/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/25/OpenCV学习/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/25/OpenCV学习/" itemprop="url">OpenCV学习</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-25T20:15:13+08:00">
+                2017-12-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/12/25/OpenCV学习/" class="leancloud_visitors" data-flag-title="OpenCV学习">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          打开图片123img = cv2.imread('hat.png')cv2.imshow('image', img)cv2.waitKey(0) #没有waitKey没办法显示
+通道提取
+图像通道，在RGB色彩模式下就是指那单独的红色、绿色、蓝色部分。也就是说，一幅完整的图像，是由红色绿色蓝色三个通道组成的。他们共同作用产生了完整的图像。阿尔法通道(Alpha Channel)是指一张图片的透明和半透明度。例如：一个使用32位存储的图片，每8位表示红绿蓝，和阿尔法通道。在这种情况下，就不光可以表示透明还是不透明，阿尔法通道还可以表示256级的半透明度。
+
+1234567r,g,b,a = cv2.split(img) cv2.imshow("Blue",r)  cv2.imshow("Red",g)  cv2.imshow("Green",b) cv2.imshow("Alpha",a)  cv2.waitKey(0)#jpg等压缩格式没有Alpha通道
+通道合并1merged = cv2.merge([b,g,r]) #前面分离出来的三个通道
+灰度转换123gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)cv2.imshow('image', gray)cv2.waitKey(0)
+人脸检测123456789101112face_patterns = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')//xml文件为opencv在GitHub上共享出来的具有普适的训练好的数据sample_image = cv2.imread('muti.jpg')faces = face_patterns.detectMultiScale(sample_image,        
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/12/25/OpenCV学习/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
     
       
 
@@ -1516,298 +1790,6 @@ systemandroid核心系统，可以认为是一个微型的Linux系统，运行�
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/09/apk反调试-模拟器检查-签名检测/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/09/apk反调试-模拟器检查-签名检测/" itemprop="url">apk反调试-模拟器检查-签名检测</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-09T15:02:01+08:00">
-                2017-12-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/12/09/apk反调试-模拟器检查-签名检测/" class="leancloud_visitors" data-flag-title="apk反调试-模拟器检查-签名检测">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          一、模拟器检测
-基于模拟器的IMSI、IDS、默认文件等几个方面特征进行检测
-基于CPU的检测（如是否包含inter、amd等字段）
-电池信息、温度、电量变化等
-
-代码示例：
-123456789101112131415//需要添加android.permission.READ_PHONE_STATE权限public boolean isEmulatorByImei(Context context)&#123;        TelephonyManager tm = (TelephonyManager) 	context.getSystemService(Context.TELEPHONY_SERVICE);        String imei = tm.getDeviceId();        if (imei == null || imei.equals("000000000000000"))&#123;            return true;        &#125;        return false;    &#125;public boolean isEmulatorByBuildModel() &#123;        Log.e("MODEL=", Build.MODEL);        Log.e("MANUFACTURER=",Build.MANUFACTURER);        return ( Build.MODEL.equals("sdk")) || (Build.MODEL.equals("google_sdk") );    &#125;
-二、签名监测(native)签名检测在一般在java层实现，通过与远程服务器交互完成校验。如果没有本地校验，则尽可能在native层实现，这里利用反射的方式。
-代码示例：
-123456
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/12/09/apk反调试-模拟器检查-签名检测/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/05/关于4k技术/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/05/关于4k技术/" itemprop="url">关于分辨率、4k、色域色深、HDR</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-05T23:10:00+08:00">
-                2017-12-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/12/05/关于4k技术/" class="leancloud_visitors" data-flag-title="关于分辨率、4k、色域色深、HDR">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          解释4k技术，首先需要了解几个概念：
-分辨率分辨率，可以从显示分辨率与图像分辨率两个方向来分类。
-显示分辨率显示分辨率（屏幕分辨率）是屏幕图像的精密度，是指显示器所能显示的像素有多少。例如800×600的分辨率，是指在整个屏幕上水平显示800个像素，垂直显示600个像素。
-显然，分辨率越高，显示屏可显示的像素就越多，图像就越清晰。
-图像分辨率图像分辨率指图像中存储的信息量，是每英寸图像内有多少个像素点，分辨率的单位为PPI(Pixels Per Inch)，通常叫做像素每英寸，图像分辨率的表达方式也为“水平像素数×垂直像素数”。
-图像分辨率和显示分辨率不匹配？显示器内部有一颗重要的集成电路叫Scaler IC，是专门用来处理当图像分辨率与显示器分辨率不同时的显示方式的。为便于理解，以具体例子来做说明。
-如果图像分辨率小于显示器分辨率，如果仍以1:1显示，即一个像素对应一个像素，那屏幕就不会满屏。比如显卡输入640x480，而显示器为1280x1024，就会看到显示器左上角640x480的区块有清晰的图像，而其它剩余区域都是黑色的。为了实现满屏，就要实现图像的缩放(Scaling)，做法就是要给画面补足像素，水平方向640个像素须补足到1280个像素，垂直方向480个像素要补足到1024个像素，插入像素的插值算法取决于Scaler IC。
-当图像的分辨率大于显示器时，则相反，不是补足而是要减少像素个数，这时图片的像素会被压缩，画面细节受到损失，细节分辨不清。例如用数码相机的屏幕也可以看到完整的照片，不过感觉很模糊，放在电脑上看就好多了，因为屏幕的分辨率低。
-4K技术4k技术通常指4K分辨率，即指水平方向每行像素值达到或者接近4096个，多数情况下特指4096*2160分辨率。我们通常说的2K分辨率为2048×1080，1080P的分辨率为1920×1080。
-广义上来说，4K
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/12/05/关于4k技术/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1858,7 +1840,7 @@ systemandroid核心系统，可以认为是一个微型的Linux系统，运行�
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">75</span>
+                  <span class="site-state-item-count">77</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1871,7 +1853,7 @@ systemandroid核心系统，可以认为是一个微型的Linux系统，运行�
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
