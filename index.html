@@ -296,6 +296,155 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2020/07/01/CVE-2020-7958-从手机中提取指纹图片/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/07/01/CVE-2020-7958-从手机中提取指纹图片/" itemprop="url">CVE-2020-7958-从手机中提取指纹图片</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-01T18:44:50+08:00">
+                2020-07-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2020/07/01/CVE-2020-7958-从手机中提取指纹图片/" class="leancloud_visitors" data-flag-title="CVE-2020-7958-从手机中提取指纹图片">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          简介众所周知，TrustZone被广泛应用在现在的手机设备中。TrustZone将SoC的硬件和软件资源划分为安全(Secure World)和非安全(Normal World)两个世界，内核、操作系统、上层应用等运行在Normal World，人脸指纹等生物数据识别、支付、加密等操作在Secure World中运行。这样即使设备被ROOT, 也只能意味着Normal World被攻击者控制，人脸指纹等一些极度敏感的数据不会被泄露。
+
+当前主流的TrustZone厂商与产品有：Intel的SGX，Qualcomm的QSEE，Huawei HiSilicon的Trusted Core以及Samsung的Kinibi。
+CVE-2020-7958是Oneplus 7Pro上指纹识别模块的一个漏洞，使用了高通的QSEE，该漏洞由Synopsys Cybersecurity Research Center发现和披露，本文对其进行分析和重现，编写exp实现了从TrustZone里提取原始的指纹图片。
+为便于理解，在文章开始之前，将几个相关缩略词列举如下：
+
+TEETrusted Execution Environment, 可信执行环境，即Secure World
+REERich Execution Environment，开发执行环境，即Normal World
+TATrusted Application，可信应用，即可信环境内执行的程序
+Trustlet等同于TA
+
+指纹识别TEE架构Android对指纹识别的实现作了要求（参考官方文档），例如指纹匹配必须在TEE中进行，指纹数据也必须进行加密，保证在TEE外无法读取和更改。
+Android上指纹识别相关架构如下图所示，其中红框部分处于REE中，即如果有root权限是可以操控的。指纹的匹配、存储等操作位于TEE中。REE通过Fin
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/07/01/CVE-2020-7958-从手机中提取指纹图片/#espandi" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2020/02/20/本机号码一键登录的安全分析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -392,7 +541,7 @@
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/02/20/本机号码一键登录的安全分析/#more" rel="contents">
+            <a class="btn" href="/2020/02/20/本机号码一键登录的安全分析/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -545,7 +694,7 @@
           
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/12/11/通用的jsBridge/#more" rel="contents">
+            <a class="btn" href="/2019/12/11/通用的jsBridge/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -699,7 +848,7 @@ pm list packages keywords匹配关键字的包名
           
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/10/10/提取设备中的apk文件/#more" rel="contents">
+            <a class="btn" href="/2019/10/10/提取设备中的apk文件/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -901,7 +1050,7 @@ Pin9(GND）
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/07/05/自制甲醛测试仪/#more" rel="contents">
+            <a class="btn" href="/2019/07/05/自制甲醛测试仪/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1044,7 +1193,7 @@ Pin9(GND）
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/06/27/Android上利用Strace跟踪系统调用/#more" rel="contents">
+            <a class="btn" href="/2019/06/27/Android上利用Strace跟踪系统调用/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1195,7 +1344,7 @@ trace log默认保存在/sdcard/Download/目录下，例如”/sdcard/Download/c
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/05/21/CVE-2019-5765分析/#more" rel="contents">
+            <a class="btn" href="/2019/05/21/CVE-2019-5765分析/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1343,7 +1492,7 @@ fragment用于html中的页面定位
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/04/23/Android-WebView白名单绕过/#more" rel="contents">
+            <a class="btn" href="/2019/04/23/Android-WebView白名单绕过/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1483,7 +1632,7 @@ Download Provider首先了解下Download Provider。Android系统的ContentProvi
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/04/15/Android-Download-Provider漏洞分析/#more" rel="contents">
+            <a class="btn" href="/2019/04/15/Android-Download-Provider漏洞分析/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1630,147 +1779,7 @@ root是安全人员必备的研究环境，除了使用Nexus系列设备外，Vi
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/02/09/itural-APP研究/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/12/20/利用Frida修改Android设备的唯一标志符/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/20/利用Frida修改Android设备的唯一标志符/" itemprop="url">利用Frida修改Android设备的唯一标识符</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-20T22:18:00+08:00">
-                2018-12-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/12/20/利用Frida修改Android设备的唯一标志符/" class="leancloud_visitors" data-flag-title="利用Frida修改Android设备的唯一标识符">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          Android设备的唯一标识符1.IMEI （手机的身份证号码）IMEI(International Mobile Equipment Identity)是国际移动设备身份码的缩写，国际移动装备辨识码，是由15位数字组成的”电子串号”，它与每台移动电话机一一对应，而且该码是全世界唯一的。每一只移动电话机在组装完成后都将被赋予一个全球唯一的一组号码，这个号码从生产到交付使用都将被制造生产的厂商所记录。
-有些设备的IMEI有两个，可以在拨号键盘输入“*#06#”查看。普通APP获取需要申请权限()：1234//权限 &lt;uses-permissionandroid:name=&quot;android.permission.READ_PHONE_STATE&quot; /&gt;TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);//获取IMEI号String imei = telephonyManager.getDeviceId();
-2.IMSI （SIM卡的身份证号码）IMSI是区别移动用户的标志，储存在SIM卡中，可用于区别移动用户的有效信息。其总长度不超过15位，同样使用0～9的数字，例如460010280100023。其中MCC是移动用户所属国家代号，占3位数字，中国的MCC规定为460；MNC是移动网号码，最多由两位数字组成，用于识别移动用户所归属的移动通信网；MSIN是移动用户识别码，用以识别某一移动通信网中的移动用户，
-IMSI与IMEI权限相同，获取代码：1234//权限 &lt;uses-permissionandroid:name=&quot;android.permission.READ_
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/12/20/利用Frida修改Android设备的唯一标志符/#more" rel="contents">
+            <a class="btn" href="/2019/02/09/itural-APP研究/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1858,7 +1867,7 @@ IMSI与IMEI权限相同，获取代码：1234//权限 &lt;uses-permissionandroid
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-count">78</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

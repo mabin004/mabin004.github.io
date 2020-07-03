@@ -4,6 +4,52 @@
 
     
   <url>
+    <loc>https://mabin004.github.io/2020/07/01/CVE-2020-7958-%E4%BB%8E%E6%89%8B%E6%9C%BA%E4%B8%AD%E6%8F%90%E5%8F%96%E6%8C%87%E7%BA%B9%E5%9B%BE%E7%89%87/</loc>
+    <lastmod>2020-07-03T12:30:25.418Z</lastmod>
+    <data>
+        <display>
+        <title>CVE-2020-7958-从手机中提取指纹图片</title>
+        <pubTime>2020-07-01T10:44:50.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+    
+  <url>
+    <loc>https://mabin004.github.io/2018/03/05/https%E4%B8%AD%E9%97%B4%E4%BA%BA%E6%94%BB%E5%87%BB%E5%8E%9F%E7%90%86/</loc>
+    <lastmod>2020-06-22T03:22:11.683Z</lastmod>
+    <data>
+        <display>
+        <title>Android Https抓包实践</title>
+        <pubTime>2018-03-05T08:29:49.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://mabin004.github.io/2018/03/09/droid-Hook-%E2%80%94%E2%80%94-Frida/</loc>
+    <lastmod>2020-05-27T08:20:02.252Z</lastmod>
+    <data>
+        <display>
+        <title>Android Hook 之 Frida</title>
+        <pubTime>2018-03-09T08:22:02.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://mabin004.github.io/2018/05/06/URL-Scheme%E5%AE%89%E5%85%A8%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B/</loc>
     <lastmod>2020-05-06T03:21:05.400Z</lastmod>
     <data>
@@ -22,22 +68,6 @@
     </url>
 
     
-    
-    
-  <url>
-    <loc>https://mabin004.github.io/2018/03/09/droid-Hook-%E2%80%94%E2%80%94-Frida/</loc>
-    <lastmod>2020-05-06T02:17:50.541Z</lastmod>
-    <data>
-        <display>
-        <title>Android Hook 之 Frida</title>
-        <pubTime>2018-03-09T08:22:02.000Z</pubTime>
-        
-         
-           
-        </display>
-    </data>
-    </url>
-
     
   <url>
     <loc>https://mabin004.github.io/2018/09/17/iPhone%E6%89%93%E5%BC%80%E6%9F%90%E7%BD%91%E7%AB%99%E9%87%8D%E5%90%AF%E5%88%86%E6%9E%90/</loc>
@@ -170,21 +200,6 @@
         <display>
         <title>Chrome远程调试</title>
         <pubTime>2018-09-01T13:41:43.000Z</pubTime>
-        
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://mabin004.github.io/2018/03/05/https%E4%B8%AD%E9%97%B4%E4%BA%BA%E6%94%BB%E5%87%BB%E5%8E%9F%E7%90%86/</loc>
-    <lastmod>2019-11-20T03:27:45.712Z</lastmod>
-    <data>
-        <display>
-        <title>Android Https抓包实践</title>
-        <pubTime>2018-03-05T08:29:49.000Z</pubTime>
         
          
            

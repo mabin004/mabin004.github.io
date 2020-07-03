@@ -296,6 +296,169 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/09/droid-Hook-——-Frida/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/09/droid-Hook-——-Frida/" itemprop="url">Android Hook 之 Frida</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-09T16:22:02+08:00">
+                2018-03-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/03/09/droid-Hook-——-Frida/" class="leancloud_visitors" data-flag-title="Android Hook 之 Frida">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          一、Frida简介Frida是一款流行的hook框架，通杀android\ios\linux\win\osx等各平台，相比xposed和substrace cydia更加便捷。Frida的官网为：http://www.frida.re/，其核心原理是实现了一套inline hook框架，在Andorid平台的具体原理可参考这里。
+本文重点介绍Frida在android平台的使用。
+二、环境配置官方教程https://frida.re/docs/installation/，主要操作如下：
+
+pip install frida-tools 安装frida环境
+在root的手机上运行frida server端
+1.下载对应平台的frida-server (https://github.com/frida/frida/releases)
+2.adb push frida-server /data/lcoal/tmp
+3.chmod 755 frida-server
+4.setenforce 0(运行前关闭SELinux)
+5../frida-server &amp;
+
+
+建立调试通道
+USB连接+默认端口号可直接略过
+改变端口号需要 adb forward tcp:12345 tcp:12345
+
+
+完成配置，直接在PC端运行hook脚本即可
+
+需要注意的是，frida的客户端和服务度版本应该相同，否则会出现不可预知的其他错误。使用“frida –version” 查看frida的版本
+三、免root实现frida hook（重打包）注意： 无root环境下frida的部分功能受限
+
+apktool反编译apk
+1$ apktool d test.apk -o test
+
+将对应版本的gadget拷贝到/lib目录下载地址:https://github.com/frida/frid
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/09/droid-Hook-——-Frida/#espandi" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/06/RSA算法原理及应用破解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -380,7 +543,7 @@
           <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>RSA算法是现今使用广泛的公钥密码算法，也是号称地球上最安全的加密算法。在了解RSA算法之前，先熟悉下几个术语<br>根据密钥的使用方法，可以将密码分为对称密码和公钥密码<br>对称密码：加密和解密使用同一种密钥的方式<br>公钥密码：加密和解密使用不同的密码的方式，因此公钥密码通常也称为非对称密码。<br>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/06/RSA算法原理及应用破解/#more" rel="contents">
+            <a class="btn" href="/2018/03/06/RSA算法原理及应用破解/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -517,7 +680,7 @@
 <li>-o指定下载后的文件名<br>curl -o “#1.html” <a href="http://45.77.10.219/2018-02-2[6-8].html" target="_blank" rel="noopener">http://45.77.10.219/2018-02-2[6-8].html</a><br>(#1表示可变参数，该命令结果为6.html,7.html,8.html)
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/06/curl用法/#more" rel="contents">
+            <a class="btn" href="/2018/03/06/curl用法/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -661,7 +824,7 @@
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/05/https中间人攻击原理/#more" rel="contents">
+            <a class="btn" href="/2018/03/05/https中间人攻击原理/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -800,7 +963,7 @@
 <p>梆梆企业版<br>libDexHelper.so , libDexHelper-x86.so<br>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/02/28/Android加固厂商特征（转）/#more" rel="contents">
+            <a class="btn" href="/2018/02/28/Android加固厂商特征（转）/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -936,7 +1099,7 @@
 <p>1.js中指定导出的类和函数，并采用new方法创建一个实例，python文件中导入1.js,输入对应的参数调用即可。如果通过http的方式传递参数，就可以变为一个服务框架，例如salt写的Hrida。（<a href="https://github.com/5alt/hrida）" target="_blank" rel="noopener">https://github.com/5alt/hrida）</a><br>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/02/08/frida导出函数任意调用/#more" rel="contents">
+            <a class="btn" href="/2018/02/08/frida导出函数任意调用/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1073,7 +1236,7 @@
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/02/06/Android直接执行so里的函数/#more" rel="contents">
+            <a class="btn" href="/2018/02/06/Android直接执行so里的函数/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1210,7 +1373,7 @@
 <p>XMLHttpRequest 用于在后台与服务器交换数据。这意味着可以在不重新加载整个网页的情况下，对网页的某部分进行更新。<br>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/01/24/xmlHttpRequest读取本地文件/#more" rel="contents">
+            <a class="btn" href="/2018/01/24/xmlHttpRequest读取本地文件/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1347,7 +1510,7 @@
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/01/24/js输出错误/#more" rel="contents">
+            <a class="btn" href="/2018/01/24/js输出错误/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1491,156 +1654,7 @@
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/01/17/apache搭建https站/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/01/17/WebView那些事儿/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/17/WebView那些事儿/" itemprop="url">Android WebView那些事儿</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-17T15:13:00+08:00">
-                2018-01-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/01/17/WebView那些事儿/" class="leancloud_visitors" data-flag-title="Android WebView那些事儿">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          Android WebView经常会有一些奇奇怪怪的问题，为了避免日后重复采坑，统一在这里总结下：
-setWebContentsDebuggingEnabledsetWebContentsDebuggingEnabled()用来配置WebView是否支持远程调试，当被设置为true时，既可以用PC端的Chrome来调试手机端的WebView。具体操作如下：
-
-WebView配置如下
-1234//KITKAT版本一下不支持这个APIif (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.KITKAT) &#123;            WebView.setWebContentsDebuggingEnabled(true);        &#125;
-
-手机通过USB连接PC,在Chrome下输入”chrome://inspect”即可进入调试页，同时会显示出所有可调式的WebView页，审查元素、network等调试操作和PC上相同。
-
-
-
-setWebChromeClient和setWebViewClient
-WebViewClient主要帮助WebView处理各种通知、请求事件的，比如：onLoadResource，onPageStart，onPageFinish，onReceiveError，onReceivedHttpAuthRequest 等。
-WebChromeClient主要辅助WebView处理Javascript的对话框、网站图标、网站title、加载进度等，比如:onCloseWindow(关闭WebView)，onCreateWindow()，onJsAlert (WebView上alert无效，需要定制WebChromeClient处理弹出)，onJsPrompt，onJsConfirm，onPro
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/01/17/WebView那些事儿/#more" rel="contents">
+            <a class="btn" href="/2018/01/17/apache搭建https站/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1728,7 +1742,7 @@ WebChromeClient主要辅助WebView处理Javascript的对话框、网站图标、
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-count">78</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

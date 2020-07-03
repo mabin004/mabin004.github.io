@@ -296,6 +296,146 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/12/20/利用Frida修改Android设备的唯一标志符/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/20/利用Frida修改Android设备的唯一标志符/" itemprop="url">利用Frida修改Android设备的唯一标识符</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-20T22:18:00+08:00">
+                2018-12-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/12/20/利用Frida修改Android设备的唯一标志符/" class="leancloud_visitors" data-flag-title="利用Frida修改Android设备的唯一标识符">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          Android设备的唯一标识符1.IMEI （手机的身份证号码）IMEI(International Mobile Equipment Identity)是国际移动设备身份码的缩写，国际移动装备辨识码，是由15位数字组成的”电子串号”，它与每台移动电话机一一对应，而且该码是全世界唯一的。每一只移动电话机在组装完成后都将被赋予一个全球唯一的一组号码，这个号码从生产到交付使用都将被制造生产的厂商所记录。
+有些设备的IMEI有两个，可以在拨号键盘输入“*#06#”查看。普通APP获取需要申请权限()：1234//权限 &lt;uses-permissionandroid:name=&quot;android.permission.READ_PHONE_STATE&quot; /&gt;TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);//获取IMEI号String imei = telephonyManager.getDeviceId();
+2.IMSI （SIM卡的身份证号码）IMSI是区别移动用户的标志，储存在SIM卡中，可用于区别移动用户的有效信息。其总长度不超过15位，同样使用0～9的数字，例如460010280100023。其中MCC是移动用户所属国家代号，占3位数字，中国的MCC规定为460；MNC是移动网号码，最多由两位数字组成，用于识别移动用户所归属的移动通信网；MSIN是移动用户识别码，用以识别某一移动通信网中的移动用户，
+IMSI与IMEI权限相同，获取代码：1234//权限 &lt;uses-permissionandroid:name=&quot;android.permission.READ_
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/12/20/利用Frida修改Android设备的唯一标志符/#espandi" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/12/12/指纹/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -431,7 +571,7 @@
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/12/12/指纹/#more" rel="contents">
+            <a class="btn" href="/2018/12/12/指纹/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -581,7 +721,7 @@
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/12/11/智能门锁/#more" rel="contents">
+            <a class="btn" href="/2018/12/11/智能门锁/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -731,7 +871,7 @@ icmp_error中的m_copydata是将出错ip数据包的包头复制到icmp的消息
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/11/01/远程打挂所有的apple设备-CVE-2018-4407-分析/#more" rel="contents">
+            <a class="btn" href="/2018/11/01/远程打挂所有的apple设备-CVE-2018-4407-分析/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -879,7 +1019,7 @@ media_rw组的进程需要绕过DAC检测
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/09/17/USB攻击android手机/#more" rel="contents">
+            <a class="btn" href="/2018/09/17/USB攻击android手机/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1025,7 +1165,7 @@ media_rw组的进程需要绕过DAC检测
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/09/17/iPhone打开某网站重启分析/#more" rel="contents">
+            <a class="btn" href="/2018/09/17/iPhone打开某网站重启分析/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1168,7 +1308,7 @@ CVE-2018-9489漏洞通过监听NETWORK_STATE_CHANGED_ACTION和WIFI_P2P_THIS_DEVI
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/09/07/CVE-2018-9489分析/#more" rel="contents">
+            <a class="btn" href="/2018/09/07/CVE-2018-9489分析/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1319,7 +1459,7 @@ adb连接（USB线连接或adb网络调试）
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/09/01/调试研究/#more" rel="contents">
+            <a class="btn" href="/2018/09/01/调试研究/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1471,7 +1611,7 @@ frida-ps -Uai 以pid、名称、进程名称的格式输出
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/08/24/在iOS上使用Frida/#more" rel="contents">
+            <a class="btn" href="/2018/08/24/在iOS上使用Frida/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1614,144 +1754,7 @@ OLLVM的几种混淆方式OLLVM默认支持 -fla -sub -bcf 三个混淆参数，
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/08/23/ollvm学习/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/08/22/Android基于OpenMemory的脱壳/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/22/Android基于OpenMemory的脱壳/" itemprop="url">Android基于OpenMemory的脱壳</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-22T17:31:00+08:00">
-                2018-08-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/22/Android基于OpenMemory的脱壳/" class="leancloud_visitors" data-flag-title="Android基于OpenMemory的脱壳">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          OpenMemoryAndroid ART加载外部dex本质上调用DexFile::OpenMemory()加载到内存：123456789101112131415std::unique_ptr&lt;const DexFile&gt; DexFile::OpenMemory(const uint8_t* base,                                                   size_t size,                                                   const std::string&amp; location,                                                   uint32_t location_checksum,                                                   MemMap* mem_map,                                                   const OatDexFile* oat_dex_file,                                                   std::string* error_msg) &#123;  CHECK_ALIGNED(base, 4);  // various dex file structures must be word aligned  std::unique_ptr&lt;DexFile&gt; dex_file(      new DexFile(base, size, location, location_checksum, mem_map, 
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/08/22/Android基于OpenMemory的脱壳/#more" rel="contents">
+            <a class="btn" href="/2018/08/23/ollvm学习/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1839,7 +1842,7 @@ OLLVM的几种混淆方式OLLVM默认支持 -fla -sub -bcf 三个混淆参数，
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-count">78</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
