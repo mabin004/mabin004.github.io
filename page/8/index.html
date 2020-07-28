@@ -296,6 +296,469 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/09/cve-2015-3839-短信-Dos/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/09/cve-2015-3839-短信-Dos/" itemprop="url">cve-2015-3839(短信 Dos)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-09T17:06:00+08:00">
+                2017-12-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/12/09/cve-2015-3839-短信-Dos/" class="leancloud_visitors" data-flag-title="cve-2015-3839(短信 Dos)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          漏洞描述漏洞发生在Android自带短信应用中updateMessageStatus函数中，该函数用于发送短信完成后更新状态。代码中未对异常进行处理（使用try…finally…，未加catch），且相关的服务对外暴露，恶意程序可以构造恶意的短信发送广播，导致自带的短信应用无法工作。
+漏洞代码如下：
+
+当message为null时，访问message对象中的函数或变量就会发生空指针异常，导致短信应用Crash.
+函数开始对message是否为空作了判断，因此需要绕过判断。createFromPdu函数是对收到的pdu格式的短信进行解析，返回一个SmsMessage对象，如下图：
+
+该函数根据format的格式（3GPP为GSM，3GPP2为CMDA）去解析PDU，最后返回一个wrappedMessage对象，最后的return没有直接返回wrappedMessage对象，而是通过new的方式返回，导致返回值永不为null。因此，只要wrappedMessage对象为null时，就会绕过”if (message==null)”的检查，触发空指针异常。
+漏洞利用为使wrappedMessage对象为null,只需要构造一个无效的PDU串即可。
+&gt;PDU为发送短信时一种固定的编码格式，一般的PDU编码由A B C D E F G H I J K L M十三项组成。A：短信息中心地址长度，2位十六进制数(1字节)。B：短信息中心号码类型，2位十六进制数。C：短信息中心号码，B+C的长度将由A中的数据决定。D：文件头字节，2位十六进制数。E：信息类型，2位十六进制数。F：被叫号码长度，2位十六进制数。G：被叫号码类型，2位十六进制数，取值同B。H：被叫号码，长度由F中的数据决定。I：协议标识，2位十六进制数。J：数据编码方案，2位十六进制数。K：有效期，2位十六进制数。L：用户
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/12/09/cve-2015-3839-短信-Dos/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/09/Android源码编译命令/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/09/Android源码编译命令/" itemprop="url">Android源码编译命令</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-09T16:58:00+08:00">
+                2017-12-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/12/09/Android源码编译命令/" class="leancloud_visitors" data-flag-title="Android源码编译命令">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          1.编译过程1) source build/envsetup.sh
+
+2) lunch,选择编译的平台
+
+3）make －j4
+##2. 命令介绍
+1）m        编译整个android工程
+
+2）mm    编译当前目录下模块，不包括依赖项
+
+3）mmm path  编译指定目录下的模块
+
+4）mma 编译当前目录下所有模块，包括依赖项
+
+5）mmma path 编译指定目录下所有模块，含依赖项
+
+PS： mm／mmm编译较快，mma／mmma会把所有的依赖项一同编译，比较缓慢，首次编译时用mma，以后用mm编译。
+3.Android.mk解析1. mk文件  一个android子项目中会存在一个或多个Android.mk文件 
+
+1) 单一的Android.mk文件 
+
+直接参考NDK的sample目录下的hello-jni项目，在这个项目中只有一个Android.mk文件 
+
+2) 多个Android.mk文件 
+
+如果需要编译的模块比较多，我们可能会将对应的模块放置在相应的目录中， 这样，我们可以在每个目录中定义对应的Android.mk文件（类似于上面的写法）， 最后，在根目录放置一个Android.mk文件，内容如下：
+
+    include $(call all-subdir-makefiles)
+
+只需要这一行就可以了，它的作用就是包含所有子目录中的Android.mk文件 
+2. 变量注意：‘:=’是赋值的意思；’+=’是追加的意思；‘$’表示引用某变量的值。
+1）LOCAL_PATH:  这个变量用于给出当前文件的路径。 
+
+  必须在 Android.mk 的开头定义，可以这样使用：
+          LOCAL_PATH := $(call my-dir) 
+
+   如当前目录下有个文件夹名称 src，则可以这样写 $(call src)，
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/12/09/Android源码编译命令/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/09/cve-2016-5348-利用大文件使gps-crash/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/09/cve-2016-5348-利用大文件使gps-crash/" itemprop="url">cve-2016-5348(利用大文件使gps crash)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-09T16:47:00+08:00">
+                2017-12-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/12/09/cve-2016-5348-利用大文件使gps-crash/" class="leancloud_visitors" data-flag-title="cve-2016-5348(利用大文件使gps crash)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          描述通过中间人攻击（MITM）构造一个gps相关的文件（由Qualcomm提供），可以使Android设备的gps服务崩溃，设备重启。问题出现在AOSP代码和由Quanlcomm实现的XTRA下载代码中。该漏洞还有可能影响所有的Qualcomm GPS芯片。
+背景(GPS和gpsOneXtra)大多数移动设备通过GPS（Global Positioning System）实现定位，它由美国的军事部门开发和维护，其他国家也有类似的定位系统，如俄罗斯的GLONASS，欧洲的Galileo，中国的北斗。
+广播星历是定位卫星发出的无线电信号上载有预报一定时间内卫星根数的电文信息，通过星历接收者可以很快获得离自己最近的卫星，避免了依次去查找卫星。
+Qualcomm开发了一套系统称为gpsOneXtra,通过它设备可以从高通的服务器上下载卫星数据（Xtra文件），该文件包含了当前的卫星位置数据以及未来7天卫星可能的位置，大多数的高通gps芯片都支持这项技术。
+##背景2 -Android和gpsOneXtra文件
+通过对Android设备的流量监控发现，每当设备连接到WiFi网络时，会向高通的服务器发起请求，获取gpsOneXtra文件。在Android相关的源码中，出现了以下url:
+123http://xtra1.gpsonextra.net/xtra.binhttp://xtra2.gpsonextra.net/xtra.binhttp://xtra3.gpsonextra.net/xtra.bin
+123http://xtrapath1.izatcloud.net/xtra2.binhttp://xtrapath2.izatcloud.net/xtra2.binhttp://xtrapath3.izatcloud.net/xtra2.bin
+使用whois工具查询这些域名，发现
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/12/09/cve-2016-5348-利用大文件使gps-crash/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/09/android源码结构/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -420,7 +883,7 @@ systemandroid核心系统，可以认为是一个微型的Linux系统，运行�
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/09/android源码结构/#espandi" rel="contents">
+            <a class="btn" href="/2017/12/09/android源码结构/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -566,7 +1029,7 @@ systemandroid核心系统，可以认为是一个微型的Linux系统，运行�
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/09/apk反调试-模拟器检查-签名检测/#espandi" rel="contents">
+            <a class="btn" href="/2017/12/09/apk反调试-模拟器检查-签名检测/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -712,7 +1175,7 @@ systemandroid核心系统，可以认为是一个微型的Linux系统，运行�
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/05/关于4k技术/#espandi" rel="contents">
+            <a class="btn" href="/2017/12/05/关于4k技术/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -865,7 +1328,7 @@ apksigner位于SDK目录的build-tools目录下。必须说明的是，v2签名�
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/11/19/重打包apk相关/#espandi" rel="contents">
+            <a class="btn" href="/2017/11/19/重打包apk相关/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1011,7 +1474,7 @@ apkmirror    https://www.apkmirror.com/
           
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/10/10/下载GooglePlay上的apk文件/#espandi" rel="contents">
+            <a class="btn" href="/2017/10/10/下载GooglePlay上的apk文件/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1157,7 +1620,7 @@ ptrace检测进程被ptrace后通常会有一
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/01/ptrace/#espandi" rel="contents">
+            <a class="btn" href="/2017/08/01/ptrace/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1305,154 +1768,7 @@ wchan/proc/pid/wchan
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/06/13/Android反调试/#espandi" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/06/13/Android三大hook框架/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/06/13/Android三大hook框架/" itemprop="url">Android三大hook框架</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-13T19:55:00+08:00">
-                2017-06-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/06/13/Android三大hook框架/" class="leancloud_visitors" data-flag-title="Android三大hook框架">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          目前Android主流的hook框架有Xposed、Substrate和frida三种，下面依次介绍三种框架的原理和特点：
-XposedXposed是一个在andoid平台上比较成熟的hook框架，可以完美的在dalvik虚拟机上做到hook任意java方法
-原理Android系统中所有的app进程都是有zygote进程孵化而来的，Xposed会替换/system/bin/app_process文件，替换后的app_process在启动过程中会加载XposedBridge.jar这个jar包，从而完成对Zygote进程及其创建的Dalvik虚拟机的劫持
-运行条件
-由于需要替换app_process，故需要root或在recovery下刷机
-重启手机后插件才会生效
-
-使用方法
-1.AndroidManifest.xml中添加Xposed
-
-需在Application Node中添加三个Meta(xposedmodule,xposedminversion和xposeddescription)12345678910111213141516171819202122&lt;manifest xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;      package=&quot;com.example.xposedtest&quot;      android:versionCode=&quot;1&quot;      android:versionName=&quot;1.0&quot; &gt;        &lt;uses-sdk          android:minSdkVersion=&quot;14&quot;          android:targetSdkVersion=
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/06/13/Android三大hook框架/#espandi" rel="contents">
+            <a class="btn" href="/2017/06/13/Android反调试/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1494,7 +1810,7 @@ XposedXposed是一个在andoid平台上比较成熟的hook框架，可以完美�
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span>
+    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1540,7 +1856,7 @@ XposedXposed是一个在andoid平台上比较成熟的hook框架，可以完美�
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">78</span>
+                  <span class="site-state-item-count">81</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

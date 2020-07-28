@@ -296,6 +296,293 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2020/07/24/自动定位webview中的SLL-read和SSL-write/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/07/24/自动定位webview中的SLL-read和SSL-write/" itemprop="url">自动定位webview中的SLL_read和SSL_write</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-24T11:48:00+08:00">
+                2020-07-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2020/07/24/自动定位webview中的SLL-read和SSL-write/" class="leancloud_visitors" data-flag-title="自动定位webview中的SLL_read和SSL_write">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          简介在Android上抓https包是一件非常头疼的事情，随着android的不断升级，你可能面临导入用户证书、导入根证书、解决证书绑定、双向绑定等等一系列复杂的操作，之前的文章 Android Https抓包实践 中记录了APP抓包时踩过的很多坑，抓包配环境的繁琐令人非常痛苦。
+基于frida的ssl_logger直接从底层hook SSL_read和SSL_write函数进行抓包，似乎解决了导证书、SSL pining等麻烦，但无法抓取APP内置webview发出的包，这是因为ssl_logger是通过hook 系统的ssl库来抓包，而Webview(Chromium)将boringssl的代码静态编译到了自己的二进制文件中，在收发https数据包时，不会调用系统的SSL库，因此也就无法抓包了。
+由于编译后的webview二进制文件是无符号的，要通过hook的方式抓webview发出的https包，就要找到SSL_read和SSL_write符号。
+定位SSL_read和SSL_write找到SSL_read和SSL_write偏移的方法参考Hooking Chrome’s SSL functions 。文章中定位方法是在windows上操作的，android上的webview共享同一套代码，因此同样适用。
+定位SSL_read和SSL_write的方法主要如下：
+（1）根据webview版本号(chrome源码)找到chromium源码中使用的boringssl版本(DEPS文件)；
+（2）找到对应boringssl代码中的ssl_lib.cc文件，SSL_read和SSL_write代码中ERR_put_error函数会输出行号；
+ssl_write和ssl_read(调用ssl_peek)调用了OPENSSL_PUT_ERROR,最后一个参数未代码行号，因此根据代
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/07/24/自动定位webview中的SLL-read和SSL-write/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2020/07/06/高通QSEE中Trustlet提取/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/07/06/高通QSEE中Trustlet提取/" itemprop="url">高通QSEE中Trustlet提取</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-06T15:10:20+08:00">
+                2020-07-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2020/07/06/高通QSEE中Trustlet提取/" class="leancloud_visitors" data-flag-title="高通QSEE中Trustlet提取">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          Trustlet提取QSEE架构的Trustlet通常放在/firmware目录(/vendor/firmware_mnt的软连接)，每个模块被分割为多个文件，以xxxx.b0x形式存在，每个模块对应一个mdt文件，如下图：
+
+其中，mdt文件保存了elf文件头以及证书，使用binwalk可以看到包含一个elf头和3个DER证书文件头：
+
+利用readelf可以看到elf文件分割后的偏移：（mdt文件的elf头和xxxx.b00的文件头相同）
+
+基于这些信息，编写提取Truset的脚本参考如下：12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091import sys, os, structdef main():    #Reading the arguments    if len(sys.argv) != 4:        print &quot;USAGE: &lt;TRUSTLET_DIR&gt; &lt;TRUSTLET_NAME&gt; &lt;OUTPUT_FILE_PATH&gt;&quot;        return    trustlet_dir = sys.argv[1]    trustlet_name = sys.argv[2]    output_file_path = sys.argv[3]    flag = open(os.path.join(trustlet_dir, &quot;%s.mdt&quot; % trustlet_name), &qu
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/07/06/高通QSEE中Trustlet提取/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2020/07/01/CVE-2020-7958-从手机中提取指纹图片/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -394,7 +681,158 @@ Android上指纹识别相关架构如下图所示，其中红框部分处于REE�
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/07/01/CVE-2020-7958-从手机中提取指纹图片/#espandi" rel="contents">
+            <a class="btn" href="/2020/07/01/CVE-2020-7958-从手机中提取指纹图片/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2020/06/11/ndroid锁屏状态下的安全分析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/06/11/ndroid锁屏状态下的安全分析/" itemprop="url">Android锁屏状态下的安全分析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-11T14:58:54+08:00">
+                2020-06-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2020/06/11/ndroid锁屏状态下的安全分析/" class="leancloud_visitors" data-flag-title="Android锁屏状态下的安全分析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          简介Android从6.0开始，默认开启了全盘加密（Full Disk Encryption，即FDE），设备开机后第一次解锁时，用户数据处于加密状态，大多数功能在开机解锁前不可用。如下图：
+
+如果没有输入正确的密码，用户数据是解不开的，因此在这一状态下即使物理控制设备，想要进一步攻破设备或者窃取数据也是极其困难的。
+用户输入正确的密码后，进入系统，数据解开，所有功能正常使用。当再次锁屏时，必须要解锁后才会进入系统，但这一状态下也是有部门功能处于可用状态，例如下滑查看设置页面、手电筒、闹钟、计算器、锁屏壁纸等功能。
+如果锁屏状态下的系统设计存在安全问题，攻击者在接触到用户设备后，就可能窃取用户数据，设置完全解锁手机。因此，本文主要讨论在手机不关机情况下，锁屏状态下的安全问题。
+攻击面分析锁屏状态下，所有可用的功能都有可能是一个攻击入口或载体，这里主要总结如下：
+锁屏下的数据交互手机虽然处于锁屏状态，但还是可以接收推送消息、刷公交卡等，这就意味着锁屏下存在着数据交互，例如网络数据、蓝牙数据、NFC数据等，大多数情况下这些数据都是被动生成的，虽无法造成严重的安全问题，但有可能存在数据泄露。典型的场景可能有：
+
+结合Kama攻击抓取wifi流量（锁屏下无法设置wifi）
+开启NFC直接进行支付
+冒充蓝牙设备进行通信等
+
+语音助手语音助手几乎是只能手机的标配，且其功能注定了锁屏下处于可用状态。如果语音助手的设计有问题，可能在锁屏下泄露用户数据。例如唤起某些APP、泄露用户个人信息、唤起智能家居甚至完成支付，严重时甚至直接跳过锁屏界面。
+通过逆向语音助手APP的实现，可以挖掘更多的攻击面。
+不安全的Activity跳转先前有很多直接绕过锁屏进入activity的案例，其根本原因是在锁屏下调用startActivity时，未判断是否解锁。如果未解锁的话，需要调用KeyguardMana
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/06/11/ndroid锁屏状态下的安全分析/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -541,7 +979,7 @@ Android上指纹识别相关架构如下图所示，其中红框部分处于REE�
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/02/20/本机号码一键登录的安全分析/#espandi" rel="contents">
+            <a class="btn" href="/2020/02/20/本机号码一键登录的安全分析/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -694,7 +1132,7 @@ Android上指纹识别相关架构如下图所示，其中红框部分处于REE�
           
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/12/11/通用的jsBridge/#espandi" rel="contents">
+            <a class="btn" href="/2019/12/11/通用的jsBridge/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -848,7 +1286,7 @@ pm list packages keywords匹配关键字的包名
           
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/10/10/提取设备中的apk文件/#espandi" rel="contents">
+            <a class="btn" href="/2019/10/10/提取设备中的apk文件/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1050,7 +1488,7 @@ Pin9(GND）
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/07/05/自制甲醛测试仪/#espandi" rel="contents">
+            <a class="btn" href="/2019/07/05/自制甲醛测试仪/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1193,7 +1631,7 @@ Pin9(GND）
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/06/27/Android上利用Strace跟踪系统调用/#espandi" rel="contents">
+            <a class="btn" href="/2019/06/27/Android上利用Strace跟踪系统调用/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1344,442 +1782,7 @@ trace log默认保存在/sdcard/Download/目录下，例如”/sdcard/Download/c
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/05/21/CVE-2019-5765分析/#espandi" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2019/04/23/Android-WebView白名单绕过/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/23/Android-WebView白名单绕过/" itemprop="url">Android WebView URL检查绕过</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-23T17:38:00+08:00">
-                2019-04-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/04/23/Android-WebView白名单绕过/" class="leancloud_visitors" data-flag-title="Android WebView URL检查绕过">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          URL结构scheme://login:password@address:port/path/to/resource/?query_string#fragment
-
-scheme不区分大小写，包括http、https、file、ftp等等,:之后的“//”可省略，例如http:www.qq.com, 此外，多数浏览器在scheme之前加空格也是可以正常解析的
-login:password@（认证信息）服务器有时候需要用户名和密码认证，ftp协议比较常见，http很少见，但这个不常见字段往往可以绕过很多检查
-addressaddress字段可以是一个不区分大小写的域名、一个ipv4地址或带方括号的ipv6地址，部分浏览器接收ip地址的八进制、十进制、十六进制等写法
-port端口号
-/path/to/resource层级路径，可以使用“../”到上一级目录
-query_string查询字符串，格式为”query_string?name1=value1&amp;name2=value2”
-fragment用于html中的页面定位
-
-白名单绕过白名单绕过主要参考rebeyond的文章 一文彻底搞懂安卓WebView白名单校验, 中间添加了一些自己的绕过方法。
-1.contains12345678910private static boolean checkDomain(String inputUrl)&#123;    String[] whiteList=new String[]&#123;&quot;huawei.com&quot;,&quot;hicloud.com&quot;&#125;;    for (String whiteDomain:whiteList)    &#123;        if (inputUrl.contains(whiteDomain)&gt;
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/04/23/Android-WebView白名单绕过/#espandi" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2019/04/15/Android-Download-Provider漏洞分析/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/15/Android-Download-Provider漏洞分析/" itemprop="url">Android Download Provider 3个漏洞分析</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-15T15:10:00+08:00">
-                2019-04-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/04/15/Android-Download-Provider漏洞分析/" class="leancloud_visitors" data-flag-title="Android Download Provider 3个漏洞分析">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          IOActive的安全研究员Daniel Kachakil发现了Android Download Provider相关的几个漏洞（CVE-2018-9468, CVE-2018-9493, CVE-2018-9546）,漏洞原理看似简单却十分有趣，这里总结一下。
-原文链接：https://ioactive.com/multiple-vulnerabilities-in-androids-download-provider-cve-2018-9468-cve-2018-9493-cve-2018-9546/
-Download Provider首先了解下Download Provider。Android系统的ContentProvider类似于应用数据库，用于共享自己的数据被其他的应用程序访问。Android提供了一套处理其他App下载请求的机制，例如浏览器的下载、邮件附件的下载、OTA升级包下载等。其中Download Manager用来处理下载请求，DownloadManager下载过程中，会将下载的数据和下载的状态插入ContentProvider中，完成下载后使用ContentProvider来提供下载内容给请求方APP。
-使用DownloadManager下载文件的示例代码如下：12345678910//创建下载请求    DownloadManager.Request req = new DownloadManager.Request(Uri.parse(&quot;http://www.qq.com&quot;));//设置下载路径    File saveFile = new File(Environment.getExternalStorageDirectory(), &quot;demo.apk&quot;);    req.setDestinationUr
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/04/15/Android-Download-Provider漏洞分析/#espandi" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2019/02/09/itural-APP研究/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/09/itural-APP研究/" itemprop="url">Vitual APP及其环境下的hook技术研究</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:12:00+08:00">
-                2019-02-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/02/09/itural-APP研究/" class="leancloud_visitors" data-flag-title="Vitual APP及其环境下的hook技术研究">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          随着Android系统安全漏洞的大幅减少，Android设备的root门槛变得越来越高，知名的root工具KingRoot甚至停止了维护，利用漏洞来root变成一件很困难的事情。
-另一方面，厂商对Secure Boot的实现也在不断增强，大多数手机厂商关闭了bootloader解锁通道，通过刷第三方rom或recovery来root设备的方式逐渐不可行。
-root是安全人员必备的研究环境，除了使用Nexus系列设备外，Vitual APP下的hook不失为一种办法。此外，由于上手简单，VA下的hook更多是被黑产或脚本所利用，本文对这种技术的原理进行分析。
-一、Vitual APP原理广义的Vitual App 可以理解为轻量级的“Android虚拟机”，即一个宿主APP上运行多个其他APP的形式，一定程度上也可以理解为我们熟知的“应用多开”。这种“虚拟机”并未打破Android原有的系统机制，因此，宿主APP及其虚拟运行的多个APP共享同一个uid/gid。
-我们知道Android上每个APP都运行在自己的沙盒环境中，但APP对于自己的进程、子进程等具有完全的控制权，在自己的沙箱内运行起其他APP，就实现了虚拟化。然而，常规的APP除了运行自己的代码外，还会和操作系统频繁交互，例如各种各样的服务、文件系统等，Vitual App如果成为了APP和操作系统的“中间人”，便实现了APP无感知的虚拟机，这也是Vitual APP的核心技术。
-常见的Vitual APP有以下几类：
-
-基于VitualAPP引擎的虚拟工具，例如“太极” （这里的VitualAPP特指github上一款工具，而Vitual APP是广义的虚拟化应用）
-基于MultiDroid引擎的虚拟工具,例如“LBE平行空间”
-基于DroidPlugin，如“360分身大师”
-厂商自带的“应用分身工具”、“多开工
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/02/09/itural-APP研究/#espandi" rel="contents">
+            <a class="btn" href="/2019/05/21/CVE-2019-5765分析/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1821,7 +1824,7 @@ root是安全人员必备的研究环境，除了使用Nexus系列设备外，Vi
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1867,7 +1870,7 @@ root是安全人员必备的研究环境，除了使用Nexus系列设备外，Vi
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">78</span>
+                  <span class="site-state-item-count">81</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

@@ -296,6 +296,451 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/05/31/iOS应用安全（待）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/31/iOS应用安全（待）/" itemprop="url">iOS应用安全—— 基础篇</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-31T22:10:00+08:00">
+                2018-05-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/05/31/iOS应用安全（待）/" class="leancloud_visitors" data-flag-title="iOS应用安全—— 基础篇">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          越狱几种类型的越狱：
+
+Tethered jailbreaks 不完美越狱，重启后无法保留 
+Semi-tethered jailbreaks  半完美越狱，必须通过连接电脑越狱，设备启动后会自动进入非越狱模式
+Semi-untethered jailbreaks 半完美越狱，设备启动能自己进入到越狱模式，但内核的代码签名校验不会被自动禁用，需要通过启动一个应用完成
+Untethered jailbreaks 完美越狱，一次越狱后即可永久越狱
+
+注意：如果设备已经越狱，切勿升级系统，否则会丢失越狱
+根据iOS版本判断设备是否可以越狱：Can I Jailbreak? https://canijailbreak.com/
+几个iPhone越狱相关的资源：
+
+The iPhone Wiki
+Reddit Jailbreak
+
+Cydia通常在越狱完成后会自动安装Cydia，下面介绍几个在Cydia下需要安装的工具：
+
+openssh默认的ssh账号是root，默认密码为alpine
+Frida在Cydia中添加源 https://build.frida.re后直接搜索安装
+BigBoss Recommended Toolsunix命令行工具，iOS系统不提供，如wget, unrar, less,sqlite3等
+Class Dump提取Mach-O文件信息
+SubstrateHook工具
+AppList查询所有安装的app
+
+NeedleNeedle是iOS平台上的一套动态测试，由mwr开发，类似于Android平台上的Drozer,但因系统的不同而功能不一。
+以下为mac上配置Needle的过程：
+
+安装依赖
+123456789101112131415161718192021#Core dependenciesbrew install pythonbrew install 
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/05/31/iOS应用安全（待）/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/05/14/零宽度空格-Zero-width-space/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/14/零宽度空格-Zero-width-space/" itemprop="url">零宽度空格 Zero-width space</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-14T15:27:22+08:00">
+                2018-05-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/05/14/零宽度空格-Zero-width-space/" class="leancloud_visitors" data-flag-title="零宽度空格 Zero-width space">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          0x0 简介零宽度空格，顾名思义即，具有空格的功能，但宽度为零。例如：1Left​​​​​​​​​​Right
+上述文本中，我们看到的是LeftRight，但实际上在Left和Right之间有10个Zero-width space，它不占用宽度，但占用字节空间。
+0x1 实例Zero-width space的Unicode编码为U+FEFF，二进制编码为“\xE2\x80\x8E”,根据维基百科描述，其主要用于后台处理字符边界而又无需可见空格的情况。
+例如，下边两个字符串，我们在任意位置鼠标双击时会看到明显效果，
+包含Zero-width space，双击任意位置选中某个单词1Lorem​Ipsum​Dolor​Sit​Amet​Consectetur​Adipiscing​Elit​Sed​Do​Eiusmod​Tempor​Incididunt​Ut​Labore​Et​Dolore​Magna​Aliqua​Ut​Enim​Ad​Minim​Veniam​Quis​Nostrud​Exercitation​Ullamco​Laboris​Nisi​Ut​Aliquip​Ex​Ea​Commodo​Consequat​Duis​Aute​Irure​Dolor​In​Reprehenderit​In​Voluptate​Velit​Esse​Cillum​Dolore​Eu​Fugiat​Nulla​Pariatur​Excepteur​Sint​Occaecat​Cupidatat​Non​Proident​Sunt​In​Culpa​Qui​Officia​Deserunt​Mollit​Anim​Id​Est​Laborum
+不含Zero-width space，双击任意位置选中全部字符1LoremIpsumDolorSitAmetConsecteturAdipi
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/05/14/零宽度空格-Zero-width-space/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/05/11/企业微信的消息/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/11/企业微信的消息/" itemprop="url">企业微信的消息</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-11T17:24:28+08:00">
+                2018-05-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/05/11/企业微信的消息/" class="leancloud_visitors" data-flag-title="企业微信的消息">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          LocationMessageHook “com.tencent.wework.foundation.model.pb.WwRichmessage$LocationMessage”函数消息内容12345address: &quot;\345\214\227\344\272\254\345\270\202\345\214\227\344\272\254\345\270\202\346\265\267\346\267\200\345\214\272\345\275\251\345\222\214\345\235\212\350\267\257\345\214\227\345\233\233\347\216\257\350\245\277\350\267\25766\345\217\267&quot;latitude: 39.984293longitude: 116.307449title: &quot;\345\214\227\345\233\233\347\216\257\350\245\277\350\267\25766\345\217\267&quot;zoom: 15.0
+FileMessageHook “com.tencent.wework.foundation.model.pb.WwRichmessage$FileMessage”函数
+filename曾经存在路径穿越漏洞，通过hook String.getBytes()修改filename为”../../../hack.zip”123456789101112131415161718192021222324252627282930313233aes_key: &quot;&quot;decrypt_ret: -1encrypt_key: &quot;&quot;encrypt_size: 0extra: &quot;
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/05/11/企业微信的消息/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/05/06/URL-Scheme安全漏洞案例/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -395,7 +840,7 @@ URL Scheme可能存在的问题
           
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/05/06/URL-Scheme安全漏洞案例/#espandi" rel="contents">
+            <a class="btn" href="/2018/05/06/URL-Scheme安全漏洞案例/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -535,7 +980,7 @@ Android0x0 自定义schemeAndroid上常用的是通过scheme协议的方式唤�
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/04/28/Web调起APP研究/#espandi" rel="contents">
+            <a class="btn" href="/2018/04/28/Web调起APP研究/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -688,7 +1133,7 @@ patch.sh的注释中写的很明确：123456789101112131415161718192021222324252
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/04/17/使用IPAPatch免越狱调试、修改第三方App/#espandi" rel="contents">
+            <a class="btn" href="/2018/04/17/使用IPAPatch免越狱调试、修改第三方App/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -836,7 +1281,7 @@ Java代码在解压ZIP文件时会使用到ZipEntry类的getName()方法。如�
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/30/zip解压漏洞/#espandi" rel="contents">
+            <a class="btn" href="/2018/03/30/zip解压漏洞/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -974,7 +1419,7 @@ strcat123456789101112没有控制好循环次数，导致strcat溢出for (i=0; i
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/23/经典漏洞案例整理/#espandi" rel="contents">
+            <a class="btn" href="/2018/03/23/经典漏洞案例整理/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1116,7 +1561,7 @@ For extracting HTTPS, FTP and other URL format use1grep -E &apos;(((https|ftp|go
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/22/常用的正则、搜索/#espandi" rel="contents">
+            <a class="btn" href="/2018/03/22/常用的正则、搜索/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1253,436 +1698,7 @@ For extracting HTTPS, FTP and other URL format use1grep -E &apos;(((https|ftp|go
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/17/蓝牙的发现、扫描/#espandi" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/15/文件后缀名枚举/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/15/文件后缀名枚举/" itemprop="url">文件后缀名枚举</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-15T17:08:08+08:00">
-                2018-03-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/03/15/文件后缀名枚举/" class="leancloud_visitors" data-flag-title="文件后缀名枚举">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          从一份恶意代码分析报告中抽取得，冥冥之中觉得以后有用，收藏以备用。
-.000 .001 .1 .101 .103 .108 .110 .123 .128 .1cd .1sp .1st .3 .3d .3d4 .3dd .3df .3df8 .3dm .3dr .3ds .3dxml .3fr .3g2 .3ga .3gp .3gp2 .3mm .3pr .3w .4w7 .602 .7z .7zip .8 .89t .89y .8ba .8bc .8be .8bf .8bi8 .8bl .8bs .8bx .8by .8li .8svx .8xt .9xt .9xy .a$v .a2c .aa .aa3 .aac .aaf .aah .aaui .ab4 .ab65 .abc .abk .abt .abw .ac2 .ac3 .ac5 .acc .accdb .accde .accdr .accdt .ace .acf .ach .acp .acr .acrobatsecuritysettings .acrodata .acroplugin .acrypt .act .ad .ada .adb .adc .add .ade .adi .adoc .ados .adox .adp .adpb .adr .ads .adt .aea .aec .aep .aepx .aes .aet .afdesign .afm .afp .agd1 .agdl .age3rec .age3sav .age3scn .age3xrec .age3xsav .age3xscn .age3yrec .age3ysav .age3yscn .ahf .ai .aif .aiff .aim .aip .ais .ait .ak .al .al8 .ala .alb3 .alb4 .alb5 .alb6
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/03/15/文件后缀名枚举/#espandi" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/15/Unicorn使用/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/15/Unicorn使用/" itemprop="url">Unicorn使用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-15T16:03:22+08:00">
-                2018-03-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/03/15/Unicorn使用/" class="leancloud_visitors" data-flag-title="Unicorn使用">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          Unicore简介
-Unocorn引擎是什么?
-
-简单的来讲，一款模拟器。尽管不太常见，你不能用来模拟整个程序或者系统，同时它也不支持syscall。你只能通过手动的方式来映射内存以及数据写入，然后就可以从某个指定的地址开始执行模拟了。
-
-用途
-
-执行一些恶意软件中你感兴趣的函数而不必创建整个进程CTF比赛中也很常用Fuzzing[https://hackernoon.com/afl-unicorn-fuzzing-arbitrary-binary-code-563ca28936bf]GDB插件扩充，例如支持长跳转模拟混淆后的代码
-框架代码12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849from unicorn import *from unicorn.arm_const import *  import struct def read(name):    with open(name) as f:        return f.read() def u32(data):    return struct.unpack(&quot;I&quot;, data)[0] def p32(num):    return struct.pack(&quot;I&quot;, num)  mu = Uc (UC_ARCH_ARM, UC_MODE_LITTLE_ENDIAN)  BASE = 0x10000STACK_ADDR = 0x300000STACK_SIZE = 1024*1024 mu.mem_map(BASE, 1024*1024)mu.mem_map(STACK_ADDR, STACK_SIZE)  mu.mem_write(BASE, 
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/03/15/Unicorn使用/#espandi" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/13/使用lief对ELF文件Patch/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/13/使用lief对ELF文件Patch/" itemprop="url">使用lief对ELF文件Patch</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-13T12:19:56+08:00">
-                2018-03-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/03/13/使用lief对ELF文件Patch/" class="leancloud_visitors" data-flag-title="使用lief对ELF文件Patch">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          LIEFLIEF可以很方便的对elf， pe，MachO 文件进行parse和patch，由于其提供了python库，故可以实现跨平台。
-这里以Android平台为例进行测试。
-直接修改目标elf的导入符号注：直接修改符号一般适用于修改前后参数类型、个数完全相同的情况
-二进制文件代码如下:123456789101112131415#include &lt;stdio.h&gt;int main()&#123;  printf(&quot;id&quot;);&#125;/*Android.mkLOCAL_PATH := $(call my-dir)include $(CLEAR_VARS)LOCAL_MODULE := lief_testLOCAL_SRC_FILES := main.cLOCAL_CFLAGS += -pie -fPIELOCAL_LDFLAGS += -pie -fPIEinclude $(BUILD_EXECUTABLE)*/
-编译完成后，push到手机中，运行如下图：
-
-使用lief，直接将导入表中的printf符号替换为system12345import liefbinary = lief.parse("lief_test")puts_sym = filter(lambda e: e.name == "printf", binary.dynamic_symbols)[0]puts_sym.name = "system"binary.write("lief_test_patch");
-将lief_test_patch push到手机中，执行结果如下图：
-
-修改 libc 中的相关符号，然后使用 LD_LIBRARY_PATH 加载修改后的库这里需要搞清楚elf加载的lib位置，例如我在一个64bit手机上做实验，那么加载的lib位于/system/l
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/03/13/使用lief对ELF文件Patch/#espandi" rel="contents">
+            <a class="btn" href="/2018/03/17/蓝牙的发现、扫描/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1724,7 +1740,7 @@ Unocorn引擎是什么?
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1770,7 +1786,7 @@ Unocorn引擎是什么?
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">78</span>
+                  <span class="site-state-item-count">81</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

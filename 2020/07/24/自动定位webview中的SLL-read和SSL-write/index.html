@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, m4bln" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="简介在Android上抓https包是一件非常头疼的事情，随着android的不断升级，你可能面临导入用户证书、导入根证书、解决证书绑定、双向绑定等等一系列复杂的操作，之前的文章 Android Https抓包实践 中记录了APP抓包时踩过的很多坑，抓包配环境的繁琐令人非常痛苦。 基于frida的ssl_logger直接从底层hook SSL_read和SSL_write函数进行抓包，似乎解决了导">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自动定位webview中的SLL_read和SSL_write">
+<meta property="og:url" content="https://mabin004.github.io/2020/07/24/自动定位webview中的SLL-read和SSL-write/index.html">
+<meta property="og:site_name" content="m4bln">
+<meta property="og:description" content="简介在Android上抓https包是一件非常头疼的事情，随着android的不断升级，你可能面临导入用户证书、导入根证书、解决证书绑定、双向绑定等等一系列复杂的操作，之前的文章 Android Https抓包实践 中记录了APP抓包时踩过的很多坑，抓包配环境的繁琐令人非常痛苦。 基于frida的ssl_logger直接从底层hook SSL_read和SSL_write函数进行抓包，似乎解决了导">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-246.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-247.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-244.png">
+<meta property="og:image" content="https://mabin004.github.io/images/pasted-245.png">
+<meta property="og:updated_time" content="2020-07-28T03:26:16.615Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="自动定位webview中的SLL_read和SSL_write">
+<meta name="twitter:description" content="简介在Android上抓https包是一件非常头疼的事情，随着android的不断升级，你可能面临导入用户证书、导入根证书、解决证书绑定、双向绑定等等一系列复杂的操作，之前的文章 Android Https抓包实践 中记录了APP抓包时踩过的很多坑，抓包配环境的繁琐令人非常痛苦。 基于frida的ssl_logger直接从底层hook SSL_read和SSL_write函数进行抓包，似乎解决了导">
+<meta name="twitter:image" content="https://mabin004.github.io/images/pasted-246.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'SXXZO8IPW0',
+      apiKey: 'b9723880e3b66475126bdc98a4bb9380',
+      indexName: 'm4bln',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到任何搜索结果: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://mabin004.github.io/2020/07/24/自动定位webview中的SLL-read和SSL-write/"/>
+
+
+
+
+
+  <title>自动定位webview中的SLL_read和SSL_write | m4bln</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">m4bln</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-hint">
+          <a href="/hint/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            hint
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2020/07/24/自动定位webview中的SLL-read和SSL-write/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">自动定位webview中的SLL_read和SSL_write</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-24T11:48:00+08:00">
+                2020-07-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2020/07/24/自动定位webview中的SLL-read和SSL-write/" class="leancloud_visitors" data-flag-title="自动定位webview中的SLL_read和SSL_write">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>在Android上抓https包是一件非常头疼的事情，随着android的不断升级，你可能面临导入用户证书、导入根证书、解决证书绑定、双向绑定等等一系列复杂的操作，之前的文章 <a href="https://mabin004.github.io/2018/03/05/https%E4%B8%AD%E9%97%B4%E4%BA%BA%E6%94%BB%E5%87%BB%E5%8E%9F%E7%90%86/">Android Https抓包实践</a> 中记录了APP抓包时踩过的很多坑，抓包配环境的繁琐令人非常痛苦。</p>
+<p>基于frida的ssl_logger直接从底层hook SSL_read和SSL_write函数进行抓包，似乎解决了导证书、SSL pining等麻烦，但无法抓取APP内置webview发出的包，这是因为ssl_logger是通过hook 系统的ssl库来抓包，而Webview(Chromium)将boringssl的代码静态编译到了自己的二进制文件中，在收发https数据包时，不会调用系统的SSL库，因此也就无法抓包了。</p>
+<p>由于编译后的webview二进制文件是无符号的，要通过hook的方式抓webview发出的https包，就要找到SSL_read和SSL_write符号。</p>
+<h2 id="定位SSL-read和SSL-write"><a href="#定位SSL-read和SSL-write" class="headerlink" title="定位SSL_read和SSL_write"></a>定位SSL_read和SSL_write</h2><p>找到SSL_read和SSL_write偏移的方法参考<a href="https://nytrosecurity.com/2018/02/26/hooking-chromes-ssl-functions/" target="_blank" rel="noopener">Hooking Chrome’s SSL functions</a> 。文章中定位方法是在windows上操作的，android上的webview共享同一套代码，因此同样适用。</p>
+<p>定位SSL_read和SSL_write的方法主要如下：</p>
+<p>（1）根据webview版本号(<a href="https://chromium.googlesource.com/chromium/src.git/+refs" target="_blank" rel="noopener">chrome源码</a>)找到chromium源码中使用的boringssl版本(DEPS文件)；</p>
+<p>（2）找到对应boringssl<a href="https://boringssl.googlesource.com/boringssl/+/94cd196a80252c98e329e979870f2a462cc4f402/ssl/ssl_lib.cc" target="_blank" rel="noopener">代码</a>中的ssl_lib.cc文件，SSL_read和SSL_write代码中ERR_put_error函数会输出行号；</p>
+<p>ssl_write和ssl_read(调用ssl_peek)调用了OPENSSL_PUT_ERROR,最后一个参数未代码行号，因此根据代码行号去汇编中查找对应指令即可:</p>
+<p><img src="/images/pasted-246.png" alt="upload successful"></p>
+<p><img src="/images/pasted-247.png" alt="upload successful"></p>
+<p>（3）根据错误行号，在binary中搜索特征片段，定位到对应函数；</p>
+<p>binary特征片段如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">#define OPENSSL_PUT_ERROR(library, reason) ERR_put_error(ERR_LIB_##library, 0, reason, __FILE__, __LINE__)</span><br><span class="line"></span><br><span class="line">SSL_read(SSL_peek) 32位特征：ERR_put_error(16, 0, 66, &quot;../../third_party/boringssl/src/ssl/ssl_lib.cc&quot;, 0x431);</span><br><span class="line">PUSH            &#123;R3-R7,LR&#125;        F8 B5</span><br><span class="line">MOV             R7, R0             </span><br><span class="line">LDR             R0, [R0,#0x50]</span><br><span class="line">CBZ             R0, loc_1779BC6</span><br><span class="line">MOVW            R0, #0x431        40 F2 31 40</span><br><span class="line">MOVS            R1, #0            00 21</span><br><span class="line">STR             R0, [SP,#0x18+var_18]</span><br><span class="line">MOVS            R0, #0x10         10 20</span><br><span class="line">LDR             R3, loc_1779BFC</span><br><span class="line">MOVS            R2, #0x42 ; &apos;B&apos;   42 22</span><br><span class="line">MOVS            R4, #0</span><br><span class="line">ADD             R3, PC  ; &quot;../../third_party/boringssl/src/ssl/ssl&quot;...</span><br><span class="line">BL              sub_17359F2</span><br><span class="line"></span><br><span class="line">SSL_write 32位特征：ERR_put_error(16, 0, 66, &quot;../../third_party/boringssl/src/ssl/ssl_lib.cc&quot;, 0x446);</span><br><span class="line">MOVW            R0, #0x446</span><br><span class="line">MOVS            R1, #0               00 21</span><br><span class="line">STR             R0, [SP,#0x20+var_20]</span><br><span class="line">MOVS            R0, #0x10            10 20</span><br><span class="line">LDR             R3, =(aThirdPartyBori_31 - 0x1779DC2)</span><br><span class="line">MOVS            R2, #0x42 ; &apos;B&apos;      42 22</span><br><span class="line">MOVS            R7, #0</span><br><span class="line">ADD             R3, PC  ; &quot;../../third_party/boringssl/src/ssl/ssl&quot;...</span><br><span class="line">BL              sub_17359F2</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">SSL_write  64位特征:</span><br><span class="line">FD 7B BD A9                 STP             X29, X30, [SP,#-0x30]!</span><br><span class="line">F5 0B 00 F9                 STR             X21, [SP,#0x10]</span><br><span class="line">F4 4F 02 A9                 STP             X20, X19, [SP,#0x20]</span><br><span class="line">FD 03 00 91                 MOV             X29, SP</span><br><span class="line">F3 03 02 2A                 MOV             W19, W2</span><br><span class="line">F4 03 01 AA                 MOV             X20, X1</span><br><span class="line">F5 03 00 AA                 MOV             X21, X0</span><br><span class="line">31 FA FF 97                 BL              sub_2356E78</span><br><span class="line">A8 4E 40 F9                 LDR             X8, [X21,#0x98]</span><br><span class="line">A8 01 00 B4                 CBZ             X8, loc_23585F0</span><br><span class="line">03 30 FF 90                ADRL            X3, aThirdPartyBori_4 ; &quot;../../third_party/boringssl/src/ssl/ssl&quot;...</span><br><span class="line">63 F0 11 91</span><br><span class="line">00 02 80 52                 MOV             W0, #0x10</span><br><span class="line">42 08 80 52                 MOV             W2, #0x42 ; &apos;B&apos;</span><br><span class="line">C4 88 80 52                 MOV             W4, #0x446   //第四个参数</span><br><span class="line">E1 03 1F 2A                 MOV             W1, WZR</span><br><span class="line">C0 B3 FE 97                 BL              sub_23054D8</span><br><span class="line">E0 03 1F 2A                 MOV             W0, WZR</span><br><span class="line"></span><br><span class="line">SSL_read(SSL_peek)64位:</span><br><span class="line">FD 7B BD A9                 STP             X29, X30, [SP,#-0x10+var_20]!</span><br><span class="line">F5 0B 00 F9                 STR             X21, [SP,#0x20+var_10]</span><br><span class="line">F4 4F 02 A9                 STP             X20, X19, [SP,#0x20+var_s0]</span><br><span class="line">FD 03 00 91                 MOV             X29, SP</span><br><span class="line">08 4C 40 F9                 LDR             X8, [X0,#0x98]</span><br><span class="line">C8 01 00 B4                 CBZ             X8, loc_2358324</span><br><span class="line">03 30 FF 90+                ADRL            X3, aThirdPartyBori_4 ; &quot;../../third_party/boringssl/src/ssl/ssl&quot;...</span><br><span class="line">63 F0 11 91</span><br><span class="line">00 02 80 52                 MOV             W0, #0x10</span><br><span class="line">42 08 80 52                 MOV             W2, #0x42 ; &apos;B&apos;</span><br><span class="line">24 86 80 52                 MOV             W4, #0x431  //第4个参数</span><br><span class="line">E1 03 1F 2A                 MOV             W1, WZR</span><br><span class="line">74 B4 FE 97                 BL              sub_23054D8</span><br></pre></td></tr></table></figure></p>
+<h2 id="测试记录"><a href="#测试记录" class="headerlink" title="测试记录"></a>测试记录</h2><p>基于上述特征，我编写了自动化脚本，对webview二进制文件中的SLL_read和SSL_write符号进行自动化提取。尽管原理简单，但实现起来需要区分32位和64位，以及需要解决一些编译器引发的指令差异问题，实现起来也比较麻烦，我用了keystone和capstone来辅助搞定了自动化工具，这里就不分享了。</p>
+<p>用我的自动化脚本在基于Chromium的几大主流webview进行了测试，输入binary路径和版本号就可以稳定运行，跑出SSL_read和SSL_write的偏移，以下是常见的几种webview：</p>
+<h3 id="Chrome-APP"><a href="#Chrome-APP" class="headerlink" title="Chrome APP"></a>Chrome APP</h3><p>Chrome APP自带webview引擎，安装包内的crazy.ibchrome.so对应webview的二进制文件，安装完成后，在不同版本的系统上的名字不同：</p>
+<ul>
+<li>Android L &amp; M  libchrome.so</li>
+<li>Android N, O &amp; P libmonochrome.so</li>
+</ul>
+<p>当手机上安装Chrome时，系统内置的webview会设置为chrome的webview，当然定制的系统除外，例如国内的华米OV使用自己的webview。</p>
+<h3 id="系统内置webview"><a href="#系统内置webview" class="headerlink" title="系统内置webview"></a>系统内置webview</h3><p>Android系统内置webview的版本可用（adb shell dumpsys webviewupdate）查到：</p>
+<p><img src="/images/pasted-244.png" alt="upload successful"></p>
+<p>installed/enabled的即为系统默认的webview。</p>
+<p>使用（pm path com.google.android.webview）得到webview的路径：</p>
+<p><img src="/images/pasted-245.png" alt="upload successful"></p>
+<h3 id="浏览器APP的webview"><a href="#浏览器APP的webview" class="headerlink" title="浏览器APP的webview"></a>浏览器APP的webview</h3><p>Android上的浏览器APP通常会使用自己的webview引擎，一般来说安装包体积小于十多兆的浏览器（例如X浏览器、隐私浏览器等等）使用的系统自带的webview，安装包较大（50M+）的浏览器会使用自己的webview。例如：</p>
+<p>手机厂商自带的浏览器：</p>
+<ul>
+<li>libheytapwebview.so  OPPO</li>
+<li>libhwwebviewchromium.so 华为</li>
+<li>libmiui_chromium.so 小米</li>
+<li>libwebviewchromium_vivo.so  vivo</li>
+</ul>
+<p>第三方浏览器：</p>
+<ul>
+<li>libmttwebview.so  qq浏览器</li>
+<li>libwebviewuc.so  UC浏览器</li>
+</ul>
+<h3 id="基于Chromium的第三方浏览器内核"><a href="#基于Chromium的第三方浏览器内核" class="headerlink" title="基于Chromium的第三方浏览器内核"></a>基于Chromium的第三方浏览器内核</h3><ul>
+<li>libmttwebview.so  x5内核，腾讯系的APP使用</li>
+<li>libwebviewuc.so  UC的U4内核  阿里小的APP使用</li>
+<li>libxwalkcore.so CrossWalk内核  常用于各种小程序的实现</li>
+</ul>
+<h3 id="使用多内核的APP"><a href="#使用多内核的APP" class="headerlink" title="使用多内核的APP"></a>使用多内核的APP</h3><p>有些APP会使用多个内核，以微信为例，同时使用了X5和CrossWalk内核：</p>
+<ul>
+<li>x5 com.tencent.mm:tools进程 聊天页面点开的webview、支付里的页面（长按下拉提示使用x5内核的都可以）</li>
+<li>CrossWalk （长按下拉未提示x5）<ul>
+<li>com.tencent.mm:toolsmp 进程  公众号文章、搜一搜</li>
+<li>com.tencent.mm:appbrand 进程  小程序</li>
+</ul>
+</li>
+</ul>
+<h2 id="通用的APP抓https包方案"><a href="#通用的APP抓https包方案" class="headerlink" title="通用的APP抓https包方案"></a>通用的APP抓https包方案</h2><p>通过上文的分析，通用的APP抓https包的方案需要结合以下三种情况：</p>
+<ol>
+<li>hook 系统的SSL_read和SSL_write</li>
+<li>hook webview的SSL_read和SSL_write</li>
+<li>必要时hook APP自带ssl库的SSL_read和SSL_write</li>
+</ol>
+<p>此方案的优点是不需要设置代理、导证书、解决证书绑定等繁琐操作，直接从底层获取明文的https包，无视上层实现。缺点是需要找到SSL_read和SSL_write的偏移，当然有了自动化脚本，抓起包来会非常轻松。</p>
+<p>参考链接：</p>
+<ol>
+<li>chrome源码 <a href="https://chromium.googlesource.com/chromium/src.git" target="_blank" rel="noopener">https://chromium.googlesource.com/chromium/src.git</a></li>
+<li>boringssl源码 <a href="https://boringssl.googlesource.com/" target="_blank" rel="noopener">https://boringssl.googlesource.com/</a></li>
+<li><a href="https://www.anquanke.com/post/id/104801" target="_blank" rel="noopener">通过Hooking Chrome浏览器的SSL函数实现读取SSL通信数据</a></li>
+<li>chrome webview docs <a href="https://chromium.googlesource.com/chromium/src/+/HEAD/android_webview/docs/build-instructions.md" target="_blank" rel="noopener">https://chromium.googlesource.com/chromium/src/+/HEAD/android_webview/docs/build-instructions.md</a></li>
+<li>Shared Libraries on Android <a href="https://chromium.googlesource.com/chromium/src.git/+/master/docs/android_native_libraries.md" target="_blank" rel="noopener">https://chromium.googlesource.com/chromium/src.git/+/master/docs/android_native_libraries.md</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/07/06/高通QSEE中Trustlet提取/" rel="next" title="高通QSEE中Trustlet提取">
+                <i class="fa fa-chevron-left"></i> 高通QSEE中Trustlet提取
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">m4bln</p>
+              <p class="site-description motion-element" itemprop="description">影后入林到驿前</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-text"><a href="#&#x7B80;&#x4ECB;" class="headerlink" title="&#x7B80;&#x4ECB;"></a>&#x7B80;&#x4ECB;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定位SSL-read和SSL-write"><span class="nav-text"><a href="#&#x5B9A;&#x4F4D;SSL-read&#x548C;SSL-write" class="headerlink" title="&#x5B9A;&#x4F4D;SSL_read&#x548C;SSL_write"></a>&#x5B9A;&#x4F4D;SSL_read&#x548C;SSL_write</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试记录"><span class="nav-text"><a href="#&#x6D4B;&#x8BD5;&#x8BB0;&#x5F55;" class="headerlink" title="&#x6D4B;&#x8BD5;&#x8BB0;&#x5F55;"></a>&#x6D4B;&#x8BD5;&#x8BB0;&#x5F55;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Chrome-APP"><span class="nav-text"><a href="#Chrome-APP" class="headerlink" title="Chrome APP"></a>Chrome APP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#系统内置webview"><span class="nav-text"><a href="#&#x7CFB;&#x7EDF;&#x5185;&#x7F6E;webview" class="headerlink" title="&#x7CFB;&#x7EDF;&#x5185;&#x7F6E;webview"></a>&#x7CFB;&#x7EDF;&#x5185;&#x7F6E;webview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#浏览器APP的webview"><span class="nav-text"><a href="#&#x6D4F;&#x89C8;&#x5668;APP&#x7684;webview" class="headerlink" title="&#x6D4F;&#x89C8;&#x5668;APP&#x7684;webview"></a>&#x6D4F;&#x89C8;&#x5668;APP&#x7684;webview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于Chromium的第三方浏览器内核"><span class="nav-text"><a href="#&#x57FA;&#x4E8E;Chromium&#x7684;&#x7B2C;&#x4E09;&#x65B9;&#x6D4F;&#x89C8;&#x5668;&#x5185;&#x6838;" class="headerlink" title="&#x57FA;&#x4E8E;Chromium&#x7684;&#x7B2C;&#x4E09;&#x65B9;&#x6D4F;&#x89C8;&#x5668;&#x5185;&#x6838;"></a>&#x57FA;&#x4E8E;Chromium&#x7684;&#x7B2C;&#x4E09;&#x65B9;&#x6D4F;&#x89C8;&#x5668;&#x5185;&#x6838;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用多内核的APP"><span class="nav-text"><a href="#&#x4F7F;&#x7528;&#x591A;&#x5185;&#x6838;&#x7684;APP" class="headerlink" title="&#x4F7F;&#x7528;&#x591A;&#x5185;&#x6838;&#x7684;APP"></a>&#x4F7F;&#x7528;&#x591A;&#x5185;&#x6838;&#x7684;APP</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通用的APP抓https包方案"><span class="nav-text"><a href="#&#x901A;&#x7528;&#x7684;APP&#x6293;https&#x5305;&#x65B9;&#x6848;" class="headerlink" title="&#x901A;&#x7528;&#x7684;APP&#x6293;https&#x5305;&#x65B9;&#x6848;"></a>&#x901A;&#x7528;&#x7684;APP&#x6293;https&#x5305;&#x65B9;&#x6848;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">m4bln</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("AAhymnaPSbBOge9isiIUi5c8-gzGzoHsz", "79JTCuY3J33b0HodXn8nYFvn");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
