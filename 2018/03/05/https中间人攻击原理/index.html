@@ -95,7 +95,7 @@
 <meta property="og:image" content="https://mabin004.github.io/images/pasted-191.png">
 <meta property="og:image" content="https://mabin004.github.io/images/pasted-192.png">
 <meta property="og:image" content="https://mabin004.github.io/images/pasted-193.png">
-<meta property="og:updated_time" content="2020-06-22T03:22:11.683Z">
+<meta property="og:updated_time" content="2020-12-06T03:05:47.997Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Https抓包实践">
 <meta name="twitter:description" content="平时的安全研究经常会有抓包的需求，随着互联网厂商安全意识的不断提高，多数Android APP采用了https协议和服务端进行通信，增加了中间人攻击的难度。 在使用burpsuilt、Fiddler等工具抓https数据包时，通常需要在手机上安装一个证书，即便这样仍然还会出现抓不到包等各种各样的错误和问题，为了解决这些问题，有必要了解下https的原理和实现，方可在遇到问题时根据不同的情况来解决。">
@@ -427,7 +427,8 @@
 <p><img src="/images/pasted-190.png" alt="upload successful"><br>之后，配置好客户端的代理ip和端口就可以抓包了。</p>
 <p>然而，安卓7.0之后有了network-security-config选项<a href="https://android-developers.googleblog.com/2016/07/changes-to-trusted-certificate.html" target="_blank" rel="noopener">参考Android开发文档</a>，<strong>当app支持的最小API为24（Android 7.0）或以上时</strong>(并非7.0以上的手机)，默认情况下app只信任系统级别的CA，这样从sdcard安装Burp证书将无法拦截应用流量，于是就需要把burp证书变为系统证书。<br>这里有两种方法可以帮我们绕过：<br>1.将Burp CA作为系统级CA安装在设备上。这是最简单的解决方法，但需要root<br>2.修改manifest文件并重打包，比较麻烦，但无需root。</p>
 <p>这里介绍一下第1种方法。</p>
-<h4 id="（2）root下导入证书为系统证书"><a href="#（2）root下导入证书为系统证书" class="headerlink" title="（2）root下导入证书为系统证书"></a>（2）root下导入证书为系统证书</h4><p>有root的前提下，可以把我们自己的证书安装成系统证书，主要步骤如下：</p>
+<h4 id="（2）root下导入证书为系统证书"><a href="#（2）root下导入证书为系统证书" class="headerlink" title="（2）root下导入证书为系统证书"></a>（2）root下导入证书为系统证书</h4><p>(本文由于时间过长，可以在最新版本系统上遇到其他问题，Android 10/11可以参考<a href="https://pswalia2u.medium.com/install-burpsuites-or-any-ca-certificate-to-system-store-in-android-10-and-11-38e508a5541a" target="_blank" rel="noopener">https://pswalia2u.medium.com/install-burpsuites-or-any-ca-certificate-to-system-store-in-android-10-and-11-38e508a5541a</a>)</p>
+<p>有root的前提下，可以把我们自己的证书安装成系统证书，主要步骤如下：</p>
 <ul>
 <li><p>1.转为PEM格式</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl x509 -inform der -in burp.der -out burp.pem</span><br></pre></td></tr></table></figure>
@@ -449,6 +450,7 @@
 </ul>
 <p>Android的系统证书路径为<strong>“/system/etc/security/cacerts/”</strong>，用户证书路径为<strong>“/data/misc/user/0/cacerts-added”</strong>，所以把用户证书move到系统证书路径也是可以的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mount -o rw,remount /system</span><br><span class="line">mv /data/misc/user/0/cacerts-added/xxxx.0 /system/etc/security/cacerts/</span><br><span class="line">chmod 644 xxxx.0</span><br><span class="line">chown root:root xxxx.0</span><br><span class="line">reboot</span><br></pre></td></tr></table></figure></p>
 <p>Magisk有一个插件叫movecert(<a href="https://github.com/Magisk-Modules-Repo/movecert),其原理就是如此。所以不想那么复杂，直接安装Magisk的这个模块后，导入用户证书后重启手机即可变为系统证书。" target="_blank" rel="noopener">https://github.com/Magisk-Modules-Repo/movecert),其原理就是如此。所以不想那么复杂，直接安装Magisk的这个模块后，导入用户证书后重启手机即可变为系统证书。</a></p>
+<p>(另外一个插件<a href="https://github.com/NVISO-BE/MagiskTrustUserCerts" target="_blank" rel="noopener">https://github.com/NVISO-BE/MagiskTrustUserCerts</a>)</p>
 <h4 id="（3）证书有效期过长的问题"><a href="#（3）证书有效期过长的问题" class="headerlink" title="（3）证书有效期过长的问题"></a>（3）证书有效期过长的问题</h4><p>然而，我在oneplus 5T 和HTC的手机（均为8.0以上系统）通过导入burp证书为系统证书，仍然无法抓到https数据，浏览器报<strong>“NET::ERR_CERT_VALIDITY_TOO_LONG”</strong>错误，这是为什么呢？</p>
 <p>原因是chrome从2018年开始只信任有效期少于825天（27个月）的证书（参考<a href="https://www.ssl.com/blogs/ssl-certificate-maximum-duration-825-days/），而burp发行的root证书有效期远大于27个月，在Android" target="_blank" rel="noopener">https://www.ssl.com/blogs/ssl-certificate-maximum-duration-825-days/），而burp发行的root证书有效期远大于27个月，在Android</a> 7以上，即使把burp的自定义证书添加进系统证书里（<strong>但用户证书并不会检测这个有效期是否太长</strong>），这个证书也是不工作的，所以chrome会判定这个证书无效，报ERR_CERT_VALIDITY_TOO_LONG的错误。</p>
 <p>解决的办法是自己做一个低于27个月的root证书导入burp，再通过burp重新导出证书放到系统证书路径下。这也是在（1）和（2）都无法抓包的条件下的终极解决方案。</p>
@@ -642,7 +644,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-count">82</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

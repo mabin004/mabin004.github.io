@@ -296,6 +296,304 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/08/10/利用蓝牙漏洞逃逸iOS沙箱/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/10/利用蓝牙漏洞逃逸iOS沙箱/" itemprop="url">利用蓝牙callback逃逸iOS沙箱</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-10T12:30:30+08:00">
+                2018-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/10/利用蓝牙漏洞逃逸iOS沙箱/" class="leancloud_visitors" data-flag-title="利用蓝牙callback逃逸iOS沙箱">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          iOS的Sandbox和IPC机制iOS的sandbox限制了普通的应用程序只能访问自身沙箱内的资源，应用程序在进行系统调用时会受到sandbox的策略限制。因此，为了实现权限提升，逃逸iOS的sandbox是必要的。
+iOS系统提供了IPC机制（进程间通信），如URL schemes, Mach, pipes等，Mach IPC是一套面向消息的IPC机制，实现对象与对象之间的通信，源对象发送一条消息，这条消息加入到目标对象的队列中等待处理。如果产生应答，则通过另一条消息传递回去。消息分简单消息和复杂消息，分别对应两种不同的结构：
+
+简单消息
+
+
+
+复杂消息
+
+
+Mach对象之间的消息时基于端口传递的，消息从某一个端口发送到另一个端口。向一个端口发送消息实际上是将消息放在队列中，直到消息被处理。查找一个对象的句柄(标识应用程序中的不同对象和同类中的不同的实例的值)，实际上查找的是这个对象端口的句柄，给定一个对象的端口，就可以通信了。Mach消息传递使用的是Mach_msg()函数。
+基于Mach的消息机制，iOS又提供了XPC、NSXPC等进程间通信机制，通过这些机制，sandbox内的应用可以和没有sandbox的Mach service进行通信，如果这些service在处理消息时发生错误，就有可能出现由sandbox到非sandbox的代码执行。
+为了发现这些问题，我们将目标放在Mach service的消息处理上，那么如何找到实现Mach service的binary文件呢？
+/System/Library/LaunchDaemons的plist文件包含了大多数Mach service，其中MachServices字段指向了一组Mach services,ProgramArguments字段指向实现这些Mach service的binary文件。
+
+CVE-2018-
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/08/10/利用蓝牙漏洞逃逸iOS沙箱/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/08/02/ndroid分析常用的工具或命令/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/02/ndroid分析常用的工具或命令/" itemprop="url">Android分析常用的工具或命令</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-02T15:49:23+08:00">
+                2018-08-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/02/ndroid分析常用的工具或命令/" class="leancloud_visitors" data-flag-title="Android分析常用的工具或命令">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          dumpsysdumpsys命令用来查询界面元素层级、系统服务运行状态、电池、网络等一些信息。用法：12345678910HWVTR:/ # dumpsys --helpusage: dumpsys         To dump all services.or:       dumpsys [-t TIMEOUT] [--help | -l | --skip SERVICES | SERVICE [ARGS]]         --help: shows this help         -l: only list services, do not dump them         -t TIMEOUT: TIMEOUT to use in seconds instead of default 10 seconds         --skip SERVICES: dumps all services but SERVICES (comma-separated list)         SERVICE [ARGS]: dumps only service SERVICE, optionally passing ARGS to it
+常用功能：
+
+dumpsys activity activities | grep mResumedActivity 获取顶层activity
+dumpsys -l  列出所有运行的服务
+dumpsys wifiscanner 获取wifi信息
+dumpsys webviewupdate 获得webview版本等信息
+dumpsys usagestats|grep com.tencent.mm  某个APP的使用情况
+dumpsys shortcut 所有的shortcut
+dumpsys package -h  所有和package相关
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/08/02/ndroid分析常用的工具或命令/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/07/31/Mac上编译Frida/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1474,289 +1772,6 @@ MonkeyDev wiki: https://github.com/AloneMonkey/MonkeyDev/wiki
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/06/18/iOS应用安全-——-非越狱下使用Frida/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/18/iOS应用安全-——-非越狱下使用Frida/" itemprop="url">iOS应用安全 —— 非越狱下使用Frida</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-18T09:59:00+08:00">
-                2018-06-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/06/18/iOS应用安全-——-非越狱下使用Frida/" class="leancloud_visitors" data-flag-title="iOS应用安全 —— 非越狱下使用Frida">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          概述frida-server在运行时需要root环境，但如果没有越狱的设备，依然可以使用frida,我们只需要重打包ipa文件，将frida运行库注入ipa文件中，app在启动时会自动加载frida运行库，即可实现在非越狱的设备上使用Frida.
-由于苹果的混淆策略和代码签名，重打包app的难度很高，一些自动重打包的工具如Objection、IPAPatch等简化了重打包过程，但其本质大概相同，以下分步介绍手动重打包frida运行库的过程。
-1. 配置optool和ios-deployoptool可以将一个外部的lib插入到Mach-O文件头，使binary文件在启动时会自动加载该lib。如已经配置过，直接跳过。12345$ git clone https://github.com/alexzielenski/optool.git$ cd optool/$ git submodule update --init --recursive$ xcodebuild$ ln -s &lt;your-path-to-optool&gt;/build/Release/optool /usr/local/bin/optool
-ios-deploy可以在不用Xcode的前提下调试和部署APP:123456$ git clone https://github.com/phonegap/ios-deploy.git$ cd ios-deploy/$ xcodebuild$ cd build/Release$ ./ios-deploy$ ln -s &lt;your-path-to-ios-deploy&gt;/build/Release/ios-deploy /usr/local/bin/ios-deploy
-更新bashrc文件12zsh: # . ~/.zshrcbash: # . ~/.
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/06/18/iOS应用安全-——-非越狱下使用Frida/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/06/11/Android-JsBridge/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/11/Android-JsBridge/" itemprop="url">Android JsBridge</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-11T15:52:51+08:00">
-                2018-06-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/06/11/Android-JsBridge/" class="leancloud_visitors" data-flag-title="Android JsBridge">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          Android客户端中经常会遇到js调用java代码的场景，例如一些Hybrid APP或H5等，JsBridge即通过js调用java或者通过java调用js函数。
-java调用js1. webview的loadUrl1WebView.loadUrl(&quot;javascript:function()&quot;);
-2. webview的evaluateJavascript使用evaluateJavascript可以获得js函数的返回值123456mWebView.evaluateJavascript(&quot;javascript:callJS()&quot;, new ValueCallback&lt;String&gt;() &#123;        @Override        public void onReceiveValue(String value) &#123;            //此处为 js 返回的结果        &#125;&#125;);
-js调用JavaAndroid中js调用java通常有以下几种做法：
-1. 通过WebView的addJavascriptInterface（）进行对象映射定义一个与JS对象映射关系的Android类：AndroidtoJs,在Android里通过WebView设置Android类与JS代码的映射
-java代码：123456789101112mWebView.addJavascriptInterface(new AndroidtoJs(), &quot;test&quot;);public class AndroidtoJs extends Object &#123;    // 定义JS需要调用的方法    // 被JS调用的方法必须加入@JavascriptInterface注解  
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/06/11/Android-JsBridge/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1807,7 +1822,7 @@ java代码：123456789101112mWebView.addJavascriptInterface(new AndroidtoJs(), &
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-count">82</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

@@ -296,6 +296,289 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/06/18/iOS应用安全-——-非越狱下使用Frida/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/18/iOS应用安全-——-非越狱下使用Frida/" itemprop="url">iOS应用安全 —— 非越狱下使用Frida</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-18T09:59:00+08:00">
+                2018-06-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/06/18/iOS应用安全-——-非越狱下使用Frida/" class="leancloud_visitors" data-flag-title="iOS应用安全 —— 非越狱下使用Frida">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          概述frida-server在运行时需要root环境，但如果没有越狱的设备，依然可以使用frida,我们只需要重打包ipa文件，将frida运行库注入ipa文件中，app在启动时会自动加载frida运行库，即可实现在非越狱的设备上使用Frida.
+由于苹果的混淆策略和代码签名，重打包app的难度很高，一些自动重打包的工具如Objection、IPAPatch等简化了重打包过程，但其本质大概相同，以下分步介绍手动重打包frida运行库的过程。
+1. 配置optool和ios-deployoptool可以将一个外部的lib插入到Mach-O文件头，使binary文件在启动时会自动加载该lib。如已经配置过，直接跳过。12345$ git clone https://github.com/alexzielenski/optool.git$ cd optool/$ git submodule update --init --recursive$ xcodebuild$ ln -s &lt;your-path-to-optool&gt;/build/Release/optool /usr/local/bin/optool
+ios-deploy可以在不用Xcode的前提下调试和部署APP:123456$ git clone https://github.com/phonegap/ios-deploy.git$ cd ios-deploy/$ xcodebuild$ cd build/Release$ ./ios-deploy$ ln -s &lt;your-path-to-ios-deploy&gt;/build/Release/ios-deploy /usr/local/bin/ios-deploy
+更新bashrc文件12zsh: # . ~/.zshrcbash: # . ~/.
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/06/18/iOS应用安全-——-非越狱下使用Frida/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/06/11/Android-JsBridge/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/11/Android-JsBridge/" itemprop="url">Android JsBridge</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-11T15:52:51+08:00">
+                2018-06-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/06/11/Android-JsBridge/" class="leancloud_visitors" data-flag-title="Android JsBridge">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          Android客户端中经常会遇到js调用java代码的场景，例如一些Hybrid APP或H5等，JsBridge即通过js调用java或者通过java调用js函数。
+java调用js1. webview的loadUrl1WebView.loadUrl(&quot;javascript:function()&quot;);
+2. webview的evaluateJavascript使用evaluateJavascript可以获得js函数的返回值123456mWebView.evaluateJavascript(&quot;javascript:callJS()&quot;, new ValueCallback&lt;String&gt;() &#123;        @Override        public void onReceiveValue(String value) &#123;            //此处为 js 返回的结果        &#125;&#125;);
+js调用JavaAndroid中js调用java通常有以下几种做法：
+1. 通过WebView的addJavascriptInterface（）进行对象映射定义一个与JS对象映射关系的Android类：AndroidtoJs,在Android里通过WebView设置Android类与JS代码的映射
+java代码：123456789101112mWebView.addJavascriptInterface(new AndroidtoJs(), &quot;test&quot;);public class AndroidtoJs extends Object &#123;    // 定义JS需要调用的方法    // 被JS调用的方法必须加入@JavascriptInterface注解  
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/06/11/Android-JsBridge/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/05/31/iOS应用安全（待）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -684,9 +967,10 @@ NeedleNeedle是iOS平台上的一套动态测试，由mwr开发，类似于Andro
       
         
           
-          LocationMessageHook “com.tencent.wework.foundation.model.pb.WwRichmessage$LocationMessage”函数消息内容12345address: &quot;\345\214\227\344\272\254\345\270\202\345\214\227\344\272\254\345\270\202\346\265\267\346\267\200\345\214\272\345\275\251\345\222\214\345\235\212\350\267\257\345\214\227\345\233\233\347\216\257\350\245\277\350\267\25766\345\217\267&quot;latitude: 39.984293longitude: 116.307449title: &quot;\345\214\227\345\233\233\347\216\257\350\245\277\350\267\25766\345\217\267&quot;zoom: 15.0
+          企业微信使用protobuf nano对数据进行封装，使用Frida进行批量hook，可以打印出所有的序列化消息。
+LocationMessageHook “com.tencent.wework.foundation.model.pb.WwRichmessage$LocationMessage”函数消息内容12345address: &quot;\345\214\227\344\272\254\345\270\202\345\214\227\344\272\254\345\270\202\346\265\267\346\267\200\345\214\272\345\275\251\345\222\214\345\235\212\350\267\257\345\214\227\345\233\233\347\216\257\350\245\277\350\267\25766\345\217\267&quot;latitude: 39.984293longitude: 116.307449title: &quot;\345\214\227\345\233\233\347\216\257\350\245\277\350\267\25766\345\217\267&quot;zoom: 15.0
 FileMessageHook “com.tencent.wework.foundation.model.pb.WwRichmessage$FileMessage”函数
-filename曾经存在路径穿越漏洞，通过hook String.getBytes()修改filename为”../../../hack.zip”123456789101112131415161718192021222324252627282930313233aes_key: &quot;&quot;decrypt_ret: -1encrypt_key: &quot;&quot;encrypt_size: 0extra: &quot;
+filename曾经存在路径穿越漏洞，通过hook String.getBytes()修改filename为”../../../hack.zip”123456789101112131415161718192021222324252627282930313233aes_key: &quot;&quot;decrypt_re
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1332,144 +1616,6 @@ Java代码在解压ZIP文件时会使用到ZipEntry类的getName()方法。如�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/23/经典漏洞案例整理/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/23/经典漏洞案例整理/" itemprop="url">经典漏洞案例整理</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-23T14:44:42+08:00">
-                2018-03-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/03/23/经典漏洞案例整理/" class="leancloud_visitors" data-flag-title="经典漏洞案例整理">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          字符串’\0’在处理字符串时，没有在尾部加‘\0’，导致使用时会读取字符串后边的数据123456789+void BnAudioPolicyService::sanetizeAudioAttributes(audio_attributes_t* attr)+&#123;+    const size_t tagsMaxSize = AUDIO_ATTRIBUTES_TAGS_MAX_SIZE;+    if (strnlen(attr-&gt;tags, tagsMaxSize) &gt;= tagsMaxSize) &#123;+        android_errorWriteLog(0x534e4554, &quot;68953950&quot;); // SafetyNet logging+    &#125;+    attr-&gt;tags[tagsMaxSize - 1] = &apos;\0&apos;;+&#125;+
-strcat123456789101112没有控制好循环次数，导致strcat溢出for (i=0; i &lt; (prop-&gt;len)/sizeof(bt_uuid_t); i++)            &#123;                bt_uuid_t *p_uuid = (bt_uuid_t*)prop-&gt;val + i;                memset(buf, 0, sizeof(buf));                uuid_to_string_legacy(p_uuid, buf);    //buf_length=36 &quot;%.8x-%.4x-%.4x-%.4x-%.8x%.4x&quot;                strcat(value, buf);  //
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/03/23/经典漏洞案例整理/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/22/常用的正则、搜索/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1599,143 +1745,6 @@ For extracting HTTPS, FTP and other URL format use1grep -E &apos;(((https|ftp|go
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/03/17/蓝牙的发现、扫描/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/17/蓝牙的发现、扫描/" itemprop="url">蓝牙、BLE设备相关</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-17T21:24:45+08:00">
-                2018-03-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/03/17/蓝牙的发现、扫描/" class="leancloud_visitors" data-flag-title="蓝牙、BLE设备相关">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          标准蓝牙设备扫描经典蓝牙设备1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889final BluetoothManager bm = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);        mBluetoothAdapter = bm.getAdapter();        if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled())        &#123;            Toast.makeText(this,&quot;please open bluttooth&quot;,Toast.LENGTH_LONG).show();            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);            startActivityForResult(enableBtIntent, 0);        &#125;        //获取已经绑定的蓝牙        Set&lt;BluetoothDevice&gt; devices = mBluetoothAdapter.getBondedDevices();        //遍历已绑定设备        if (devices.size() &gt;
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/03/17/蓝牙的发现、扫描/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1786,7 +1795,7 @@ For extracting HTTPS, FTP and other URL format use1grep -E &apos;(((https|ftp|go
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-count">82</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

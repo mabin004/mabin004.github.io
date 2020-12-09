@@ -296,6 +296,294 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2019/06/17/o-do-list/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/17/o-do-list/" itemprop="url">to do list</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-17T12:02:00+08:00">
+                2019-06-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/06/17/o-do-list/" class="leancloud_visitors" data-flag-title="to do list">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/06/17/o-do-list/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2019/05/21/CVE-2019-5765分析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/05/21/CVE-2019-5765分析/" itemprop="url">CVE-2019-5765分析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-21T12:08:00+08:00">
+                2019-05-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/05/21/CVE-2019-5765分析/" class="leancloud_visitors" data-flag-title="CVE-2019-5765分析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          简述CVE-2019-5765的原理比较简单。Chrome Android客户端注册了一个broadcast receiver, 当接收到(app_package)_GPU_PROFILER_START广播后，会开启trace, 并将所有的url请求和header(不包含cookie)保存在文件中。
+然而，这个receiver未做好权限控制，导致任意第三方应用都可以发送该广播开启chrome的trace,而且还可以指定trace log的保存路径，恶意应用通过读取trace log文件可以窃取用户所有的浏览记录。
+影响范围该漏洞影响所有chrome内核版本小于72.0.3626.81的浏览器，例如webview、第三方浏览器等等。
+通常，该漏洞的利用需要攻击者在用户手机上安装一个恶意apk，通过发送广播可以获取目标浏览器或webview上所有的浏览记录，以及用户的登录凭据（例如Oauth token, header里的敏感token）等。
+PoC
+发送广播开启trace
+1adb shell am broadcast -a com.android.chrome.GPU_PROFILER_START
+
+在目标浏览器中打开一个页面
+
+发送广播关闭trace1adb shell am broadcast -a com.android.chrome.GPU_PROFILER_STOP
+
+
+trace log默认保存在/sdcard/Download/目录下，例如”/sdcard/Download/chrome-profile-results-2019-05-24-084507“，使用adb shell am broadcast -a com.android.chrome.GPU_PROFILER_START -e file mypath可以指定保存路径。
+漏洞修复修复方式为”只有d
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/05/21/CVE-2019-5765分析/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2019/04/23/Android-WebView白名单绕过/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1492,295 +1780,6 @@ media_rw组的进程需要绕过DAC检测
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/09/17/iPhone打开某网站重启分析/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/17/iPhone打开某网站重启分析/" itemprop="url">历史上能使iPhone设备Crash的案例</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-17T10:44:01+08:00">
-                2018-09-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/09/17/iPhone打开某网站重启分析/" class="leancloud_visitors" data-flag-title="历史上能使iPhone设备Crash的案例">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          历史上的iPhone crash事件1. 2018年5月，点击黑点表情卡死https://baijiahao.baidu.com/s?id=1600048067011062679&amp;wfr=spider&amp;for=pc 影响iOS 10/11
-2. 2018年1月 chaiOS bughttps://www.idownloadblog.com/2018/01/18/a-fix-for-chaios-messages-bug-will-arrive-next-week/  
-影响 iOS 10 - 11.2.5
-
-3. 2017年1月，发送“白旗+0+彩虹”表情卡死https://www.leiphone.com/news/201701/GDXeBJxyggxGoe7O.html iOS 10.0到10.2.1
-4. 2017年5月，gif导致iPhone重启https://www.leiphone.com/news/201705/pUQ6Rzdo26OHWgm7.html
-5. 2016年，一段美拍视频导致iPhone崩溃https://www.zhihu.com/question/51630274
-6. 2015年5月，“Effective Power” Unicode解码https://metro.co.uk/2015/05/27/theres-a-way-of-crashing-someones-iphone-with-a-text-message-5217671/
-7. 2018年，打开某网站Crashhttps://www.bleepingcomputer.com/news/security/new-css-attack-restarts-an-iphone-or-freezes-a-mac/
-概述使用iPhone打开https://xssle.com
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/09/17/iPhone打开某网站重启分析/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/09/07/CVE-2018-9489分析/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/07/CVE-2018-9489分析/" itemprop="url">CVE-2018-9489分析</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-07T15:34:01+08:00">
-                2018-09-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/09/07/CVE-2018-9489分析/" class="leancloud_visitors" data-flag-title="CVE-2018-9489分析">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          概述CVE-2018-9489是一个很简单，很鸡肋的漏洞，但漏洞无贵贱，在一些特殊的场景中往往会利用这些漏洞完成不可思议的利用。
-简而言之，CVE-2018-9489这个漏洞就是一个0权限的app可以读到系统的mac地址、wifi信息，而这些信息如果是一个普通的app去读取的话是需要申请权限的。
-CVE-2018-9489漏洞通过监听NETWORK_STATE_CHANGED_ACTION和WIFI_P2P_THIS_DEVICE_CHANGED_ACTION这两个广播来获得这些信息。
-漏洞分析Android系统通过WifiManager.NETWORK_STATE_CHANGED_ACTION和WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION这两个广播发送系统的MAC地址、BSSID、wifi名称、IP地址、DNS等信息。
-正常情况下，通过WifiManager类访问这些信息时，需要注册“ACCESS_WIFI_STATE”权限。我们知道搜集了mac地址和BSSID信息时，就可以进行wifi定位，而正常的wifi定位时需要注册“ACCESS_FINE_LOCATION” 和 “ACCESS_COARSE_LOCATION”权限的。
-此外，Android为了数据隐私，从这个6.0版本开始， Android 移除了通过 WiFi 和蓝牙 API 来在应用程序中可编程的访问本地硬件标示符。现在 WifiInfo.getMacAddress() 和 BluetoothAdapter.getAddress() 方法都将返回 “02:00:00:00:00:00”。
-然而通过监听系统广播的方式，一个普通App可以不用申请任何权限去获得这些信息。当然，如上所述，利用CVE-2018-9489可以进行wifi定位、读取MAC地址、内网扫
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/09/07/CVE-2018-9489分析/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1831,7 +1830,7 @@ CVE-2018-9489漏洞通过监听NETWORK_STATE_CHANGED_ACTION和WIFI_P2P_THIS_DEVI
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-count">82</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

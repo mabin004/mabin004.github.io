@@ -296,6 +296,143 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/02/06/Android直接执行so里的函数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/06/Android直接执行so里的函数/" itemprop="url">Android直接执行so里的函数</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-06T21:04:48+08:00">
+                2018-02-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/02/06/Android直接执行so里的函数/" class="leancloud_visitors" data-flag-title="Android直接执行so里的函数">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960#include &lt;stdio.h&gt;#include &lt;stdlib.h&gt;#include &lt;dlfcn.h&gt;int main(int argc, char *argv[])&#123;    //decrypt_db in.db out.db key	//char key_in[256] = "thMSot/QNM/iFsDVNksPtXHiqi0wxjD0m2SMLipLEQ4=";    char *in_db = argv[1];    char *out_db = argv[2];    char *key_in = argv[3];	char key_out[256] = &#123;0&#125;;	void *p;    void (*key_func)(char *, char *);    void (*decrypt)(char *, char *, char *);    //dlopen    p=dlopen("./libdatabase_sqlcrypto.so",RTLD_NOW);    if(p==NULL)    &#123;        printf("dlopen error!\n");        exit(0);    &#125;    else        printf("dlopen ok!\n");    //dlsym aes_decrypt_key128    key_func=dlsym(p, "aes_decrypt_key128");    key_f
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/02/06/Android直接执行so里的函数/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/01/24/xmlHttpRequest读取本地文件/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1574,151 +1711,6 @@ PDU举例
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/09/Android-AIDL笔记/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/09/Android-AIDL笔记/" itemprop="url">Android AIDL笔记</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-09T17:10:52+08:00">
-                2017-12-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/12/09/Android-AIDL笔记/" class="leancloud_visitors" data-flag-title="Android AIDL笔记">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          在Android系统中，通常一个进程不能访问其它进程的内存。AIDL(Android Interface definition language)允许定义客户端和服务端都同意为了彼此之间的通信使用进程间通信（IPC）的编程接口，其本质是用Binder实现的。
-以下为一个简单的AIDL实例
-服务端1.新建AIDL文件首先用Android Studio 新建一个Android工程，这里命名为com.example.AIDL_Server。在工程目录下，“右键“-&gt;”New”-&gt;”AIDL File”,这里接口命名为“MyAidl”，每个.aidl文件必须定义一个接口并且只需要接口声明。
-这里定义接口方法为Add，返回客户端输入的两个数之和。MyAidl.aidl文件如下：
-12345package com.example.aidl_server.myapplication;interface MyAidl &#123;		int Add(int a,int b);&#125;
-接着Make一下，自动会生成对应的Java文件，生成的文件名和.aidl文件名匹配，但扩展名为.java，本质为Binder实现。
-###2.实现接口上一步定义好了接口和Add方法，需要进一步实现。新建一个Service，在Service中新建一个内部类MyAidl.Stub,在该类中实现Add接口。
-3.对外暴漏接口在Service中的onBind函数中返回接口，另外还需注意在manifest文件中声明Service接口，代码如下：
-123456789101112131415161718	public class Add extends Service &#123;    private MyAidl.Stub mRemote = new MyAidl.Stub()&#123;       
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/12/09/Android-AIDL笔记/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1769,7 +1761,7 @@ PDU举例
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-count">82</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
