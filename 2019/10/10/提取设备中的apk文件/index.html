@@ -87,7 +87,7 @@
 <meta property="og:description" content="测试的时候经常需要从设备中提取apk文件，通常情况下，普通apk安装包位于/data/app/目录下，系统apk位于/system/app或/system/priv-app/目录下，结合包名就可以找到apk文件的路径，由于全局可读，所以直接dump出来就可以。 Android 8.0之后，apk文件的路径添加了随机字符，例如“/data/app/com.tencent.mobileqq-onrUh">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://mabin004.github.io/images/pasted-198.png">
-<meta property="og:updated_time" content="2019-12-25T07:20:18.000Z">
+<meta property="og:updated_time" content="2021-02-15T08:48:45.300Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="提取设备中的apk文件">
 <meta name="twitter:description" content="测试的时候经常需要从设备中提取apk文件，通常情况下，普通apk安装包位于/data/app/目录下，系统apk位于/system/app或/system/priv-app/目录下，结合包名就可以找到apk文件的路径，由于全局可读，所以直接dump出来就可以。 Android 8.0之后，apk文件的路径添加了随机字符，例如“/data/app/com.tencent.mobileqq-onrUh">
@@ -393,6 +393,7 @@
 <li><p>pm list packages keywords<br>匹配关键字的包名</p>
 </li>
 </ul>
+<p>提取所有可执行文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find / 2&gt;/dev/null|grep -E &apos;\.jar|\.apk|\.so|\.dex&apos; | xargs grep &quot;xxxx&quot;</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -495,7 +496,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">82</span>
+                  <span class="site-state-item-count">84</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -547,7 +548,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

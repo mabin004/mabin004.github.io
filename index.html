@@ -296,6 +296,315 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2021/02/19/r2frida使用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2021/02/19/r2frida使用/" itemprop="url">r2frida使用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-02-19T16:17:45+08:00">
+                2021-02-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2021/02/19/r2frida使用/" class="leancloud_visitors" data-flag-title="r2frida使用">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          一、简介radare2和frida的结合体，多用于native代码的hook和调试。参考：https://github.com/nowsecure/r2frida
+二、安装
+先安装radare2, 参考https://github.com/radareorg/radare2
+r2pm -ci r2frida
+
+三、使用这里列举常用的命令，更详细操作参考r2wiki https://r2wiki.readthedocs.io/en/latest/radare-plugins/frida/
+1. 用r2frida开启调试现在搜到的教程一般是较老的使用方式，运行r2 “frida://?”查看最新使用方法：
+分为local、usb和remote三种：
+调试手机的APP，这里使用:
+
+spawn模式 1r2 frida://spawn/usb//com.tencent.mm
+
+
+使用spawn模式，需要运行”\dc“实现进程resume(r2frida命令以 =! 或 \ 为前缀，后边加问号可以查看命令帮助，例如\?，=!?, dc表示continue断点或resume进程)
+
+attach模式 1r2 frida://attach/usb//com.tencent.mm
+
+
+2. 内存搜索1\/ keyword (注意有空格)
+
+例如在微信进程搜索”\/ fuck Xiao Mi“
+
+
+
+查看内存具体位置1x @ 地址  (x 是 px 命令的简写，这个命令作用是show hexdump)
+
+
+
+
+格式化输出
+
+
+3. dd应dynamic的意思，主要实现动态调试的功能,常见的命令如下：1234567891011121314151617181920212223242526272829303132333435363738d.                         Star
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2021/02/19/r2frida使用/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2020/12/28/Android常见加密算法实现/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/12/28/Android常见加密算法实现/" itemprop="url">Android常见加密算法实现</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-12-28T20:10:04+08:00">
+                2020-12-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2020/12/28/Android常见加密算法实现/" class="leancloud_visitors" data-flag-title="Android常见加密算法实现">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          逆向的时候，经常会遇到各种加密算法，google查起来比较乱，这里整理下。
+编码：base64、哈希算法：md5、sha-1、sha-256对称加密：AES、DES、3DES非对称加密：RSA
+一、常见算法的Android实现base6412345678//编码byte[] data = text.getBytes(&quot;UTF-8&quot;);String base64 = Base64.encodeToString(data, Base64.DEFAULT);//解码String x = &quot;&quot;byte[] data = Base64.decode(x, Base64.DEFAULT);String text = new String(data, &quot;UTF-8&quot;);
+md5、sha-1、sha-256写法都一样，区别在于MessageDigest.getInstance(“MD5”)指明要使用的算法，1234567891011121314151617181920fun md5(str: String): String &#123;    val digest = MessageDigest.getInstance(&quot;MD5&quot;)    val result = digest.digest(str.toByteArray())    //没转16进制之前是16位    println(&quot;result$&#123;result.size&#125;&quot;)    //转成16进制后是32字节    return toHex(result)&#125;fun sha1(str:String): String &#123;    val digest = MessageDigest.getInsta
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/12/28/Android常见加密算法实现/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2020/08/13/objection操作/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1451,356 +1760,12 @@ pm list packages -3列出所有的第三方APP
 pm list packages keywords匹配关键字的包名
 
 
+提取所有可执行文件：1find / 2&gt;/dev/null|grep -E &apos;\.jar|\.apk|\.so|\.dex&apos; | xargs grep &quot;xxxx&quot;
 
           
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2019/10/10/提取设备中的apk文件/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2019/07/05/自制甲醛测试仪/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/07/05/自制甲醛测试仪/" itemprop="url">自制甲醛测试仪</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-05T17:03:00+08:00">
-                2019-07-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/07/05/自制甲醛测试仪/" class="leancloud_visitors" data-flag-title="自制甲醛测试仪">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          因家里装修，自制了一个甲醛测试仪，在此记录下主要过程。
-1.材料：
-1.树莓派Zero W
-2.ZE08-CH2O传感器（UART接口）
-3.ssd1306 128*64 I2C接口
-
-其中，CH2O传感器是核心部件，主要用来采集甲醛含量。树莓派用来读取传感器上的数据，ssd1306用来显示数据。
-最终效果如下图：
-
-2.接线方式一、 树莓派Zero W引脚：
-
-二、 ZE08引脚
-
-ze08接树莓派：
-
-
-
-ZE08
-RpiGPIO
-
-
-
-
-Pin4(5V)
-Pin2(5V)
-
-
-Pin3(GND)
-Pin6(GND)
-
-
-Pin6(UART-TxD)
-Pin10(UART-RxD)
-
-
-
-三、 ssd1306 引脚
-
-ssd1306接树莓派（IIC协议）：
-
-
-
-OLED
-RpiGPIO
-
-
-
-
-VCC
-Pin1(3.3V)
-
-
-SDA
-Pin3(SDA)
-
-
-SCL
-Pin5(SCL)
-
-
-GND
-Pin9(GND）
-
-
-
-3.代码代码1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465import serialimport timefrom time import sleepimport Adafruit_SSD1306from PIL import Imagefrom PIL import ImageDrawfrom PIL import ImageFontimport subprocessser=serial.Serial(&quot;/dev/serial0&quot;,9600)#init displaydisp = Adafruit_SSD1306.SSD1306_12
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/07/05/自制甲醛测试仪/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2019/06/27/Android上利用Strace跟踪系统调用/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/06/27/Android上利用Strace跟踪系统调用/" itemprop="url">Android上利用strace跟踪系统调用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-27T11:49:00+08:00">
-                2019-06-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/06/27/Android上利用Strace跟踪系统调用/" class="leancloud_visitors" data-flag-title="Android上利用strace跟踪系统调用">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          strace 是linux下的调试利器,它被用来跟踪所有的系统调用，打印系统调用的参数和返回值，Android 也支持strace。
-安装straceAndroid系统并没有自带strace的binary，需要自己编译移植到Android设备中,在Android源码下仅编译strace模块即可1mmma -j6 external/strace
-如果不想配环境自己编译，去其他地方下载静态链接的strace binary也可以，但安全性需要自己把握，例如https://github.com/andrew-d/static-binaries/blob/master/binaries/linux/arm/strace。
-得到binary后，push到/data/local/tmp下更改权限，关闭SELinux后即可使用。12345adb push strace /data/local/tmp/adb shellandroid:/ $ chmod 777 /data/local/tmp/stracesuandroid:/ # setenforce 0
-使用strace1.attach到正在运行的进程1strace -f -p PID -o strace_log.txt
--f表示跟踪所有子进程，包括新起的进程。由于strace会打出大量的日志，所有需要进一步从日志筛选出想要的内容。
-2.在应用启动前strace试过Android官方文档中的setprop的方法，不起作用，这里采用另一种方式。主要原理是设置应用启动后等待调试，然后运行strace，再调试应用即可。12345am set-debug-app -w com.package.nameam start com.package.name/com.path.to.MainActivity // 或者手动打开appps -A | gr
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/06/27/Android上利用Strace跟踪系统调用/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1888,7 +1853,7 @@ Pin9(GND）
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">82</span>
+                  <span class="site-state-item-count">84</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1940,7 +1905,7 @@ Pin9(GND）
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

@@ -296,6 +296,298 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/10/手机短信PDU格式分析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/10/手机短信PDU格式分析/" itemprop="url">手机短信PDU格式分析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-10T15:51:00+08:00">
+                2017-12-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/12/10/手机短信PDU格式分析/" class="leancloud_visitors" data-flag-title="手机短信PDU格式分析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          Text模式和PDU模式目前，发送短消息常用Text和PDU(Protocol Data Unit，协议数据单元)模式。使用Text模式收发短信代码简单，实现起来十分容易，但最大的缺点是不能收发中文短信；而PDU模式不仅支持中文短信，也能发送英文短信。
+PDU模式收发短信可以使用3种编码：7-bit、8-bit和UCS2编码。7-bit编码用于发送普通的ASCII字符，8-bit编码通常用于发送数据消息，UCS2编码用于发送Unicode字符。一般的PDU编码由A B C D E F G H I J K L M十三项组成。
+
+A：短信息中心地址长度，2位十六进制数(1字节)。B：短信息中心号码类型，2位十六进制数。C：短信息中心号码，B+C的长度将由A中的数据决定。D：文件头字节，2位十六进制数。E：信息类型，2位十六进制数。F：被叫号码长度，2位十六进制数。G：被叫号码类型，2位十六进制数，取值同B。H：被叫号码，长度由F中的数据决定。I：协议标识，2位十六进制数。J：数据编码方案，2位十六进制数。K：有效期，2位十六进制数。L：用户数据长度，2位十六进制数。M：用户数据，其长度由L中的数据决定。J中设定采用UCS2编码，这里是中英文的Unicode字符。
+
+PDU举例
+例1发送：SMSC号码是+8613800250500，对方号码是13693092030，消息内容是“Hello!”。从手机发出的PDU串可以是108 91 68 31 08 20 05 05 F0 11 00 0D 91 68 31 96 03 29 30 F0 00 00 00 06 C8 32 9B FD 0E 01
+
+
+对照规范，具体分析：SMSC#+8613800250500Sender:+8613693092030TP_PID:00TP_DCS:00TP_DCS-popis:Uncompress
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/12/10/手机短信PDU格式分析/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/09/cve-2014-7911/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/09/cve-2014-7911/" itemprop="url">cve-2014-7911</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-09T17:13:00+08:00">
+                2017-12-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/12/09/cve-2014-7911/" class="leancloud_visitors" data-flag-title="cve-2014-7911">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          0x00 简介CVE-2014-7911是安卓上序列化的提权漏洞，该漏洞允许恶意应用从普通应用权限提权到system用户执行命令。漏洞的成因源于在安卓系统（&lt;5.0）中，java.io.ObjectInputStream并未校验输入的java对象是否是实际可序列化的。攻击者因此可以构建一个不可序列化的java对象实例，恶意构建其成员变量，当该对象实例被ObjectInputStream反序列化时，将发生类型混淆，对象的Field被视为由本地代码处理的指针，使攻击者获得控制权
+0x01 漏洞分析向system_server传入的不可序列化的android.os.BinderProxy对象实例，其成员变量在反序列化时发生类型混淆，由于BinderProxy的finalize方法包含native代码，于是在本地代码执行时将成员变量强制转换为指针，注意到成员变量是攻击者可控的，也就意味着攻击者可以控制该指针，使其指向攻击者可控的地址空间，最终获得在system_server（uid=1000）中执行代码的权限。
+下面主要结合POC对漏洞进行详细分析。
+
+构建可序列化对象
+ 12345public class BinderProxy implements Serializable &#123;	private static final long serialVersionUID = 0;	private int mObject = 0x1337beef;	private int mOrgue = 0x1337beef;	&#125;
+ mOrgue和mObject的类型参照源码（frameworks/base/core/java/android/os/Binder.java）
+
+
+123Bundle bundle = new Bundle();AAdroid.os.Binder
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/12/09/cve-2014-7911/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/12/09/Android-AIDL笔记/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1511,298 +1803,6 @@ apksigner位于SDK目录的build-tools目录下。必须说明的是，v2签名�
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/10/10/下载GooglePlay上的apk文件/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/10/10/下载GooglePlay上的apk文件/" itemprop="url">下载GooglePlay上的apk文件</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-10T15:30:00+08:00">
-                2017-10-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/10/10/下载GooglePlay上的apk文件/" class="leancloud_visitors" data-flag-title="下载GooglePlay上的apk文件">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          GooglePlay上的apk文件需要在设备上登录google账户点击install才能安装，有时候为了方便需要直接在PC端直接下载，而网页上并没有下载选项。
-
-一些第三方的网站可以方便下载GooglePlay上的apk文件，例如：
-
-evozi    https://apps.evozi.com/apk-downloader/
-apkcombo    https://apkcombo.com/
-apkmirror    https://www.apkmirror.com/
-
-只需要把apk在GooglePlay上的url粘贴到这些网站上，就可以获取下载链接。
-
-          
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/10/10/下载GooglePlay上的apk文件/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/08/01/ptrace/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/01/ptrace/" itemprop="url">ptrace</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-01T22:02:00+08:00">
-                2017-08-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/08/01/ptrace/" class="leancloud_visitors" data-flag-title="ptrace">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          关于ptraceptrace可以用来监控和控制一个进程的运行，获取或更改目标进程的内存和寄存器，它主要用来进行断点调试或跟踪，
-参数ptrace函数体123#include &lt;sys/ptrace.h&gt;long ptrace(enum __ptrace_request request, pid_t pid, void *addr, void *data);
-
-enum __ptrace_request request：指示了ptrace要执行的命令。
-pid_t pid: 指示ptrace要跟踪的进程。
-void *addr: 指示要监控的内存地址。
-void *data: 存放读取出的或者要写入的数据。
-
-ptrace的第一个参数决定了其行为，常用到的有如下几种：12345678910111213141516PTRACE_ATTACH	attach进程PTRACE_TRACEME	子进程让父进程跟踪自己PTRACE_PEEKTEXT	从内存地址中读取一个wordPTRACE_PEEKDATA	同上PTRACE_PEEKUSER	从USER区域中读取一个wordPTRACE_POKETEXT	往内存地址中写入一个wordPTRACE_POKEDATA	同上PTRACE_POKEUSER	往USER区写入一个word PTRACE_GETREGS	读取寄存器PTRACE_GETFPREGS	同上PTRACE_SETREGS	写入寄存器 PTRACE_SETFPREGS	同上 PTRACE_CONT	继续执行 可同时向子进程交付指定的信号PTRACE_SYSCALL	继续执行 进入系统调用读取参数，退出系统调用时读取返回值PTRACE_SINGLESTEP	继续执行 单步调试PTRACE_DETACH	deattach
-ptrace检测进程被ptrace后通常会有一
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/08/01/ptrace/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1853,7 +1853,7 @@ ptrace检测进程被ptrace后通常会有一
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">82</span>
+                  <span class="site-state-item-count">84</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1905,7 +1905,7 @@ ptrace检测进程被ptrace后通常会有一
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

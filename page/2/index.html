@@ -296,6 +296,351 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2019/07/05/自制甲醛测试仪/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/05/自制甲醛测试仪/" itemprop="url">自制甲醛测试仪</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-05T17:03:00+08:00">
+                2019-07-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/07/05/自制甲醛测试仪/" class="leancloud_visitors" data-flag-title="自制甲醛测试仪">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          因家里装修，自制了一个甲醛测试仪，在此记录下主要过程。
+1.材料：
+1.树莓派Zero W
+2.ZE08-CH2O传感器（UART接口）
+3.ssd1306 128*64 I2C接口
+
+其中，CH2O传感器是核心部件，主要用来采集甲醛含量。树莓派用来读取传感器上的数据，ssd1306用来显示数据。
+最终效果如下图：
+
+2.接线方式一、 树莓派Zero W引脚：
+
+二、 ZE08引脚
+
+ze08接树莓派：
+
+
+
+ZE08
+RpiGPIO
+
+
+
+
+Pin4(5V)
+Pin2(5V)
+
+
+Pin3(GND)
+Pin6(GND)
+
+
+Pin6(UART-TxD)
+Pin10(UART-RxD)
+
+
+
+三、 ssd1306 引脚
+
+ssd1306接树莓派（IIC协议）：
+
+
+
+OLED
+RpiGPIO
+
+
+
+
+VCC
+Pin1(3.3V)
+
+
+SDA
+Pin3(SDA)
+
+
+SCL
+Pin5(SCL)
+
+
+GND
+Pin9(GND）
+
+
+
+3.代码代码1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465import serialimport timefrom time import sleepimport Adafruit_SSD1306from PIL import Imagefrom PIL import ImageDrawfrom PIL import ImageFontimport subprocessser=serial.Serial(&quot;/dev/serial0&quot;,9600)#init displaydisp = Adafruit_SSD1306.SSD1306_12
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/07/05/自制甲醛测试仪/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2019/06/27/Android上利用Strace跟踪系统调用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/27/Android上利用Strace跟踪系统调用/" itemprop="url">Android上利用strace跟踪系统调用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-27T11:49:00+08:00">
+                2019-06-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/06/27/Android上利用Strace跟踪系统调用/" class="leancloud_visitors" data-flag-title="Android上利用strace跟踪系统调用">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          strace 是linux下的调试利器,它被用来跟踪所有的系统调用，打印系统调用的参数和返回值，Android 也支持strace。
+安装straceAndroid系统并没有自带strace的binary，需要自己编译移植到Android设备中,在Android源码下仅编译strace模块即可1mmma -j6 external/strace
+如果不想配环境自己编译，去其他地方下载静态链接的strace binary也可以，但安全性需要自己把握，例如https://github.com/andrew-d/static-binaries/blob/master/binaries/linux/arm/strace。
+得到binary后，push到/data/local/tmp下更改权限，关闭SELinux后即可使用。12345adb push strace /data/local/tmp/adb shellandroid:/ $ chmod 777 /data/local/tmp/stracesuandroid:/ # setenforce 0
+使用strace1.attach到正在运行的进程1strace -f -p PID -o strace_log.txt
+-f表示跟踪所有子进程，包括新起的进程。由于strace会打出大量的日志，所有需要进一步从日志筛选出想要的内容。
+2.在应用启动前strace试过Android官方文档中的setprop的方法，不起作用，这里采用另一种方式。主要原理是设置应用启动后等待调试，然后运行strace，再调试应用即可。12345am set-debug-app -w com.package.nameam start com.package.name/com.path.to.MainActivity // 或者手动打开appps -A | gr
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/06/27/Android上利用Strace跟踪系统调用/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2019/06/17/o-do-list/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1482,304 +1827,6 @@ IMSI与IMEI权限相同，获取代码：1234//权限 &lt;uses-permissionandroid
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/11/01/远程打挂所有的apple设备-CVE-2018-4407-分析/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/01/远程打挂所有的apple设备-CVE-2018-4407-分析/" itemprop="url">远程打挂所有的apple设备 — CVE-2018-4407分析</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-01T14:15:44+08:00">
-                2018-11-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/11/01/远程打挂所有的apple设备-CVE-2018-4407-分析/" class="leancloud_visitors" data-flag-title="远程打挂所有的apple设备 — CVE-2018-4407分析">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          简述Kevin Backhouse 发现了一个iOS和mac OS的内核漏洞 —— CVE-2018-4407，该漏洞出现在XNU内核中，可以远程攻击使所有的apple设备挂掉。
-漏洞演示demo：https://www.youtube.com/watch?v=aV7yEemjexk
-漏洞已经上报给了Apple并在iOS12（9月17日）和macOS Mojave（9月24日）系统更新中已经修复完成。该漏洞影响以下版本的设备：
-
-iOS 11以及之前的所有设备 (upgrade to iOS 12)
-macOS High Sierra 10.13.6以及以下所有设备(patched in security update 2018-001)
-macOS Sierra 10.12.6以及之前所有的设备(patched in security update 2018-005)
-OS X El Capitan以及之前所有设备
-
-漏洞分析漏洞出现在icmp_error代码中, (bsd/netinet/ip_icmp.c:339):
-我们知道，ICMP报文主要有两大功能：查询报文和差错报文。在互联网传输过程中，IP数据报难免会出现差错，通常出现差错时处理方法就是丢弃，但一般出现差错后，接收方会发送ICMP报文给主机，告诉它一些差错信息，而icmp_error就是这一部分的实现。
-产生漏洞的代码为：1m_copydata(n, 0, icmplen, (caddr_t)&amp;icp-&gt;icmp_ip);
-m_copydata为一个简单的指定长度的数据拷贝，其实现如下：
-icmp_error中的m_copydata是将出错ip数据包的包头复制到icmp的消息体中，其中n为接收到的出错的ip数据包，icp-&gt;icmp_ip为要拷贝的目的地址，如果n的包头过大，超过了icp分
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/11/01/远程打挂所有的apple设备-CVE-2018-4407-分析/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/09/17/USB攻击android手机/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/17/USB攻击android手机/" itemprop="url">CVE-2018-9488 - 从zygote到init</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-17T21:56:12+08:00">
-                2018-09-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/09/17/USB攻击android手机/" class="leancloud_visitors" data-flag-title="CVE-2018-9488 - 从zygote到init">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          概述上一篇文章中利用cve-2018-9445实现了Android系统在mount外设时的目录穿越CVE-2018-9445 —— Android挂载外设的目录穿越，由于字符长度限制，只有5个字符可控，利用极其有限。
-PJ0的Jann Horn，也就是漏洞的原作者对该漏洞进一步分析，发现了更精巧的利用方法，能够基于该漏洞进一步从zygote提权到init，Goole为这一新的利用分配了新的cve编号 —— CVE-2018-9488。
-漏洞分析cve-2018-9445能够利用的前提是USB设备有MBR分区表，且格式为vfat，这样内核的vfat文件系统才会mount。此外，如需进一步利用，还需要绕过以下几种安全措施：
-
-路径穿越5个字符的限制
-SELinux限制了vold进程的操作
-权限限制，如果目录权限不是0700，fs_prepare_dir和chmod会失败
-vfat文件系统限制。vfat格式的U盘被mount后，所有文件会被标记为u:object_r:vfat:s0，这意味着即使mount后的目录为/system或/data等一些系统级别的目录，SELinux Context下的进程（如zygote和system_server）是无法和其交互的。
-media_rw组的进程需要绕过DAC检测
-
-漏洞利用1.伪造一个USB设备如上篇文章所述，blkid支持各种不同的文件系统，在解析文件头得到type, label和 UUID之后，fsck_msdos会再次读取文件，检测文件系统是否为vfat格式，我们只需要构造一个动态可控的USB设备使系统在两次读取信息时，返回不同的值即可满足这两种条件。即blkid在读取时，构造一个长字符串的label,使blkid认为是romfs格式；fsck_msdos在读取时，再修改自己成为一个vfat格式的USB设备。
-这里使用一个树莓派Z
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/09/17/USB攻击android手机/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1830,7 +1877,7 @@ media_rw组的进程需要绕过DAC检测
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">82</span>
+                  <span class="site-state-item-count">84</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1882,7 +1929,7 @@ media_rw组的进程需要绕过DAC检测
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

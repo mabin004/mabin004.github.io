@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, m4bln" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="逆向的时候，经常会遇到各种加密算法，google查起来比较乱，这里整理下。 编码：base64、哈希算法：md5、sha-1、sha-256对称加密：AES、DES、3DES非对称加密：RSA 一、常见算法的Android实现base6412345678//编码byte[] data = text.getBytes(&amp;quot;UTF-8&amp;quot;);String base64 = Base64">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android常见加密算法实现">
+<meta property="og:url" content="https://mabin004.github.io/2020/12/28/Android常见加密算法实现/index.html">
+<meta property="og:site_name" content="m4bln">
+<meta property="og:description" content="逆向的时候，经常会遇到各种加密算法，google查起来比较乱，这里整理下。 编码：base64、哈希算法：md5、sha-1、sha-256对称加密：AES、DES、3DES非对称加密：RSA 一、常见算法的Android实现base6412345678//编码byte[] data = text.getBytes(&amp;quot;UTF-8&amp;quot;);String base64 = Base64">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-12-29T07:27:44.388Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android常见加密算法实现">
+<meta name="twitter:description" content="逆向的时候，经常会遇到各种加密算法，google查起来比较乱，这里整理下。 编码：base64、哈希算法：md5、sha-1、sha-256对称加密：AES、DES、3DES非对称加密：RSA 一、常见算法的Android实现base6412345678//编码byte[] data = text.getBytes(&amp;quot;UTF-8&amp;quot;);String base64 = Base64">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'SXXZO8IPW0',
+      apiKey: 'b9723880e3b66475126bdc98a4bb9380',
+      indexName: 'm4bln',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到任何搜索结果: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://mabin004.github.io/2020/12/28/Android常见加密算法实现/"/>
+
+
+
+
+
+  <title>Android常见加密算法实现 | m4bln</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">m4bln</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-hint">
+          <a href="/hint/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            hint
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2020/12/28/Android常见加密算法实现/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android常见加密算法实现</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-12-28T20:10:04+08:00">
+                2020-12-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2020/12/28/Android常见加密算法实现/" class="leancloud_visitors" data-flag-title="Android常见加密算法实现">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>逆向的时候，经常会遇到各种加密算法，google查起来比较乱，这里整理下。</p>
+<p>编码：base64、<br>哈希算法：md5、sha-1、sha-256<br>对称加密：AES、DES、3DES<br>非对称加密：RSA</p>
+<h2 id="一、常见算法的Android实现"><a href="#一、常见算法的Android实现" class="headerlink" title="一、常见算法的Android实现"></a>一、常见算法的Android实现</h2><h3 id="base64"><a href="#base64" class="headerlink" title="base64"></a>base64</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//编码</span><br><span class="line">byte[] data = text.getBytes(&quot;UTF-8&quot;);</span><br><span class="line">String base64 = Base64.encodeToString(data, Base64.DEFAULT);</span><br><span class="line"></span><br><span class="line">//解码</span><br><span class="line">String x = &quot;&quot;</span><br><span class="line">byte[] data = Base64.decode(x, Base64.DEFAULT);</span><br><span class="line">String text = new String(data, &quot;UTF-8&quot;);</span><br></pre></td></tr></table></figure>
+<h3 id="md5、sha-1、sha-256"><a href="#md5、sha-1、sha-256" class="headerlink" title="md5、sha-1、sha-256"></a>md5、sha-1、sha-256</h3><p>写法都一样，区别在于MessageDigest.getInstance(“MD5”)指明要使用的算法，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">fun md5(str: String): String &#123;</span><br><span class="line">    val digest = MessageDigest.getInstance(&quot;MD5&quot;)</span><br><span class="line">    val result = digest.digest(str.toByteArray())</span><br><span class="line">    //没转16进制之前是16位</span><br><span class="line">    println(&quot;result$&#123;result.size&#125;&quot;)</span><br><span class="line">    //转成16进制后是32字节</span><br><span class="line">    return toHex(result)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun sha1(str:String): String &#123;</span><br><span class="line">    val digest = MessageDigest.getInstance(&quot;SHA-1&quot;)</span><br><span class="line">    val result = digest.digest(str.toByteArray())</span><br><span class="line">    return toHex(result)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun sha256(str:String): String &#123;</span><br><span class="line">    val digest = MessageDigest.getInstance(&quot;SHA-256&quot;)</span><br><span class="line">    val result = digest.digest(str.toByteArray())</span><br><span class="line">    return toHex(result)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="DES"><a href="#DES" class="headerlink" title="DES"></a>DES</h3><p>这里DES加解密的区别只有一点，<br>cipher.init(Cipher.DECRYPT_MODE, securekey, sr)，Cipher.DECRYPT_MODE为解密，Cipher.ENCRYPT_MODE为加密。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">//DES加密</span><br><span class="line">	//DES加密的key必须是8个字节</span><br><span class="line">	String key=&quot;mykeysss&quot;; </span><br><span class="line">    // 生成一个可信任的随机数</span><br><span class="line">    SecureRandom sr = new SecureRandom();</span><br><span class="line"></span><br><span class="line">    // 从原始密钥数据创建DESKeySpec对象</span><br><span class="line">    DESKeySpec dks = new DESKeySpec(key.getBytes());</span><br><span class="line"></span><br><span class="line">    // 创建一个密钥工厂，然后用它把DESKeySpec转换成SecretKey对象</span><br><span class="line">    SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(&quot;DES&quot;);</span><br><span class="line">    SecretKey securekey = keyFactory.generateSecret(dks);</span><br><span class="line"></span><br><span class="line">    // Cipher对象实际完成加密操作</span><br><span class="line">    Cipher cipher = Cipher.getInstance(&quot;DES&quot;); //默认为DES/ECB/PKCS5Padding</span><br><span class="line"></span><br><span class="line">    // 用密钥初始化Cipher对象</span><br><span class="line">    cipher.init(Cipher.ENCRYPT_MODE, securekey, sr);</span><br><span class="line"></span><br><span class="line">    return cipher.doFinal(data);</span><br><span class="line"></span><br><span class="line">//DES解密</span><br><span class="line">	//DES解密的key必须是8个字节</span><br><span class="line">	String key=&quot;mykeysss&quot;;</span><br><span class="line">    // 生成一个可信任的随机数源</span><br><span class="line">    SecureRandom sr = new SecureRandom();</span><br><span class="line"></span><br><span class="line">    // 从原始密钥数据创建DESKeySpec对象</span><br><span class="line">    DESKeySpec dks = new DESKeySpec(key.getBytes());</span><br><span class="line"></span><br><span class="line">    // 创建一个密钥工厂，然后用它把DESKeySpec转换成SecretKey对象</span><br><span class="line">    SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(&quot;DES&quot;);</span><br><span class="line">    SecretKey securekey = keyFactory.generateSecret(dks);</span><br><span class="line"></span><br><span class="line">    // Cipher对象实际完成解密操作</span><br><span class="line">    Cipher cipher = Cipher.getInstance(&quot;DES&quot;); //默认为DES/ECB/PKCS5Padding</span><br><span class="line"></span><br><span class="line">    // 用密钥初始化Cipher对象</span><br><span class="line">    cipher.init(Cipher.DECRYPT_MODE, securekey, sr);</span><br><span class="line"></span><br><span class="line">    return cipher.doFinal(data);</span><br></pre></td></tr></table></figure></p>
+<h3 id="AES"><a href="#AES" class="headerlink" title="AES"></a>AES</h3><p>AES加解密的区别也是只有一个地方，cipher.init(Cipher.DECRYPT_MODE, skeySpec)，Cipher.DECRYPT_MODE为解密，Cipher.ENCRYPT_MODE 加密<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">//AES加密	</span><br><span class="line">    String key = &quot;mysecret&quot;;</span><br><span class="line">    byte[] raw = key.getBytes(&quot;utf-8&quot;);</span><br><span class="line">    SecretKeySpec skeySpec = new SecretKeySpec(raw, &quot;AES&quot;);</span><br><span class="line"></span><br><span class="line">    //初始化cipher 算法/模式/补码方式</span><br><span class="line">    Cipher cipher = Cipher.getInstance(&quot;AES/ECB/PKCS5Padding&quot;);</span><br><span class="line">    cipher.init(Cipher.ENCRYPT_MODE, skeySpec);</span><br><span class="line"></span><br><span class="line">    //加密</span><br><span class="line">    byte[] bytesContent;</span><br><span class="line">    byte[] enc = cipher.doFinal(bytesContent);</span><br><span class="line">    return enc;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">//AES解密</span><br><span class="line">    //key相关</span><br><span class="line">    byte[] raw = key.getBytes(&quot;utf-8&quot;);</span><br><span class="line">    SecretKeySpec skeySpec = new SecretKeySpec(raw, &quot;AES&quot;);</span><br><span class="line"></span><br><span class="line">    //&quot;算法/模式/补码方式&quot; 初始化cipher</span><br><span class="line">    Cipher cipher = Cipher.getInstance(&quot;AES/ECB/PKCS5Padding&quot;);</span><br><span class="line">    cipher.init(Cipher.DECRYPT_MODE, skeySpec);</span><br><span class="line"></span><br><span class="line">    //执行解密</span><br><span class="line">    byte[] bytesContent;</span><br><span class="line">    byte[] dec = cipher.doFinal(bytesContent);</span><br><span class="line">    return dec;</span><br></pre></td></tr></table></figure></p>
+<h3 id="RSA"><a href="#RSA" class="headerlink" title="RSA"></a>RSA</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">//秘钥长度为1024 生成公钥和私钥</span><br><span class="line">KeyPairGenerator keyPairGenerator=KeyPairGenerator.getInstance(&quot;RSA&quot;);</span><br><span class="line">keyPairGenerator.initialize(1024);</span><br><span class="line">KeyPair keyPair= keyPairGenerator.generateKeyPair();</span><br><span class="line"></span><br><span class="line">//获取公钥 私钥</span><br><span class="line">PublicKey publicKey=keyPair.getPublic();</span><br><span class="line">PrivateKey privateKey=keyPair.getPrivate();</span><br><span class="line"></span><br><span class="line">//公钥加密 java默认&quot;RSA&quot;=&quot;RSA/ECB/PKCS1Padding&quot;</span><br><span class="line">Cipher cipher=Cipher.getInstance(&quot;RSA&quot;);</span><br><span class="line">cipher.init(Cipher.ENCRYPT_MODE, publicKey);</span><br><span class="line">byte[] encBytes = cipher.doFinal(bytesData);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//私钥解密 java默认&quot;RSA&quot;=&quot;RSA/ECB/PKCS1Padding&quot;</span><br><span class="line">Cipher cipher1=Cipher.getInstance(&quot;RSA&quot;);</span><br><span class="line">cipher1.init(Cipher.DECRYPT_MODE, privateKey);</span><br><span class="line">byte[] decBytes = cipher1.doFinal(encBytes);</span><br><span class="line">Log.d(&quot;xxx&quot;,new String(decBytes));</span><br></pre></td></tr></table></figure>
+<h2 id="二、python实现"><a href="#二、python实现" class="headerlink" title="二、python实现"></a>二、python实现</h2><p>逆向时需要进行算法验证，比较讨厌java代码的写法，可以用python进行验证。</p>
+<h3 id="python-base64"><a href="#python-base64" class="headerlink" title="python base64"></a>python base64</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import base64</span><br><span class="line"></span><br><span class="line">s = &quot;mykey&quot;</span><br><span class="line"># 必须为byte类型</span><br><span class="line">encoder = base64.b64encode(s.encode(&quot;utf-8&quot;))</span><br><span class="line">print(encoder) # byte类型 b&apos;5oiR5piv5LiA5Liq5a2X56ym5Liy&apos;</span><br><span class="line">print(encoder.decode(&apos;utf-8&apos;)) # str类型 5oiR5piv5LiA5Liq5a2X56ym5Liy</span><br><span class="line"></span><br><span class="line"># 解码过程</span><br><span class="line">#参数为string类型</span><br><span class="line">s = &apos;5oiR5piv5LiA5Liq5a2X56ym5Liy&apos;</span><br><span class="line">decoder = base64.b64decode(s)</span><br><span class="line">print(decoder.decode(&apos;utf-8&apos;)) # str类型</span><br></pre></td></tr></table></figure>
+<h3 id="python-DES"><a href="#python-DES" class="headerlink" title="python DES"></a>python DES</h3><p>需要保证ECB或CBC模式、padmode与java实现一致。例如java的Cipher.getInstance(“DES”)默认为DES/ECB/PKCS5Padding模式。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">from pyDes import *</span><br><span class="line"></span><br><span class="line">def des_encrypt(s):</span><br><span class="line">    secret_key = &apos;QExW+yCC&apos;</span><br><span class="line">    iv = secret_key</span><br><span class="line">    k = des(secret_key, ECB, iv, pad=None, padmode=PAD_PKCS5)</span><br><span class="line">    en = k.encrypt(s, padmode=PAD_PKCS5)</span><br><span class="line">    return en</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def des_descrypt(s):</span><br><span class="line">    secret_key = &apos;QExW+yCC&apos;</span><br><span class="line">    iv = secret_key</span><br><span class="line">    k = des(secret_key, ECB, iv, pad=None, padmode=PAD_PKCS5)</span><br><span class="line">    de = k.decrypt(s, padmode=PAD_PKCS5)</span><br><span class="line">    return de</span><br></pre></td></tr></table></figure></p>
+<h3 id="python-AES"><a href="#python-AES" class="headerlink" title="python AES"></a>python AES</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#pip3 install pycryptodome</span><br><span class="line">from Crypto.Cipher import AES</span><br><span class="line">data = b&quot;aaaaaaa&quot;</span><br><span class="line">key = b&apos;Sixteen byte key&apos;</span><br><span class="line">cipher = AES.new(key, AES.MODE_EAX)</span><br><span class="line">nonce = cipher.nonce</span><br><span class="line">ciphertext, tag = cipher.encrypt_and_digest(data)</span><br><span class="line">print(ciphertext, tag)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">key = b&apos;Sixteen byte key&apos;</span><br><span class="line">cipher = AES.new(key, AES.MODE_EAX, nonce=nonce)</span><br><span class="line">plaintext = cipher.decrypt(ciphertext)</span><br><span class="line">try:</span><br><span class="line">    cipher.verify(tag)</span><br><span class="line">    print(&quot;The message is authentic:&quot;, plaintext)</span><br><span class="line">except ValueError:</span><br><span class="line">    print(&quot;Key incorrect or message corrupted&quot;)</span><br></pre></td></tr></table></figure>
+<h3 id="python-RSA"><a href="#python-RSA" class="headerlink" title="python RSA"></a>python RSA</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; from Crypto.PublicKey import RSA</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">&gt;&gt;&gt; key = RSA.generate(2048)</span><br><span class="line">&gt;&gt;&gt; f = open(&apos;mykey.pem&apos;,&apos;wb&apos;)</span><br><span class="line">&gt;&gt;&gt; f.write(key.export_key(&apos;PEM&apos;))</span><br><span class="line">&gt;&gt;&gt; f.close()</span><br><span class="line">...</span><br><span class="line">&gt;&gt;&gt; f = open(&apos;mykey.pem&apos;,&apos;r&apos;)</span><br><span class="line">&gt;&gt;&gt; key = RSA.import_key(f.read())</span><br></pre></td></tr></table></figure>
+<h2 id="三、openssl命令"><a href="#三、openssl命令" class="headerlink" title="三、openssl命令"></a>三、openssl命令</h2><p>使用openssl命令似乎更方便</p>
+<h3 id="base64-1"><a href="#base64-1" class="headerlink" title="base64"></a>base64</h3><p>编码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo m4bln | openssl base64</span><br></pre></td></tr></table></figure></p>
+<p>解码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo YWJjCg== | openssl base64 -d</span><br></pre></td></tr></table></figure></p>
+<h3 id="md5-sha1-sha256"><a href="#md5-sha1-sha256" class="headerlink" title="md5/sha1/sha256"></a>md5/sha1/sha256</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo abc | openssl md5</span><br><span class="line">echo abc | openssl sha1</span><br><span class="line">echo abc | openssl sha256</span><br></pre></td></tr></table></figure>
+<h3 id="des-aes-rsa"><a href="#des-aes-rsa" class="headerlink" title="des/aes/rsa"></a>des/aes/rsa</h3><p>待补充</p>
+<p>参考资料：</p>
+<ol>
+<li>android官方文档-加密 <a href="https://developer.android.com/guide/topics/security/cryptography?hl=zh-cn" target="_blank" rel="noopener">https://developer.android.com/guide/topics/security/cryptography?hl=zh-cn</a></li>
+<li>frida hook AES DES RSA 自吐算法 <a href="https://zhuanlan.zhihu.com/p/320229007" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/320229007</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/08/13/objection操作/" rel="next" title="objection操作">
+                <i class="fa fa-chevron-left"></i> objection操作
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/02/19/r2frida使用/" rel="prev" title="r2frida使用">
+                r2frida使用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">m4bln</p>
+              <p class="site-description motion-element" itemprop="description">影后入林到驿前</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">84</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、常见算法的Android实现"><span class="nav-text"><a href="#&#x4E00;&#x3001;&#x5E38;&#x89C1;&#x7B97;&#x6CD5;&#x7684;Android&#x5B9E;&#x73B0;" class="headerlink" title="&#x4E00;&#x3001;&#x5E38;&#x89C1;&#x7B97;&#x6CD5;&#x7684;Android&#x5B9E;&#x73B0;"></a>&#x4E00;&#x3001;&#x5E38;&#x89C1;&#x7B97;&#x6CD5;&#x7684;Android&#x5B9E;&#x73B0;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#base64"><span class="nav-text"><a href="#base64" class="headerlink" title="base64"></a>base64</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#md5、sha-1、sha-256"><span class="nav-text"><a href="#md5&#x3001;sha-1&#x3001;sha-256" class="headerlink" title="md5&#x3001;sha-1&#x3001;sha-256"></a>md5&#x3001;sha-1&#x3001;sha-256</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DES"><span class="nav-text"><a href="#DES" class="headerlink" title="DES"></a>DES</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AES"><span class="nav-text"><a href="#AES" class="headerlink" title="AES"></a>AES</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RSA"><span class="nav-text"><a href="#RSA" class="headerlink" title="RSA"></a>RSA</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、python实现"><span class="nav-text"><a href="#&#x4E8C;&#x3001;python&#x5B9E;&#x73B0;" class="headerlink" title="&#x4E8C;&#x3001;python&#x5B9E;&#x73B0;"></a>&#x4E8C;&#x3001;python&#x5B9E;&#x73B0;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#python-base64"><span class="nav-text"><a href="#python-base64" class="headerlink" title="python base64"></a>python base64</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#python-DES"><span class="nav-text"><a href="#python-DES" class="headerlink" title="python DES"></a>python DES</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#python-AES"><span class="nav-text"><a href="#python-AES" class="headerlink" title="python AES"></a>python AES</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#python-RSA"><span class="nav-text"><a href="#python-RSA" class="headerlink" title="python RSA"></a>python RSA</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、openssl命令"><span class="nav-text"><a href="#&#x4E09;&#x3001;openssl&#x547D;&#x4EE4;" class="headerlink" title="&#x4E09;&#x3001;openssl&#x547D;&#x4EE4;"></a>&#x4E09;&#x3001;openssl&#x547D;&#x4EE4;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#base64-1"><span class="nav-text"><a href="#base64-1" class="headerlink" title="base64"></a>base64</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#md5-sha1-sha256"><span class="nav-text"><a href="#md5-sha1-sha256" class="headerlink" title="md5/sha1/sha256"></a>md5/sha1/sha256</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#des-aes-rsa"><span class="nav-text"><a href="#des-aes-rsa" class="headerlink" title="des/aes/rsa"></a>des/aes/rsa</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">m4bln</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("AAhymnaPSbBOge9isiIUi5c8-gzGzoHsz", "79JTCuY3J33b0HodXn8nYFvn");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

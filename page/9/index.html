@@ -296,6 +296,298 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/10/10/下载GooglePlay上的apk文件/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/10/下载GooglePlay上的apk文件/" itemprop="url">下载GooglePlay上的apk文件</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-10T15:30:00+08:00">
+                2017-10-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/10/10/下载GooglePlay上的apk文件/" class="leancloud_visitors" data-flag-title="下载GooglePlay上的apk文件">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          GooglePlay上的apk文件需要在设备上登录google账户点击install才能安装，有时候为了方便需要直接在PC端直接下载，而网页上并没有下载选项。
+
+一些第三方的网站可以方便下载GooglePlay上的apk文件，例如：
+
+evozi    https://apps.evozi.com/apk-downloader/
+apkcombo    https://apkcombo.com/
+apkmirror    https://www.apkmirror.com/
+
+只需要把apk在GooglePlay上的url粘贴到这些网站上，就可以获取下载链接。
+
+          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/10/10/下载GooglePlay上的apk文件/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/08/01/ptrace/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/01/ptrace/" itemprop="url">ptrace</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-01T22:02:00+08:00">
+                2017-08-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/08/01/ptrace/" class="leancloud_visitors" data-flag-title="ptrace">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          关于ptraceptrace可以用来监控和控制一个进程的运行，获取或更改目标进程的内存和寄存器，它主要用来进行断点调试或跟踪，
+参数ptrace函数体123#include &lt;sys/ptrace.h&gt;long ptrace(enum __ptrace_request request, pid_t pid, void *addr, void *data);
+
+enum __ptrace_request request：指示了ptrace要执行的命令。
+pid_t pid: 指示ptrace要跟踪的进程。
+void *addr: 指示要监控的内存地址。
+void *data: 存放读取出的或者要写入的数据。
+
+ptrace的第一个参数决定了其行为，常用到的有如下几种：12345678910111213141516PTRACE_ATTACH	attach进程PTRACE_TRACEME	子进程让父进程跟踪自己PTRACE_PEEKTEXT	从内存地址中读取一个wordPTRACE_PEEKDATA	同上PTRACE_PEEKUSER	从USER区域中读取一个wordPTRACE_POKETEXT	往内存地址中写入一个wordPTRACE_POKEDATA	同上PTRACE_POKEUSER	往USER区写入一个word PTRACE_GETREGS	读取寄存器PTRACE_GETFPREGS	同上PTRACE_SETREGS	写入寄存器 PTRACE_SETFPREGS	同上 PTRACE_CONT	继续执行 可同时向子进程交付指定的信号PTRACE_SYSCALL	继续执行 进入系统调用读取参数，退出系统调用时读取返回值PTRACE_SINGLESTEP	继续执行 单步调试PTRACE_DETACH	deattach
+ptrace检测进程被ptrace后通常会有一
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/01/ptrace/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2017/06/13/Android反调试/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -628,7 +920,7 @@ XposedXposed是一个在andoid平台上比较成熟的hook框架，可以完美�
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">82</span>
+                  <span class="site-state-item-count">84</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -680,7 +972,7 @@ XposedXposed是一个在andoid平台上比较成熟的hook框架，可以完美�
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

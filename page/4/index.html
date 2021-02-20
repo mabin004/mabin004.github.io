@@ -296,6 +296,293 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/08/14/CVE-2018-9445-——-Android-USB上的目录穿越/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/14/CVE-2018-9445-——-Android-USB上的目录穿越/" itemprop="url">CVE-2018-9445 —— Android挂载外设的目录穿越</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-14T18:55:00+08:00">
+                2018-08-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/14/CVE-2018-9445-——-Android-USB上的目录穿越/" class="leancloud_visitors" data-flag-title="CVE-2018-9445 —— Android挂载外设的目录穿越">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          简介Android的USB有host和Accessory两种模式，处于Host模式下的Android设备可以对外围设备进行交互，如读取U盘数据、USB键盘鼠标等。当有外设插入到Android设备上时，系统读取外设的一些硬件信息（如LABEL、UUID等）并自动为其挂载。
+常见的USB设备有以下几种：
+
+USB Sticks即U盘，用于手机和U盘之间拷贝数据，即使处于锁屏状态，系统也会自动mount。（Android 9之后，系统阻止了锁屏情况下的mount）
+USB keyboardsUSB键盘或鼠标，可以用来操控手机，在锁屏下也会自动mount。
+USB ethernet adaptersUSB网卡，插入手机后，通过DHCP可以获取ip地址联通网络，锁屏下也可以使用
+
+Android系统中由Vold进程（Volume Daemon）负责管理和控制外设，Vold进程如果在挂载外设时没有正确的对硬件信息进行解析，则有可能出现安全问题。CVE-2018-9445就是Vold在挂载外设时，由于未正确获取UUID导致的目录穿越问题。
+漏洞细节当USB设备插到Android手机上时，Vold进程（Volume Daemon）会自动为USB设备进行mount，即使手机处于锁屏状态。Vold进程在mount之前需要知道所连接设备的一些硬件信息，如UUID、type、Label等，其具体实现在system/vold/Utils.cpp的readMetadata()函数中：
+12345678910111213141516171819202122232425262728293031323334353637383940414243/*https://android.googlesource.com/platform/system/vold/+/master/Utils.cpp#212*/std:
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/08/14/CVE-2018-9445-——-Android-USB上的目录穿越/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/08/13/cve-2018-9375-——-Android个人字典漏洞分析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="m4bln">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="m4bln">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/13/cve-2018-9375-——-Android个人字典漏洞分析/" itemprop="url">cve-2018-9375 —— Android Personal Dictionary漏洞分析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-13T10:16:26+08:00">
+                2018-08-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/13/cve-2018-9375-——-Android个人字典漏洞分析/" class="leancloud_visitors" data-flag-title="cve-2018-9375 —— Android Personal Dictionary漏洞分析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          关于Personal Dictionary（个人字典）Personal Dictionary（个人字典）是Android系统提供的一个自定义的字典，用于存放用户经常输入的数据或字符以提高输入效率，它位于“设置”—— “语言和输入法” —— “个人字典”中，某些情况下Personal Dictionary中可能存放用户的隐私信息，如密码、地址、电话、信用卡账号等信息。https://ioactive.com/wp-content/uploads/2018/07/exploit-user-dictionary-poc.png
+用户也可以为一个字符串自定义一个shortcut，例如输入myhome，会自动出来详细的地址https://ioactive.com/wp-content/uploads/2018/07/exploit-user-dictionary-poc2.png
+在Andorid系统内部，这些字符保存在一个sqlite数据库中，表名称为“words”，其中包含6个列：_id (INTEGER, PRIMARY KEY)word (TEXT)frequency (INTEGER)locale (TEXT)appid (INTEGER)shortcut (TEXT)
+漏洞细节早期版本的Android系统中，操作Personal Dictionary需要申请权限：android.permission.READ_USER_DICTIONARYandroid.permission.WRITE_USER_DICTIONARY从Android 6.0（API 23）开始, Android规定只有IME和spellchecker才可以操作Personal Dictionary，并提供了对应的provider —— content://user_dictionary/words
+co
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/08/13/cve-2018-9375-——-Android个人字典漏洞分析/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/08/10/利用蓝牙漏洞逃逸iOS沙箱/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1471,307 +1758,6 @@ PD 3.0收编了QC 4.0,PD可能会成为主流,谷歌已经强制安卓阵营使�
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/06/25/iOS应用沙箱/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/25/iOS应用沙箱/" itemprop="url">iOS应用安全 —— WebView安全</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-25T18:17:00+08:00">
-                2018-06-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/06/25/iOS应用沙箱/" class="leancloud_visitors" data-flag-title="iOS应用安全 —— WebView安全">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          WebView是iOS用于显示网页的控件，是一个基于Webkit引擎、展现web页面的控件。WebView控件功能除了具有一般View的属性和设置外，还可对URL请求、页面加载、渲染、页面交互进行处理。
-iOS下的Webview有UIWebView和WKWebView两种，其中UIWebView在iOS 8之后已经不推荐使用（https://developer.apple.com/documentation/uikit/uiwebview?changes=_6）,但仍然有很多APP使用UIWebView。
-File跨域漏洞UIWebView 此漏洞默认存在， WKWebView如果使用了不恰当的方式比如 [configuration.preferences setValue:@”TRUE” forKey:@”allowFileAccessFromFileURLs”]; 也会存在漏洞
-攻击者可利用App文件下载机制将恶意文件写入沙盒内并诱导用户打开，当用户打开恶意文件时，其中的恶意代码可通过AJAX向“file://”域发起请求，从而远程获取App沙盒内所有的本地敏感数据。
-UIWebViewUIWebView虽然已经被遗弃，但依然还有很多app继续使用，且最新版本的iOS也会兼容UIWebView。由于UIWebView本身存在严重的跨域漏洞，所以只要使用UIWebView都有可能存在跨域漏洞。
-漏洞原因在于UIWebView的WebKitAllowUniversalAccessFromFileURLs和WebKitAllowFileAccessFromFileURLs默认开启，导致通过js可以访问沙箱内的文件，甚至可以静默上传文件到远端。
-漏洞代码示例：123456789UIWebView* uiweb = [[UIWebView alloc] initWithFrame
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/06/25/iOS应用沙箱/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mabin004.github.io/2018/06/19/iOS应用安全-——-MonkeyDev/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="m4bln">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="m4bln">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/19/iOS应用安全-——-MonkeyDev/" itemprop="url">iOS应用安全 —— MonkeyDev的使用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-19T19:22:00+08:00">
-                2018-06-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/06/19/iOS应用安全-——-MonkeyDev/" class="leancloud_visitors" data-flag-title="iOS应用安全 —— MonkeyDev的使用">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          概述MonkeyDev的功能主要如下：
-
-可以使用Xcode开发CaptainHook Tweak、Logos Tweak 和 Command-line Tool，在越狱机器开发插件，这是原来iOSOpenDev功能的迁移和改进。
-只需拖入一个砸壳应用，自动集成class-dump、restore-symbol、Reveal、Cycript和注入的动态库并重签名安装到非越狱机器。
-支持调试自己编写的动态库和第三方App
-支持通过CocoaPods第三方应用集成SDK以及非越狱插件，简单来说就是通过CocoaPods搭建了一个非越狱插件商店。
-
-MonkeyDev wiki: https://github.com/AloneMonkey/MonkeyDev/wiki
-安装
-安装最新的theos
-1sudo git clone --recursive https://github.com/theos/theos.git /opt/theos
-
-安装ldid
-1brew install ldid
-
-安装MonkeyDev
-1sudo /bin/sh -c &quot;$(curl -fsSL https://raw.githubusercontent.com/AloneMonkey/MonkeyDev/master/bin/md-install)&quot;
-
-
-更新MonkeyDev1sudo /bin/sh -c &quot;$(curl -fsSL https://raw.githubusercontent.com/AloneMonkey/MonkeyDev/master/bin/md-update)&quot;
-参考https://github.com/AloneMonkey/MonkeyDev/wiki/%E5%AE%89%E8%A3%85
-使用安装完成之后，打开Xco
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/06/19/iOS应用安全-——-MonkeyDev/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1822,7 +1808,7 @@ MonkeyDev wiki: https://github.com/AloneMonkey/MonkeyDev/wiki
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">82</span>
+                  <span class="site-state-item-count">84</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1874,7 +1860,7 @@ MonkeyDev wiki: https://github.com/AloneMonkey/MonkeyDev/wiki
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
