@@ -820,13 +820,12 @@ CVE-2018-
           dumpsysdumpsys命令用来查询界面元素层级、系统服务运行状态、电池、网络等一些信息。用法：12345678910HWVTR:/ # dumpsys --helpusage: dumpsys         To dump all services.or:       dumpsys [-t TIMEOUT] [--help | -l | --skip SERVICES | SERVICE [ARGS]]         --help: shows this help         -l: only list services, do not dump them         -t TIMEOUT: TIMEOUT to use in seconds instead of default 10 seconds         --skip SERVICES: dumps all services but SERVICES (comma-separated list)         SERVICE [ARGS]: dumps only service SERVICE, optionally passing ARGS to it
 常用功能：
 
-dumpsys activity activities | grep mResumedActivity 获取顶层activity
-dumpsys -l  列出所有运行的服务
+“dumpsys activity activities | grep mResumedActivity” 或者“dumpsys window | grep mCurrentFocus” 获取顶层activity 
+dumpsys -l  支持dumpsys服务的所有列表
 dumpsys wifiscanner 获取wifi信息
 dumpsys webviewupdate 获得webview版本等信息
 dumpsys usagestats|grep com.tencent.mm  某个APP的使用情况
-dumpsys shortcut 所有的shortcut
-dumpsys package -h  所有和package相关
+dumpsys sho
           ...
           <!--noindex-->
           <div class="post-button text-center">
